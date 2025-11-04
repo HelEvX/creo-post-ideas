@@ -1,0 +1,203 @@
+/* ------------------------------------------------------
+   CREO DEFAULT THEME VARIABLES
+   ------------------------------------------------------ */
+
+/* -----------------------------
+   FONT IMPORTS
+   ----------------------------- */
+
+/* Work Sans is available from Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap");
+
+/* Europa (Adobe Fonts)*/
+@import url("https://use.typekit.net/xls1ldz.css");
+
+/* -----------------------------
+   ROOT VARIABLES
+   ----------------------------- */
+:root {
+  /* ==== COLOR SYSTEM ==== */
+
+  /* Primary range (greens / brand) */
+  --primary-900: #035a43;
+  --primary-800: #04815f;
+  --primary-700: #048c68;
+  --primary-600: #048e69;
+  --primary-500: #05a47b;
+  --primary-400: #05b184;
+  --primary-300: #05b384; /* main button & UI element */
+  --primary-200: #06d6a0; /* logo color (too bright for main UI) */
+  --primary-100: #61fbd3;
+
+  /* Secondary range (teals / dark backgrounds) */
+  --secondary-900: #00090a;
+  --secondary-800: #001214; /* main title text */
+  --secondary-700: #001417;
+  --secondary-600: #001b1f;
+  --secondary-500: #00262c;
+  --secondary-400: #00363d;
+  --secondary-300: #004852; /* most common background */
+  --secondary-200: #006c7a;
+
+  /* Neutral / grayscale */
+  --neutral-900: #293233;
+  --neutral-800: #2f383a;
+  --neutral-700: #404d4f;
+  --neutral-600: #596566; /* main body text */
+  --neutral-500: #8c9495;
+  --neutral-400: #a8a8a8;
+  --neutral-300: #cfcfcf;
+  --neutral-200: #d9dcdc;
+  --neutral-150: #dfdae3;
+  --neutral-125: #e5e1e9;
+  --neutral-100: #f8f7f9;
+  --neutral-0: #ffffff; /* main background / reversed text color */
+
+  /* Core assignments (UI-level tokens) */
+  --color-primary: var(--primary-300);
+  --color-primary-bright: var(--primary-200);
+  --color-accent: var(--primary-200);
+  --color-background: var(--neutral-0);
+  --color-surface: var(--neutral-100);
+  --color-text: var(--neutral-600);
+  --color-title: var(--secondary-800);
+  --color-inverse-text: var(--neutral-0);
+  --color-footer-bg: var(--secondary-300);
+
+  /* Shadows, borders, radius */
+  --radius-sm: 0.4rem;
+  --radius-md: 0.6rem;
+  --radius-lg: 1rem;
+  --shadow-soft: 0 0.4rem 2rem rgba(0, 0, 0, 0.06);
+
+  /* ==== TYPOGRAPHY ==== */
+
+  --font-title: "europa", "Work Sans", sans-serif;
+  --font-body: "Work Sans", sans-serif;
+
+  /* Font sizes (desktop baseline, 10px = 1rem) */
+  --fs-hero: 6rem; /* 60px */
+  --fs-h1: 5rem; /* 50px */
+  --fs-h2: 4rem; /* 40px */
+  --fs-h3: 3rem; /* 30px */
+  --fs-h4: 2.4rem; /* 24px */
+  --fs-h5: 2rem; /* 20px */
+  --fs-h6: 1.8rem; /* 18px */
+  --fs-body-lg: 1.8rem; /* 18px */
+  --fs-body: 1.6rem; /* 16px */
+  --fs-body-sm: 1.5rem; /* 15px */
+  --fs-body-xs: 1.3rem; /* 13px */
+
+  /* Line heights */
+  --lh-display: 1.3; /* hero, h1, h2 */
+  --lh-heading: 1.5; /* medium headings */
+  --lh-body: 1.7; /* paragraph text */
+
+  /* Spacing scale (rem = 10px) */
+  --space-10: 1rem;
+  --space-20: 2rem;
+  --space-30: 3rem;
+  --space-40: 4rem;
+  --space-50: 5rem;
+  --space-75: 7.5rem;
+  --space-100: 10rem;
+}
+
+/* ------------------------------------------------------
+   BASE STYLES
+   ------------------------------------------------------ */
+html {
+  font-size: 62.5%;
+} /* 10px baseline */
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-title);
+  color: var(--color-title);
+  margin-top: 0;
+  font-weight: 600;
+}
+h1 {
+  font-size: var(--fs-h1);
+  line-height: var(--lh-display);
+}
+h2 {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-display);
+}
+h3 {
+  font-size: var(--fs-h3);
+  line-height: var(--lh-heading);
+}
+h4 {
+  font-size: var(--fs-h4);
+  line-height: var(--lh-heading);
+}
+h5 {
+  font-size: var(--fs-h5);
+  line-height: var(--lh-heading);
+}
+h6 {
+  font-size: var(--fs-h6);
+  line-height: var(--lh-heading);
+}
+
+p,
+li {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  margin-bottom: var(--space-20);
+}
+
+/* Hero title sample class */
+.hero-title {
+  font-family: var(--font-title);
+  font-size: var(--fs-hero);
+  line-height: var(--lh-display);
+  color: var(--color-title);
+  margin-bottom: var(--space-20);
+}
+
+/* Buttons / Links */
+button,
+.btn {
+  background-color: var(--color-primary);
+  color: var(--color-inverse-text);
+  font-weight: 600;
+  font-family: var(--font-body);
+  padding: var(--space-10) var(--space-20);
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+button:hover,
+.btn:hover {
+  background-color: var(--color-accent);
+}
+
+/* Utility example */
+.text-light {
+  color: var(--color-inverse-text);
+}
+.bg-primary {
+  background-color: var(--color-primary);
+}
+.bg-secondary {
+  background-color: var(--color-footer-bg);
+  color: var(--color-inverse-text);
+}
