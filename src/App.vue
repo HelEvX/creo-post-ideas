@@ -9,6 +9,7 @@
           </div>
           <div class="col-6 col-md-8 right">
             <ThemeSwitcher />
+            <RecipeShuffle />
           </div>
         </div>
       </div>
@@ -19,12 +20,17 @@
       <div class="container-wide">
         <div class="row center">
           <div class="col-12">
-            <h1 class="hero-title">Visualize Your Brand’s Social Style</h1>
+            <h1 class="hero-title">Visualize Your Brand's Social Style</h1>
             <p class="hero-subtitle">
-              Preview your posts using your site’s look & feel.
+              Preview your posts using your site's look & feel.
             </p>
           </div>
         </div>
+      </div>
+      <div class="color-blocks">
+        <div></div>
+        <div></div>
+        <div></div>
       </div>
     </section>
 
@@ -118,6 +124,7 @@
 
 <script>
 import ThemeSwitcher from "./components/ThemeSwitcher.vue";
+import RecipeShuffle from "./components/RecipeShuffle.vue";
 
 export default {
   components: { ThemeSwitcher },
@@ -391,23 +398,51 @@ body {
   background: var(--color-accent);
 }
 
-/* ----------------------------------------------------
-   FOOTER
-   ---------------------------------------------------- */
+/* ------------------------------------------------------
+   LAYOUT ELEMENTS — use dynamic UI roles
+   ------------------------------------------------------ */
+
+.site-nav {
+  background: var(--ui-nav-bg);
+  color: var(--ui-background);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 .site-footer {
-  background: var(--color-footer-bg);
-  color: var(--color-inverse-text);
-  padding: var(--space-30) 0;
+  background: var(--ui-footer-bg);
+  color: var(--ui-background);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
-.site-footer p {
-  margin: 0;
+.brand {
+  color: var(--ui-background);
 }
-.footer-link {
-  color: var(--color-inverse-text);
-  text-decoration: none;
-  border-bottom: 0.2rem solid rgba(255, 255, 255, 0.25);
+
+/* HERO */
+.hero {
+  background: var(--ui-hero-bg);
+  color: var(--ui-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
-.footer-link:hover {
-  border-bottom-color: var(--color-inverse-text);
+.hero-title,
+.hero-subtitle {
+  color: var(--ui-text);
+}
+
+/* SECTIONS */
+.section {
+  background: var(--ui-section-bg);
+  color: var(--ui-text);
+}
+.section.alt {
+  background: var(--ui-alt-section-bg);
+  color: var(--ui-background);
+}
+
+/* CARDS */
+.card {
+  background: var(--ui-background);
+  color: var(--ui-text);
+  border: 0.1rem solid var(--ui-accent);
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    color 0.3s ease;
 }
 </style>

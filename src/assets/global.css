@@ -201,3 +201,74 @@ button:hover,
   background-color: var(--color-footer-bg);
   color: var(--color-inverse-text);
 }
+
+/* -----------------------------------------------------
+   DYNAMIC UI ROLES (used by RecipeShuffle)
+   ----------------------------------------------------- */
+
+:root {
+  /* UI roles (initially mirror Creo default) */
+  --ui-background: var(--color-background);
+  --ui-text: var(--color-text);
+  --ui-accent: var(--color-primary);
+
+  /* Extended roles for richer composition */
+  --ui-nav-bg: var(--color-footer-bg);
+  --ui-hero-bg: var(--color-background);
+  --ui-section-bg: var(--color-surface);
+  --ui-alt-section-bg: var(--color-footer-bg);
+  --ui-footer-bg: var(--color-footer-bg);
+}
+
+/* Body + general text now use UI roles */
+body {
+  background-color: var(--ui-background);
+  color: var(--ui-text);
+}
+
+/* Headings can use accent if desired */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--ui-accent);
+}
+
+/* Buttons and other interactive elements */
+.btn-primary {
+  background: var(--ui-accent);
+  color: var(--ui-background);
+  border: none;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-primary:hover {
+  background: var(--color-accent);
+}
+
+/* ------------------------------------------------------
+   DEMO ELEMENTS / COLOR BLOCKS
+   ------------------------------------------------------ */
+.color-blocks {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+.color-blocks div {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.4rem;
+}
+
+.color-blocks div:nth-child(1) {
+  background: var(--color-primary);
+}
+.color-blocks div:nth-child(2) {
+  background: var(--color-accent);
+}
+.color-blocks div:nth-child(3) {
+  background: var(--color-footer-bg);
+}

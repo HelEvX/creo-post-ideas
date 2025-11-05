@@ -1,46 +1,87 @@
-<template>
-  <div class="theme-switcher-container">
-    <label for="theme-select">Select a Theme:</label>
-    <select id="theme-select" v-model="selectedTheme" @change="applyTheme">
-      <option value="">Default (Creo)</option>
-      <option value="groomer">Groomer</option>
-      <option value="ocrunkst">OCRunkst</option>
-    </select>
-
-    <div class="theme-preview">
-      <div class="color-swatch primary"></div>
-      <div class="color-swatch secondary"></div>
-      <div class="color-swatch accent"></div>
-    </div>
-  </div>
-</template>
-
 <script>
 export default {
   name: "ThemeSwitcher",
   data() {
-    return {
-      selectedTheme: "", // matches Default (Creo)
-    };
+    return { selectedTheme: "" };
+  },
+  mounted() {
+    // optional: default to "creo" empty -> use base global.css vars
   },
   methods: {
+    async onChange(e) {
+      this.selectedTheme = e.target.value;
+      await this.applyTheme();
+    },
     async applyTheme() {
       if (!this.selectedTheme) {
-        document.documentElement.removeAttribute("style");
-        console.log("Restored default Creo theme");
+        // Reset to defaults from global.css
+        const root = document.documentElement;
+        [
+          "--color-primary",
+          "--color-accent",
+          "--color-background",
+          "--color-footer-bg",
+          "--font-body",
+          "--font-title",
+          "--ui-background",
+          "--ui-text",
+          "--ui-accent",
+        ].forEach((v) => root.style.removeProperty(v));
         return;
       }
 
-      const response = await fetch(`/themes/${this.selectedTheme}.json`);
-      const theme = await response.json();
-      Object.entries(theme).forEach(([key, value]) => {
-        document.documentElement.style.setProperty(`--${key}`, value);
+      const res = await fetch(`/themes/${this.selectedTheme}.json`);
+      const t = await res.json();
+
+      // Map JSON -> CSS tokens used by the app
+      const root = document.documentElement;
+      const map = {
+        "primary-color": "--color-primary",
+        "accent-color": "--color-accent",
+        "background-color": "--color-background",
+        // Use client “secondary” as the common dark band (nav/footer)
+        "secondary-color": "--color-footer-bg",
+        "font-family": "--font-body",
+      };
+
+      Object.entries(map).forEach(([jsonKey, cssVar]) => {
+        if (t[jsonKey]) root.style.setProperty(cssVar, t[jsonKey]);
       });
-      console.log("Applied theme:", this.selectedTheme);
+
+      // Title font follows body unless you have a separate one
+      if (t["font-family"]) {
+        root.style.setProperty("--font-title", t["font-family"]);
+      }
+
+      // Initialize UI roles from the base theme (recipes will override)
+      const bg = getComputedStyle(root)
+        .getPropertyValue("--color-background")
+        .trim();
+      const text = getComputedStyle(root)
+        .getPropertyValue("--color-text")
+        .trim(); // from global.css
+      const acc = getComputedStyle(root)
+        .getPropertyValue("--color-primary")
+        .trim();
+
+      root.style.setProperty("--ui-background", bg);
+      root.style.setProperty("--ui-text", text);
+      root.style.setProperty("--ui-accent", acc);
     },
   },
 };
 </script>
+
+<template>
+  <div class="theme-switcher-container">
+    <label for="theme-select">Select a Theme:</label>
+    <select id="theme-select" @change="onChange">
+      <option value="">Creo (default)</option>
+      <option value="groomer">Groomer</option>
+      <option value="ocrunkst">OCRunkst</option>
+    </select>
+  </div>
+</template>
 
 <style>
 .theme-switcher-container {
