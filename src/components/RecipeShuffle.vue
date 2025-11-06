@@ -34,17 +34,10 @@ export default {
     const contrastClass = ref("");
 
     const checkContrast = () => {
-      const bgColor = getComputedStyle(document.documentElement)
-        .getPropertyValue("--ui-background")
-        .trim();
-      const textColor = getComputedStyle(document.documentElement)
-        .getPropertyValue("--ui-text")
-        .trim();
+      const bgColor = getComputedStyle(document.documentElement).getPropertyValue("--ui-background").trim();
+      const textColor = getComputedStyle(document.documentElement).getPropertyValue("--ui-text").trim();
 
-      const ratio = getContrastRatio(
-        hexFromVar(bgColor),
-        hexFromVar(textColor)
-      );
+      const ratio = getContrastRatio(hexFromVar(bgColor), hexFromVar(textColor));
 
       if (ratio >= 4.5) {
         contrastLabel.value = "Readable";
@@ -85,9 +78,7 @@ export default {
         .replace("#", "")
         .match(/.{2}/g)
         .map((x) => parseInt(x, 16) / 255);
-      const a = rgb.map((v) =>
-        v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)
-      );
+      const a = rgb.map((v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
       return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
     };
 
@@ -119,14 +110,25 @@ export default {
   opacity: 0.8;
 }
 
-/* Stoplight styles */
 .contrast-good {
-  color: #06d6a0; /* green */
+  color: var(--color-success);
 }
+
 .contrast-medium {
-  color: #ffbf00; /* yellow/orange */
+  color: var(--color-warning);
 }
+
 .contrast-poor {
-  color: #ef476f; /* red */
+  color: var(--color-danger);
+}
+
+.contrast-good:hover {
+  color: color-mix(in srgb, var(--color-success) 80%, #000);
+}
+.contrast-medium:hover {
+  color: color-mix(in srgb, var(--color-warning) 80%, #000);
+}
+.contrast-poor:hover {
+  color: color-mix(in srgb, var(--color-danger) 80%, #000);
 }
 </style>

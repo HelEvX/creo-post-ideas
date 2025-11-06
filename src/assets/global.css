@@ -16,53 +16,119 @@
    ROOT VARIABLES
    ----------------------------- */
 :root {
-  /* ==== COLOR SYSTEM ==== */
+  /* ==== COLOR SYSTEM (with usage notes) ==== */
 
-  /* Primary range (greens / brand) */
-  --primary-900: #035a43;
-  --primary-800: #04815f;
-  --primary-700: #048c68;
-  --primary-600: #048e69;
-  --primary-500: #05a47b;
-  --primary-400: #05b184;
-  --primary-300: #05b384; /* main button & UI element */
-  --primary-200: #06d6a0; /* logo color (too bright for main UI) */
-  --primary-100: #61fbd3;
+  /* --------------------------------------------
+   Primary range (greens / brand)
+   Notes: use as FILLS and accents. Avoid long text.
+--------------------------------------------- */
+  --primary-900: #035a43; /* darkest brand green: focused states on dark UIs, strong outlines over light bg */
+  --primary-800: #04815f; /* pressed/active button bg over light surfaces, strong icon fills over light bg */
+  --primary-700: #048c68; /* hover bg for primary buttons on light surfaces; badges over light bg */
+  --primary-600: #048e69; /* focus ring or border for primary elements; subtle chips/pills */
+  --primary-500: #05a47b; /* secondary CTA fill, alt button bg, accent tags */
+  --primary-400: #05b184; /* standard hover for main CTA; icon fill on light gray cards */
+  --primary-300: #05b384; /* MAIN CTA fill and key UI elements (chips, toggles) on light bg */
+  --primary-200: #06d6a0; /* brand highlight: logo mark, small accents, decorative lines (too bright for text) */
+  --primary-100: #61fbd3; /* tints, soft backgrounds, overlays at 50% for “wash” effects */
 
-  /* Secondary range (teals / dark backgrounds) */
-  --secondary-900: #00090a;
-  --secondary-800: #001214; /* main title text */
-  --secondary-700: #001417;
-  --secondary-600: #001b1f;
-  --secondary-500: #00262c;
-  --secondary-400: #00363d;
-  --secondary-300: #004852; /* most common background */
-  --secondary-200: #006c7a;
+  /* --------------------------------------------
+   Secondary range (teal charcoal / dark structure)
+   Notes: use for dark sections, nav, footer, hero bands, and headings on light pages.
+--------------------------------------------- */
+  --secondary-900: #00090a; /* near-black overlay for images, deepest shadows, scrims */
+  --secondary-800: #001214; /* MAIN TITLE TEXT on light bg; high-contrast icons/links on light bg */
+  --secondary-700: #001417; /* strong headings, overlines, and separators on very light sections */
+  --secondary-600: #001b1f; /* dark cards, chips or icon backgrounds where white text is needed */
+  --secondary-500: #00262c; /* dark bands and callouts, hover for dark buttons */
+  --secondary-400: #00363d; /* NAV/FOOTER alt background, hero bands, image frames */
+  --secondary-300: #004852; /* MOST COMMON DARK BACKGROUND section; white text sits here */
+  --secondary-200: #006c7a; /* dark link states, borders on dark sections, icons at 75% opacity */
 
-  /* Neutral / grayscale */
-  --neutral-900: #293233;
-  --neutral-800: #2f383a;
-  --neutral-700: #404d4f;
-  --neutral-600: #596566; /* main body text */
-  --neutral-500: #8c9495;
-  --neutral-400: #a8a8a8;
-  --neutral-300: #cfcfcf;
-  --neutral-200: #d9dcdc;
-  --neutral-150: #dfdae3;
-  --neutral-125: #e5e1e9;
-  --neutral-100: #f8f7f9;
-  --neutral-0: #ffffff; /* main background / reversed text color */
+  /* --------------------------------------------
+   Neutral / grayscale
+   Notes: base page + typography. Choose body color per brand intensity.
+--------------------------------------------- */
+  --neutral-900: #293233; /* heavy text on off-white, emphasis body copy, strong borders */
+  --neutral-800: #2f383a; /* subheadings, UI labels, muted titles on light surfaces */
+  --neutral-700: #404d4f; /* COMMON BODY TEXT (matches many sites), button text on light CTAs */
+  --neutral-600: #596566; /* ALT body text (softer). Use when brand prefers lower contrast body copy */
+  --neutral-500: #8c9495; /* metadata, helper text, disabled, captions */
+  --neutral-400: #a8a8a8; /* dividers on light bg, muted icons, placeholder text */
+  --neutral-300: #cfcfcf; /* card borders, input borders, subtle separators */
+  --neutral-200: #d9dcdc; /* section separators, hairlines, keylines around cards */
+  --neutral-150: #dfdae3; /* decorative lines, very soft panel edges */
+  --neutral-125: #e5e1e9; /* tinted blocks behind lists/forms, hover on very light elements */
+  --neutral-100: #f8f7f9; /* CARD/SURFACE background (common) */
+  --neutral-0: #ffffff; /* PAGE BACKGROUND and inverse text color on dark sections */
 
-  /* Core assignments (UI-level tokens) */
-  --color-primary: var(--primary-300);
-  --color-primary-bright: var(--primary-200);
-  --color-accent: var(--primary-200);
-  --color-background: var(--neutral-0);
-  --color-surface: var(--neutral-100);
-  --color-text: var(--neutral-600);
-  --color-title: var(--secondary-800);
-  --color-inverse-text: var(--neutral-0);
-  --color-footer-bg: var(--secondary-300);
+  /* --------------------------------------------
+   Extra usage guidance drawn from your spreadsheet:
+   - #06D6A0 at 50%: overlays/washes over imagery or light panels
+   - White at 85%: footer paragraph text on dark bg
+   - White at 65%: footer icons on dark bg
+   - Secondary-300/400: preferred dark section backgrounds
+   - Secondary-800: preferred heading color on light bg
+   - Neutral-700: preferred body on light bg (closer match to agency sites)
+--------------------------------------------- */
+
+  /* ------------------------------------------------------
+   CORE ASSIGNMENTS (UI-level tokens)
+   ------------------------------------------------------
+   These map the raw palette values to real semantic roles.
+   They define what the user actually sees in the UI.
+   ------------------------------------------------------ */
+
+  /* ==== BRAND COLORS ==== */
+  --color-primary: var(--primary-300); /* Main CTA fill, active elements */
+  --color-primary-hover: var(--primary-400); /* Hover state on primary elements */
+  --color-primary-pressed: var(--primary-700); /* Pressed/active states */
+  --color-primary-bright: var(--primary-200); /* Logo accent, highlights (avoid for text) */
+  --color-accent: var(--primary-200); /* Small highlights, focus rings */
+
+  /* ==== BACKGROUNDS & SURFACES ==== */
+  --color-background: var(--neutral-0); /* Page background (white) */
+  --color-surface: var(--neutral-100); /* Cards, light panels */
+  --color-panel: var(--neutral-200); /* Subtle background section or inputs */
+  --color-overlay: rgba(6, 214, 160, 0.5); /* Brand tint overlay (from spreadsheet) */
+
+  /* ==== TEXT COLORS ==== */
+  --color-title: var(--secondary-800); /* Main headings on light surfaces */
+  --color-subtitle: var(--secondary-700); /* Section subtitles, small headers */
+  --color-text: var(--neutral-700); /* Body text on light backgrounds */
+  --color-text-soft: var(--neutral-600); /* Softer body or secondary copy */
+  --color-text-muted: var(--neutral-500); /* Metadata, helper text, disabled labels */
+  --color-inverse-text: var(--neutral-0); /* Text on dark backgrounds */
+
+  /* ==== STRUCTURAL / DARK SECTIONS ==== */
+  --color-header-bg: var(--secondary-400); /* Navigation / hero dark background */
+  --color-footer-bg: var(--secondary-300); /* Footer dark background */
+  --color-section-dark: var(--secondary-300); /* Reusable dark band background */
+  --color-section-dark-alt: var(--secondary-400); /* Alternate dark variation */
+  --color-heading-on-dark: var(--neutral-0); /* Headings on dark sections */
+  --color-text-on-dark: rgba(255, 255, 255, 0.85); /* Paragraph text on dark bg */
+  --color-icons-on-dark: rgba(255, 255, 255, 0.65); /* Footer/social icons */
+
+  /* ==== STATUS / FEEDBACK ==== */
+  --color-info: #6290c3; /* Informational highlights (blue) */
+  --color-warning: #f2e86d; /* Warning/yellow messages */
+  --color-danger: #ef476f; /* Error/red highlights */
+  --color-success: var(--primary-500); /* Success messages, confirmations */
+
+  /* ==== BORDERS & DIVIDERS ==== */
+  --color-border-light: var(--neutral-200); /* Light keylines between cards */
+  --color-border-medium: var(--neutral-300); /* Regular card borders */
+  --color-border-dark: var(--neutral-700); /* Emphasis borders on light backgrounds */
+
+  /* ------------------------------------------------------
+   OTHER ASSIGNMENTS
+   ------------------------------------------------------ */
+
+  /* ==== UTILITY TONES ==== */
+
+  --color-shadow: var(--shadow-soft);
+  --color-disabled-bg: var(--neutral-125);
+  --color-disabled-text: var(--neutral-500);
 
   /* Shadows, borders, radius */
   --radius-sm: 0.4rem;
@@ -190,16 +256,78 @@ button:hover,
   background-color: var(--color-accent);
 }
 
-/* Utility example */
-.text-light {
-  color: var(--color-inverse-text);
+/* Default link styling on light backgrounds */
+a {
+  color: var(--ui-link);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
 }
-.bg-primary {
-  background-color: var(--color-primary);
+
+a:hover,
+a:focus {
+  color: var(--ui-link-hover);
 }
-.bg-secondary {
-  background-color: var(--color-footer-bg);
-  color: var(--color-inverse-text);
+
+/* Links appearing on dark backgrounds (footer, hero, nav, etc.) */
+.section.alt a,
+.site-footer a,
+.hero a,
+.site-nav a {
+  color: var(--ui-link-on-dark);
+}
+
+.section.alt a:hover,
+.site-footer a:hover,
+.hero a:hover,
+.site-nav a:hover {
+  color: var(--ui-link-on-dark-hover);
+}
+
+/* ------------------------------------------------------
+   UI ROLE ASSIGNMENTS — connected to Creo semantic colors
+   ------------------------------------------------------ */
+
+:root {
+  /* Navigation + footer */
+  --ui-nav-bg: var(--color-header-bg); /* top nav background */
+  --ui-footer-bg: var(--color-footer-bg); /* footer background */
+  --ui-text-on-nav: var(--color-inverse-text);
+  --ui-text-on-footer: var(--color-text-on-dark);
+
+  /* Hero / intro section */
+  --ui-hero-bg: var(--color-primary); /* bright brand background for hero */
+  --ui-hero-text: var(--color-inverse-text); /* white text on hero */
+  --ui-hero-accent: var(--color-primary-bright);
+
+  /* Section backgrounds */
+  --ui-section-bg: var(--color-background); /* default section (white) */
+  --ui-alt-section-bg: var(--color-surface); /* light gray alternating section */
+
+  /* Panels / cards */
+  --ui-panel-bg: var(--color-surface);
+  --ui-panel-border: var(--color-border-light);
+  --ui-panel-text: var(--color-text);
+
+  /* Accent roles */
+  --ui-accent: var(--color-primary);
+  --ui-accent-hover: var(--color-primary-hover);
+
+  /* Alerts / statuses */
+  --ui-info-bg: var(--color-info);
+  --ui-warning-bg: var(--color-warning);
+  --ui-danger-bg: var(--color-danger);
+
+  /* Text generalization */
+  --ui-text: var(--color-text);
+  --ui-heading: var(--color-title);
+  --ui-inverse-text: var(--color-inverse-text);
+  --ui-muted: var(--color-text-muted);
+
+  /* Link colors */
+  --ui-link: var(--color-primary);
+  --ui-link-hover: var(--color-primary-hover);
+  --ui-link-on-dark: rgba(255, 255, 255, 0.75);
+  --ui-link-on-dark-hover: var(--color-primary-bright);
 }
 
 /* -----------------------------------------------------

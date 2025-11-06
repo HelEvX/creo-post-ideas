@@ -1,0 +1,29 @@
+{
+  "name": "Steviala",
+  "meta": {
+    "brand": "Steviala",
+    "version": "1.0"
+  },
+
+  "font-family": "Barlow Condensed, sans-serif",
+
+  "color-primary": "#6cb0ff",
+  "color-primary-hover": "#5895e0",
+  "color-primary-bright": "#8bc7ff",
+  "color-accent": "#ff9f1c",
+  "color-background": "#ffffff",
+  "color-surface": "#f7f9fa",
+  "color-panel": "#eef1f3",
+  "color-title": "#00121a",
+  "color-text": "#3c474b",
+  "color-text-muted": "#818a8e",
+  "color-inverse-text": "#ffffff",
+  "color-header-bg": "#002e3f",
+  "color-footer-bg": "#00384b",
+  "color-border-light": "#d9dcdd",
+  "color-border-medium": "#cfcfcf",
+  "color-info": "#6ca8e0",
+  "color-warning": "#ffdd57",
+  "color-danger": "#ef476f",
+  "color-success": "#3dd598"
+}

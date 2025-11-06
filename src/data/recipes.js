@@ -1,25 +1,22 @@
 // -------------------------------------------
 // CREO POST IDEAS — Color Composition Recipes
-// These do NOT define new colors.
-// They only remap existing palette tokens
-// to different visual roles (background, text, accent).
+// Updated for semantic + UI role system
 // -------------------------------------------
 
 export const recipes = [
   {
     id: "classic-balance",
     title: "Classic Balance",
-    description:
-      "Neutral background with strong text contrast and subtle accent highlights.",
+    description: "Neutral background with strong text contrast and subtle accent highlights.",
     roles: {
-      "nav-bg": "var(--secondary-400)",
-      "hero-bg": "var(--primary-300)",
-      "section-bg": "var(--neutral-100)",
-      "alt-section-bg": "var(--secondary-300)",
-      "footer-bg": "var(--secondary-400)",
-      background: "var(--color-background)",
-      text: "var(--color-text)",
-      accent: "var(--color-primary)",
+      "--ui-nav-bg": "var(--color-header-bg)",
+      "--ui-hero-bg": "var(--color-primary)",
+      "--ui-section-bg": "var(--color-background)",
+      "--ui-alt-section-bg": "var(--color-surface)",
+      "--ui-footer-bg": "var(--color-footer-bg)",
+      "--ui-background": "var(--color-background)",
+      "--ui-text": "var(--color-text)",
+      "--ui-accent": "var(--color-primary)",
     },
     typography: "regular",
     layout: "two-col",
@@ -27,17 +24,16 @@ export const recipes = [
   {
     id: "accent-forward",
     title: "Accent Forward",
-    description:
-      "Accent color takes the lead for backgrounds; inverted text for emphasis.",
+    description: "Accent color takes the lead for backgrounds; inverted text for emphasis.",
     roles: {
-      "nav-bg": "var(--secondary-400)",
-      "hero-bg": "var(--primary-300)",
-      "section-bg": "var(--neutral-100)",
-      "alt-section-bg": "var(--secondary-300)",
-      "footer-bg": "var(--secondary-400)",
-      background: "var(--color-background)",
-      text: "var(--color-text)",
-      accent: "var(--color-primary)",
+      "--ui-nav-bg": "var(--color-header-bg)",
+      "--ui-hero-bg": "var(--color-primary-bright)",
+      "--ui-section-bg": "var(--color-surface)",
+      "--ui-alt-section-bg": "var(--color-background)",
+      "--ui-footer-bg": "var(--color-footer-bg)",
+      "--ui-background": "var(--color-background)",
+      "--ui-text": "var(--color-text)",
+      "--ui-accent": "var(--color-primary-bright)",
     },
     typography: "bold",
     layout: "full-bleed",
@@ -45,17 +41,16 @@ export const recipes = [
   {
     id: "muted-minimal",
     title: "Muted Minimal",
-    description:
-      "Soft neutral surfaces and understated tones for a calm aesthetic.",
+    description: "Soft neutral surfaces and understated tones for a calm aesthetic.",
     roles: {
-      "nav-bg": "var(--secondary-400)",
-      "hero-bg": "var(--primary-300)",
-      "section-bg": "var(--neutral-100)",
-      "alt-section-bg": "var(--secondary-300)",
-      "footer-bg": "var(--secondary-400)",
-      background: "var(--color-background)",
-      text: "var(--color-text)",
-      accent: "var(--color-primary)",
+      "--ui-nav-bg": "var(--color-footer-bg)",
+      "--ui-hero-bg": "var(--color-surface)",
+      "--ui-section-bg": "var(--color-surface)",
+      "--ui-alt-section-bg": "var(--color-background)",
+      "--ui-footer-bg": "var(--color-footer-bg)",
+      "--ui-background": "var(--color-background)",
+      "--ui-text": "var(--color-text)",
+      "--ui-accent": "var(--color-muted)",
     },
     typography: "light",
     layout: "centered",

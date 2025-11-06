@@ -1,7 +1,35 @@
 {
-  "primary-color": "#512d38",
-  "secondary-color": "#f4f1ee",
-  "accent-color": "#c67c4e",
-  "font-family": "Poppins, sans-serif",
-  "background-color": "#fafafa"
+  "name": "OCRunkst",
+  "meta": {
+    "brand": "OCRunkst",
+    "version": "1.0"
+  },
+
+  "font-family": "Work Sans, sans-serif",
+
+  "color-primary": "#0071b6",
+  "color-primary-hover": "#005d95",
+  "color-primary-bright": "#2a9df4",
+  "color-accent": "#1ec6c6",
+
+  "color-background": "#f9fbfd",
+  "color-surface": "#eef2f5",
+  "color-panel": "#e3e9ed",
+
+  "color-title": "#001e2f",
+  "color-text": "#27353e",
+  "color-text-muted": "#6b7a86",
+  "color-inverse-text": "#ffffff",
+
+  "color-header-bg": "#001e2f",
+  "color-footer-bg": "#002c44",
+
+  "color-border-light": "#d8e0e6",
+  "color-border-medium": "#bfcad1",
+  "color-border-dark": "#3c4d59",
+
+  "color-info": "#5ba8f1",
+  "color-warning": "#f7d154",
+  "color-danger": "#e05757",
+  "color-success": "#32b67a"
 }

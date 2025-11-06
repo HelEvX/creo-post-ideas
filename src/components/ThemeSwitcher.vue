@@ -4,69 +4,63 @@ export default {
   data() {
     return { selectedTheme: "" };
   },
-  mounted() {
-    // optional: default to "creo" empty -> use base global.css vars
-  },
   methods: {
     async onChange(e) {
       this.selectedTheme = e.target.value;
       await this.applyTheme();
     },
+
     async applyTheme() {
+      const root = document.documentElement;
+
+      // 1. Reset to Creo base (global.css) if empty
       if (!this.selectedTheme) {
-        // Reset to defaults from global.css
-        const root = document.documentElement;
-        [
+        // Explicitly remove all known semantic overrides
+        const semanticVars = [
           "--color-primary",
+          "--color-primary-hover",
+          "--color-primary-bright",
           "--color-accent",
           "--color-background",
+          "--color-surface",
+          "--color-panel",
+          "--color-title",
+          "--color-text",
+          "--color-text-muted",
+          "--color-inverse-text",
+          "--color-header-bg",
           "--color-footer-bg",
+          "--color-border-light",
+          "--color-border-medium",
+          "--color-border-dark",
+          "--color-info",
+          "--color-warning",
+          "--color-danger",
+          "--color-success",
           "--font-body",
           "--font-title",
-          "--ui-background",
-          "--ui-text",
-          "--ui-accent",
-        ].forEach((v) => root.style.removeProperty(v));
+        ];
+
+        semanticVars.forEach((v) => root.style.removeProperty(v));
+        console.log("Theme reset to Creo default (global.css)");
         return;
       }
 
+      // 2. Fetch theme JSON
       const res = await fetch(`/themes/${this.selectedTheme}.json`);
-      const t = await res.json();
+      const theme = await res.json();
 
-      // Map JSON -> CSS tokens used by the app
-      const root = document.documentElement;
-      const map = {
-        "primary-color": "--color-primary",
-        "accent-color": "--color-accent",
-        "background-color": "--color-background",
-        // Use client “secondary” as the common dark band (nav/footer)
-        "secondary-color": "--color-footer-bg",
-        "font-family": "--font-body",
-      };
+      // 3. Apply all key/value pairs as CSS variables
+      Object.entries(theme).forEach(([key, value]) => {
+        if (typeof value !== "string") return;
+        const isSemantic =
+          key.startsWith("color-") || key === "font-family" || key.startsWith("--color-") || key.startsWith("--font-");
 
-      Object.entries(map).forEach(([jsonKey, cssVar]) => {
-        if (t[jsonKey]) root.style.setProperty(cssVar, t[jsonKey]);
+        if (!isSemantic) return;
+
+        const cssVar = key.startsWith("--") ? key : `--${key}`;
+        document.documentElement.style.setProperty(cssVar, value);
       });
-
-      // Title font follows body unless you have a separate one
-      if (t["font-family"]) {
-        root.style.setProperty("--font-title", t["font-family"]);
-      }
-
-      // Initialize UI roles from the base theme (recipes will override)
-      const bg = getComputedStyle(root)
-        .getPropertyValue("--color-background")
-        .trim();
-      const text = getComputedStyle(root)
-        .getPropertyValue("--color-text")
-        .trim(); // from global.css
-      const acc = getComputedStyle(root)
-        .getPropertyValue("--color-primary")
-        .trim();
-
-      root.style.setProperty("--ui-background", bg);
-      root.style.setProperty("--ui-text", text);
-      root.style.setProperty("--ui-accent", acc);
     },
   },
 };
@@ -79,14 +73,21 @@ export default {
       <option value="">Creo (default)</option>
       <option value="groomer">Groomer</option>
       <option value="ocrunkst">OCRunkst</option>
+      <option value="steviala">Steviala</option>
     </select>
+
+    <div class="theme-preview">
+      <div class="color-swatch primary"></div>
+      <div class="color-swatch header"></div>
+      <div class="color-swatch accent"></div>
+    </div>
   </div>
 </template>
 
 <style>
 .theme-switcher-container {
   padding: 20px;
-  background-color: var(--secondary-color);
+  background-color: var(--color-surface);
   border-radius: 8px;
   display: inline-block;
   margin: 20px;
@@ -95,16 +96,19 @@ export default {
 
 label {
   margin-right: 10px;
-  color: var(--primary-color);
+  color: var(--color-primary);
 }
 
 select {
   padding: 8px;
   border-radius: 4px;
-  border: 1px solid var(--primary-color);
-  font-family: var(--font-family);
+  border: 1px solid var(--color-border-light);
+  font-family: var(--font-body);
+  background: var(--color-background);
+  color: var(--color-text);
 }
 
+/* Preview swatches */
 .theme-preview {
   display: flex;
   justify-content: center;
@@ -116,19 +120,18 @@ select {
   width: 40px;
   height: 40px;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border-medium);
 }
 
-/* Each color pulls from a theme variable */
 .color-swatch.primary {
-  background-color: var(--primary-color);
+  background-color: var(--color-primary);
 }
 
-.color-swatch.secondary {
-  background-color: var(--secondary-color);
+.color-swatch.header {
+  background-color: var(--color-header-bg);
 }
 
 .color-swatch.accent {
-  background-color: var(--accent-color);
+  background-color: var(--color-accent);
 }
 </style>
