@@ -3,6 +3,8 @@ DESIGN TOKENS — Creo Post Ideas Tool
 Reference for the design system used in the “Creo Post Ideas” tool
 (Base theme: Creo Websolutions 2025)
 
+NEEDS UPDATE
+
 1. Color Tokens
 
 All colors are defined in :root inside src/assets/global.css.
@@ -135,12 +137,11 @@ Utility classes:
 
 5. Shadows, Borders, Radius
 
-| Token           | Value                               | Description             |
-| --------------- | ----------------------------------- | ----------------------- |
-| `--radius-sm`   | `0.4rem`                            | Small elements (inputs) |
-| `--radius-md`   | `0.6rem`                            | Buttons, cards          |
-| `--radius-lg`   | `1rem`                              | Large surfaces          |
-| `--shadow-soft` | `0 0.4rem 2rem rgba(0, 0, 0, 0.06)` | General card shadow     |
+| Token         | Value    | Description             |
+| ------------- | -------- | ----------------------- |
+| `--radius-sm` | `0.4rem` | Small elements (inputs) |
+| `--radius-md` | `0.6rem` | Buttons, cards          |
+| `--radius-lg` | `1rem`   | Large surfaces          |
 
 6. Notes for Developers
 

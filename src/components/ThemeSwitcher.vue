@@ -18,18 +18,32 @@ export default {
         // Explicitly remove all known semantic overrides
         const semanticVars = [
           "--color-primary",
-          "--color-primary-hover",
-          "--color-primary-bright",
-          "--color-accent",
+          "--color-primary-dark",
+          "--color-primary-darker",
+          "--color-primary-light",
+          "--color-primary-lighter",
+          "--color-secondary",
+          "--color-secondary-dark",
+          "--color-secondary-darker",
+          "--color-secondary-light",
+          "--color-secondary-lighter",
           "--color-background",
           "--color-surface",
           "--color-panel",
+          "--color-overlay",
           "--color-title",
+          "--color-subtitle",
           "--color-text",
+          "--color-text-soft",
           "--color-text-muted",
           "--color-inverse-text",
           "--color-header-bg",
           "--color-footer-bg",
+          "--color-section-dark",
+          "--color-section-dark-alt",
+          "--color-heading-on-dark",
+          "--color-text-on-dark",
+          "--color-icon-on-dark",
           "--color-border-light",
           "--color-border-medium",
           "--color-border-dark",
@@ -37,8 +51,11 @@ export default {
           "--color-warning",
           "--color-danger",
           "--color-success",
-          "--font-body",
+          "--color-shadow",
+          "--color-disabled-bg",
+          "--color-disabled-text",
           "--font-title",
+          "--font-body",
         ];
 
         semanticVars.forEach((v) => root.style.removeProperty(v));
@@ -78,8 +95,10 @@ export default {
 
     <div class="theme-preview">
       <div class="color-swatch primary"></div>
-      <div class="color-swatch header"></div>
-      <div class="color-swatch accent"></div>
+      <div class="color-swatch primary-light"></div>
+      <div class="color-swatch secondary"></div>
+      <div class="color-swatch secondary-light"></div>
+      <div class="color-swatch text"></div>
     </div>
   </div>
 </template>
@@ -112,13 +131,13 @@ select {
 .theme-preview {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 15px;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
 .color-swatch {
-  width: 40px;
-  height: 40px;
+  width: 4rem;
+  height: 4rem;
   border-radius: 8px;
   border: 1px solid var(--color-border-medium);
 }
@@ -127,11 +146,19 @@ select {
   background-color: var(--color-primary);
 }
 
-.color-swatch.header {
-  background-color: var(--color-header-bg);
+.color-swatch.primary-light {
+  background-color: var(--color-primary-light);
 }
 
-.color-swatch.accent {
-  background-color: var(--color-accent);
+.color-swatch.secondary {
+  background-color: var(--color-secondary);
+}
+
+.color-swatch.secondary-light {
+  background-color: var(--color-secondary-light);
+}
+
+.color-swatch.text {
+  background-color: var(--color-text);
 }
 </style>

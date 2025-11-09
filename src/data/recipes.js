@@ -1,6 +1,8 @@
 // -------------------------------------------
 // CREO POST IDEAS — Color Composition Recipes
 // Updated for semantic + UI role system
+// This file defines the "recipes" or color compositions for the social media post mockups.
+// The keys here must correspond to the --post-* CSS variables used in SocialPostMockup.vue
 // -------------------------------------------
 
 export const recipes = [

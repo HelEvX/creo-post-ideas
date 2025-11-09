@@ -1,140 +1,145 @@
 /* ------------------------------------------------------
-   CREO DEFAULT THEME VARIABLES
+   DEFAULT THEME VARIABLES (based on CREO)
    ------------------------------------------------------ */
 
 /* -----------------------------
    FONT IMPORTS
    ----------------------------- */
 
-/* Work Sans is available from Google Fonts */
+/* Google Fonts */
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap");
 
-/* Europa (Adobe Fonts)*/
+/* Adobe Fonts*/
 @import url("https://use.typekit.net/xls1ldz.css");
 
 /* -----------------------------
    ROOT VARIABLES
    ----------------------------- */
 :root {
-  /* ==== COLOR SYSTEM (with usage notes) ==== */
+  /* ==== COLOR SYSTEM ==== */
 
   /* --------------------------------------------
-   Primary range (greens / brand)
-   Notes: use as FILLS and accents. Avoid long text.
+   Primary range
 --------------------------------------------- */
-  --primary-900: #035a43; /* darkest brand green: focused states on dark UIs, strong outlines over light bg */
-  --primary-800: #04815f; /* pressed/active button bg over light surfaces, strong icon fills over light bg */
-  --primary-700: #048c68; /* hover bg for primary buttons on light surfaces; badges over light bg */
-  --primary-600: #048e69; /* focus ring or border for primary elements; subtle chips/pills */
-  --primary-500: #05a47b; /* secondary CTA fill, alt button bg, accent tags */
-  --primary-400: #05b184; /* standard hover for main CTA; icon fill on light gray cards */
-  --primary-300: #05b384; /* MAIN CTA fill and key UI elements (chips, toggles) on light bg */
-  --primary-200: #06d6a0; /* brand highlight: logo mark, small accents, decorative lines (too bright for text) */
-  --primary-100: #61fbd3; /* tints, soft backgrounds, overlays at 50% for “wash” effects */
+  --primary-700: #035a43;
+  --primary-600: #04815f;
+  --primary-500: #05b184;
+  --primary-400: #06d6a0;
+  --primary-300: #61fbd3;
 
   /* --------------------------------------------
-   Secondary range (teal charcoal / dark structure)
-   Notes: use for dark sections, nav, footer, hero bands, and headings on light pages.
+   Secondary range
 --------------------------------------------- */
-  --secondary-900: #00090a; /* near-black overlay for images, deepest shadows, scrims */
-  --secondary-800: #001214; /* MAIN TITLE TEXT on light bg; high-contrast icons/links on light bg */
-  --secondary-700: #001417; /* strong headings, overlines, and separators on very light sections */
-  --secondary-600: #001b1f; /* dark cards, chips or icon backgrounds where white text is needed */
-  --secondary-500: #00262c; /* dark bands and callouts, hover for dark buttons */
-  --secondary-400: #00363d; /* NAV/FOOTER alt background, hero bands, image frames */
-  --secondary-300: #004852; /* MOST COMMON DARK BACKGROUND section; white text sits here */
-  --secondary-200: #006c7a; /* dark link states, borders on dark sections, icons at 75% opacity */
+  --secondary-700: #00363d;
+  --secondary-600: #004852;
+  --secondary-500: #006c7a;
+  --secondary-400: #008799;
+  --secondary-300: #00a3b8;
 
   /* --------------------------------------------
    Neutral / grayscale
-   Notes: base page + typography. Choose body color per brand intensity.
 --------------------------------------------- */
-  --neutral-900: #293233; /* heavy text on off-white, emphasis body copy, strong borders */
-  --neutral-800: #2f383a; /* subheadings, UI labels, muted titles on light surfaces */
-  --neutral-700: #404d4f; /* COMMON BODY TEXT (matches many sites), button text on light CTAs */
-  --neutral-600: #596566; /* ALT body text (softer). Use when brand prefers lower contrast body copy */
-  --neutral-500: #8c9495; /* metadata, helper text, disabled, captions */
-  --neutral-400: #a8a8a8; /* dividers on light bg, muted icons, placeholder text */
-  --neutral-300: #cfcfcf; /* card borders, input borders, subtle separators */
-  --neutral-200: #d9dcdc; /* section separators, hairlines, keylines around cards */
-  --neutral-150: #dfdae3; /* decorative lines, very soft panel edges */
-  --neutral-125: #e5e1e9; /* tinted blocks behind lists/forms, hover on very light elements */
-  --neutral-100: #f8f7f9; /* CARD/SURFACE background (common) */
-  --neutral-0: #ffffff; /* PAGE BACKGROUND and inverse text color on dark sections */
+  --neutral-900: #001214;
+  --neutral-800: #293233;
+  --neutral-700: #404d4f;
+  --neutral-600: #596566;
+  --neutral-500: #8c9495;
+  --neutral-400: #a8a8a8;
+  --neutral-300: #d9dcdc;
+  --neutral-200: #dfdae3;
+  --neutral-100: #e5e1e9;
+  --neutral-50: #f8f7f9;
+  --white: white;
 
-  /* --------------------------------------------
-   Extra usage guidance drawn from your spreadsheet:
-   - #06D6A0 at 50%: overlays/washes over imagery or light panels
-   - White at 85%: footer paragraph text on dark bg
-   - White at 65%: footer icons on dark bg
-   - Secondary-300/400: preferred dark section backgrounds
-   - Secondary-800: preferred heading color on light bg
-   - Neutral-700: preferred body on light bg (closer match to agency sites)
---------------------------------------------- */
+  /* ------------
+   Greens
+  ---------------- */
+  --green-600: #035a43;
+  --green-500: #04815f;
+  --green-400: #05b184;
+
+  /* ------------
+   Yellows
+  ---------------- */
+  --yellow-600: #cdbf12;
+  --yellow-500: #eee13e;
+  --yellow-400: #f2e86d;
+
+  /* ------------
+   Reds
+  ---------------- */
+  --red-600: #a80f33;
+  --red-500: #d71341;
+  --red-400: #eb184a;
+
+  /* ------------
+   Blues
+  ---------------- */
+  --blue-600: #2e5178;
+  --blue-500: #4376af;
+  --blue-400: #6290c3;
 
   /* ------------------------------------------------------
    CORE ASSIGNMENTS (UI-level tokens)
-   ------------------------------------------------------
-   These map the raw palette values to real semantic roles.
+   --------------------------------------------------------
    They define what the user actually sees in the UI.
    ------------------------------------------------------ */
 
   /* ==== BRAND COLORS ==== */
-  --color-primary: var(--primary-300); /* Main CTA fill, active elements */
-  --color-primary-hover: var(--primary-400); /* Hover state on primary elements */
-  --color-primary-pressed: var(--primary-700); /* Pressed/active states */
-  --color-primary-bright: var(--primary-200); /* Logo accent, highlights (avoid for text) */
-  --color-accent: var(--primary-200); /* Small highlights, focus rings */
+  --color-primary: var(--primary-500);
+  --color-primary-dark: var(--primary-600);
+  --color-primary-darker: var(--primary-700);
+  --color-primary-light: var(--primary-400);
+  --color-primary-lighter: var(--primary-300);
+
+  --color-secondary: var(--secondary-500);
+  --color-secondary-dark: var(--secondary-600);
+  --color-secondary-darker: var(--secondary-700);
+  --color-secondary-light: var(--secondary-400);
+  --color-secondary-lighter: var(--secondary-300);
 
   /* ==== BACKGROUNDS & SURFACES ==== */
-  --color-background: var(--neutral-0); /* Page background (white) */
-  --color-surface: var(--neutral-100); /* Cards, light panels */
-  --color-panel: var(--neutral-200); /* Subtle background section or inputs */
-  --color-overlay: rgba(6, 214, 160, 0.5); /* Brand tint overlay (from spreadsheet) */
+  --color-background: var(--white); /* always white */
+  --color-surface: var(--neutral-50);
+  --color-panel: var(--neutral-100);
+  --color-overlay: rgba(6, 214, 160, 0.5); /* primary 50% */
 
   /* ==== TEXT COLORS ==== */
-  --color-title: var(--secondary-800); /* Main headings on light surfaces */
-  --color-subtitle: var(--secondary-700); /* Section subtitles, small headers */
-  --color-text: var(--neutral-700); /* Body text on light backgrounds */
-  --color-text-soft: var(--neutral-600); /* Softer body or secondary copy */
-  --color-text-muted: var(--neutral-500); /* Metadata, helper text, disabled labels */
-  --color-inverse-text: var(--neutral-0); /* Text on dark backgrounds */
+  --color-title: var(--secondary-500);
+  --color-subtitle: var(--secondary-400);
+  --color-text: var(--neutral-700);
+  --color-text-soft: var(--neutral-600);
+  --color-text-muted: var(--neutral-500);
+  --color-inverse-text: var(--white); /* always white */
 
   /* ==== STRUCTURAL / DARK SECTIONS ==== */
-  --color-header-bg: var(--secondary-400); /* Navigation / hero dark background */
-  --color-footer-bg: var(--secondary-300); /* Footer dark background */
-  --color-section-dark: var(--secondary-300); /* Reusable dark band background */
-  --color-section-dark-alt: var(--secondary-400); /* Alternate dark variation */
-  --color-heading-on-dark: var(--neutral-0); /* Headings on dark sections */
-  --color-text-on-dark: rgba(255, 255, 255, 0.85); /* Paragraph text on dark bg */
-  --color-icons-on-dark: rgba(255, 255, 255, 0.65); /* Footer/social icons */
-
-  /* ==== STATUS / FEEDBACK ==== */
-  --color-info: #6290c3; /* Informational highlights (blue) */
-  --color-warning: #f2e86d; /* Warning/yellow messages */
-  --color-danger: #ef476f; /* Error/red highlights */
-  --color-success: var(--primary-500); /* Success messages, confirmations */
+  --color-header-bg: var(--secondary-600);
+  --color-footer-bg: var(--secondary-600);
+  --color-section-dark: var(--secondary-600);
+  --color-section-dark-alt: var(--primary-600);
+  --color-heading-on-dark: var(--white); /* always white */
+  --color-text-on-dark: rgba(255, 255, 255, 0.85); /* always white 85% */
+  --color-icons-on-dark: rgba(255, 255, 255, 0.65); /* always white 65% */
 
   /* ==== BORDERS & DIVIDERS ==== */
-  --color-border-light: var(--neutral-200); /* Light keylines between cards */
-  --color-border-medium: var(--neutral-300); /* Regular card borders */
-  --color-border-dark: var(--neutral-700); /* Emphasis borders on light backgrounds */
+  --color-border-light: var(--neutral-200);
+  --color-border-medium: var(--neutral-400);
+  --color-border-dark: var(--neutral-700);
+
+  /* ==== STATUS / FEEDBACK ==== */
+  --color-info: var(--blue-500);
+  --color-warning: var(--yellow-500);
+  --color-danger: var(--red-500);
+  --color-success: var(--green-500);
+
+  /* ==== UTILITY TONES ==== */
+  --color-shadow: rgba(0, 0, 0, 0.06); /* always black 6% */
+  --color-disabled-bg: var(--neutral-100);
+  --color-disabled-text: var(--neutral-500);
 
   /* ------------------------------------------------------
    OTHER ASSIGNMENTS
    ------------------------------------------------------ */
-
-  /* ==== UTILITY TONES ==== */
-
-  --color-shadow: var(--shadow-soft);
-  --color-disabled-bg: var(--neutral-125);
-  --color-disabled-text: var(--neutral-500);
-
-  /* Shadows, borders, radius */
-  --radius-sm: 0.4rem;
-  --radius-md: 0.6rem;
-  --radius-lg: 1rem;
-  --shadow-soft: 0 0.4rem 2rem rgba(0, 0, 0, 0.06);
 
   /* ==== TYPOGRAPHY ==== */
 
@@ -142,17 +147,17 @@
   --font-body: "Work Sans", sans-serif;
 
   /* Font sizes (desktop baseline, 10px = 1rem) */
-  --fs-hero: 6rem; /* 60px */
-  --fs-h1: 5rem; /* 50px */
-  --fs-h2: 4rem; /* 40px */
-  --fs-h3: 3rem; /* 30px */
-  --fs-h4: 2.4rem; /* 24px */
-  --fs-h5: 2rem; /* 20px */
-  --fs-h6: 1.8rem; /* 18px */
-  --fs-body-lg: 1.8rem; /* 18px */
-  --fs-body: 1.6rem; /* 16px */
-  --fs-body-sm: 1.5rem; /* 15px */
-  --fs-body-xs: 1.3rem; /* 13px */
+  --fs-hero: 6rem;
+  --fs-h1: 5rem;
+  --fs-h2: 4rem;
+  --fs-h3: 3rem;
+  --fs-h4: 2.4rem;
+  --fs-h5: 2rem;
+  --fs-h6: 1.8rem;
+  --fs-body-lg: 1.8rem;
+  --fs-body: 1.6rem;
+  --fs-body-sm: 1.5rem;
+  --fs-body-xs: 1.3rem;
 
   /* Line heights */
   --lh-display: 1.3; /* hero, h1, h2 */
@@ -167,6 +172,12 @@
   --space-50: 5rem;
   --space-75: 7.5rem;
   --space-100: 10rem;
+
+  /* Shadows, borders, radius */
+  --radius-sm: 0.4rem;
+  --radius-md: 0.6rem;
+  --radius-lg: 1rem;
+  --shadow: 0 0.4rem 2rem var(--color-shadow);
 }
 
 /* ------------------------------------------------------
@@ -175,12 +186,13 @@
 html {
   font-size: 62.5%;
 } /* 10px baseline */
+
 body {
   font-family: var(--font-body);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   color: var(--color-text);
-  background-color: var(--color-background);
+  background: var(--color-background);
   margin: 0;
   -webkit-font-smoothing: antialiased;
 }
@@ -229,15 +241,6 @@ li {
   margin-bottom: var(--space-20);
 }
 
-/* Hero title sample class */
-.hero-title {
-  font-family: var(--font-title);
-  font-size: var(--fs-hero);
-  line-height: var(--lh-display);
-  color: var(--color-title);
-  margin-bottom: var(--space-20);
-}
-
 /* Buttons / Links */
 button,
 .btn {
@@ -253,34 +256,23 @@ button,
 }
 button:hover,
 .btn:hover {
-  background-color: var(--color-accent);
+  background-color: var(--color-primary-dark);
+}
+button:active,
+.btn:active {
+  background-color: var(--color-primary-darker);
 }
 
 /* Default link styling on light backgrounds */
 a {
-  color: var(--ui-link);
+  color: var(--primary-dark);
   text-decoration: none;
   transition: color 0.2s ease-in-out;
 }
 
 a:hover,
 a:focus {
-  color: var(--ui-link-hover);
-}
-
-/* Links appearing on dark backgrounds (footer, hero, nav, etc.) */
-.section.alt a,
-.site-footer a,
-.hero a,
-.site-nav a {
-  color: var(--ui-link-on-dark);
-}
-
-.section.alt a:hover,
-.site-footer a:hover,
-.hero a:hover,
-.site-nav a:hover {
-  color: var(--ui-link-on-dark-hover);
+  color: var(--primary-darker);
 }
 
 /* ------------------------------------------------------
@@ -289,19 +281,19 @@ a:focus {
 
 :root {
   /* Navigation + footer */
-  --ui-nav-bg: var(--color-header-bg); /* top nav background */
-  --ui-footer-bg: var(--color-footer-bg); /* footer background */
+  --ui-nav-bg: var(--color-header-bg);
+  --ui-footer-bg: var(--color-footer-bg);
   --ui-text-on-nav: var(--color-inverse-text);
   --ui-text-on-footer: var(--color-text-on-dark);
 
-  /* Hero / intro section */
-  --ui-hero-bg: var(--color-primary); /* bright brand background for hero */
-  --ui-hero-text: var(--color-inverse-text); /* white text on hero */
-  --ui-hero-accent: var(--color-primary-bright);
+  /* Hero section */
+  --ui-hero-bg: var(--color-background);
+  --ui-hero-text: var(--color-title);
+  --ui-hero-accent: var(--color-primary);
 
   /* Section backgrounds */
-  --ui-section-bg: var(--color-background); /* default section (white) */
-  --ui-alt-section-bg: var(--color-surface); /* light gray alternating section */
+  --ui-section-bg: var(--color-background);
+  --ui-alt-section-bg: var(--color-surface);
 
   /* Panels / cards */
   --ui-panel-bg: var(--color-surface);
@@ -310,12 +302,23 @@ a:focus {
 
   /* Accent roles */
   --ui-accent: var(--color-primary);
-  --ui-accent-hover: var(--color-primary-hover);
+  --ui-accent-hover: var(--color-primary-dark);
 
   /* Alerts / statuses */
   --ui-info-bg: var(--color-info);
   --ui-warning-bg: var(--color-warning);
   --ui-danger-bg: var(--color-danger);
+  --ui-success-bg: var(--color-success);
+
+  --ui-info-text-on-light: var(--color-blue-600);
+  --ui-warning-text-on-light: var(--color-yellow-600);
+  --ui-danger-text-on-light: var(--color-red-600);
+  --ui-success-text-on-light: var(--color-green-600);
+
+  --ui-info-text-on-dark: var(--color-blue-400);
+  --ui-warning-text-on-dark: var(--color-yellow-400);
+  --ui-danger-text-on-dark: var(--color-red-400);
+  --ui-success-text-on-dark: var(--color-green-400);
 
   /* Text generalization */
   --ui-text: var(--color-text);
@@ -325,78 +328,165 @@ a:focus {
 
   /* Link colors */
   --ui-link: var(--color-primary);
-  --ui-link-hover: var(--color-primary-hover);
-  --ui-link-on-dark: rgba(255, 255, 255, 0.75);
-  --ui-link-on-dark-hover: var(--color-primary-bright);
+  --ui-link-hover: var(--color-primary-dark);
+  --ui-link-on-dark: var(--color-primary-light);
+  --ui-link-on-dark-hover: var(--color-primary-lighter);
 }
 
-/* -----------------------------------------------------
-   DYNAMIC UI ROLES (used by RecipeShuffle)
-   ----------------------------------------------------- */
+/* ======================================================
+   CREO FRAMEWORK COMPATIBILITY — GRID & CONTAINERS
+   ====================================================== */
 
-:root {
-  /* UI roles (initially mirror Creo default) */
-  --ui-background: var(--color-background);
-  --ui-text: var(--color-text);
-  --ui-accent: var(--color-primary);
-
-  /* Extended roles for richer composition */
-  --ui-nav-bg: var(--color-footer-bg);
-  --ui-hero-bg: var(--color-background);
-  --ui-section-bg: var(--color-surface);
-  --ui-alt-section-bg: var(--color-footer-bg);
-  --ui-footer-bg: var(--color-footer-bg);
+.container,
+.container-wide {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2.5rem; /* 25px side padding */
+  padding-right: 2.5rem;
+  box-sizing: border-box;
 }
+.container {
+  max-width: 165rem;
+} /* 1650px content area */
+.container-wide {
+  max-width: 170rem;
+} /* for hero overhang */
 
-/* Body + general text now use UI roles */
-body {
-  background-color: var(--ui-background);
-  color: var(--ui-text);
-}
+/* ----------------------------------------------------
+   GRID (12 columns, 50px gutters)
+   ---------------------------------------------------- */
 
-/* Headings can use accent if desired */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: var(--ui-accent);
-}
-
-/* Buttons and other interactive elements */
-.btn-primary {
-  background: var(--ui-accent);
-  color: var(--ui-background);
-  border: none;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.btn-primary:hover {
-  background: var(--color-accent);
-}
-
-/* ------------------------------------------------------
-   DEMO ELEMENTS / COLOR BLOCKS
-   ------------------------------------------------------ */
-.color-blocks {
+.row {
   display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin: 2rem 0;
-}
-.color-blocks div {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 0.4rem;
+  flex-wrap: wrap;
+  margin-left: -2.5rem; /* half gutter */
+  margin-right: -2.5rem;
 }
 
-.color-blocks div:nth-child(1) {
-  background: var(--color-primary);
+.row.center {
+  justify-content: center;
 }
-.color-blocks div:nth-child(2) {
-  background: var(--color-accent);
+.row.between {
+  justify-content: space-between;
 }
-.color-blocks div:nth-child(3) {
-  background: var(--color-footer-bg);
+.align-center {
+  align-items: center;
+}
+.right {
+  text-align: right;
+}
+
+[class^="col-"],
+[class*=" col-"] {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* Column widths */
+.col-12 {
+  width: 100%;
+}
+.col-11 {
+  width: 91.6667%;
+}
+.col-10 {
+  width: 83.3333%;
+}
+.col-9 {
+  width: 75%;
+}
+.col-8 {
+  width: 66.6667%;
+}
+.col-7 {
+  width: 58.3333%;
+}
+.col-6 {
+  width: 50%;
+}
+.col-5 {
+  width: 41.6667%;
+}
+.col-4 {
+  width: 33.3333%;
+}
+.col-3 {
+  width: 25%;
+}
+.col-2 {
+  width: 16.6667%;
+}
+.col-1 {
+  width: 8.3333%;
+}
+
+/* Responsive columns */
+@media (min-width: 768px) {
+  .col-md-12 {
+    width: 100%;
+  }
+  .col-md-11 {
+    width: 91.6667%;
+  }
+  .col-md-10 {
+    width: 83.3333%;
+  }
+  .col-md-9 {
+    width: 75%;
+  }
+  .col-md-8 {
+    width: 66.6667%;
+  }
+  .col-md-7 {
+    width: 58.3333%;
+  }
+  .col-md-6 {
+    width: 50%;
+  }
+  .col-md-5 {
+    width: 41.6667%;
+  }
+  .col-md-4 {
+    width: 33.3333%;
+  }
+  .col-md-3 {
+    width: 25%;
+  }
+  .col-md-2 {
+    width: 16.6667%;
+  }
+  .col-md-1 {
+    width: 8.3333%;
+  }
+}
+
+/* ======================================================
+   CREO FRAMEWORK COMPATIBILITY — TYPOGRAPHY
+   ====================================================== */
+h1 {
+  font-size: clamp(3.6rem, 2.4rem + 2vw, 4.95rem);
+  line-height: 1.25;
+}
+h2 {
+  font-size: clamp(2.8rem, 2rem + 1.2vw, 3.6rem);
+  line-height: 1.3;
+}
+h3 {
+  font-size: clamp(2.4rem, 1.8rem + 1vw, 3.15rem);
+  line-height: 1.35;
+}
+
+/* ======================================================
+   CREO FRAMEWORK COMPATIBILITY — SPACING HELPERS
+   ====================================================== */
+.section {
+  padding: calc(2rem + 2vw) 0;
+}
+@media (min-width: 1200px) {
+  .section {
+    padding: 7.5rem 0;
+  }
 }

@@ -5,7 +5,10 @@
       <div class="container">
         <div class="row align-center between">
           <div class="col-6 col-md-4">
-            <a class="brand" href="#">Creo Websolutions</a>
+            <div class="logo">
+              <img src="../src/assets/img/Logo__wordmark.svg" alt="Creo beeldmerk" />
+              <!-- <a class="logo" href="#">Creo Websolutions</a> -->
+            </div>
           </div>
         </div>
       </div>
@@ -164,164 +167,40 @@ export default {
 </script>
 
 <style>
-/* ----------------------------------------------------
-   BASE LAYOUT
-   ---------------------------------------------------- */
-html {
-  font-size: 62.5%;
-} /* 10px = 1rem baseline */
-
-body {
-  margin: 0;
-  background: var(--ui-background);
-  color: var(--ui-text);
-  font-family: var(--font-body);
-}
+/* 
+------------------------------------------------------
+LAYOUT ELEMENTS — use dynamic UI roles 
+Stylings for components specific to the app shell
+------------------------------------------------------
+*/
 
 /* ----------------------------------------------------
-   CONTAINERS
-   ---------------------------------------------------- */
-.container,
-.container-wide {
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 2.5rem; /* 25px side padding */
-  padding-right: 2.5rem;
-  box-sizing: border-box;
-}
-.container {
-  max-width: 165rem;
-} /* 1650px content area */
-.container-wide {
-  max-width: 170rem;
-} /* for hero overhang */
-
-/* ----------------------------------------------------
-   GRID (12 columns, 50px gutters)
-   ---------------------------------------------------- */
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  margin-left: -2.5rem; /* half gutter */
-  margin-right: -2.5rem;
-}
-.row.center {
-  justify-content: center;
-}
-.row.between {
-  justify-content: space-between;
-}
-.align-center {
-  align-items: center;
-}
-.right {
-  text-align: right;
-}
-
-[class^="col-"],
-[class*=" col-"] {
-  padding-left: 2.5rem;
-  padding-right: 2.5rem;
-  box-sizing: border-box;
-  width: 100%;
-}
-
-/* Column widths */
-.col-12 {
-  width: 100%;
-}
-.col-11 {
-  width: 91.6667%;
-}
-.col-10 {
-  width: 83.3333%;
-}
-.col-9 {
-  width: 75%;
-}
-.col-8 {
-  width: 66.6667%;
-}
-.col-7 {
-  width: 58.3333%;
-}
-.col-6 {
-  width: 50%;
-}
-.col-5 {
-  width: 41.6667%;
-}
-.col-4 {
-  width: 33.3333%;
-}
-.col-3 {
-  width: 25%;
-}
-.col-2 {
-  width: 16.6667%;
-}
-.col-1 {
-  width: 8.3333%;
-}
-
-/* Responsive columns */
-@media (min-width: 768px) {
-  .col-md-12 {
-    width: 100%;
-  }
-  .col-md-11 {
-    width: 91.6667%;
-  }
-  .col-md-10 {
-    width: 83.3333%;
-  }
-  .col-md-9 {
-    width: 75%;
-  }
-  .col-md-8 {
-    width: 66.6667%;
-  }
-  .col-md-7 {
-    width: 58.3333%;
-  }
-  .col-md-6 {
-    width: 50%;
-  }
-  .col-md-5 {
-    width: 41.6667%;
-  }
-  .col-md-4 {
-    width: 33.3333%;
-  }
-  .col-md-3 {
-    width: 25%;
-  }
-  .col-md-2 {
-    width: 16.6667%;
-  }
-  .col-md-1 {
-    width: 8.3333%;
-  }
-}
-
-/* ----------------------------------------------------
-   NAVIGATION
+   NAV & FOOTER
    ---------------------------------------------------- */
 .site-nav {
   background: var(--ui-nav-bg);
   color: var(--ui-text-on-nav);
   padding: var(--space-20) 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
-.brand {
+.site-nav a:hover {
+  color: var(--ui-nav-hover);
+}
+.site-footer {
+  background: var(--ui-footer-bg);
+  color: var(--ui-text-on-footer);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Logo svg color */
+.logo a {
   font-family: var(--font-title);
   font-weight: 700;
   font-size: var(--fs-h4);
-  text-decoration: none;
   color: var(--ui-text-on-nav);
 }
-.brand:hover {
-  color: var(--ui-nav-hover);
+.logo img {
+  height: 6rem;
 }
 
 /* ----------------------------------------------------
@@ -331,6 +210,7 @@ body {
   background: var(--ui-hero-bg);
   color: var(--ui-hero-text);
   padding: var(--space-100) 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 .hero-title {
   font-family: var(--font-title);
@@ -355,10 +235,12 @@ body {
   padding: var(--space-75) 0;
   background: var(--ui-section-bg);
   color: var(--ui-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 .section.alt {
   background: var(--ui-alt-section-bg);
   color: var(--ui-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 .section h2 {
   font-family: var(--font-title);
@@ -373,17 +255,41 @@ body {
   margin: 0 auto;
 }
 
+/* Section titles */
+.section h2,
+.section h3,
+.section h4 {
+  color: var(--ui-heading);
+}
+
+/* Links appearing on dark backgrounds (footer, hero, nav, etc.) */
+.section.alt a,
+.site-footer a,
+.hero a,
+.site-nav a {
+  color: var(--color-primary-light);
+}
+
+.section.alt a:hover,
+.site-footer a:hover,
+.hero a:hover,
+.site-nav a:hover {
+  color: var(--color-primary-lighter);
+}
+
 /* ----------------------------------------------------
    GALLERY
    ---------------------------------------------------- */
 .card {
   background: var(--ui-panel-bg);
   color: var(--ui-panel-text);
+  border: 0.1rem solid var(--ui-panel-border);
   border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--color-shadow);
   border: 0.1rem solid var(--ui-panel-border);
   margin-bottom: var(--space-50);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 .section.alt .card {
   background: var(--ui-background);
@@ -433,71 +339,6 @@ body {
   background: var(--ui-accent-hover);
 }
 
-/* ------------------------------------------------------
-   LAYOUT ELEMENTS — use dynamic UI roles (finalized)
-   ------------------------------------------------------ */
-
-/* Navigation & Footer */
-.site-nav {
-  background: var(--ui-nav-bg);
-  color: var(--ui-text-on-nav);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-.site-nav a:hover,
-.brand:hover {
-  color: var(--ui-nav-hover);
-}
-.site-footer {
-  background: var(--ui-footer-bg);
-  color: var(--ui-text-on-footer);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-.brand {
-  color: var(--ui-text-on-nav);
-}
-
-/* Hero */
-.hero {
-  background: var(--ui-hero-bg);
-  color: var(--ui-hero-text);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-.hero-title,
-.hero-subtitle {
-  color: var(--ui-hero-text);
-}
-
-/* Sections */
-.section {
-  background: var(--ui-section-bg);
-  color: var(--ui-text);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-.section h2,
-.section h3,
-.section h4 {
-  color: var(--ui-heading);
-}
-.section.alt {
-  background: var(--ui-alt-section-bg);
-  color: var(--ui-text);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Cards / Panels */
-.card {
-  background: var(--ui-panel-bg);
-  color: var(--ui-panel-text);
-  border: 0.1rem solid var(--ui-panel-border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-soft);
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
-}
-.section.alt .card {
-  background: var(--ui-background);
-  color: var(--ui-heading);
-}
-
 /* ----------------------------------------------------
    APP LAYOUT WITHIN HERO
    ---------------------------------------------------- */
@@ -511,13 +352,14 @@ body {
   color: var(--color-inverse-text);
   border-radius: var(--radius-md);
   padding: var(--space-20);
-  /* box-shadow: var(--shadow-soft); */
+  /* box-shadow: var(--color-shadow); */
 }
 
 .app__sidebar-title {
   font-size: var(--fs-h5);
   font-family: var(--font-title);
   margin-bottom: var(--space-20);
+  color: var(--color-inverse-text);
 }
 
 .app__sidebar-block {
@@ -540,7 +382,7 @@ body {
   border: 0.1rem solid var(--neutral-200);
   border-radius: var(--radius-md);
   padding: var(--space-30);
-  /* box-shadow: var(--shadow-soft); */
+  /* box-shadow: var(--color-shadow); */
   display: flex;
   align-items: center;
   justify-content: center;

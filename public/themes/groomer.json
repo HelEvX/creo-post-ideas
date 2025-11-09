@@ -4,76 +4,41 @@
   "font-family": "Nunito, sans-serif",
 
   "color-primary": "#385f3b",
-  "color-primary-hover": "#1c2f1d",
-  "color-primary-bright": "#9baf9d",
-  "color-accent": "#b8c23b",
-  "color-background": "#ffffff",
+  "color-primary-dark": "#1c2f1d",
+  "color-primary-darker": "#090f09",
+  "color-primary-light": "#9baf9d",
+  "color-primary-lighter": "#cdd7ce",
+
+  "color-secondary": "#ced574",
+  "color-secondary-dark": "#b0b664",
+  "color-secondary-darker": "#8f9552",
+  "color-secondary-light": "#e6eab9",
+  "color-secondary-lighter": "#",
+
   "color-surface": "#f5f5f5",
   "color-panel": "#e2e2e2",
-  "color-title": "#2f2f2f",
-  "color-text": "#3f3f3f",
-  "color-text-muted": "#6f6f6f",
-  "color-inverse-text": "#ffffff",
-  "color-header-bg": "rgba(56,95,59,0.8)",
-  "color-footer-bg": "rgba(56,95,59,0.8)",
+  "color-overlay": "rgba(56, 95, 59, 0.5)",
+
+  "color-title": "#385f3b",
+  "color-subtitle": "#385f3b",
+  "color-text": "#6f6f6f",
+  "color-text-soft": "#828282",
+  "color-text-muted": "#969696",
+
+  "color-header-bg": "#385f3b",
+  "color-footer-bg": "#385f3b",
+  "color-section-dark": "#385f3b",
+  "color-section-dark-alt": "#1c2f1d",
+
   "color-border-light": "#cfcfcf",
-  "color-border-medium": "#bcbcbc",
-  "color-border-dark": "#494949",
-  "color-info": "#22aed1",
-  "color-warning": "#f3b61f",
-  "color-danger": "#e54b4b",
+  "color-border-medium": "#a8a8a8",
+  "color-border-dark": "#6f6f6f",
+
+  "color-info": "#17778f",
+  "color-warning": "#bb880a",
+  "color-danger": "#c71d1d",
   "color-success": "#385f3b",
 
-  "palette": {
-    "primary": [
-      "#090f09",
-      "#1c2f1d",
-      "#385f3b",
-      "rgba(56,95,59,0.25)",
-      "rgba(56,95,59,0.5)",
-      "rgba(56,95,59,0.75)",
-      "rgba(56,95,59,0.8)",
-      "rgba(56,95,59,0.85)",
-      "#9baf9d",
-      "rgba(205,215,206,0.5)"
-    ],
-    "secondary": ["#656931", "#939b2f", "#b8c23b", "#b0b664", "#ced574", "#606437", "#868c42", "#8f9552"],
-    "tertiary": ["#4b2c1d", "#70422b", "#a76340", "rgba(167,99,64,0.5)", "#ff934f"],
-    "neutral": [
-      "#2f2f2f",
-      "#3f3f3f",
-      "#494949",
-      "#6f6f6f",
-      "#828282",
-      "#969696",
-      "#a8a8a8",
-      "#b5b5b5",
-      "#bcbcbc",
-      "#cfcfcf",
-      "#e2e2e2",
-      "#f5f5f5",
-      "#ffffff"
-    ],
-    "utility": {
-      "warning": ["#8b6507", "#bb880a", "#f3b61f"],
-      "info": ["#105363", "#17778f", "#22aed1"],
-      "danger": ["#9a1616", "#c71d1d", "#e54b4b"]
-    }
-  },
-
-  "notes": {
-    "landing_hero": "Verify hero uses primary solid, not secondary.",
-    "footer": "Check if footer should be slightly lighter; compare to live site.",
-    "links": "Confirm link color on dark bands ~ 75% white."
-  },
-
-  "preview_assignments": {
-    "hero-bg": "color-primary",
-    "nav-bg": "color-header-bg",
-    "footer-bg": "color-footer-bg",
-    "button": "color-primary",
-    "accent": "color-accent",
-    "text": "color-text",
-    "title": "color-title"
-  }
+  "color-disabled-bg": "#e2e2e2",
+  "color-disabled-text": "#969696"
 }
