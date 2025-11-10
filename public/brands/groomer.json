@@ -13,17 +13,18 @@
   "color-secondary-dark": "#b0b664",
   "color-secondary-darker": "#8f9552",
   "color-secondary-light": "#e6eab9",
-  "color-secondary-lighter": "#",
+  "color-secondary-lighter": "#F4F6E0",
 
   "color-surface": "#f5f5f5",
   "color-panel": "#e2e2e2",
+  "color-panel-alt": "#828282",
   "color-overlay": "rgba(56, 95, 59, 0.5)",
 
   "color-title": "#385f3b",
+  "color-title-alt": "#1c2f1d",
   "color-subtitle": "#385f3b",
-  "color-text": "#6f6f6f",
+  "color-text": "#2f2f2f",
   "color-text-soft": "#828282",
-  "color-text-muted": "#969696",
 
   "color-header-bg": "#385f3b",
   "color-footer-bg": "#385f3b",
@@ -39,6 +40,6 @@
   "color-danger": "#c71d1d",
   "color-success": "#385f3b",
 
-  "color-disabled-bg": "#e2e2e2",
+  "color-disabled-bg": "#969696",
   "color-disabled-text": "#969696"
 }

@@ -146,7 +146,7 @@ Utility classes:
 6. Notes for Developers
 
 - All colors and typography are managed via CSS variables (global.css). Avoid hardcoding hex values; use var(--token) instead.
-- Custom themes for clients override the same tokens dynamically via ThemeSwitcher.vue.
+- Custom themes for clients override the same tokens dynamically via BrandTokens.vue.
 - Responsive scaling for smaller viewports is handled automatically by the Creo framework (not yet implemented in this MVP).
 - Default port: 8081 (defined in vite.config.js).
 - Baseline: 10px = 1rem grid.

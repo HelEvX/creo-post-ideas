@@ -39,7 +39,7 @@ This tool previews client-specific brand themes in a browser-based interface, al
 
 - **Dynamic theming** — load and apply color + font variables from JSON files
 - **Default Creo styling** — uses the agency’s real brand palette and typography
-- **ThemeSwitcher component** — live updates using CSS custom properties
+- **RecipeShuffle component** — live updates using CSS custom properties
 - **Bootstrap-inspired layout** — 12-column grid, 1650px container, 50px gutters
 - **Responsive base** — ready for desktop-first styling, mobile next
 - **Ready for expansion** — supports future features like post mockups, brand kit exports, or client-specific links

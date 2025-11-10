@@ -1,134 +1,238 @@
+<script setup>
+console.log("RecipeShuffle script loaded");
+
+import { ref, watch, computed } from "vue";
+import { recipes } from "../data/recipes.js";
+import { getContrastRatio } from "../utils/colorBlender.js";
+
+// Props from BrandTokens or App.vue
+const props = defineProps({
+  brandTokens: { type: Object, required: true },
+});
+
+// State
+const index = ref(0);
+const total = recipes.length;
+const activeRecipe = computed(() => recipes[index.value]);
+
+// ---------------------------------------------
+// CONTRAST CHECKER
+// ---------------------------------------------
+
+// 1. Declare reactive arrays
+const contrastPairs = ref([
+  // Primary text on main backgrounds
+  { id: "text-section", label: "Body Text vs Section Background", fg: "--ui-text", bg: "--ui-section-bg" },
+  { id: "text-alt-section", label: "Body Text vs Alt Section Background", fg: "--ui-text", bg: "--ui-alt-section-bg" },
+  { id: "text-panel", label: "Body Text vs Panel Background", fg: "--ui-text", bg: "--ui-panel-bg" },
+
+  // Headings and captions
+  { id: "heading-section", label: "Heading vs Section Background", fg: "--ui-heading", bg: "--ui-section-bg" },
+  {
+    id: "heading-alt-section",
+    label: "Heading vs Alt Section Background",
+    fg: "--ui-heading",
+    bg: "--ui-alt-section-bg",
+  },
+  { id: "caption-section", label: "Caption vs Section Background", fg: "--ui-caption", bg: "--ui-section-bg" },
+
+  // Accent and link colors
+  { id: "accent-section", label: "Accent vs Section Background", fg: "--ui-accent", bg: "--ui-section-bg" },
+  {
+    id: "accent-hover-section",
+    label: "Accent Hover vs Section Background",
+    fg: "--ui-accent-hover",
+    bg: "--ui-section-bg",
+  },
+  { id: "link-section", label: "Link vs Section Background", fg: "--ui-link", bg: "--ui-section-bg" },
+  { id: "link-hover-section", label: "Link Hover vs Section Background", fg: "--ui-link-hover", bg: "--ui-section-bg" },
+
+  // Links on dark backgrounds (nav, hero, footer)
+  { id: "link-dark", label: "Link on Dark (Hero/Nav/Footer)", fg: "--ui-link-on-dark", bg: "--ui-hero-bg" },
+  { id: "link-dark-hover", label: "Link on Dark Hover", fg: "--ui-link-on-dark-hover", bg: "--ui-hero-bg" },
+
+  // Soft/inverse use cases (for muted or inverted UI zones)
+  { id: "soft-section", label: "Soft Text vs Section Background", fg: "--ui-soft", bg: "--ui-section-bg" },
+  { id: "soft-alt-section", label: "Soft Text vs Alt Section Background", fg: "--ui-soft", bg: "--ui-alt-section-bg" },
+]);
+
+const contrastResults = ref([]);
+
+// 2. Utility to read CSS variables
+function getCSSVar(varName) {
+  return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+}
+
+// 3. Compute contrast between two variables
+function evaluateContrast(fg, bg) {
+  const fgColor = getCSSVar(fg);
+  const bgColor = getCSSVar(bg);
+  if (!fgColor || !bgColor) return null;
+
+  const ratio = getContrastRatio(fgColor, bgColor);
+  let level = "Fail";
+  if (ratio >= 7) level = "AAA";
+  else if (ratio >= 4.5) level = "AA";
+  else if (ratio >= 3) level = "AA Large";
+
+  return { ratio: ratio.toFixed(2), level };
+}
+
+// 4. Update table results
+function updateContrastChecks() {
+  const results = contrastPairs.value
+    .map((pair) => {
+      const res = evaluateContrast(pair.fg, pair.bg);
+      if (!res) return null; // skip if contrast couldn't be computed
+      return {
+        id: pair.id,
+        label: pair.label,
+        ...res,
+      };
+    })
+    .filter(Boolean); // remove nulls
+  contrastResults.value = results;
+
+  // --- Optional grouped debug log ---
+  console.group("Recipe Shuffle Update");
+  console.log("Active recipe:", activeRecipe.value.title);
+  console.table(contrastResults.value);
+  console.groupEnd();
+}
+
+// 5. React to recipe index changes (ensure 'index' is declared before this watch)
+watch(index, () => updateContrastChecks(), { immediate: true });
+
+// ---------------------------------------------
+// RECIPE NAVIGATION & BRAND WATCH
+// ---------------------------------------------
+
+// Apply all roles from the current recipe to :root
+function applyActiveRecipe() {
+  const root = document.documentElement.style;
+  const roles = activeRecipe.value.roles;
+
+  for (const [varName, value] of Object.entries(roles)) {
+    root.setProperty(varName, value);
+  }
+}
+
+// Navigation
+function nextRecipe() {
+  index.value = (index.value + 1) % total;
+  applyActiveRecipe();
+  updateContrastChecks();
+}
+function prevRecipe() {
+  index.value = (index.value - 1 + total) % total;
+  applyActiveRecipe();
+  updateContrastChecks();
+}
+
+// Auto apply first recipe + whenever brand changes
+watch(
+  () => props.brandTokens,
+  () => {
+    applyActiveRecipe();
+    updateContrastChecks();
+  },
+  { immediate: true }
+);
+</script>
+
 <template>
   <div class="recipe-shuffle">
-    <div class="current-recipe">
-      <h3>{{ currentRecipe.title }}</h3>
-      <p class="description">{{ currentRecipe.description }}</p>
-      <div class="contrast-status">
-        <span :class="contrastClass">Contrast: {{ contrastLabel }}</span>
-      </div>
+    <div class="controls">
+      <button @click="prevRecipe" aria-label="Previous recipe">‹</button>
+      <button @click="nextRecipe" aria-label="Next recipe">›</button>
+      <span class="recipe-title">{{ activeRecipe.title }}</span>
     </div>
 
-    <button class="btn-primary" @click="shuffleRecipe">Shuffle Style</button>
+    <p class="recipe-desc">{{ activeRecipe.description }}</p>
+
+    <div class="contrast-check">
+      <h4>Contrast Evaluation</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>Pair</th>
+            <th>Ratio</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in contrastResults" :key="item.id">
+            <td>{{ item.label }}</td>
+            <td>{{ item.ratio }}</td>
+            <td :class="item.level ? item.level.toLowerCase().replace(' ', '-') : ''">
+              {{ item.level || "—" }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
-<script>
-import { ref } from "vue";
-import { recipes } from "../data/recipes";
-import { applyRecipe } from "../utils/applyRecipe";
-
-export default {
-  name: "RecipeShuffle",
-  setup() {
-    const currentRecipe = ref(recipes[0]);
-
-    const shuffleRecipe = () => {
-      const randomIndex = Math.floor(Math.random() * recipes.length);
-      currentRecipe.value = recipes[randomIndex];
-      applyRecipe(currentRecipe.value);
-      checkContrast();
-    };
-
-    // --- Contrast check logic ---
-    const contrastLabel = ref("");
-    const contrastClass = ref("");
-
-    const checkContrast = () => {
-      const bgColor = getComputedStyle(document.documentElement).getPropertyValue("--ui-background").trim();
-      const textColor = getComputedStyle(document.documentElement).getPropertyValue("--ui-text").trim();
-
-      const ratio = getContrastRatio(hexFromVar(bgColor), hexFromVar(textColor));
-
-      if (ratio >= 4.5) {
-        contrastLabel.value = "Readable";
-        contrastClass.value = "contrast-good";
-      } else if (ratio >= 3) {
-        contrastLabel.value = "Moderate";
-        contrastClass.value = "contrast-medium";
-      } else {
-        contrastLabel.value = "Low";
-        contrastClass.value = "contrast-poor";
-      }
-    };
-
-    // Convert var(--color) → hex if possible
-    const hexFromVar = (value) => {
-      const temp = document.createElement("div");
-      temp.style.color = value;
-      document.body.appendChild(temp);
-      const rgb = getComputedStyle(temp).color;
-      document.body.removeChild(temp);
-      const match = rgb.match(/\d+/g);
-      if (!match) return "#000000";
-      const [r, g, b] = match.map(Number);
-      return (
-        "#" +
-        [r, g, b]
-          .map((x) => {
-            const hex = x.toString(16);
-            return hex.length === 1 ? "0" + hex : hex;
-          })
-          .join("")
-      );
-    };
-
-    // Luminance + contrast ratio calculation
-    const luminance = (hex) => {
-      const rgb = hex
-        .replace("#", "")
-        .match(/.{2}/g)
-        .map((x) => parseInt(x, 16) / 255);
-      const a = rgb.map((v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
-      return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
-    };
-
-    const getContrastRatio = (hex1, hex2) => {
-      const L1 = luminance(hex1);
-      const L2 = luminance(hex2);
-      return (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
-    };
-
-    // Apply initial recipe
-    applyRecipe(currentRecipe.value);
-    checkContrast();
-
-    return { currentRecipe, shuffleRecipe, contrastLabel, contrastClass };
-  },
-};
-</script>
-
 <style scoped>
 .recipe-shuffle {
-  margin-top: 4rem;
-  text-align: center;
+  border: var(--ui-panel-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-20);
+  background: var(--ui-panel-bg);
+  color: var(--ui-text);
+  max-width: 480px;
 }
-.current-recipe {
-  margin-bottom: 2rem;
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: var(--space-10);
 }
-.description {
-  font-size: 1.6rem;
+.recipe-title {
+  font-weight: 600;
+  font-size: 1.4rem;
+}
+.recipe-desc {
+  font-size: 1.3rem;
   opacity: 0.8;
+  margin-bottom: var(--space-20);
 }
-
-.contrast-good {
-  color: var(--color-success);
+button {
+  background: var(--ui-accent);
+  color: var(--ui-inverse);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+  transition: var(--transition-default);
 }
-
-.contrast-medium {
-  color: var(--color-warning);
+button:hover {
+  background: var(--ui-accent-hover);
 }
-
-.contrast-poor {
-  color: var(--color-danger);
+.contrast-check {
+  margin-top: var(--space-20);
 }
-
-.contrast-good:hover {
-  color: color-mix(in srgb, var(--color-success) 80%, #000);
+.contrast-check table {
+  width: 100%;
+  border-collapse: collapse;
 }
-.contrast-medium:hover {
-  color: color-mix(in srgb, var(--color-warning) 80%, #000);
+.contrast-check th,
+.contrast-check td {
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border-light);
 }
-.contrast-poor:hover {
-  color: color-mix(in srgb, var(--color-danger) 80%, #000);
+.contrast-check td.aaa {
+  color: #0a7d28;
+}
+.contrast-check td.aa {
+  color: #4a9d26;
+}
+.contrast-check td.aa-large {
+  color: #d19a0b;
+}
+.contrast-check td.fail {
+  color: #d73c2c;
 }
 </style>

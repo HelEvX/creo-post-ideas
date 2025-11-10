@@ -16,7 +16,4 @@ export function applyRecipe(recipe) {
   if (recipe.typography) {
     root.style.setProperty("--ui-typography", recipe.typography);
   }
-  if (recipe.layout) {
-    root.style.setProperty("--ui-layout", recipe.layout);
-  }
 }
