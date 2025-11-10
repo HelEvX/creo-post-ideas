@@ -111,9 +111,18 @@ watch(index, () => updateContrastChecks(), { immediate: true });
 function applyActiveRecipe() {
   const root = document.documentElement.style;
   const roles = activeRecipe.value.roles;
+  const recipe = activeRecipe.value;
 
+  // Apply color roles
   for (const [varName, value] of Object.entries(roles)) {
     root.setProperty(varName, value);
+  }
+
+  // Apply optional font weights
+  if (recipe.fontStyle) {
+    for (const [varName, value] of Object.entries(recipe.fontStyle)) {
+      root.setProperty(varName, value);
+    }
   }
 }
 

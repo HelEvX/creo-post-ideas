@@ -1,7 +1,11 @@
 {
   "name": "Groomer",
   "meta": { "brand": "Groomer", "version": "1.0" },
-  "font-family": "Nunito, sans-serif",
+  "font-title": "Nunito, sans-serif",
+  "font-body": "Nunito, sans-serif",
+  "fonts": {
+    "import": ["https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap"]
+  },
 
   "color-primary": "#385f3b",
   "color-primary-dark": "#1c2f1d",

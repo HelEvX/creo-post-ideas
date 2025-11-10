@@ -16,65 +16,7 @@ export default {
     async applyBrand() {
       const root = document.documentElement;
 
-      // Reset to Creo base (global.css) if empty
-      // if (!this.selectedBrand) {
-      //   const semanticVars = [
-      //     "--color-primary",
-      //     "--color-primary-dark",
-      //     "--color-primary-darker",
-      //     "--color-primary-light",
-      //     "--color-primary-lighter",
-
-      //     "--color-secondary",
-      //     "--color-secondary-dark",
-      //     "--color-secondary-darker",
-      //     "--color-secondary-light",
-      //     "--color-secondary-lighter",
-
-      //     "--color-background",
-      //     "--color-surface",
-      //     "--color-panel",
-      //     "--color-panel-alt",
-      //     "--color-overlay",
-
-      //     "--color-title",
-      //     "--color-title-alt",
-      //     "--color-subtitle",
-      //     "--color-text",
-      //     "--color-text-soft",
-      //     "--color-text-faint",
-      //     "--color-text-muted",
-      //     "--color-text-inverse",
-
-      //     "--color-header-bg",
-      //     "--color-footer-bg",
-      //     "--color-section-dark",
-      //     "--color-section-dark-alt",
-
-      //     "--color-border-light",
-      //     "--color-border-medium",
-      //     "--color-border-dark",
-
-      //     "--color-info",
-      //     "--color-warning",
-      //     "--color-danger",
-      //     "--color-success",
-
-      //     "--color-shadow",
-      //     "--color-disabled-bg",
-      //     "--color-disabled-text",
-
-      //     "--font-title",
-      //     "--font-body",
-      //   ];
-
-      //   semanticVars.forEach((v) => root.style.removeProperty(v));
-      //   console.log("Brand reset to Creo default (global.css)");
-      //   this.$emit("picked", null); // notify parent
-      //   console.log("Emitted picked event:", { slug: this.selectedBrand, tokens: brand });
-      //   return;
-      // }
-
+      // 1. Reset to Creo default
       if (!this.selectedBrand) {
         root.removeAttribute("style");
         console.log("Brand reset to Creo default (global.css)");
@@ -82,10 +24,11 @@ export default {
         return;
       }
 
-      // Fetch and APPLY (keep existing working behavior)
+      // 2. Fetch brand JSON FIRST
       const res = await fetch(`/brands/${this.selectedBrand}.json`);
       const brand = await res.json();
 
+      // 3. Apply colors and semantic tokens
       Object.entries(brand).forEach(([key, value]) => {
         if (typeof value !== "string") return;
         const isSemantic =
@@ -95,7 +38,28 @@ export default {
         root.style.setProperty(cssVar, value);
       });
 
-      // ALSO emit so App.vue + RecipeShuffle can react
+      // 4. Apply fonts after colors
+      if (brand["font-title"]) {
+        root.style.setProperty("--font-title", brand["font-title"]);
+      }
+      if (brand["font-body"]) {
+        root.style.setProperty("--font-body", brand["font-body"]);
+      }
+
+      // 5. Inject @import if specified
+      if (brand.fonts && Array.isArray(brand.fonts.import)) {
+        brand.fonts.import.forEach((url) => {
+          if (!document.querySelector(`link[href="${url}"]`)) {
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = url;
+            document.head.appendChild(link);
+          }
+        });
+      }
+
+      // 6. Emit picked brand to parent (App.vue)
+      console.log("Brand applied:", this.selectedBrand, brand);
       this.$emit("picked", { slug: this.selectedBrand, tokens: brand });
     },
   },

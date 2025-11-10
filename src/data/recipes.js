@@ -13,6 +13,11 @@ export const recipes = [
     id: "classic-balance",
     title: "Classic Balance",
     description: "Neutral background with strong text contrast and subtle accent highlights.",
+    typography: "regular",
+    fontStyle: {
+      "--font-weight-title": 600,
+      "--font-weight-body": 400,
+    },
     roles: {
       "--ui-nav-bg": "var(--color-header-bg)",
       "--ui-footer-bg": "var(--color-footer-bg)",
@@ -43,7 +48,6 @@ export const recipes = [
       "--ui-link-on-dark": "var(--color-primary-light)",
       "--ui-link-on-dark-hover": "var(--color-primary-lighter)",
     },
-    typography: "regular",
   },
   {
     id: "accent-forward",

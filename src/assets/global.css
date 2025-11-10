@@ -145,6 +145,8 @@
 
   --font-title: "europa", "Work Sans", sans-serif;
   --font-body: "Work Sans", sans-serif;
+  --font-weight-title: 600;
+  --font-weight-body: 400;
 
   /* Font sizes (desktop baseline, 10px = 1rem) */
   --fs-hero: 6rem;
@@ -195,6 +197,7 @@ html {
 
 body {
   font-family: var(--font-body);
+  font-weight: var(--font-weight-body);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   color: var(--color-text);
@@ -226,18 +229,21 @@ h6 {
   font-weight: 600;
 }
 h1 {
+  font-weight: var(--font-weight-title);
   font-size: var(--fs-h1);
   /* font-size: clamp(3.6rem, 2.4rem + 2vw, 4.95rem); */
   line-height: var(--lh-display);
   margin: 0 0 var(--space-20);
 }
 h2 {
+  font-weight: var(--font-weight-title);
   font-size: var(--fs-h2);
   /* font-size: clamp(2.8rem, 2rem + 1.2vw, 3.6rem); */
   line-height: var(--lh-display);
   margin: 0 0 var(--space-30);
 }
 h3 {
+  font-weight: var(--font-weight-title);
   font-size: var(--fs-h3);
   /* font-size: clamp(2.4rem, 1.8rem + 1vw, 3.15rem); */
   line-height: var(--lh-heading);
