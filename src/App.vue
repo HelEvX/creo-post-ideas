@@ -21,6 +21,7 @@
           </div>
         </div>
       </div>
+      <!-- For master version (clients only see their own brands) -->
       <div class="container">
         <div class="row align-center">
           <div class="col-6 col-md-12">
@@ -34,13 +35,7 @@
     <section class="app__layout">
       <div class="container-full">
         <div class="row between">
-          <!-- SIDEBAR -->
-          <aside class="col-12 col-md-3 app__sidebar">
-            <h3 class="app__sidebar-title">Control Panel</h3>
-            <div class="app__sidebar-block" v-if="brandTokens">
-              <RecipeShuffle :brandTokens="brandTokens" :scales="scales" />
-            </div>
-          </aside>
+          <ControlsPanel :brandTokens="brandTokens" :scales="scales" @picked="onBrandPicked" />
 
           <!-- MAIN COLUMN -->
           <main class="col-12 col-md-9 app__main">
@@ -151,13 +146,13 @@
 </template>
 
 <script>
+import ControlsPanel from "./components/ControlsPanel.vue";
 import BrandPicker from "./components/BrandPicker.vue";
 import { buildBrandScales } from "./utils/colorBlender.js";
-import RecipeShuffle from "./components/RecipeShuffle.vue";
 
 export default {
   name: "App",
-  components: { BrandPicker, RecipeShuffle },
+  components: { BrandPicker, ControlsPanel },
 
   data() {
     return {
