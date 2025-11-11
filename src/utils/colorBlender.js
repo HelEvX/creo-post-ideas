@@ -156,35 +156,79 @@ export function buildScale(hex, steps = 11, mode = "tintshade") {
   return Array.from({ length: steps }, () => hex);
 }
 
-// Build per-brand swatch book from the six base colors and a neutral ramp
+// ------------------------------------------------------------
+// BUILD BRAND SCALES — 6 anchors → 11-step ramps + neutral
+// ------------------------------------------------------------
 export function buildBrandScales(brandTokens) {
-  // expected keys present in brand JSON (base/dark/light for primary/secondary)
-  // color-primary, color-primary-dark, color-primary-light, color-secondary, color-secondary-dark, color-secondary-light
+  if (!brandTokens || typeof brandTokens !== "object") {
+    console.warn("buildBrandScales called with invalid data:", brandTokens);
+    return null;
+  }
+  console.log("🏁 buildBrandScales input keys:", Object.keys(brandTokens));
+
   const prim = {
-    base: brandTokens["color-primary"],
-    dark: brandTokens["color-primary-dark"],
-    light: brandTokens["color-primary-light"],
+    base: brandTokens["color-primary"] || "#888888",
+    dark: brandTokens["color-primary-dark"] || "#555555",
+    light: brandTokens["color-primary-light"] || "#cccccc",
   };
   const sec = {
-    base: brandTokens["color-secondary"],
-    dark: brandTokens["color-secondary-dark"],
-    light: brandTokens["color-secondary-light"],
+    base: brandTokens["color-secondary"] || "#aaaaaa",
+    dark: brandTokens["color-secondary-dark"] || "#777777",
+    light: brandTokens["color-secondary-light"] || "#dddddd",
   };
 
-  const neutrals = grayRamp11(); // #000..#fff fixed
+  // Each array goes light → dark
+  const primary = blendScale(prim.light, prim.dark, 11);
+  const primaryLight = blendScale(prim.light, prim.base, 11);
+  const primaryDark = blendScale(prim.base, prim.dark, 11);
 
-  // for each of the 6 anchors, generate 11-step tint/shade scales
-  const scales = {
-    primary: buildScale(prim.base, 11, "tintshade"),
-    primaryDark: buildScale(prim.dark, 11, "tintshade"),
-    primaryLight: buildScale(prim.light, 11, "tintshade"),
-    secondary: buildScale(sec.base, 11, "tintshade"),
-    secondaryDark: buildScale(sec.dark, 11, "tintshade"),
-    secondaryLight: buildScale(sec.light, 11, "tintshade"),
-    neutral: neutrals,
+  const secondary = blendScale(sec.light, sec.dark, 11);
+  const secondaryLight = blendScale(sec.light, sec.base, 11);
+  const secondaryDark = blendScale(sec.base, sec.dark, 11);
+
+  const neutral = [
+    "#ffffff",
+    "#f7f7f7",
+    "#e9e9e9",
+    "#d9d9d9",
+    "#c4c4c4",
+    "#a8a8a8",
+    "#8b8b8b",
+    "#6f6f6f",
+    "#4a4a4a",
+    "#2b2b2b",
+    "#121212",
+  ];
+
+  console.log("Scales ready:", {
+    primary,
+    primaryLight,
+    primaryDark,
+    secondary,
+    secondaryLight,
+    secondaryDark,
+    neutral,
+  });
+
+  return {
+    primary,
+    primaryLight,
+    primaryDark,
+    secondary,
+    secondaryLight,
+    secondaryDark,
+    neutral,
   };
+}
 
-  return scales;
+// helper to build stepped blend array between two hexes
+function blendScale(c1, c2, steps = 11) {
+  const arr = [];
+  for (let i = 0; i < steps; i++) {
+    const t = i / (steps - 1);
+    arr.push(mix(c1, c2, t)); // <— uses your existing mix()
+  }
+  return arr;
 }
 
 // Apply a token map to :root as CSS variables: --color-foo: #xxxxxx

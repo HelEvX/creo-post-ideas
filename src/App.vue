@@ -38,7 +38,7 @@
           <aside class="col-12 col-md-3 app__sidebar">
             <h3 class="app__sidebar-title">Control Panel</h3>
             <div class="app__sidebar-block" v-if="brandTokens">
-              <RecipeShuffle :brandTokens="brandTokens" />
+              <RecipeShuffle :brandTokens="brandTokens" :scales="scales" />
             </div>
           </aside>
 
@@ -49,7 +49,6 @@
               <div class="mockup-wrapper text-center">
                 <div>Main Preview Area</div>
                 <!-- example component usage -->
-                <!-- <RecipeShuffle /> -->
               </div>
             </section>
 
@@ -153,30 +152,31 @@
 
 <script>
 import BrandPicker from "./components/BrandPicker.vue";
+import { buildBrandScales } from "./utils/colorBlender.js";
 import RecipeShuffle from "./components/RecipeShuffle.vue";
 
 export default {
   name: "App",
-  components: {
-    BrandPicker,
-    RecipeShuffle,
-  },
+  components: { BrandPicker, RecipeShuffle },
 
   data() {
     return {
-      brandTokens: null,
+      brandTokens: null, // active brand JSON (e.g. Groomer)
+      scales: null, // built color scales for recipes
     };
   },
 
   methods: {
     async onBrandPicked(payload) {
-      // Reset to Creo base if picker emits null
+      // Reset to default Creo state
       if (!payload) {
         this.brandTokens = null;
+        this.scales = null;
+        console.log("🔁 Reset to default Creo theme");
         return;
       }
 
-      // Handle both {slug, tokens} object and plain slug string
+      // Handle both {slug, tokens} and plain slug
       let data;
       if (typeof payload === "object" && payload.tokens) {
         data = payload.tokens;
@@ -195,8 +195,11 @@ export default {
         }
       }
 
-      this.brandTokens = data;
-      // confirm data flow
+      // ensure variables are written before notifying children
+      await this.$nextTick();
+
+      this.brandTokens = { ...data };
+      this.scales = buildBrandScales(this.brandTokens);
       console.log("brandTokens now:", this.brandTokens);
     },
 
@@ -206,7 +209,6 @@ export default {
   },
 
   mounted() {
-    // Optional: preload brand via ?brand=slug for client links
     const params = new URLSearchParams(window.location.search);
     const brand = params.get("brand");
     if (brand) this.onBrandPicked(brand);
