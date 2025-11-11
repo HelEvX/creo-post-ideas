@@ -19,7 +19,6 @@ export default {
       // 1. Reset to Creo default
       if (!this.selectedBrand) {
         root.removeAttribute("style");
-        console.log("Brand reset to Creo default (global.css)");
         this.$emit("picked", null);
         return;
       }

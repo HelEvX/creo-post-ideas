@@ -164,7 +164,6 @@ export function buildBrandScales(brandTokens) {
     console.warn("buildBrandScales called with invalid data:", brandTokens);
     return null;
   }
-  console.log("🏁 buildBrandScales input keys:", Object.keys(brandTokens));
 
   const prim = {
     base: brandTokens["color-primary"] || "#888888",

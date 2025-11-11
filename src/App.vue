@@ -168,7 +168,6 @@ export default {
 
   methods: {
     async onBrandPicked(payload) {
-      // Reset to default Creo state
       if (!payload) {
         this.brandTokens = null;
         this.scales = null;
@@ -176,18 +175,20 @@ export default {
         return;
       }
 
-      // Handle both {slug, tokens} and plain slug
       let data;
       if (typeof payload === "object" && payload.tokens) {
-        data = payload.tokens;
+        // If a full token object is provided, use it but re-fetch anyway to refresh all
+        const slug = payload.slug || payload.tokens.meta?.slug || payload.tokens.name.toLowerCase();
+        const res = await fetch(`/brands/${slug}.json`);
+        data = await res.json();
       } else {
         const slug = typeof payload === "string" ? payload : payload.slug;
         const res = await fetch(`/brands/${slug}.json`);
         data = await res.json();
       }
 
-      // Apply all color tokens to the root
       const root = document.documentElement;
+      root.removeAttribute("style");
       for (const [k, v] of Object.entries(data)) {
         if (k.startsWith("color-") || k.startsWith("--color-") || k.startsWith("font-")) {
           const cssVar = k.startsWith("--") ? k : `--${k}`;
@@ -195,16 +196,10 @@ export default {
         }
       }
 
-      // ensure variables are written before notifying children
       await this.$nextTick();
-
       this.brandTokens = { ...data };
       this.scales = buildBrandScales(this.brandTokens);
-      console.log("brandTokens now:", this.brandTokens);
-    },
-
-    submitReview() {
-      alert("Thank you for your feedback!");
+      console.log("✅ Brand reapplied from JSON:", this.brandTokens.name);
     },
   },
 
@@ -212,6 +207,12 @@ export default {
     const params = new URLSearchParams(window.location.search);
     const brand = params.get("brand");
     if (brand) this.onBrandPicked(brand);
+
+    // Handle reset event from RecipeShuffle
+    window.addEventListener("brand-reset", (e) => {
+      const { slug, tokens } = e.detail || {};
+      this.onBrandPicked({ slug, tokens });
+    });
   },
 };
 </script>

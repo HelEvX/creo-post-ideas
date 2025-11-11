@@ -86,17 +86,25 @@ function advance(step) {
 
 function nextRecipe() {
   if (!props.scales) {
-    console.warn("No scales yet, ignore click");
     return;
   }
   advance(+1);
 }
 function prevRecipe() {
   if (!props.scales) {
-    console.warn("No scales yet, ignore click");
     return;
   }
   advance(-1);
+}
+
+function resetBrand() {
+  const event = new CustomEvent("brand-reset", {
+    detail: {
+      slug: props.brandTokens.meta?.slug || props.brandTokens.slug || props.brandTokens.name.toLowerCase(),
+      tokens: props.brandTokens,
+    },
+  });
+  window.dispatchEvent(event);
 }
 
 // ---------------------------------------------
@@ -171,6 +179,13 @@ defineExpose({ nextRecipe, prevRecipe });
       {{ activeRecipe ? activeRecipe.description : "Site-matched palette loaded from the brand JSON." }}
     </p>
 
+    <!-- Reset button -->
+    <div class="reset-wrap">
+      <button type="button" class="reset-btn" @click="resetBrand">
+        <i class="fa-solid fa-rotate-left"></i> Reset Brand
+      </button>
+    </div>
+
     <div class="contrast-check">
       <h4>Contrast Check</h4>
       <table>
@@ -236,6 +251,23 @@ button {
 }
 button:hover {
   background: var(--ui-accent-hover);
+}
+.reset-wrap {
+  text-align: center;
+  margin-bottom: var(--space-20);
+}
+.reset-btn {
+  background: none;
+  border: 1px solid var(--ui-accent);
+  color: var(--ui-accent);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 1.2rem;
+  cursor: pointer;
+  transition: var(--transition-default);
+}
+.reset-btn:hover {
+  background: var(--ui-accent);
+  color: var(--ui-inverse);
 }
 .contrast-check {
   margin-top: var(--space-20);
