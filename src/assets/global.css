@@ -81,8 +81,6 @@
 
   /* ------------------------------------------------------
    CORE ASSIGNMENTS (UI-level tokens)
-   --------------------------------------------------------
-   They define what the user actually sees in the UI.
    ------------------------------------------------------ */
 
   /* ==== BRAND COLORS ==== */
@@ -133,7 +131,7 @@
   --color-success: var(--green-500);
 
   /* ==== UTILITY TONES ==== */
-  --color-shadow: rgba(0, 0, 0, 0.06); /* always black 6% */
+  --color-shadow: rgba(0, 18, 20, 0.06);
   --color-disabled-bg: var(--neutral-500);
   --color-disabled-text: var(--neutral-500);
 
