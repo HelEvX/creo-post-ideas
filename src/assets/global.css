@@ -128,12 +128,14 @@
   --color-info: var(--blue-500);
   --color-warning: var(--yellow-500);
   --color-danger: var(--red-500);
-  --color-success: var(--green-500);
+  --color-success: var(--green-400);
+  --color-success-dark: var(--green-500);
 
   /* ==== UTILITY TONES ==== */
-  --color-shadow: rgba(0, 18, 20, 0.06);
+  --color-shadow: rgba(0, 0, 0, 0.25);
   --color-disabled-bg: var(--neutral-500);
   --color-disabled-text: var(--neutral-500);
+  --color-logo-bg: rgba(0, 0, 0, 0.08);
 
   /* ------------------------------------------------------
    OTHER ASSIGNMENTS
@@ -143,8 +145,8 @@
 
   --font-title: "europa", "Work Sans", sans-serif;
   --font-body: "Work Sans", sans-serif;
-  --font-weight-title: 600;
-  --font-weight-body: 400;
+  --fw-title: 600;
+  --fw-body: 400;
 
   /* Font sizes (desktop baseline, 10px = 1rem) */
   --fs-hero: 6rem;
@@ -168,6 +170,7 @@
   --space-5: 0.5rem;
   --space-10: 1rem;
   --space-20: 2rem;
+  --space-25: 2.5rem;
   --space-30: 3rem;
   --space-40: 4rem;
   --space-50: 5rem;
@@ -179,7 +182,7 @@
   --radius-md: 0.6rem;
   --radius-lg: 1rem;
   --border-width: 0.15rem;
-  --shadow: 0 0.4rem 2rem var(--color-shadow);
+  --shadow: 0 0.1rem 0.6rem var(--color-shadow);
 
   /* Transitions */
   --transition-default: all 0.3s ease;
@@ -195,7 +198,7 @@ html {
 
 body {
   font-family: var(--font-body);
-  font-weight: var(--font-weight-body);
+  font-weight: var(--fw-body);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   color: var(--color-text);
@@ -224,24 +227,24 @@ h5,
 h6 {
   font-family: var(--font-title);
   margin-top: 0;
-  font-weight: 600;
+  font-weight: var(--fw-title);
 }
 h1 {
-  font-weight: var(--font-weight-title);
+  font-weight: var(--fw-title);
   font-size: var(--fs-h1);
   /* font-size: clamp(3.6rem, 2.4rem + 2vw, 4.95rem); */
   line-height: var(--lh-display);
   margin: 0 0 var(--space-20);
 }
 h2 {
-  font-weight: var(--font-weight-title);
+  font-weight: var(--fw-title);
   font-size: var(--fs-h2);
   /* font-size: clamp(2.8rem, 2rem + 1.2vw, 3.6rem); */
   line-height: var(--lh-display);
   margin: 0 0 var(--space-30);
 }
 h3 {
-  font-weight: var(--font-weight-title);
+  font-weight: var(--fw-title);
   font-size: var(--fs-h3);
   /* font-size: clamp(2.4rem, 1.8rem + 1vw, 3.15rem); */
   line-height: var(--lh-heading);
@@ -263,7 +266,7 @@ p,
 li {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  font-weight: 400;
+  font-weight: var(--fw-body);
   margin-bottom: var(--space-20);
 }
 
@@ -272,7 +275,7 @@ button,
 .btn {
   background-color: var(--color-primary);
   color: var(--color-text-inverse);
-  font-weight: 600;
+  font-weight: var(--fw-title);
   font-family: var(--font-body);
   padding: var(--space-10) var(--space-20);
   border-radius: var(--radius-md);
@@ -417,11 +420,10 @@ textarea {
 
 .row {
   display: flex;
-  /* gap: var(--space-50); */
   flex-wrap: wrap;
   margin-left: -2.5rem;
   margin-right: -2.5rem;
-} /* half gutter */
+}
 
 .row.center {
   justify-content: center;
@@ -492,7 +494,7 @@ textarea {
 }
 
 /* Responsive columns */
-@media (min-width: 768px) {
+@media (min-width: 576px) {
   .col-md-12 {
     width: 100%;
   }

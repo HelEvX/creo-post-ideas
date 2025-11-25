@@ -4,8 +4,8 @@
     <header class="site-nav">
       <div class="container">
         <div class="row align-center between">
-          <div class="col-6 col-md-4">
-            <a class="logo" href="#"><img src="../src/assets/img/Logo__wordmark.svg" alt="Creo beeldmerk" /></a>
+          <div class="col-12">
+            <BrandLogo :brandTokens="brandTokens" />
           </div>
         </div>
       </div>
@@ -24,14 +24,14 @@
       <!-- For master version (clients only see their own brands) -->
       <div class="container">
         <div class="row align-center">
-          <div class="col-6 col-md-12">
+          <div class="col-12">
             <BrandPicker @picked="onBrandPicked" />
           </div>
         </div>
       </div>
     </section>
 
-    <!-- === START: App Layout (Three-region) === -->
+    <!-- === START: App Layout === -->
     <section class="app__layout">
       <div class="container-full">
         <div class="row between">
@@ -41,16 +41,12 @@
           <main class="col-12 col-md-9 app__main">
             <!-- CANVAS -->
             <section class="app__canvas">
-              <div class="mockup-wrapper text-center">
-                <div>Main Preview Area</div>
-                <!-- example component usage -->
-              </div>
+              <MainPreview :brandTokens="brandTokens" :scales="scales" />
             </section>
 
             <!-- FINALIZATION ZONE -->
             <section class="app__finalization">
-              <div class="app__finalization-block">Brand Consistency Gallery</div>
-              <div class="app__finalization-block">Export Buttons</div>
+              <BrandGallery :brandTokens="brandTokens" :scales="scales" />
             </section>
           </main>
         </div>
@@ -146,13 +142,16 @@
 </template>
 
 <script>
+import BrandLogo from "./components/BrandLogo.vue";
 import ControlsPanel from "./components/ControlsPanel.vue";
 import BrandPicker from "./components/BrandPicker.vue";
+import MainPreview from "./components/MainPreview.vue";
+import BrandGallery from "./components/BrandGallery.vue";
 import { buildBrandScales } from "./utils/colorBlender.js";
 
 export default {
   name: "App",
-  components: { BrandPicker, ControlsPanel },
+  components: { BrandLogo, BrandPicker, ControlsPanel, MainPreview, BrandGallery },
 
   data() {
     return {
@@ -247,7 +246,7 @@ h1.hero-title {
 }
 p.hero-subtitle {
   font-size: var(--fs-body-lg);
-  font-weight: 600;
+  font-weight: var(--fw-title);
   color: var(--ui-soft);
   margin-bottom: 0;
 }
@@ -295,20 +294,6 @@ p.hero-subtitle {
   color: var(--ui-link-on-dark-hover);
 }
 
-/* Logo svg or text link */
-a.logo {
-  font-family: var(--font-title);
-  font-weight: 700;
-  font-size: var(--fs-h4);
-  color: var(--ui-inverse);
-}
-a.logo:hover {
-  color: var(--ui-faint);
-}
-a.logo img {
-  height: 6rem;
-}
-
 /* ----------------------------------------------------
    GALLERY
    ---------------------------------------------------- */
@@ -345,68 +330,16 @@ a.logo img {
 /* ======================================================
    APP LAYOUT
    ====================================================== */
-.app__layout {
-  margin: var(--space-50) 0;
-}
-
-.app__sidebar {
-  background: var(--ui-nav-bg);
-  color: var(--ui-inverse);
-  border-top-right-radius: var(--radius-md);
-  border-bottom-right-radius: var(--radius-md);
-  padding: 2.5rem;
-  /* box-shadow: var(--shadow); */
-}
-
-.app__sidebar-title {
-  font-size: var(--fs-h5);
-  font-family: var(--font-title);
-  margin-bottom: var(--space-20);
-}
-
-.app__sidebar-block {
-  background: rgba(255, 255, 255, 0.08);
-  padding: var(--space-10);
-  border-radius: var(--radius-sm);
-  margin-bottom: var(--space-10);
-}
-
-.app__main {
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
-}
 
 .app__canvas,
 .app__finalization {
-  background: var(--ui-alt-section-bg);
+  background: var(--ui-section-bg);
   border: var(--ui-panel-border-soft);
-  border-radius: var(--radius-md);
-  padding: var(--space-30);
-  /* box-shadow: var(--shadow); */
+  border-radius: var(--radius-lg);
+  padding: var(--space-25);
 }
 
-.app__canvas {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.app__finalization-block {
-  background: rgba(0, 0, 0, 0.04);
-  padding: var(--space-10);
-  border-radius: var(--radius-sm);
-  margin-bottom: var(--space-10);
-}
-
-/* Responsive stacking */
-@media (max-width: 768px) {
-  .app__main {
-    padding-left: 0;
-  }
-  .app__sidebar {
-    margin-bottom: var(--space-30);
-  }
+.app__finalization {
+  margin-top: var(--space-25);
 }
 </style>

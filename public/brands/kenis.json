@@ -1,0 +1,49 @@
+{
+  "name": "Kenis",
+  "meta": { "brand": "Kenis", "version": "1.0" },
+  "font-title": "sans-serif",
+  "font-body": "sans-serif",
+  "fonts": {
+    "import": [""]
+  },
+
+  "color-primary": "",
+  "color-primary-dark": "",
+  "color-primary-darker": "",
+  "color-primary-light": "",
+  "color-primary-lighter": "",
+
+  "color-secondary": "",
+  "color-secondary-dark": "",
+  "color-secondary-darker": "",
+  "color-secondary-light": "",
+  "color-secondary-lighter": "",
+
+  "color-surface": "",
+  "color-panel": "",
+  "color-panel-alt": "",
+  "color-overlay": "",
+
+  "color-title": "",
+  "color-title-alt": "",
+  "color-subtitle": "",
+  "color-text": "",
+  "color-text-soft": "",
+
+  "color-header-bg": "",
+  "color-footer-bg": "",
+  "color-section-dark": "",
+  "color-section-dark-alt": "",
+
+  "color-border-dark": "",
+  "color-border-medium": "",
+  "color-border-light": "",
+
+  "color-info": "",
+  "color-warning": "",
+  "color-danger": "",
+  "color-success": "",
+
+  "color-disabled-bg": "",
+  "color-disabled-text": ""
+}
