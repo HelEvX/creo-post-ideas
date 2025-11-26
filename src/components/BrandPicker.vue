@@ -71,8 +71,10 @@ export default {
     <select id="brand-select" @change="onChange">
       <option value="">Creo (default)</option>
       <option value="groomer">Groomer</option>
+      <option value="runkstervolksfeesten">Runkster Volksfeesten</option>
       <option value="ocrunkst">OCRunkst</option>
       <option value="steviala">Steviala</option>
+      <option value="kenis">Bakkerij Kenis</option>
     </select>
 
     <div class="brand-preview">

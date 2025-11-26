@@ -1,6 +1,6 @@
 {
   "name": "Groomer",
-  "meta": { "brand": "Groomer", "version": "1.0" },
+  "meta": { "brand": "groomer", "version": "1.0" },
   "font-title": "Nunito, sans-serif",
   "font-body": "Nunito, sans-serif",
   "fonts": {
@@ -16,8 +16,8 @@
   "color-secondary": "#ced574",
   "color-secondary-dark": "#b0b664",
   "color-secondary-darker": "#8f9552",
-  "color-secondary-light": "#eff2d6",
-  "color-secondary-lighter": "#f7f9ef",
+  "color-secondary-light": "#D9DE91",
+  "color-secondary-lighter": "#E4E8B0",
 
   "color-surface": "#f7f9ef",
   "color-panel": "#eff2d6",
