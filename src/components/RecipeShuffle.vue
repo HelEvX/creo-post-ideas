@@ -54,6 +54,9 @@ function resolveRoleValue(v, scales = props.scales) {
 // ---------------------------------------------
 // Apply Recipe
 // ---------------------------------------------
+// ---------------------------------------------
+// Apply Recipe
+// ---------------------------------------------
 function applyActiveRecipe() {
   if (!props.scales || !activeRecipe.value) return;
   const roles = activeRecipe.value.roles;
@@ -72,6 +75,15 @@ function applyActiveRecipe() {
 
   // force repaint
   root.offsetHeight;
+
+  // NEW: notify the rest of the app (logo, text, etc.) that the palette changed
+  window.dispatchEvent(
+    new CustomEvent("palette-updated", {
+      detail: {
+        recipeTitle: activeRecipe.value?.title || null,
+      },
+    })
+  );
 }
 
 // ---------------------------------------------
@@ -155,8 +167,8 @@ function evalContrast(fgVar, bgVar) {
 }
 
 function pickReadableText(backgroundHex) {
-  const textDark = readCSSVar("--ui-text");
-  const textLight = readCSSVar("--ui-inverse");
+  const textDark = readCSSVar("--ui-text") || null;
+  const textLight = readCSSVar("--ui-inverse") || null;
 
   if (!backgroundHex || !textDark || !textLight) {
     return "var(--ui-text)";
@@ -165,7 +177,6 @@ function pickReadableText(backgroundHex) {
   const contrastDark = getContrastRatio(textDark, backgroundHex);
   const contrastLight = getContrastRatio(textLight, backgroundHex);
 
-  // Pick whichever is more readable
   return contrastLight >= contrastDark ? "var(--ui-inverse)" : "var(--ui-text)";
 }
 

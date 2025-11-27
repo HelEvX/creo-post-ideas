@@ -8,7 +8,7 @@
       }
 
       .st1 {
-        fill: #06d6a0; <!-- primary-light -->
+        fill: #05b184; <!-- primary -->
       }
 
       .st2 {
@@ -16,7 +16,7 @@
       }
 
       .st3 {
-        fill: #05b184;  <!-- primary -->
+        fill: #06d6a0;  <!-- primary-light -->
       }
 
       .st4 {

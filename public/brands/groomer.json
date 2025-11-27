@@ -1,6 +1,6 @@
 {
   "name": "Groomer",
-  "meta": { "brand": "groomer", "version": "1.0" },
+  "meta": { "brand": "Groomer", "version": "1.0" },
   "font-title": "Nunito, sans-serif",
   "font-body": "Nunito, sans-serif",
   "fonts": {

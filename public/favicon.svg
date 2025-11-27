@@ -4,9 +4,9 @@
   <defs>
     <style>
       /* --- Light Mode Colors (Default) --- */
-    .st1  { fill: #06d6a0; }
+    .st1  { fill: #05b184; }
     .st2  { fill: #008799; }
-    .st3  { fill: #05b184; }
+    .st3  { fill: #06d6a0; }
     .st4  { fill: #212529; }
     .st5  { fill: #004852; }
 

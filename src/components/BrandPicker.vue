@@ -73,6 +73,7 @@ export default {
       <option value="groomer">Groomer</option>
       <option value="runkstervolksfeesten">Runkster Volksfeesten</option>
       <option value="ocrunkst">OCRunkst</option>
+      <option value="wijkraadrunkst">Wijkraad Runkst</option>
       <option value="steviala">Steviala</option>
       <option value="kenis">Bakkerij Kenis</option>
     </select>
@@ -82,16 +83,16 @@ export default {
       <div class="color-swatch primary-light"></div>
       <div class="color-swatch secondary"></div>
       <div class="color-swatch secondary-light"></div>
-      <div class="color-swatch text"></div>
+      <div class="color-swatch color-section-dark"></div>
     </div>
   </div>
 </template>
 
 <style scoped>
 .brand-switcher-container {
-  padding: 20px;
+  padding: var(--space-20);
   margin-top: var(--space-75);
-  background-color: var(--color-surface);
+  background-color: var(--ui-alt-section-bg);
   border: var(--ui-panel-border-soft);
   border-radius: var(--radius-md);
   display: inline-block;
@@ -100,16 +101,15 @@ export default {
 
 label {
   margin-right: 10px;
-  color: var(--color-primary);
+  color: var(--ui-heading-alt);
 }
 
 select {
   padding: 8px;
   border-radius: 4px;
-  border: 1px solid var(--color-border-light);
+  border: var(--ui-panel-border-soft);
   font-family: var(--font-body);
-  background: var(--color-background);
-  color: var(--color-text);
+  background: var(--ui-section-bg);
 }
 
 /* Preview swatches */
@@ -143,7 +143,7 @@ select {
   background-color: var(--color-secondary-light);
 }
 
-.color-swatch.text {
-  background-color: var(--color-text);
+.color-swatch.color-section-dark {
+  background-color: var(--color-section-dark);
 }
 </style>

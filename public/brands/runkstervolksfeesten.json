@@ -1,6 +1,6 @@
 {
   "name": "Runkster Volksfeesten",
-  "meta": { "brand": "runkstervolksfeesten", "version": "1.0" },
+  "meta": { "brand": "Runkster Volksfeesten", "version": "1.0" },
   "font-title": "Montserrat, sans-serif",
   "font-body": "Montserrat, sans-serif",
   "fonts": {
@@ -25,7 +25,7 @@
   "color-title-alt": "#0d004c",
   "color-subtitle": "#c3392a",
   "color-text": "#0d004c",
-  "color-text-soft": "rgba(250, 232, 46, 0.65)",
+  "color-text-soft": "#fcf077",
   "color-header-bg": "#fae82e",
   "color-footer-bg": "#1b1464",
   "color-section-dark": "#fae82e",

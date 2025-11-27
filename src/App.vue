@@ -147,7 +147,7 @@ import ControlsPanel from "./components/ControlsPanel.vue";
 import BrandPicker from "./components/BrandPicker.vue";
 import MainPreview from "./components/MainPreview.vue";
 import BrandGallery from "./components/BrandGallery.vue";
-import { buildBrandScales } from "./utils/colorBlender.js";
+import { buildBrandScales, getContrastRatio } from "./utils/colorBlender.js";
 
 export default {
   name: "App",
@@ -155,17 +155,52 @@ export default {
 
   data() {
     return {
-      brandTokens: null, // active brand JSON (e.g. Groomer)
+      brandTokens: null, // active brand JSON
       scales: null, // built color scales for recipes
     };
   },
 
   methods: {
+    updateDynamicTextRoles() {
+      const root = document.documentElement;
+      const styles = getComputedStyle(root);
+
+      // use the main section background as reference surface
+      const bg =
+        styles.getPropertyValue("--ui-section-bg").trim() || styles.getPropertyValue("--color-background").trim();
+
+      const dark = styles.getPropertyValue("--color-text").trim();
+      const light = styles.getPropertyValue("--color-text-inverse").trim();
+
+      if (!bg || !dark || !light) return;
+
+      const contrastDark = getContrastRatio(dark, bg);
+      const contrastLight = getContrastRatio(light, bg);
+
+      const useLight = contrastLight >= contrastDark;
+
+      if (useLight) {
+        // dark background -> light text system
+        root.style.setProperty("--ui-text", "var(--color-text-inverse)");
+        root.style.setProperty("--ui-soft", "var(--color-text-muted)");
+        root.style.setProperty("--ui-muted", "var(--color-text-faint)");
+        root.style.setProperty("--ui-faint", "var(--color-text-faint)");
+      } else {
+        // light background -> dark text system
+        root.style.setProperty("--ui-text", "var(--color-text)");
+        root.style.setProperty("--ui-soft", "var(--color-text-soft)");
+        root.style.setProperty("--ui-muted", "var(--color-text-soft)");
+        root.style.setProperty("--ui-faint", "var(--color-text-soft)");
+      }
+    },
+
     async onBrandPicked(payload) {
       if (!payload) {
         this.brandTokens = null;
         this.scales = null;
         console.log("🔁 Reset to default Creo theme");
+        // reset text roles to default for base theme
+        this.updateDynamicTextRoles();
         return;
       }
 
@@ -194,6 +229,9 @@ export default {
       this.brandTokens = { ...data };
       this.scales = buildBrandScales(this.brandTokens);
       console.log("✅ Brand reapplied from JSON:", this.brandTokens.name);
+
+      // brand changed -> recompute text roles
+      this.updateDynamicTextRoles();
     },
   },
 
@@ -207,6 +245,16 @@ export default {
       const { slug, tokens } = e.detail || {};
       this.onBrandPicked({ slug, tokens });
     });
+
+    // NEW: react when recipes change the palette
+    window.addEventListener("palette-updated", this.updateDynamicTextRoles);
+
+    // initial pass for default theme
+    this.updateDynamicTextRoles();
+  },
+
+  beforeUnmount() {
+    window.removeEventListener("palette-updated", this.updateDynamicTextRoles);
   },
 };
 </script>
@@ -239,6 +287,7 @@ Stylings for components specific to the app shell
   height: fit-content;
   background: var(--ui-hero-bg);
   padding: var(--space-50) 0;
+  margin-bottom: var(--space-30);
 }
 h1.hero-title {
   font-size: var(--fs-hero);

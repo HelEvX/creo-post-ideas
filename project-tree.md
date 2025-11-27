@@ -1,4 +1,4 @@
-```txt
+```
 CREO-POST-IDEAS/
 ├── .vscode/              # VS Code editor settings
 ├── dist/                 # Production build output directory

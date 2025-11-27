@@ -129,7 +129,7 @@ defineProps({
 }
 
 .format-selector-bar__btn.active {
-  background-color: var(--color-primary-light);
+  background-color: var(--ui-accent);
   color: var(--ui-inverse);
 }
 

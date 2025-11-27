@@ -24,7 +24,7 @@
           width="22.8"
           height="22.8"
           transform="translate(-18.2 13.1) rotate(-25.6)"
-          fill="var(--color-primary-light)" />
+          fill="var(--color-primary)" />
         <rect
           x="35.3"
           y="22.3"
@@ -38,7 +38,7 @@
           width="22.8"
           height="22.8"
           transform="translate(-28.5 21.3) rotate(-25.6)"
-          fill="var(--color-primary)" />
+          fill="var(--color-primary-light)" />
         <rect
           x="48.1"
           y="49.1"
@@ -73,7 +73,7 @@
           width="22.8"
           height="22.8"
           transform="translate(-22.4 50.2) rotate(-25.6)"
-          fill="var(--color-primary-light)" />
+          fill="var(--color-primary)" />
       </g>
 
       <path
@@ -195,7 +195,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted, onBeforeUnmount } from "vue";
 import { getContrastRatio } from "../utils/colorBlender.js";
 
 const props = defineProps({
@@ -229,7 +229,19 @@ function updateVariant() {
 }
 
 watch(() => props.brandTokens, updateVariant, { immediate: true });
-onMounted(updateVariant);
+
+function handlePaletteUpdated() {
+  updateVariant();
+}
+
+onMounted(() => {
+  updateVariant();
+  window.addEventListener("palette-updated", handlePaletteUpdated);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("palette-updated", handlePaletteUpdated);
+});
 </script>
 
 <style scoped>

@@ -1,6 +1,6 @@
 {
   "name": "Bakkerij Kenis",
-  "meta": { "brand": "kenis", "version": "1.0" },
+  "meta": { "brand": "Bakkerij Kenis", "version": "1.0" },
   "font-title": "Zilla Slab, serif",
   "font-body": "Open Sans, sans-serif",
   "fonts": {
