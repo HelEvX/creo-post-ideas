@@ -24,9 +24,9 @@ function select(type) {
 
 <style>
 .content-type-panel {
-  background: var(--ui-panel-bg);
-  border-radius: var(--radius-md);
-  border: var(--ui-panel-border-soft);
+  /* background: var(--ui-panel-bg); */
+  /* border-radius: var(--radius-md); */
+  border-right: var(--ui-panel-border-soft);
   padding: 2rem;
 }
 

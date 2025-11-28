@@ -1,32 +1,7 @@
 <template>
   <div class="app-main-shell">
     <!-- Top format selector row -->
-    <div class="format-selector-bar">
-      <button type="button" class="format-selector-bar__btn">
-        <span class="format-selector-bar__icon">▢</span>
-        <span>Square</span>
-      </button>
-
-      <button type="button" class="format-selector-bar__btn">
-        <span class="format-selector-bar__icon">▭</span>
-        <span>Landscape</span>
-      </button>
-
-      <button type="button" class="format-selector-bar__btn format-selector-bar__btn active">
-        <span class="format-selector-bar__icon">▯</span>
-        <span>Portrait</span>
-      </button>
-
-      <button type="button" class="format-selector-bar__btn">
-        <span class="format-selector-bar__icon">▭</span>
-        <span>Story</span>
-      </button>
-
-      <button type="button" class="format-selector-bar__btn">
-        <span class="format-selector-bar__icon">▭</span>
-        <span>Banner</span>
-      </button>
-    </div>
+    <FormatSelector :modelValue="selectedSize" @update:size="selectedSize = $event" />
 
     <!-- Main preview area -->
     <div class="main-preview-grid">
@@ -39,46 +14,40 @@
           <span class="main-preview-grid__label">Main preview area</span>
         </header> -->
 
-        <div class="post-preview">
-          <div class="post-preview__frame">
-            <div class="post-preview__company">
-              <div class="post-preview__logo-mark"></div>
-              <div class="post-preview__logo-text">BUSINESS MARKETING</div>
-            </div>
-
-            <div class="post-preview__hero">
-              <div class="post-preview__badge">LET'S CONNECT</div>
-            </div>
-
-            <div class="post-preview__body">
-              <h3 class="post-preview__title">
-                Solving our Biggest
-                <br />
-                <span class="post-preview__title--accent"> Operational Bottleneck </span>
-              </h3>
-
-              <p class="post-preview__text">
-                Operational bottlenecks don't just slow you down, they directly impact your bottom line.
-              </p>
-            </div>
-          </div>
-        </div>
+        <SocialPostMockup
+          :size="selectedSize"
+          :backgroundType="selectedBackground"
+          :usePhoto="usePhoto"
+          :photoSrc="photoSrc"
+          :showBrand="true"
+          :showCornerShapes="true"
+          :showLabel="true"
+          :labelSize="selectedLabelSize"
+          :labelColor="selectedLabelColor"
+          :labelIcon="true"
+          :showQuote="showQuote"
+          :brandText="brandText"
+          :labelText="labelText"
+          :title="titleText"
+          :subtitle="subtitleText"
+          :quote="quoteText"
+          :shapesSrc="shapesSrc" />
       </section>
 
       <!-- Notes zone -->
       <aside class="main-preview-grid__notes">
-        <!-- <header class="main-preview-grid__header main-preview-grid__header--right">
-          <span class="main-preview-grid__label">Notes zone</span>
-        </header> -->
+        <header class="main-preview-grid__header main-preview-grid__header--right">
+          <span class="main-preview-grid__label">Select info zone</span>
+        </header>
 
-        <div class="notes-panel">
+        <!-- <div class="notes-panel">
           <div class="notes-panel__callout">
             <p class="notes-panel__text">
               Lorem ipsum dolor sit amet consectetur. Natoque nunc velit dignissim etiam elit facilisi aliquam vitae
               aliquam in risus mauris.
             </p>
           </div>
-        </div>
+        </div> -->
       </aside>
     </div>
   </div>
@@ -86,16 +55,30 @@
 
 <script setup>
 import ContentTypePanel from "./ContentTypePanel.vue";
+import SocialPostMockup from "./SocialPostMockup.vue";
+import FormatSelector from "./FormatSelector.vue";
 
-defineProps({
-  brandTokens: { type: Object, default: null },
-  scales: { type: Object, default: null },
-});
+import { ref } from "vue";
+import stockImage from "@/assets/img/stockphoto.webp";
 
-// function onContentTypeSelect(type) {
-// placeholder for future logic
-// console.log("content type selected:", type, props.brandTokens);
-// }
+const selectedSize = ref("portrait");
+const selectedBackground = ref("midnight-dark");
+
+const selectedLabelSize = ref("large");
+const selectedLabelColor = ref("green");
+
+const showQuote = ref(false);
+
+const brandText = ref("BUSINESS MARKETING");
+const labelText = ref("Label text");
+const titleText = ref("Lorem ipsum dolor sit amet consectetur.");
+const subtitleText = ref("Lorem ipsum dolor sit amet consectetur.");
+const quoteText = ref("This is a quote.");
+
+const photoSrc = ref(stockImage);
+const usePhoto = ref(true);
+
+const shapesSrc = "/src/assets/img/shapes0.svg";
 </script>
 
 <style scoped>
@@ -124,7 +107,7 @@ defineProps({
   align-items: center;
   gap: 0.4rem;
   padding: 0.8rem 1.2rem;
-  background-color: var(---ui-alt-section-bg);
+  background-color: var(--ui-alt-section-bg);
   color: var(--ui-text);
 }
 
@@ -158,8 +141,12 @@ defineProps({
 } */
 
 .main-preview-grid__label {
-  font-size: var(--fs-h5);
-  color: var(--ui-muted);
+  font-size: var(--fs-body-xs);
+  font-weight: 700;
+  margin-bottom: var(--space-30);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ui-caption);
 }
 
 .post-preview {
@@ -230,11 +217,11 @@ defineProps({
 /* Notes */
 
 .main-preview-grid__notes {
-  background: var(--ui-panel-bg);
-  border-radius: var(--radius-md);
-  border: var(--ui-panel-border-soft);
+  /* background: var(--ui-panel-bg); */
+  /* border-radius: var(--radius-md); */
+  border-left: var(--ui-panel-border-soft);
   padding: 2rem;
-  flex: 0 1 20%;
+  flex: 0 1 10%;
 }
 
 .notes-panel__callout {
