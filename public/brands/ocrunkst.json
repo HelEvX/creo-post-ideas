@@ -2,7 +2,7 @@
   "name": "OC Runkst",
   "meta": { "brand": "OC Runkst", "version": "1.0" },
   "font-title": "Montserrat, sans-serif",
-  "font-body": "Montserrat-serif",
+  "font-body": "Montserrat, sans-serif",
   "fonts": {
     "import": ["https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"]
   },

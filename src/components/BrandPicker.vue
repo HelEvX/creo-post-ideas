@@ -77,6 +77,8 @@ export default {
       <option value="steviala">Steviala</option>
       <option value="kenis">Bakkerij Kenis</option>
       <option value="tropical">Ijssalon Tropical</option>
+      <option value="cardgameshop">Card Game Shop</option>
+      <option value="blooloc">Blooloc</option>
     </select>
 
     <div class="brand-preview">
