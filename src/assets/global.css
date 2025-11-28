@@ -101,10 +101,11 @@
   --color-surface: var(--neutral-50);
   --color-panel: var(--neutral-200);
   --color-panel-alt: var(--neutral-700);
-  --color-overlay: rgba(6, 214, 160, 0.5); /* primary 50% */
+  --color-overlay: rgba(255, 255, 255, 0.5); /* white 50% */
+  --color-overlay-accent: rgba(6, 214, 160, 0.5); /* primary 50% */
 
   /* ==== TEXT COLORS ==== */
-  --color-title: var(--secondary-500);
+  --color-title: var(--neutral-900);
   --color-title-alt: var(--secondary-600);
   --color-subtitle: var(--secondary-400);
   --color-text: var(--neutral-900);

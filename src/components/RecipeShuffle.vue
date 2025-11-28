@@ -291,7 +291,7 @@ defineExpose({ nextRecipe, prevRecipe });
 .controls {
   display: flex;
   justify-content: space-between;
-  background: var(--ui-faint);
+  background: var(--color-overlay);
   border-radius: var(--radius-sm);
   padding: var(--space-10);
 }

@@ -20,7 +20,7 @@
   "color-surface": "#f3f1eb",
   "color-panel": "#ffffff",
   "color-panel-alt": "#e5e0d3",
-  "color-overlay": "rgba(246, 202, 81, 0.5)",
+  "color-overlay-accent": "rgba(246, 202, 81, 0.5)",
   "color-title": "#1a1a1a",
   "color-title-alt": "#1a1a1a",
   "color-subtitle": "#818181",
@@ -37,6 +37,7 @@
   "color-warning": "#eeb20c",
   "color-danger": "#ff392e",
   "color-success": "#32b85f",
+  "color-success-dark": "#",
   "color-disabled-bg": "#c6c6c6",
   "color-disabled-text": "#c6c6c6"
 }

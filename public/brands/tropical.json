@@ -1,0 +1,45 @@
+{
+  "name": "Ijssalon Tropical",
+  "meta": { "brand": "Ijssalon Tropical", "version": "1.0" },
+  "font-title": "Raleway, sans-serif",
+  "font-body": "Montserrat, sans-serif",
+  "fonts": {
+    "import": [
+      "https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+    ]
+  },
+
+  "color-primary": "#ef476f",
+  "color-primary-dark": "#eb1e4e",
+  "color-primary-darker": "#c5113b",
+  "color-primary-light": "#f8aabc",
+  "color-primary-lighter": "#fcd9e1",
+  "color-secondary": "#f8e191",
+  "color-secondary-dark": "#dccb8d",
+  "color-secondary-darker": "#e8ddb4",
+  "color-secondary-light": "#fbeec1",
+  "color-secondary-lighter": "#fdf5d9",
+  "color-surface": "#ffffff",
+  "color-panel": "#fbeec1",
+  "color-panel-alt": "#06d6a0",
+  "color-overlay-accent": "#",
+  "color-title": "#1d1d1d",
+  "color-title-alt": "#ef476f",
+  "color-subtitle": "#06d6a0",
+  "color-text": "#1d1d1d",
+  "color-text-soft": "#3f3f3f",
+  "color-header-bg": "#ef476f",
+  "color-footer-bg": "#fbeec1",
+  "color-section-dark": "#ef476f",
+  "color-section-dark-alt": "#ef476f",
+  "color-border-dark": "#3d3d3d",
+  "color-border-medium": "#dfdfdf",
+  "color-border-light": "#f8f8f8",
+  "color-info": "#00a7e1",
+  "color-warning": "#ffd166",
+  "color-danger": "#ff2e2e",
+  "color-success": "#06d6a0",
+  "color-success-dark": "#05bb8b",
+  "color-disabled-bg": "#999999",
+  "color-disabled-text": "#999999"
+}

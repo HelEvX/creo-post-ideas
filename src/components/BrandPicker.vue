@@ -76,6 +76,7 @@ export default {
       <option value="wijkraadrunkst">Wijkraad Runkst</option>
       <option value="steviala">Steviala</option>
       <option value="kenis">Bakkerij Kenis</option>
+      <option value="tropical">Ijssalon Tropical</option>
     </select>
 
     <div class="brand-preview">
@@ -83,7 +84,7 @@ export default {
       <div class="color-swatch primary-light"></div>
       <div class="color-swatch secondary"></div>
       <div class="color-swatch secondary-light"></div>
-      <div class="color-swatch color-section-dark"></div>
+      <div class="color-swatch accent-color"></div>
     </div>
   </div>
 </template>
@@ -143,7 +144,7 @@ select {
   background-color: var(--color-secondary-light);
 }
 
-.color-swatch.color-section-dark {
-  background-color: var(--color-section-dark);
+.color-swatch.accent-color {
+  background-color: var(--color-title);
 }
 </style>

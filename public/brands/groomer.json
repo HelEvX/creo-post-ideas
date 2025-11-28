@@ -22,7 +22,7 @@
   "color-surface": "#f7f9ef",
   "color-panel": "#eff2d6",
   "color-panel-alt": "#d7dfd7",
-  "color-overlay": "rgba(255, 255, 255, 0.85)",
+  "color-overlay-accent": "#",
 
   "color-title": "#3f3f3f",
   "color-title-alt": "#a76340",

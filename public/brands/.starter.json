@@ -22,7 +22,7 @@
   "color-surface": "",
   "color-panel": "",
   "color-panel-alt": "",
-  "color-overlay": "",
+  "color-overlay-accent": "",
 
   "color-title": "",
   "color-title-alt": "",
@@ -43,6 +43,7 @@
   "color-warning": "",
   "color-danger": "",
   "color-success": "",
+  "color-success-dark": "",
 
   "color-disabled-bg": "",
   "color-disabled-text": ""
