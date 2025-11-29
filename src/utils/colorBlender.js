@@ -1,5 +1,32 @@
 // SOURCE: chatGPT 5 (10/11/2025) 'Vue palette shuffle setup'
 
+// Accepts "#rrggbb", "#rgb", or "rgba(r,g,b,a)"
+export function anyToRgb(input) {
+  const v = input.trim();
+
+  // rgba(...)
+  if (v.startsWith("rgba(")) {
+    const nums = v
+      .slice(5, -1)
+      .split(",")
+      .map((n) => parseFloat(n.trim()));
+    // ignore alpha for WCAG contrast math
+    return [nums[0], nums[1], nums[2]];
+  }
+
+  // rgb(...)
+  if (v.startsWith("rgb(")) {
+    const nums = v
+      .slice(4, -1)
+      .split(",")
+      .map((n) => parseFloat(n.trim()));
+    return [nums[0], nums[1], nums[2]];
+  }
+
+  // fallback: hex
+  return hexToRgb(v);
+}
+
 // ---------- parsing / formatting ----------
 export function hexToRgb(hex) {
   const s = hex.trim().replace(/^#/, "");
@@ -97,16 +124,16 @@ function getLuminance(rgb) {
 }
 
 export function getContrastRatio(hex1, hex2) {
-  const l1 = getLuminance(hexToRgb(hex1));
-  const l2 = getLuminance(hexToRgb(hex2));
+  const l1 = getLuminance(anyToRgb(hex1));
+  const l2 = getLuminance(anyToRgb(hex2));
   const [L, S] = [Math.max(l1, l2), Math.min(l1, l2)];
   return (L + 0.05) / (S + 0.05);
 }
 
 // ---------- color math ----------
 export function mix(hexA, hexB, t) {
-  const a = hexToRgb(hexA),
-    b = hexToRgb(hexB);
+  const a = anyToRgb(hexA);
+  const b = anyToRgb(hexB);
   const m = a.map((v, i) => v + (b[i] - v) * t);
   return rgbToHex(m);
 }
@@ -125,8 +152,8 @@ export function tone(hex, t) {
 }
 
 export function alphaOver(bgHex, fgHex, alpha) {
-  const bg = hexToRgb(bgHex),
-    fg = hexToRgb(fgHex);
+  const bg = anyToRgb(bgHex);
+  const fg = anyToRgb(fgHex);
   const out = bg.map((b, i) => (1 - alpha) * b + alpha * fg[i]);
   return rgbToHex(out);
 }
