@@ -39,5 +39,29 @@
   "color-success": "#9baf9d",
   "color-success-dark": "#385f3b",
   "color-disabled-bg": "#969696",
-  "color-disabled-text": "#969696"
+  "color-disabled-text": "#969696",
+
+  "ig": {
+    "avatar": "groomer.webp",
+    "username": "groomer.be",
+    "posts": 480,
+    "followers": 1393,
+    "following": 3617,
+    "title": "www.groomer.be",
+    "threads": "@groomer.be",
+    "businessType": "Pet supplies",
+    "description": "Eco webwinkel voor je huisdier.\n💚 Cruelty free\n🌱 Vegan\n🌍 100% natuurlijk",
+    "address": "Bosstraat 46/018, Lummen, Belgium 3560",
+    "url": "https://www.groomer.be",
+    "highlightIcon": "src/assets/highlights/groomer.svg",
+    "highlights": [
+      { "label": "TEAM", "bg": "#385f3b" },
+      { "label": "PROMOS", "bg": "#ced574" },
+      { "label": "SHOP", "bg": "#426744" },
+      { "label": "SERVICES", "bg": "#b0b664" },
+      { "label": "BLOG", "bg": "#557656" },
+      { "label": "FAQ", "bg": "#8f9552" },
+      { "label": "REVIEWS", "bg": "#5e7e5f" }
+    ]
+  }
 }

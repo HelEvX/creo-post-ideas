@@ -46,5 +46,19 @@
   "color-success-dark": "",
 
   "color-disabled-bg": "",
-  "color-disabled-text": ""
+  "color-disabled-text": "",
+
+  "ig": {
+    "avatar": ".webp",
+    "username": "",
+    "posts": 1,
+    "followers": 1,
+    "following": 1,
+    "title": "e",
+    "threads": "@",
+    "businessType": "",
+    "description": "...\n...\n...\n...",
+    "address": "",
+    "url": "https://www.xyz.be"
+  }
 }

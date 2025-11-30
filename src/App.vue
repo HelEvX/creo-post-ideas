@@ -54,30 +54,16 @@
     </section>
     <!-- === END: App Layout === -->
 
-    <!-- GALLERY -->
+    <!-- INSTAGRAM GRID VIEW -->
     <section class="section section-gallery">
       <div class="container">
         <div class="row">
-          <div class="col-12"><h2>Example previews</h2></div>
+          <div class="col-12">
+            <h2>Instagram Grid Preview</h2>
+          </div>
 
-          <!-- 3-up (4+4+4) -->
-          <div class="col-12 col-md-4">
-            <div class="card align-center">
-              <p>Test paragraaf</p>
-              <!-- <img src="../src/assets/img/preview_placeholder.webp" alt="Preview 1" /> -->
-            </div>
-          </div>
-          <div class="col-12 col-md-4">
-            <div class="card alt align-center">
-              <p>Test paragraaf</p>
-              <!-- <img src="../src/assets/img/preview_placeholder.webp" alt="Preview 2" /> -->
-            </div>
-          </div>
-          <div class="col-12 col-md-4">
-            <div class="card align-center">
-              <p>Test paragraaf</p>
-              <!-- <img src="../src/assets/img/preview_placeholder.webp" alt="Preview 3" /> -->
-            </div>
+          <div class="col-12" style="display: flex; justify-content: center">
+            <InstagramGrid v-if="brandTokens && brandTokens.ig" :ig="brandTokens.ig" :images="galleryImages" />
           </div>
         </div>
       </div>
@@ -147,16 +133,28 @@ import ControlsPanel from "./components/ControlsPanel.vue";
 import BrandPicker from "./components/BrandPicker.vue";
 import MainPreview from "./components/MainPreview.vue";
 import BrandGallery from "./components/BrandGallery.vue";
+import InstagramGrid from "@/components/InstagramGrid.vue";
 import { buildBrandScales, getContrastRatio } from "./utils/colorBlender.js";
+
+const demoImages = [
+  "pattern-geometric-flowers",
+  "pattern-distorted-mesh",
+  "pattern-rhombus-stripes",
+  "pattern-nested-diamond",
+  "pattern-wavy",
+  "pattern-folded-zigzag",
+];
 
 export default {
   name: "App",
-  components: { BrandLogo, BrandPicker, ControlsPanel, MainPreview, BrandGallery },
+  components: { BrandLogo, BrandPicker, ControlsPanel, MainPreview, BrandGallery, InstagramGrid },
 
   data() {
     return {
       brandTokens: null, // active brand JSON
       scales: null, // built color scales for recipes
+
+      galleryImages: demoImages,
     };
   },
 
@@ -199,23 +197,25 @@ export default {
         this.brandTokens = null;
         this.scales = null;
         console.log("🔁 Reset to default Creo theme");
-        // reset text roles to default for base theme
         this.updateDynamicTextRoles();
         return;
       }
 
-      let data;
+      // 1) Determine slug once
+      let slug;
       if (typeof payload === "object" && payload.tokens) {
-        // If a full token object is provided, use it but re-fetch anyway to refresh all
-        const slug = payload.slug || payload.tokens.meta?.slug || payload.tokens.name.toLowerCase();
-        const res = await fetch(`/brands/${slug}.json`);
-        data = await res.json();
+        // From BrandPicker: { slug, tokens }
+        slug = payload.slug || payload.tokens.meta?.slug || payload.tokens.name.toLowerCase();
       } else {
-        const slug = typeof payload === "string" ? payload : payload.slug;
-        const res = await fetch(`/brands/${slug}.json`);
-        data = await res.json();
+        // From reset / URL: "tropical" etc.
+        slug = typeof payload === "string" ? payload : payload.slug;
       }
 
+      // 2) Load brand JSON with that slug
+      const res = await fetch(`/brands/${slug}.json`);
+      const data = await res.json();
+
+      // 3) Apply tokens to :root
       const root = document.documentElement;
       root.removeAttribute("style");
       for (const [k, v] of Object.entries(data)) {
@@ -225,12 +225,17 @@ export default {
         }
       }
 
-      await this.$nextTick();
-      this.brandTokens = { ...data };
-      this.scales = buildBrandScales(this.brandTokens);
-      console.log("✅ Brand reapplied from JSON:", this.brandTokens.name);
+      const primary = data["color-primary"] || "#888";
+      const textSoft = data["color-text-soft"] || "#444";
 
-      // brand changed -> recompute text roles
+      root.style.setProperty("--ig-tile-bg", primary + "15");
+      root.style.setProperty("--ig-tile-fg", textSoft);
+
+      // 4) Store tokens + slug for later resets
+      await this.$nextTick();
+      this.brandTokens = { ...data, slug };
+      this.scales = buildBrandScales(this.brandTokens);
+
       this.updateDynamicTextRoles();
     },
   },
@@ -242,8 +247,10 @@ export default {
 
     // Handle reset event from RecipeShuffle
     window.addEventListener("brand-reset", (e) => {
-      const { slug, tokens } = e.detail || {};
-      this.onBrandPicked({ slug, tokens });
+      const { slug } = e.detail || {};
+      if (slug) this.onBrandPicked(slug);
+
+      console.log("RESET EVENT RECEIVED:", e.detail);
     });
 
     // NEW: react when recipes change the palette
@@ -351,7 +358,7 @@ p.hero-subtitle {
   border: var(--ui-panel-border);
   border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: var(--shadow);
+  /* box-shadow: var(--shadow); */
   margin-bottom: var(--space-50);
 }
 .card.alt {

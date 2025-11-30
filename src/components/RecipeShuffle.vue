@@ -54,9 +54,6 @@ function resolveRoleValue(v, scales = props.scales) {
 // ---------------------------------------------
 // Apply Recipe
 // ---------------------------------------------
-// ---------------------------------------------
-// Apply Recipe
-// ---------------------------------------------
 function applyActiveRecipe() {
   if (!props.scales || !activeRecipe.value) return;
   const roles = activeRecipe.value.roles;
@@ -110,13 +107,9 @@ function prevRecipe() {
 }
 
 function resetBrand() {
-  const event = new CustomEvent("brand-reset", {
-    detail: {
-      slug: props.brandTokens.meta?.slug || props.brandTokens.slug || props.brandTokens.name.toLowerCase(),
-      tokens: props.brandTokens,
-    },
-  });
-  window.dispatchEvent(event);
+  const slug = props.brandTokens?.slug;
+  if (!slug) return;
+  window.dispatchEvent(new CustomEvent("brand-reset", { detail: { slug } }));
 }
 
 // ---------------------------------------------

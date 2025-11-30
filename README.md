@@ -1,6 +1,8 @@
 # Voorbeeld-ig: Your Brand's Social Style Visualizer
 
-![Voorbeeld-ig Logo](src/assets/img/logo-inverse.svg)
+<p>
+  <img src="src/assets/img/logo-inverse-full.svg" width="400" />
+</p>
 
 A dynamic brand visualization tool developed as a value-add for [Creo Websolutions](https://www.creowebsolutions.be/) clients. This application helps solopreneurs and small businesses maintain brand consistency by providing a "pre-editing guidance" experience. It allows users to visualize how their website's design tokens (colors, fonts, styles) can be applied to various social media post formats in a safe, interactive playground.
 
@@ -66,3 +68,10 @@ npm run dev
 # Compiles and minifies the application for production
 npm run build
 ```
+
+---
+
+## 📎Credits
+
+Instagram grid layout based on work by georgewpark:
+https://github.com/georgewpark/Instagram-Profile-Layout

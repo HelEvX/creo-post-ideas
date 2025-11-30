@@ -72,6 +72,9 @@ export const recipes = [
       "--ui-inverse": "var(--color-text-inverse)",
 
       "--ui-shadow": "rgba(0,0,0,0.10)",
+
+      "--ig-tile-bg": ["primary", 1],
+      "--ig-tile-fg": ["primary", 7],
     },
   },
   // ======================================================
@@ -118,6 +121,9 @@ export const recipes = [
       "--ui-inverse": "var(--color-text-inverse)",
 
       "--ui-shadow": "rgba(0,0,0,0.18)",
+
+      "--ig-tile-bg": ["primary", 1],
+      "--ig-tile-fg": ["primary", 7],
     },
   },
   // ======================================================
@@ -164,6 +170,9 @@ export const recipes = [
       "--ui-inverse": "var(--color-text-inverse)",
 
       "--ui-shadow": "rgba(0,0,0,0.05)",
+
+      "--ig-tile-bg": ["primary", 1],
+      "--ig-tile-fg": ["primary", 7],
     },
   },
   // ======================================================
@@ -210,6 +219,9 @@ export const recipes = [
       "--ui-inverse": "var(--color-text-inverse)",
 
       "--ui-shadow": "rgba(0,0,0,0.12)",
+
+      "--ig-tile-bg": ["primary", 1],
+      "--ig-tile-fg": ["primary", 7],
     },
   },
   // ======================================================
@@ -256,6 +268,9 @@ export const recipes = [
       "--ui-inverse": ["neutral", 0],
 
       "--ui-shadow": "rgba(0,0,0,0.30)",
+
+      "--ig-tile-bg": ["primary", 1],
+      "--ig-tile-fg": ["primary", 7],
     },
   },
   // ======================================================
@@ -302,6 +317,9 @@ export const recipes = [
       "--ui-inverse": "var(--color-text-inverse)",
 
       "--ui-shadow": "rgba(0,0,0,0.04)",
+
+      "--ig-tile-bg": ["primary", 1],
+      "--ig-tile-fg": ["primary", 7],
     },
   },
 ];
