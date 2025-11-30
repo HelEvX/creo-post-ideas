@@ -169,7 +169,7 @@ function highlightIconStyle(file) {
   font-size: 14px;
   line-height: 18px;
   color: #000;
-  /* background: #fafafa; */
+  background: var(--white);
   max-width: 975px;
   margin: 0 auto;
   padding: 3rem 2rem 0;

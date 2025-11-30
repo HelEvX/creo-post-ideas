@@ -31,7 +31,7 @@
       </div>
     </section>
 
-    <!-- === START: App Layout === -->
+    <!-- === START: Preview Zone === -->
     <section class="app__layout">
       <div class="container-full">
         <div class="row between">
@@ -40,22 +40,25 @@
           <!-- MAIN COLUMN -->
           <main class="col-12 col-md-9 app__main">
             <!-- CANVAS -->
-            <section class="app__canvas">
+            <div class="app__canvas">
               <MainPreview :brandTokens="brandTokens" :scales="scales" />
-            </section>
-
-            <!-- FINALIZATION ZONE -->
-            <section class="app__finalization">
-              <BrandGallery :brandTokens="brandTokens" :scales="scales" />
-            </section>
+            </div>
           </main>
         </div>
       </div>
     </section>
-    <!-- === END: App Layout === -->
+    <!-- === END: Previous Zone === -->
+
+    <!-- == START: Finalization Zone -->
+    <section class="col-12 app__finalization">
+      <div class="row">
+        <BrandGallery :brandTokens="brandTokens" :scales="scales" />
+      </div>
+    </section>
+    <!-- == END: Finalization Zone -->
 
     <!-- INSTAGRAM GRID VIEW -->
-    <section class="section section-gallery">
+    <section class="section section-gallery alt">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -70,7 +73,7 @@
     </section>
 
     <!-- ABOUT (purpose of tool) -->
-    <section class="section section-about alt">
+    <section class="section section-about">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -87,7 +90,7 @@
     </section>
 
     <!-- REVIEW FORM -->
-    <section class="section section-review">
+    <section class="section section-review alt">
       <div class="container">
         <div class="row center">
           <div class="col-12">
@@ -390,12 +393,20 @@ p.hero-subtitle {
 .app__canvas,
 .app__finalization {
   background: var(--ui-section-bg);
-  border: var(--ui-panel-border-soft);
   border-radius: var(--radius-lg);
   padding: var(--space-25);
 }
 
+.app__canvas {
+  border: var(--ui-panel-border-soft);
+}
+
 .app__finalization {
-  margin-top: var(--space-25);
+  margin: var(--space-50) 0;
+}
+
+.section-gallery h2 {
+  text-align: center;
+  padding-bottom: var(--space-50);
 }
 </style>

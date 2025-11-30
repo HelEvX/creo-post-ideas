@@ -275,7 +275,6 @@ defineExpose({ nextRecipe, prevRecipe });
   color: var(--ui-text);
   display: flex;
   flex-direction: column;
-  gap: var(--space-20);
 }
 
 /* ---------------------------------------------

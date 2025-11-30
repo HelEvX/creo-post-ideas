@@ -1,14 +1,8 @@
 <template>
   <div
     class="social-post"
-    :class="[
-      `size--${size}`,
-      `bg--${backgroundType}`,
-      showCornerShapes ? 'has-shapes' : 'no-shapes',
-      showBrand ? 'has-brand' : 'no-brand',
-      showLabel ? 'has-label' : 'no-label',
-      showQuote ? 'has-quote' : 'no-quote',
-    ]">
+    :style="{ '--mockup-aspect': aspectRatio }"
+    :class="[`size--${size}`, `bg--${backgroundType}`]">
     <!-- BACKGROUND LAYER STACK -->
     <div class="post-bg">
       <!-- COLOR LAYER (midnight, light, main…) -->
@@ -65,43 +59,44 @@
 </template>
 
 <script setup>
-import photo from "@/assets/img/stockphoto.webp";
-import logoInverse from "@/assets/img/logo-inverse.svg";
+import { computed } from "vue";
 import logoDefault from "@/assets/img/logo-default.svg";
+import logoInverse from "@/assets/img/logo-inverse.svg";
 
-defineProps({
-  size: { type: String, default: "portrait" },
+const props = defineProps({
+  size: String,
+  backgroundType: String,
+  usePhoto: Boolean,
+  photoSrc: String,
+  showBrand: Boolean,
+  showCornerShapes: Boolean,
+  showLabel: Boolean,
+  labelSize: String,
+  labelColor: String,
+  labelIcon: Boolean,
+  labelText: String,
+  title: String,
+  subtitle: String,
+  showQuote: Boolean,
+  quote: String,
+  shapesSrc: String,
+});
 
-  /* background modes: midnight-dark | midnight-light | main | pattern-dark | pattern-light | none */
-  backgroundType: { type: String, default: "midnight-dark" },
-
-  /* controls the actual presence of the photo layer */
-  usePhoto: { type: Boolean, default: true },
-
-  /* photo asset */
-  photoSrc: { type: String, default: photo },
-
-  /* SVG diagonal shapes */
-  shapesSrc: { type: String, default: "" },
-
-  /* content */
-  showBrand: { type: Boolean, default: true },
-  showCornerShapes: { type: Boolean, default: true },
-
-  showLabel: { type: Boolean, default: true },
-  labelSize: { type: String, default: "large" },
-  labelColor: { type: String, default: "green" },
-  labelIcon: { type: Boolean, default: true },
-  labelText: { type: String, default: "Label text" },
-
-  title: { type: String, default: "Lorem ipsum dolor sit amet consectetur." },
-  subtitle: {
-    type: String,
-    default: "Lorem ipsum dolor sit amet consectetur. Turpis.",
-  },
-
-  showQuote: { type: Boolean, default: false },
-  quote: { type: String, default: "This is a quote." },
+const aspectRatio = computed(() => {
+  switch (props.size) {
+    case "square":
+      return "1 / 1";
+    case "portrait":
+      return "1080 / 1350";
+    case "story":
+      return "1080 / 1920";
+    case "landscape":
+      return "1200 / 630";
+    case "cover":
+      return "1584 / 396";
+    default:
+      return "1080 / 1350";
+  }
 });
 </script>
 
@@ -112,11 +107,103 @@ defineProps({
 
 .social-post {
   position: relative;
-  width: 100%;
-  overflow: hidden;
-
+  aspect-ratio: var(--mockup-aspect);
+  width: 54rem;
   --pad-h: var(--space-40);
-  --pad-v: var(--space-75);
+  --pad-v: var(--space-50);
+}
+
+/* Stack: icon → label → title → subtitle */
+.post-content {
+  position: absolute;
+  left: var(--space-40); /* 40px consistent margin left */
+  bottom: var(--space-75); /* 75px spacing matches agency style */
+  max-width: 70%;
+  color: var(--ui-inverse);
+}
+
+.post-icon {
+  margin-bottom: var(--space-30);
+}
+
+.post-label {
+  margin-bottom: var(--space-30);
+}
+
+.post-title {
+  margin-bottom: var(--space-20);
+}
+
+/* -----------------------------------------------------
+   CSS PATTERNS (css-pattern.com)
+----------------------------------------------------- */
+
+/* placeholder */
+.bg--midnight-dark .post-bg__pattern {
+  background: var(--secondary-700);
+  opacity: 0.15;
+}
+
+.bg--midnight-light .post-bg__color {
+  background: var(--secondary-500);
+  opacity: 0.15;
+}
+
+.bg--main .post-bg__color {
+  background: var(--color-primary);
+  opacity: 0.15;
+}
+
+/* starter pack */
+
+.bg--pattern-dots .post-bg__pattern {
+  background-image: radial-gradient(var(--color-primary-light) 1px, transparent 1px);
+  background-size: 1.6rem 1.6rem;
+  opacity: 0.18;
+}
+
+.bg--pattern-lines .post-bg__pattern {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--color-primary-light) 0,
+    var(--color-primary-light) 1rem,
+    transparent 1rem,
+    transparent 2rem
+  );
+  opacity: 0.12;
+}
+
+.bg--pattern-grid .post-bg__pattern {
+  background-image: linear-gradient(var(--color-primary-light) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-primary-light) 1px, transparent 1px);
+  background-size: 2rem 2rem;
+  opacity: 0.1;
+}
+
+.bg--pattern-noise .post-bg__pattern {
+  background-image: url("data:image/svg+xml,%3Csvg ... %3E");
+  opacity: 0.25;
+}
+
+/* hand picked */
+
+.bg--triangles-grid .post-bg__pattern {
+  --s: 200px; /* control the size*/
+  --c1: #dc9d37;
+  --c2: #fed450;
+  --c3: #125c65;
+  --c4: #bc4a33;
+  --c5: #ffffff;
+
+  --_g: var(--c1) 25%, var(--c2) 0 50%, #0000 0;
+  --_l1: var(--c5) 0 1px, #0000 0 calc(25% - 1px), var(--c5) 0 25%;
+  --_l2: var(--c5) 0 1px, #0000 0 calc(50% - 1px), var(--c5) 0 50%;
+  background: repeating-linear-gradient(45deg, var(--_l1)), repeating-linear-gradient(-45deg, var(--_l1)),
+    repeating-linear-gradient(0deg, var(--_l2)), repeating-linear-gradient(90deg, var(--_l2)),
+    conic-gradient(from 135deg at 25% 75%, var(--_g)), conic-gradient(from 225deg at 25% 25%, var(--_g)),
+    conic-gradient(from 45deg at 75% 75%, var(--_g)), conic-gradient(from -45deg at 75% 25%, var(--_g)),
+    repeating-conic-gradient(var(--c3) 0 45deg, var(--c4) 0 90deg);
+  background-size: var(--s) var(--s);
 }
 
 /* -----------------------------------------------------

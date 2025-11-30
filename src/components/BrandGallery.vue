@@ -1,7 +1,8 @@
 <template>
   <div class="brand-gallery">
+    <div class="col-12 col-md-1"></div>
     <!-- Color playground -->
-    <section class="col-12 col-md-6 brand-gallery__section">
+    <section class="col-12 col-md-4 brand-gallery__section">
       <header class="brand-gallery__header">
         <h3 class="brand-gallery__title">Color playground</h3>
         <p>Click the tiles to copy the color to your clipboard.</p>
