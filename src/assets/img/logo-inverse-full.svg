@@ -16,7 +16,7 @@
       }
 
       .st3 {
-        fill: #05b184; <!-- primary -->
+        fill: #61fbd3; <!-- primary-lighter -->
       }
 
       .st4 {
@@ -27,13 +27,17 @@
         fill: #00a3b8; <!-- secondary-lighter -->
       }
 
+      .st6 {
+        fill: #006c7a; <!-- secondary -->
+      }
+
     </style>
   </defs>
   <rect class="st0" x="14.9" y="15.9" width="89.2" height="89.2"/>
   <g id="squares">
     <rect class="st1" x="8.4" y="35.1" width="22.7" height="22.8" transform="translate(-18.1 13.1) rotate(-25.6)"/>
     <rect class="st2" x="35.3" y="22.3" width="22.8" height="22.8" transform="translate(-10 23.5) rotate(-25.6)"/>
-    <rect class="st3" x="21.3" y="62" width="22.7" height="22.8" transform="translate(-28.5 21.3) rotate(-25.6)"/>
+    <rect class="st6" x="21.3" y="62" width="22.7" height="22.8" transform="translate(-28.5 21.3) rotate(-25.6)"/>
     <rect class="st4" x="48.1" y="49.2" width="22.8" height="22.8" transform="translate(-20.3 31.7) rotate(-25.6)"/>
     <rect class="st5" x="75" y="36.3" width="22.8" height="22.8" transform="translate(-12.1 42) rotate(-25.6)"/>
     <rect class="st5" x="34.2" y="88.8" width="22.8" height="22.8" transform="translate(-38.8 29.5) rotate(-25.6)"/>

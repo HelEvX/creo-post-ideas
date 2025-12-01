@@ -38,7 +38,7 @@
           width="22.8"
           height="22.8"
           transform="translate(-28.5 21.3) rotate(-25.6)"
-          fill="var(--color-primary-light)" />
+          fill="var(--color-primary-lighter)" />
         <rect
           x="48.1"
           y="49.1"
@@ -52,28 +52,28 @@
           width="22.8"
           height="22.8"
           transform="translate(-12.1 42) rotate(-25.6)"
-          fill="var(--color-secondary)" />
+          fill="var(--color-primary)" />
         <rect
           x="34.2"
           y="88.8"
           width="22.8"
           height="22.8"
           transform="translate(-38.8 29.5) rotate(-25.6)"
-          fill="var(--color-secondary-dark)" />
+          fill="var(--color-secondary-lighter)" />
         <rect
           x="61"
           y="75.9"
           width="22.8"
           height="22.8"
           transform="translate(-30.6 39.9) rotate(-25.6)"
-          fill="var(--color-secondary-lighter)" />
+          fill="var(--color-primary-light)" />
         <rect
           x="87.8"
           y="63.1"
           width="22.8"
           height="22.8"
           transform="translate(-22.4 50.2) rotate(-25.6)"
-          fill="var(--color-primary)" />
+          fill="var(--color-secondary)" />
       </g>
 
       <path
@@ -134,7 +134,7 @@
           width="22.8"
           height="22.8"
           transform="translate(-28.5 21.3) rotate(-25.6)"
-          fill="var(--color-primary)" />
+          fill="var(--color-secondary)" />
         <rect
           x="48.1"
           y="49.1"
@@ -169,7 +169,7 @@
           width="22.8"
           height="22.8"
           transform="translate(-22.4 50.2) rotate(-25.6)"
-          fill="var(--color-primary-light)" />
+          fill="var(--color-primary-lighter)" />
       </g>
 
       <path
