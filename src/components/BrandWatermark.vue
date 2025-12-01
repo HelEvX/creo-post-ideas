@@ -23,7 +23,7 @@
         width="22.8"
         height="22.8"
         transform="translate(-28.5 21.3) rotate(-25.6)"
-        fill="var(--color-primary)" />
+        fill="var(--color-secondary)" />
       <rect
         x="48.1"
         y="49.1"
@@ -58,7 +58,7 @@
         width="22.8"
         height="22.8"
         transform="translate(-22.4 50.2) rotate(-25.6)"
-        fill="var(--color-primary-light)" />
+        fill="var(--color-primary-lighter)" />
     </g>
   </svg>
 </template>
