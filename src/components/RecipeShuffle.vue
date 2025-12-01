@@ -268,7 +268,7 @@ defineExpose({ nextRecipe, prevRecipe });
    CONTAINER
 --------------------------------------------- */
 .recipe-shuffle {
-  border: var(--ui-panel-border);
+  /* border: var(--ui-panel-border); */
   border-radius: var(--radius-md);
   padding: var(--space-20);
   background: var(--ui-panel-bg);

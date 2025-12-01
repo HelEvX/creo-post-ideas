@@ -24,15 +24,15 @@
     </div>
 
     <!-- CORNER SHAPES (green triangles from mockup) -->
-    <div v-if="showCornerShapes" class="corner-shape corner-shape--tl"></div>
-    <div v-if="showCornerShapes" class="corner-shape corner-shape--br"></div>
+    <div v-if="showCornerShapes" class="corner-shape square corner-shape--bl"></div>
+    <div v-if="showCornerShapes" class="corner-shape rect corner-shape--br"></div>
 
     <!-- MAIN TEXT AREA -->
     <div class="post-content">
       <!-- LABEL -->
       <div v-if="showLabel" class="post-label" :class="[`label--${labelSize}`, `label-color--${labelColor}`]">
         <div v-if="labelIcon" class="post-label__icon">
-          <img class="post-label-icon__img" :src="logoDefault" alt="" />
+          <i class="fa-solid fa-circle-info"></i>
         </div>
         <div class="post-label__text">{{ labelText }}</div>
       </div>
@@ -50,7 +50,7 @@
 
     <!-- WATERMARK (bottom-right green block) -->
     <div class="post-watermark" v-if="showBrand">
-      <img class="post-watermark__img" :src="logoInverse" alt="" />
+      <BrandWatermark />
     </div>
 
     <!-- DIAGONAL SHAPES (SVG overlay) -->
@@ -60,8 +60,7 @@
 
 <script setup>
 import { computed } from "vue";
-import logoDefault from "@/assets/img/logo-default.svg";
-import logoInverse from "@/assets/img/logo-inverse.svg";
+import BrandWatermark from "@/components/BrandWatermark.vue";
 
 const props = defineProps({
   size: String,
@@ -101,37 +100,54 @@ const aspectRatio = computed(() => {
 </script>
 
 <style scoped>
+/* BASE SAFE ZONE (fallback) */
+.social-post {
+  --safe-left: 2.5rem;
+  --safe-right: 2.5rem;
+  --safe-top: 2.5rem;
+  --safe-bottom: 2.5rem;
+}
+
 /* -----------------------------------------------------
    STRUCTURE + TOKENS
 ----------------------------------------------------- */
 
 .social-post {
   position: relative;
+  width: 100%;
+  height: auto;
   aspect-ratio: var(--mockup-aspect);
-  width: 54rem;
-  --pad-h: var(--space-40);
-  --pad-v: var(--space-50);
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
 }
 
-/* Stack: icon → label → title → subtitle */
-.post-content {
-  position: absolute;
-  left: var(--space-40); /* 40px consistent margin left */
-  bottom: var(--space-75); /* 75px spacing matches agency style */
-  max-width: 70%;
-  color: var(--ui-inverse);
+.size--square {
+  --safe-left: var(--safe-square-left);
+  --safe-right: var(--safe-square-right);
+  --safe-top: var(--safe-square-top);
+  --safe-bottom: var(--safe-square-bottom);
 }
 
-.post-icon {
-  margin-bottom: var(--space-30);
+.size--portrait {
+  --safe-left: var(--safe-portrait-left);
+  --safe-right: var(--safe-portrait-right);
+  --safe-top: var(--safe-portrait-top);
+  --safe-bottom: var(--safe-portrait-bottom);
 }
 
-.post-label {
-  margin-bottom: var(--space-30);
+.size--landscape {
+  --safe-left: var(--safe-landscape-left);
+  --safe-right: var(--safe-landscape-right);
+  --safe-top: var(--safe-landscape-top);
+  --safe-bottom: var(--safe-landscape-bottom);
 }
 
-.post-title {
-  margin-bottom: var(--space-20);
+.size--story {
+  --safe-left: var(--safe-story-left);
+  --safe-right: var(--safe-story-right);
+  --safe-top: var(--safe-story-top);
+  --safe-bottom: var(--safe-story-bottom);
 }
 
 /* -----------------------------------------------------
@@ -185,47 +201,6 @@ const aspectRatio = computed(() => {
   opacity: 0.25;
 }
 
-/* hand picked */
-
-.bg--triangles-grid .post-bg__pattern {
-  --s: 200px; /* control the size*/
-  --c1: #dc9d37;
-  --c2: #fed450;
-  --c3: #125c65;
-  --c4: #bc4a33;
-  --c5: #ffffff;
-
-  --_g: var(--c1) 25%, var(--c2) 0 50%, #0000 0;
-  --_l1: var(--c5) 0 1px, #0000 0 calc(25% - 1px), var(--c5) 0 25%;
-  --_l2: var(--c5) 0 1px, #0000 0 calc(50% - 1px), var(--c5) 0 50%;
-  background: repeating-linear-gradient(45deg, var(--_l1)), repeating-linear-gradient(-45deg, var(--_l1)),
-    repeating-linear-gradient(0deg, var(--_l2)), repeating-linear-gradient(90deg, var(--_l2)),
-    conic-gradient(from 135deg at 25% 75%, var(--_g)), conic-gradient(from 225deg at 25% 25%, var(--_g)),
-    conic-gradient(from 45deg at 75% 75%, var(--_g)), conic-gradient(from -45deg at 75% 25%, var(--_g)),
-    repeating-conic-gradient(var(--c3) 0 45deg, var(--c4) 0 90deg);
-  background-size: var(--s) var(--s);
-}
-
-/* -----------------------------------------------------
-   ASPECT RATIOS (5 IG formats)
------------------------------------------------------ */
-
-.size--square {
-  aspect-ratio: 1 / 1;
-}
-.size--portrait {
-  aspect-ratio: 1080 / 1350;
-}
-.size--story {
-  aspect-ratio: 1080 / 1920;
-}
-.size--landscape {
-  aspect-ratio: 1200 / 630;
-}
-.size--cover {
-  aspect-ratio: 1584 / 396;
-}
-
 /* -----------------------------------------------------
    BACKGROUND LAYERS
 ----------------------------------------------------- */
@@ -253,39 +228,72 @@ const aspectRatio = computed(() => {
 
 /* Overlay */
 .post-bg__overlay {
-  background: rgba(0, 0, 0, 0.35);
+  background: var(--color-secondary);
+  opacity: 0.6;
 }
 
 /* -----------------------------------------------------
    CORNER SHAPES
 ----------------------------------------------------- */
 
-.corner-shape {
+.corner-shape.square {
   position: absolute;
-  width: 20%;
-  height: 20%;
+  height: 40%;
+  aspect-ratio: 1 / 1;
+  clip-path: polygon(0 0, 100% 100%, 0 100%, 0 0);
   background: var(--color-primary);
+  opacity: 0.2;
+}
+
+.corner-shape.rect {
+  position: absolute;
+  height: 30%;
+  aspect-ratio: 2 / 1;
+  clip-path: polygon(0 0, 100% 100%, 0 100%, 0 0);
+  background: var(--color-primary);
+  opacity: 0.2;
 }
 
 .corner-shape--tl {
   top: 0;
   left: 0;
+  transform: scaleY(-1);
+}
+.corner-shape--tr {
+  top: 0;
+  right: 0;
+  transform: scale(-1, -1);
+}
+.corner-shape--bl {
+  bottom: 0;
+  left: 0;
 }
 .corner-shape--br {
   bottom: 0;
   right: 0;
+  transform: scaleX(-1);
 }
 
 /* -----------------------------------------------------
    MAIN CONTENT AREA
 ----------------------------------------------------- */
 
+/* Stack: icon → label → title → subtitle */
 .post-content {
   position: absolute;
-  left: var(--pad-h);
-  bottom: calc(var(--pad-v) * 1.8);
-  max-width: 70%;
+  inset: 0; /* fill the post */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
   color: var(--ui-inverse);
+
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+
+  max-width: none; /* no limiting */
 }
 
 /* Title + subtitle */
@@ -315,6 +323,10 @@ const aspectRatio = computed(() => {
 .post-label__icon {
   width: 4rem;
   height: 4rem;
+}
+
+.post-label__icon i {
+  font-size: 40px;
 }
 
 .post-label-icon__img {
@@ -351,25 +363,22 @@ const aspectRatio = computed(() => {
 
 .post-watermark {
   position: absolute;
-  display: inline-block;
-  right: var(--pad-h);
-  bottom: var(--pad-v);
-}
-
-.post-watermark__img {
-  width: 6rem;
-  height: 6rem;
-  object-fit: contain;
-  opacity: 0.5;
+  right: var(--safe-right);
+  bottom: var(--safe-bottom);
+  width: 4rem;
+  height: 4rem;
+  opacity: 0.6;
 }
 
 /* -----------------------------------------------------
-   DIAGONAL SHAPES OVERLAY
------------------------------------------------------ */
+   STORY — HEIGHT-DOMINANT SIZING FIX
+   ----------------------------------------------------- */
 
-.post-shapes {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+.size--story {
+  height: 700px; /* or clamp(...) later */
+  max-height: 700px;
+  width: auto;
+  aspect-ratio: 9 / 16;
+  max-width: none;
 }
 </style>

@@ -6,11 +6,11 @@ defineProps({
 const emit = defineEmits(["update:size"]);
 
 const formats = [
-  { id: "square", label: "Square", icon: "▢" },
-  { id: "landscape", label: "Landscape", icon: "▭" },
-  { id: "portrait", label: "Portrait", icon: "▯" },
-  { id: "story", label: "Story", icon: "▭" },
-  // { id: "cover", label: "Banner", icon: "▭" },
+  { id: "square", label: "Square", icon: "fa-solid fa-square" },
+  { id: "landscape", label: "Landscape", icon: "fa-regular fa-image" },
+  { id: "portrait", label: "Portrait", icon: "fa-solid fa-image-portrait" },
+  { id: "story", label: "Story", icon: "fa-regular fa-id-badge" },
+  // { id: "cover", label: "Banner", icon: "fa-solid fa-panorama" },
 ];
 
 function select(id) {
@@ -27,7 +27,7 @@ function select(id) {
       class="format-selector-bar__btn"
       :class="{ active: f.id === modelValue }"
       @click="select(f.id)">
-      <span class="format-selector-bar__icon">{{ f.icon }}</span>
+      <span class="format-selector-bar__icon"><i :class="f.icon"></i></span>
       <span>{{ f.label }}</span>
     </button>
   </div>
@@ -60,7 +60,8 @@ function select(id) {
   color: var(--ui-inverse);
 }
 
-.format-selector-bar__icon {
-  font-size: 1.4rem;
+.format-selector-bar__icon i {
+  font-size: 1.6rem;
+  line-height: 1;
 }
 </style>

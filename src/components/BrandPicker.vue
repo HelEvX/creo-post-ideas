@@ -79,6 +79,7 @@ export default {
       <option value="tropical">Ijssalon Tropical</option>
       <option value="cardgameshop">Card Game Shop</option>
       <option value="blooloc">Blooloc</option>
+      <option value="glaede">Glaede</option>
     </select>
 
     <div class="brand-preview">

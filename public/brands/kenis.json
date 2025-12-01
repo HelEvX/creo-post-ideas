@@ -23,7 +23,7 @@
   "color-panel": "#6b705c",
   "color-panel-alt": "#6b705c",
   "color-overlay-accent": "rgba(173, 131, 108, 0.25)",
-  "color-title": "3f3f3f",
+  "color-title": "#3f3f3f",
   "color-title-alt": "#ad836c",
   "color-subtitle": "#b7b7a4",
   "color-text": "#828282",
@@ -41,5 +41,29 @@
   "color-success": "#b3e27c",
   "color-success-dark": "#88d232",
   "color-disabled-bg": "#a8a8a8",
-  "color-disabled-text": "#a8a8a8"
+  "color-disabled-text": "#a8a8a8",
+
+  "ig": {
+    "avatar": "client.webp",
+    "username": "client.be",
+    "posts": 0,
+    "followers": 0,
+    "following": 0,
+    "title": "www.client.be",
+    "threads": "@groomer.be",
+    "businessType": "business type",
+    "description": "Description part 1.\nDescription part 2\nDescription part 3\nDescription part 4",
+    "address": "Straat, Stad, Belgium xxxx",
+    "url": "https://www.client.be",
+    "highlightIcon": "src/assets/highlights/client.svg",
+    "highlights": [
+      { "label": "TEAM", "bg": "#cecece" },
+      { "label": "PROMOS", "bg": "#444" },
+      { "label": "SHOP", "bg": "#cecece" },
+      { "label": "SERVICES", "bg": "#444" },
+      { "label": "BLOG", "bg": "#cecece" },
+      { "label": "FAQ", "bg": "#444" },
+      { "label": "REVIEWS", "bg": "#cecece" }
+    ]
+  }
 }

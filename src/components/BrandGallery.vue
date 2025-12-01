@@ -1,6 +1,5 @@
 <template>
   <div class="brand-gallery">
-    <div class="col-12 col-md-1"></div>
     <!-- Color playground -->
     <section class="col-12 col-md-4 brand-gallery__section">
       <header class="brand-gallery__header">
@@ -73,6 +72,7 @@
         </section>
       </div>
     </section>
+
     <!-- Type playground -->
     <section class="col-12 col-md-6 brand-gallery__section brand-gallery__section--playground">
       <div class="brand-gallery__playground-header">

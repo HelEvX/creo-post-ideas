@@ -187,6 +187,38 @@
 
   /* Transitions */
   --transition-default: all 0.3s ease;
+
+  /* ------------------------------------------------------
+     INSTAGRAM SAFE ZONES (scaled to mockup size)
+     ------------------------------------------------------ */
+
+  --mockup-width: 540; /* px – preview size */
+  --ref-width: 1080; /* px – IG design reference */
+  --scale-factor: calc(var(--mockup-width) / var(--ref-width));
+
+  /* Square (1:1 → grid crops the sides to 4:5 then 4:3) */
+  --safe-square-left: calc(96px * var(--scale-factor));
+  --safe-square-right: calc(96px * var(--scale-factor));
+  --safe-square-top: calc(120px * var(--scale-factor));
+  --safe-square-bottom: calc(150px * var(--scale-factor));
+
+  /* Portrait (1080×1350 → grid crops to 4:5 then 4:3) */
+  --safe-portrait-left: calc(96px * var(--scale-factor));
+  --safe-portrait-right: calc(96px * var(--scale-factor));
+  --safe-portrait-top: calc(120px * var(--scale-factor));
+  --safe-portrait-bottom: calc(180px * var(--scale-factor));
+
+  /* Landscape (1200×630 → grid crops to 4:3) */
+  --safe-landscape-left: calc(80px * var(--scale-factor));
+  --safe-landscape-right: calc(80px * var(--scale-factor));
+  --safe-landscape-top: calc(70px * var(--scale-factor));
+  --safe-landscape-bottom: calc(100px * var(--scale-factor));
+
+  /* Story / Reel (dedicated safe regions) */
+  --safe-story-left: calc(120px * var(--scale-factor));
+  --safe-story-right: calc(120px * var(--scale-factor));
+  --safe-story-top: calc(250px * var(--scale-factor));
+  --safe-story-bottom: calc(350px * var(--scale-factor));
 }
 
 /* ------------------------------------------------------
@@ -494,8 +526,50 @@ textarea {
   width: 8.3333%;
 }
 
-/* Responsive columns */
+/* ======================================================
+   EXTENDED GRID SYSTEM (CREO BOOTSTRAP)
+   ====================================================== */
+
 @media (min-width: 576px) {
+  .col-sm-12 {
+    width: 100%;
+  }
+  .col-sm-11 {
+    width: 91.6667%;
+  }
+  .col-sm-10 {
+    width: 83.3333%;
+  }
+  .col-sm-9 {
+    width: 75%;
+  }
+  .col-sm-8 {
+    width: 66.6667%;
+  }
+  .col-sm-7 {
+    width: 58.3333%;
+  }
+  .col-sm-6 {
+    width: 50%;
+  }
+  .col-sm-5 {
+    width: 41.6667%;
+  }
+  .col-sm-4 {
+    width: 33.3333%;
+  }
+  .col-sm-3 {
+    width: 25%;
+  }
+  .col-sm-2 {
+    width: 16.6667%;
+  }
+  .col-sm-1 {
+    width: 8.3333%;
+  }
+}
+
+@media (min-width: 768px) {
   .col-md-12 {
     width: 100%;
   }
@@ -530,6 +604,123 @@ textarea {
     width: 16.6667%;
   }
   .col-md-1 {
+    width: 8.3333%;
+  }
+}
+
+@media (min-width: 992px) {
+  .col-lg-12 {
+    width: 100%;
+  }
+  .col-lg-11 {
+    width: 91.6667%;
+  }
+  .col-lg-10 {
+    width: 83.3333%;
+  }
+  .col-lg-9 {
+    width: 75%;
+  }
+  .col-lg-8 {
+    width: 66.6667%;
+  }
+  .col-lg-7 {
+    width: 58.3333%;
+  }
+  .col-lg-6 {
+    width: 50%;
+  }
+  .col-lg-5 {
+    width: 41.6667%;
+  }
+  .col-lg-4 {
+    width: 33.3333%;
+  }
+  .col-lg-3 {
+    width: 25%;
+  }
+  .col-lg-2 {
+    width: 16.6667%;
+  }
+  .col-lg-1 {
+    width: 8.3333%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .col-xl-12 {
+    width: 100%;
+  }
+  .col-xl-11 {
+    width: 91.6667%;
+  }
+  .col-xl-10 {
+    width: 83.3333%;
+  }
+  .col-xl-9 {
+    width: 75%;
+  }
+  .col-xl-8 {
+    width: 66.6667%;
+  }
+  .col-xl-7 {
+    width: 58.3333%;
+  }
+  .col-xl-6 {
+    width: 50%;
+  }
+  .col-xl-5 {
+    width: 41.6667%;
+  }
+  .col-xl-4 {
+    width: 33.3333%;
+  }
+  .col-xl-3 {
+    width: 25%;
+  }
+  .col-xl-2 {
+    width: 16.6667%;
+  }
+  .col-xl-1 {
+    width: 8.3333%;
+  }
+}
+
+@media (min-width: 1400px) {
+  .col-xxl-12 {
+    width: 100%;
+  }
+  .col-xxl-11 {
+    width: 91.6667%;
+  }
+  .col-xxl-10 {
+    width: 83.3333%;
+  }
+  .col-xxl-9 {
+    width: 75%;
+  }
+  .col-xxl-8 {
+    width: 66.6667%;
+  }
+  .col-xxl-7 {
+    width: 58.3333%;
+  }
+  .col-xxl-6 {
+    width: 50%;
+  }
+  .col-xxl-5 {
+    width: 41.6667%;
+  }
+  .col-xxl-4 {
+    width: 33.3333%;
+  }
+  .col-xxl-3 {
+    width: 25%;
+  }
+  .col-xxl-2 {
+    width: 16.6667%;
+  }
+  .col-xxl-1 {
     width: 8.3333%;
   }
 }

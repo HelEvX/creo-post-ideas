@@ -3,13 +3,13 @@
     <div class="content-type-panel__title">Choose content type</div>
 
     <div class="content-type-panel__buttons">
-      <button type="button" @click="select('intro')">Introduction / cover post</button>
+      <button type="button" @click="select('intro')">Intro</button>
 
-      <button type="button" @click="select('review')">Customer review quote</button>
+      <button type="button" @click="select('review')">Quote</button>
 
-      <button type="button" @click="select('something-else')">Something else</button>
+      <button type="button" @click="select('something-else')">Product</button>
 
-      <button type="button" @click="select('other')">And so on ...</button>
+      <button type="button" @click="select('other')">Paragraph</button>
     </div>
   </aside>
 </template>
@@ -26,8 +26,8 @@ function select(type) {
 .content-type-panel {
   /* background: var(--ui-panel-bg); */
   /* border-radius: var(--radius-md); */
-  border-right: var(--ui-panel-border-soft);
-  padding: 2rem;
+  padding: 2.5rem;
+  margin-left: -2.5rem;
 }
 
 .content-type-panel__title {

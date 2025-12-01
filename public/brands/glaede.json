@@ -1,0 +1,74 @@
+{
+  "name": "Client",
+  "meta": { "brand": "Client", "version": "1.0" },
+  "font-title": "sans-serif",
+  "font-body": "sans-serif",
+  "fonts": {
+    "import": [""]
+  },
+
+  "color-primary": "#fff3a5",
+  "color-primary-dark": "#ffe53d",
+  "color-primary-darker": "#f5d400",
+  "color-primary-light": "#fff4ad",
+  "color-primary-lighter": "#fffbe0",
+
+  "color-secondary": "#4d4c4a",
+  "color-secondary-dark": "#656362",
+  "color-secondary-darker": "#333231",
+  "color-secondary-light": "#7d7c7b",
+  "color-secondary-lighter": "#949392",
+
+  "color-surface": "#ffffff",
+  "color-panel": "#fffbe0",
+  "color-panel-alt": "#f3f3f3",
+  "color-overlay-accent": "rgba(255, 255, 255, 0.75)",
+
+  "color-title": "#12100e",
+  "color-title-alt": "#f5d400",
+  "color-subtitle": "#12100e",
+  "color-text": "#acacab",
+  "color-text-soft": "rgba(18, 16, 14, 0.65)",
+
+  "color-header-bg": "#ffffff",
+  "color-footer-bg": "#f3f3f3",
+  "color-section-dark": "#f5d400",
+  "color-section-dark-alt": "#fff3a5",
+
+  "color-border-dark": "#333231",
+  "color-border-medium": "#f3f3f3",
+  "color-border-light": "#dadada",
+
+  "color-info": "#3c6e71",
+  "color-warning": "#ffbb31",
+  "color-danger": "#db3a34",
+  "color-success": "#5c946e",
+  "color-success-dark": "#3f654b",
+
+  "color-disabled-bg": "#acacab",
+  "color-disabled-text": "#acacab",
+
+  "ig": {
+    "avatar": "glaede.webp",
+    "username": "glaede_interieurarchitecten",
+    "posts": 64,
+    "followers": 790,
+    "following": 1132,
+    "title": "Glaede interieurarchitecten",
+    "threads": "@groomer.be",
+    "businessType": "interior designer",
+    "description": "•⚡️Jouw nieuwe interieur start hier⚡️•\n• OFFICE • BEAUTY • BE & NL •\n•📧info@glaede.be\n•👤 Founded by @vandenaarssenerik",
+    "address": "Bredabaan 71, Antwerp, Belgium 2170",
+    "url": "https://www.glaede.be/onze-werkwijze",
+    "highlightIcon": "src/assets/highlights/glaede.svg",
+    "highlights": [
+      { "label": "TEAM", "bg": "#cecece" },
+      { "label": "PROMOS", "bg": "#444" },
+      { "label": "SHOP", "bg": "#cecece" },
+      { "label": "SERVICES", "bg": "#444" },
+      { "label": "BLOG", "bg": "#cecece" },
+      { "label": "FAQ", "bg": "#444" },
+      { "label": "REVIEWS", "bg": "#cecece" }
+    ]
+  }
+}
