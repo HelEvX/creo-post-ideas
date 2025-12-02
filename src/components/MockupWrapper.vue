@@ -1,32 +1,31 @@
 <template>
-  <div class="mockup-bounds">
+  <div class="mockup-bounds" :class="`format--${size}`">
     <div class="mockup-slot">
       <slot />
     </div>
   </div>
 </template>
 
-<style scoped>
-/* Fixed preview canvas */
-.mockup-bounds {
-  width: 54rem; /* your fixed preview width */
-  height: 70rem; /* set a stable canvas height */
-  max-width: 100%;
-  max-height: 100%;
-  overflow: hidden;
+<script setup>
+defineProps({
+  size: { type: String, required: true },
+});
+</script>
 
-  /* Anchor content top-left */
+<style scoped>
+.mockup-bounds {
+  width: 100%;
+  max-width: 100%;
+  padding: 2rem 0;
+
   display: flex;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
 }
 
-/* Slot container (no scaling logic here) */
 .mockup-slot {
   width: 100%;
-  height: 100%;
-
-  /* Allows child to size itself naturally */
-  display: block;
+  display: flex;
+  justify-content: center;
 }
 </style>

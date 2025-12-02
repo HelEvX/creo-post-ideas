@@ -90,7 +90,7 @@ const aspectRatio = computed(() => {
     case "story":
       return "1080 / 1920";
     case "landscape":
-      return "1200 / 630";
+      return "1080 / 566";
     case "cover":
       return "1584 / 396";
     default:
@@ -148,6 +148,32 @@ const aspectRatio = computed(() => {
   --safe-right: var(--safe-story-right);
   --safe-top: var(--safe-story-top);
   --safe-bottom: var(--safe-story-bottom);
+}
+
+/* -----------------------------------------------------
+   RESPONSIVE WIDTH BY FORMAT
+------------------------------------------------------ */
+
+.size--landscape.social-post {
+  width: 100%;
+}
+
+.size--square.social-post,
+.size--portrait.social-post {
+  width: 66%;
+}
+
+.size--story.social-post {
+  width: 50%;
+}
+
+@media (max-width: 991px) {
+  .size--square.social-post,
+  .size--portrait.social-post,
+  .size--story.social-post,
+  .size--landscape.social-post {
+    width: 100%;
+  }
 }
 
 /* -----------------------------------------------------
@@ -368,17 +394,5 @@ const aspectRatio = computed(() => {
   width: 4rem;
   height: 4rem;
   opacity: 0.6;
-}
-
-/* -----------------------------------------------------
-   STORY — HEIGHT-DOMINANT SIZING FIX
-   ----------------------------------------------------- */
-
-.size--story {
-  height: 700px; /* or clamp(...) later */
-  max-height: 700px;
-  width: auto;
-  aspect-ratio: 9 / 16;
-  max-width: none;
 }
 </style>

@@ -47,7 +47,7 @@
         </div>
       </div>
     </section>
-    <!-- === END: Previous Zone === -->
+    <!-- === END: Preview Zone === -->
 
     <!-- == START: Finalization Zone -->
     <section class="col-12 app__finalization">
@@ -272,10 +272,16 @@ export default {
 <style>
 /* 
 ------------------------------------------------------
-LAYOUT ELEMENTS — use dynamic UI roles 
+LAYOUT ELEMENTS — using dynamic UI roles 
 Stylings for components specific to the app shell
 ------------------------------------------------------
 */
+
+@media (min-width: 992px) {
+  .app__layout .row {
+    align-items: stretch;
+  }
+}
 
 /* ----------------------------------------------------
    NAV & FOOTER
@@ -408,5 +414,34 @@ p.hero-subtitle {
 .section-gallery h2 {
   text-align: center;
   padding-bottom: var(--space-50);
+}
+
+/* =======================================================
+   DESKTOP ≥ 992px (lg breakpoint)
+   Make sidebar and main column equal height
+   ======================================================= */
+
+@media (min-width: 992px) {
+  /* Let the two columns in this row stretch to the same height */
+  .app__layout .row.between {
+    align-items: stretch;
+  }
+
+  /* Columns become flex containers so their inner panels can fill them */
+  .app__sidebar,
+  .app__main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Sidebar content (the pale panel) fills the full column height */
+  .app__sidebar > * {
+    height: 100%;
+  }
+
+  /* Canvas panel fills the full main column height */
+  .app__canvas {
+    height: 100%;
+  }
 }
 </style>

@@ -208,11 +208,11 @@
   --safe-portrait-top: calc(120px * var(--scale-factor));
   --safe-portrait-bottom: calc(180px * var(--scale-factor));
 
-  /* Landscape (1200×630 → grid crops to 4:3) */
-  --safe-landscape-left: calc(80px * var(--scale-factor));
-  --safe-landscape-right: calc(80px * var(--scale-factor));
-  --safe-landscape-top: calc(70px * var(--scale-factor));
-  --safe-landscape-bottom: calc(100px * var(--scale-factor));
+  /* Landscape (1080 × 566 → cropped to 4:3 in grid) */
+  --safe-landscape-left: calc(163px * var(--scale-factor));
+  --safe-landscape-right: calc(163px * var(--scale-factor));
+  --safe-landscape-top: calc(50px * var(--scale-factor));
+  --safe-landscape-bottom: calc(80px * var(--scale-factor));
 
   /* Story / Reel (dedicated safe regions) */
   --safe-story-left: calc(120px * var(--scale-factor));
