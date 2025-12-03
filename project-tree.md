@@ -13,33 +13,37 @@ CREO-POST-IDEAS/
 │   └── favicon.svg       # Application favicon
 │
 ├── src/
-│   ├── assets/
-│   │   ├── avatars/
-│   │   │   ├── groomer.webp
-│   │   │   └── ...
-│   │   ├── highlights/
-│   │   │   ├── groomer.svg
-│   │   │   └── ...
-│   │   ├── img/
-│   │   │   ├── logo-default.svg
-│   │   │   ├── logo-inverse.svg
-│   │   │   ├── logo-inverse-full.svg
-│   │   │   └── stockphoto.webp
-│   │   └── global.css             # Global styles and CSS variables
-│   │
 │   ├── components/
-│   │   ├── BrandGallery.vue
-│   │   ├── BrandLogo.vue
-│   │   ├── BrandPicker.vue
-│   │   ├── BrandWatermark.vue
-│   │   ├── ContentTypePanel.vue
-│   │   ├── ControlsPanel.vue  # The main left sidebar
-│   │   ├── FormatSelector.vue
-│   │   ├── InstagramGrid.vue
-│   │   ├── MainPreview.vue
-│   │   ├── MockupWrapper.vue
-│   │   └── RecipeShuffle.vue
-│   │   └── SocialPostMockup.vue
+│   │   ├── brand/
+│   │   │   ├── BrandGallery.vue
+│   │   │   ├── BrandLogo.vue
+│   │   │   ├── BrandPicker.vue
+│   │   │   └── BrandWatermark.vue
+│   │   │
+│   │   ├── controls/
+│   │   │   ├── ControlsPanel.vue
+│   │   │   ├── ContentTypePanel.vue
+│   │   │   ├── FormatSelector.vue
+│   │   │   └── RecipeShuffle.vue
+│   │   │
+│   │   ├── preview/
+│   │   │   ├── MainPreview.vue
+│   │   │   ├── MockupWrapper.vue
+│   │   │   └── MockupRenderer.vue        # new
+│   │   │
+│   │   ├── mockup/
+│   │   │   ├── SocialPostMockup.vue
+│   │   │   ├── PostWrapper.vue           # new
+│   │   │   ├── PostHeader.vue            # new
+│   │   │   ├── PostMedia.vue             # new
+│   │   │   ├── PostTextBlock.vue         # new
+│   │   │   └── PostFooter.vue            # new
+│   │   │
+│   │   └── post-types/
+│   │       ├── IntroPost.vue             # new
+│   │       ├── QuotePost.vue             # new
+│   │       ├── ProductPost.vue           # new
+│   │       └── ParagraphPost.vue         # new
 │   │
 │   ├── data/
 │   │   └── recipes.js         # Defines the style "Recipes" (Bold, Subtle, etc.)

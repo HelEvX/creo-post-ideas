@@ -102,6 +102,7 @@
   --color-panel: var(--neutral-200);
   --color-panel-alt: var(--neutral-700);
   --color-overlay: rgba(255, 255, 255, 0.5); /* white 50% */
+  --color-overlay-soft: rgba(255, 255, 255, 0.15); /* white 50% */
   --color-overlay-accent: rgba(6, 214, 160, 0.5); /* primary 50% */
 
   /* ==== TEXT COLORS ==== */

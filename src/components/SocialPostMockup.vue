@@ -1,66 +1,53 @@
 <template>
-  <div
-    class="social-post"
-    :style="{ '--mockup-aspect': aspectRatio }"
-    :class="[`size--${size}`, `bg--${backgroundType}`]">
-    <!-- BACKGROUND LAYER STACK -->
-    <div class="post-bg">
-      <!-- COLOR LAYER (midnight, light, main…) -->
-      <div class="post-bg__color"></div>
+  <PostWrapper :aspectRatio="aspectRatio" :class="[`size--${size}`]">
+    <div class="social-post" :class="[`bg--${backgroundType}`]">
+      <div class="post-bg">
+        <div class="post-bg__color"></div>
+        <div class="post-bg__pattern"></div>
 
-      <!-- PATTERN LAYER -->
-      <div class="post-bg__pattern"></div>
+        <div
+          v-if="usePhoto"
+          class="post-bg__image"
+          :style="{
+            backgroundImage: `url(${photoSrc})`,
+          }"></div>
 
-      <!-- PHOTO LAYER -->
-      <div
-        v-if="usePhoto"
-        class="post-bg__image"
-        :style="{
-          backgroundImage: `url(${photoSrc})`,
-        }"></div>
+        <div class="post-bg__overlay"></div>
+      </div>
 
-      <!-- OVERLAY (darkening layer for readability) -->
-      <div class="post-bg__overlay"></div>
-    </div>
+      <div v-if="showCornerShapes" class="corner-shape square corner-shape--bl"></div>
+      <div v-if="showCornerShapes" class="corner-shape rect corner-shape--br"></div>
 
-    <!-- CORNER SHAPES (green triangles from mockup) -->
-    <div v-if="showCornerShapes" class="corner-shape square corner-shape--bl"></div>
-    <div v-if="showCornerShapes" class="corner-shape rect corner-shape--br"></div>
-
-    <!-- MAIN TEXT AREA -->
-    <div class="post-content">
-      <!-- LABEL -->
-      <div v-if="showLabel" class="post-label" :class="[`label--${labelSize}`, `label-color--${labelColor}`]">
-        <div v-if="labelIcon" class="post-label__icon">
-          <i class="fa-solid fa-circle-info"></i>
+      <div class="post-content">
+        <div v-if="showLabel" class="post-label" :class="[`label--${labelSize}`, `label-color--${labelColor}`]">
+          <div v-if="labelIcon" class="post-label__icon">
+            <i class="fa-solid fa-circle-info"></i>
+          </div>
+          <div class="post-label__text">{{ labelText }}</div>
         </div>
-        <div class="post-label__text">{{ labelText }}</div>
+
+        <div class="post-title">{{ title }}</div>
+        <div class="post-subtitle">{{ subtitle }}</div>
+
+        <div v-if="showQuote" class="post-quote">
+          <div class="post-quote__icon"></div>
+          <div class="post-quote__text">{{ quote }}</div>
+        </div>
       </div>
 
-      <!-- TITLE + SUBTITLE -->
-      <div class="post-title">{{ title }}</div>
-      <div class="post-subtitle">{{ subtitle }}</div>
-
-      <!-- QUOTE -->
-      <div v-if="showQuote" class="post-quote">
-        <div class="post-quote__icon"></div>
-        <div class="post-quote__text">{{ quote }}</div>
+      <div class="post-watermark" v-if="showBrand">
+        <BrandWatermark />
       </div>
-    </div>
 
-    <!-- WATERMARK (bottom-right green block) -->
-    <div class="post-watermark" v-if="showBrand">
-      <BrandWatermark />
+      <img v-if="shapesSrc" class="post-shapes" :src="shapesSrc" alt="" />
     </div>
-
-    <!-- DIAGONAL SHAPES (SVG overlay) -->
-    <img v-if="shapesSrc" class="post-shapes" :src="shapesSrc" alt="" />
-  </div>
+  </PostWrapper>
 </template>
 
 <script setup>
 import { computed } from "vue";
 import BrandWatermark from "@/components/BrandWatermark.vue";
+import PostWrapper from "@/components/PostWrapper.vue";
 
 const props = defineProps({
   size: String,
@@ -100,28 +87,6 @@ const aspectRatio = computed(() => {
 </script>
 
 <style scoped>
-/* BASE SAFE ZONE (fallback) */
-.social-post {
-  --safe-left: 2.5rem;
-  --safe-right: 2.5rem;
-  --safe-top: 2.5rem;
-  --safe-bottom: 2.5rem;
-}
-
-/* -----------------------------------------------------
-   STRUCTURE + TOKENS
------------------------------------------------------ */
-
-.social-post {
-  position: relative;
-  width: 100%;
-  height: auto;
-  aspect-ratio: var(--mockup-aspect);
-  max-width: 100%;
-  max-height: 100%;
-  overflow: hidden;
-}
-
 .size--square {
   --safe-left: var(--safe-square-left);
   --safe-right: var(--safe-square-right);
@@ -150,11 +115,7 @@ const aspectRatio = computed(() => {
   --safe-bottom: var(--safe-story-bottom);
 }
 
-/* -----------------------------------------------------
-   RESPONSIVE WIDTH BY FORMAT
------------------------------------------------------- */
-
-.size--landscape.social-post {
+/* .size--landscape.social-post {
   width: 100%;
 }
 
@@ -174,13 +135,24 @@ const aspectRatio = computed(() => {
   .size--landscape.social-post {
     width: 100%;
   }
+} */
+
+.social-post {
+  --safe-left: 2.5rem;
+  --safe-right: 2.5rem;
+  --safe-top: 2.5rem;
+  --safe-bottom: 2.5rem;
 }
 
-/* -----------------------------------------------------
-   CSS PATTERNS (css-pattern.com)
------------------------------------------------------ */
+.social-post {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
 
-/* placeholder */
 .bg--midnight-dark .post-bg__pattern {
   background: var(--secondary-700);
   opacity: 0.15;
@@ -195,8 +167,6 @@ const aspectRatio = computed(() => {
   background: var(--color-primary);
   opacity: 0.15;
 }
-
-/* starter pack */
 
 .bg--pattern-dots .post-bg__pattern {
   background-image: radial-gradient(var(--color-primary-light) 1px, transparent 1px);
@@ -227,16 +197,11 @@ const aspectRatio = computed(() => {
   opacity: 0.25;
 }
 
-/* -----------------------------------------------------
-   BACKGROUND LAYERS
------------------------------------------------------ */
-
 .post-bg {
   position: absolute;
   inset: 0;
 }
 
-/* All background layers use CSS tokens */
 .post-bg__color,
 .post-bg__pattern,
 .post-bg__image,
@@ -246,21 +211,15 @@ const aspectRatio = computed(() => {
   pointer-events: none;
 }
 
-/* Photo */
 .post-bg__image {
   background-size: cover;
   background-position: center;
 }
 
-/* Overlay */
 .post-bg__overlay {
   background: var(--color-secondary);
   opacity: 0.6;
 }
-
-/* -----------------------------------------------------
-   CORNER SHAPES
------------------------------------------------------ */
 
 .corner-shape.square {
   position: absolute;
@@ -300,29 +259,20 @@ const aspectRatio = computed(() => {
   transform: scaleX(-1);
 }
 
-/* -----------------------------------------------------
-   MAIN CONTENT AREA
------------------------------------------------------ */
-
-/* Stack: icon → label → title → subtitle */
 .post-content {
   position: absolute;
-  inset: 0; /* fill the post */
+  inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-
   color: var(--ui-inverse);
-
   padding-left: var(--safe-left);
   padding-right: var(--safe-right);
   padding-top: var(--safe-top);
   padding-bottom: var(--safe-bottom);
-
-  max-width: none; /* no limiting */
+  max-width: none;
 }
 
-/* Title + subtitle */
 .post-title {
   font-family: var(--font-title);
   font-size: var(--fs-h2);
@@ -334,10 +284,6 @@ const aspectRatio = computed(() => {
   font-size: var(--fs-body-lg);
   line-height: var(--lh-body);
 }
-
-/* -----------------------------------------------------
-   LABEL BLOCK
------------------------------------------------------ */
 
 .post-label {
   display: flex;
@@ -366,10 +312,6 @@ const aspectRatio = computed(() => {
   font-size: var(--fs-body-sm);
 }
 
-/* -----------------------------------------------------
-   QUOTE BLOCK
------------------------------------------------------ */
-
 .post-quote {
   display: flex;
   gap: var(--space-20);
@@ -382,10 +324,6 @@ const aspectRatio = computed(() => {
   background: var(--color-primary-light);
   border-radius: var(--radius-sm);
 }
-
-/* -----------------------------------------------------
-   WATERMARK (bottom-right)
------------------------------------------------------ */
 
 .post-watermark {
   position: absolute;

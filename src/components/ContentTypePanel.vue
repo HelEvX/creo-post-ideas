@@ -1,6 +1,6 @@
 <template>
   <aside class="content-type-panel">
-    <div class="content-type-panel__title">Choose content type</div>
+    <div class="content-type-panel__title">Content type</div>
 
     <div class="content-type-panel__buttons">
       <button type="button" @click="select('intro')">Intro</button>

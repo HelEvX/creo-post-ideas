@@ -23,19 +23,23 @@ export default {
 </script>
 
 <style scoped>
+.app__sidebar,
+.app__sidebar-block {
+  padding-top: var(--space-25);
+  padding-bottom: var(--space-25);
+}
+
 .app__sidebar {
-  background: var(--ui-nav-bg);
+  background: var(--color-overlay-accent);
   color: var(--color-title);
   border-top-right-radius: var(--radius-lg);
   border-bottom-right-radius: var(--radius-lg);
-  /* border: var(--ui-panel-border-soft); */
-  padding-top: 2.5rem;
-  padding-bottom: 2.5rem;
 }
 
 .app__sidebar-block {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-sm);
+  background: var(--color-overlay-soft);
+  border-radius: var(--radius-md);
   margin-bottom: var(--space-10);
+  padding: var(--space-10);
 }
 </style>

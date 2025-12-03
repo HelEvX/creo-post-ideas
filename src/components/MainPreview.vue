@@ -6,12 +6,12 @@
     <!-- Main grid -->
     <div class="row main-preview-row">
       <!-- Left sidebar -->
-      <div class="col-12 col-lg-3 main-preview__sidebar">
+      <div class="col-12 col-lg-2 main-preview__sidebar">
         <ContentTypePanel @select="onContentTypeSelect" />
       </div>
 
       <!-- Preview -->
-      <div class="col-12 col-lg-6 main-preview__content">
+      <div class="col-12 col-lg-8 main-preview__content">
         <MockupWrapper>
           <SocialPostMockup
             :size="selectedSize"
@@ -35,8 +35,8 @@
       </div>
 
       <!-- Notes (future use) -->
-      <div class="col-12 col-lg-3 main-preview__notes">
-        <div class="main-preview__notes__title">notes</div>
+      <div class="col-12 col-lg-2 main-preview__styles">
+        <div class="main-preview__styles__title">Current Style</div>
       </div>
     </div>
   </div>
@@ -106,11 +106,11 @@ const shapesSrc = "/src/assets/img/shapes0.svg";
 }
 
 /* NOTES */
-.main-preview__notes {
+.main-preview__styles {
   padding: 2.5rem;
 }
 
-.main-preview__notes__title {
+.main-preview__styles__title {
   font-size: var(--fs-body-xs);
   font-weight: 700;
   margin-bottom: var(--space-30);
@@ -138,7 +138,7 @@ const shapesSrc = "/src/assets/img/shapes0.svg";
     border-right: var(--ui-panel-border-soft);
   }
 
-  .main-preview__notes {
+  .main-preview__styles {
     padding-left: 2.5rem;
   }
 }
@@ -162,7 +162,7 @@ const shapesSrc = "/src/assets/img/shapes0.svg";
    ======================================================= */
 
 @media (max-width: 767px) {
-  .main-preview__notes__title {
+  .main-preview__styles__title {
     margin-top: var(--space-20);
   }
 }
