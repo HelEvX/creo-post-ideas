@@ -19,20 +19,7 @@
       <div v-if="showCornerShapes" class="corner-shape rect corner-shape--br"></div>
 
       <div class="post-content">
-        <div v-if="showLabel" class="post-label" :class="[`label--${labelSize}`, `label-color--${labelColor}`]">
-          <div v-if="labelIcon" class="post-label__icon">
-            <i class="fa-solid fa-circle-info"></i>
-          </div>
-          <div class="post-label__text">{{ labelText }}</div>
-        </div>
-
-        <div class="post-title">{{ title }}</div>
-        <div class="post-subtitle">{{ subtitle }}</div>
-
-        <div v-if="showQuote" class="post-quote">
-          <div class="post-quote__icon"></div>
-          <div class="post-quote__text">{{ quote }}</div>
-        </div>
+        <slot />
       </div>
 
       <div class="post-watermark" v-if="showBrand">
@@ -46,8 +33,8 @@
 
 <script setup>
 import { computed } from "vue";
-import BrandWatermark from "@/components/BrandWatermark.vue";
-import PostWrapper from "@/components/PostWrapper.vue";
+import BrandWatermark from "@/components/brand/BrandWatermark.vue";
+import PostWrapper from "@/components/mockup/PostWrapper.vue";
 
 const props = defineProps({
   size: String,
@@ -114,28 +101,6 @@ const aspectRatio = computed(() => {
   --safe-top: var(--safe-story-top);
   --safe-bottom: var(--safe-story-bottom);
 }
-
-/* .size--landscape.social-post {
-  width: 100%;
-}
-
-.size--square.social-post,
-.size--portrait.social-post {
-  width: 66%;
-}
-
-.size--story.social-post {
-  width: 50%;
-}
-
-@media (max-width: 991px) {
-  .size--square.social-post,
-  .size--portrait.social-post,
-  .size--story.social-post,
-  .size--landscape.social-post {
-    width: 100%;
-  }
-} */
 
 .social-post {
   --safe-left: 2.5rem;

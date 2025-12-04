@@ -7,30 +7,24 @@
     <div class="row main-preview-row">
       <!-- Left sidebar -->
       <div class="col-12 col-lg-2 main-preview__sidebar">
-        <ContentTypePanel @select="onContentTypeSelect" />
+        <ContentTypePanel :selected="selectedPostType" @select="onContentTypeSelect" />
       </div>
 
       <!-- Preview -->
       <div class="col-12 col-lg-8 main-preview__content">
-        <MockupWrapper>
-          <SocialPostMockup
+        <MockupWrapper :size="selectedSize">
+          <MockupRenderer
             :size="selectedSize"
-            :backgroundType="selectedBackground"
-            :usePhoto="usePhoto"
-            :photoSrc="photoSrc"
-            :showBrand="true"
-            :showCornerShapes="true"
-            :showLabel="true"
-            :labelSize="selectedLabelSize"
-            :labelColor="selectedLabelColor"
-            :labelIcon="true"
-            :showQuote="showQuote"
-            :brandText="brandText"
-            :labelText="labelText"
-            :title="titleText"
-            :subtitle="subtitleText"
-            :quote="quoteText"
-            :shapesSrc="shapesSrc" />
+            :postType="selectedPostType"
+            :postData="activePostData"
+            :designProps="{
+              backgroundType: selectedBackground,
+              usePhoto: usePhoto,
+              photoSrc: photoSrc,
+              showBrand: true,
+              showCornerShapes: true,
+              shapesSrc: shapesSrc,
+            }" />
         </MockupWrapper>
       </div>
 
@@ -45,36 +39,67 @@
 <script setup>
 import { ref } from "vue";
 
-import ContentTypePanel from "./ContentTypePanel.vue";
-import SocialPostMockup from "./SocialPostMockup.vue";
-import FormatSelector from "./FormatSelector.vue";
-import MockupWrapper from "./MockupWrapper.vue";
+import ContentTypePanel from "../controls/ContentTypePanel.vue";
+import FormatSelector from "../controls/FormatSelector.vue";
+import MockupWrapper from "../preview/MockupWrapper.vue";
+import MockupRenderer from "../preview/MockupRenderer.vue";
+// import HeadlinePost from "../post-types/HeadlinePost.vue";
 
 import stockImage from "@/assets/img/stockphoto.webp";
 
+const selectedPostType = ref("info");
+
+const activePostData = ref({});
+
 const selectedSize = ref("portrait");
 const selectedBackground = ref("midnight-dark");
-
-const selectedLabelSize = ref("large");
-const selectedLabelColor = ref("green");
-
-const showQuote = ref(false);
-
-const brandText = ref("Brand text");
-const labelText = ref("Label text");
-const titleText = ref("Lorem ipsum dolor sit amet consectetur.");
-const subtitleText = ref("Lorem ipsum dolor sit amet consectetur.");
-const quoteText = ref("This is a quote.");
 
 const photoSrc = ref(stockImage);
 const usePhoto = ref(true);
 
 const shapesSrc = "/src/assets/img/shapes0.svg";
 
-// placeholder for future behavior
-// function onContentTypeSelect(type) {
-//   console.log("content type selected:", type);
-// }
+const postContent = {
+  info: {
+    headline: "Welkom bij je creatieve playground!",
+    body: "Gebruik het linkerpaneel om verschillende posttypes te testen en te bekijken hoe ze eruit zien.",
+  },
+
+  headline: {
+    headline: "Win tijd door je processen te automatiseren.",
+    subtitle: "Ontdek hoe we jouw bedrijf kunnen ondersteunen.",
+    icon: "/icons/chart-up.svg",
+  },
+
+  intro: {
+    title: "Welkom bij Creo!",
+    body: "We bouwen digitale ervaringen die merken versterken en teams efficiënter maken.",
+  },
+
+  quote: {
+    quote: "De beste software is diegene die je nooit in de weg zit.",
+    author: "Sarah De Smet, Project Manager",
+  },
+
+  product: {
+    name: "Creo Dashboard Suite",
+    description: "Een krachtige tool voor inzicht, automatisatie en workflowbeheer.",
+    image: "/images/product-example.webp",
+    price: "€49 / maand",
+  },
+
+  paragraph: {
+    title: "Over onze werkwijze",
+    body: "Ons team werkt nauw samen met klanten om digitale oplossingen te creëren die echt impact maken.",
+  },
+};
+
+activePostData.value = postContent.headline;
+
+function onContentTypeSelect(type) {
+  selectedPostType.value = type;
+  activePostData.value = postContent[type];
+}
 </script>
 
 <style scoped>

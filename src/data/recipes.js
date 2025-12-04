@@ -55,6 +55,7 @@ export const recipes = [
 
       "--ui-accent": ["primary", 6],
       "--ui-accent-hover": ["primary", 7],
+      "--ui-accent-active": ["primary", 8],
 
       "--ui-link": ["secondary", 6],
       "--ui-link-hover": ["secondary", 7],
@@ -104,6 +105,7 @@ export const recipes = [
 
       "--ui-accent": ["secondaryDark", 8],
       "--ui-accent-hover": ["secondaryDark", 9],
+      "--ui-accent-active": ["secondaryDark", 10],
 
       "--ui-link": ["secondaryDark", 8],
       "--ui-link-hover": ["secondaryDark", 9],
@@ -153,6 +155,7 @@ export const recipes = [
 
       "--ui-accent": ["secondaryLight", 3],
       "--ui-accent-hover": ["secondaryLight", 4],
+      "--ui-accent-active": ["secondaryLight", 5],
 
       "--ui-link": ["primaryLight", 3],
       "--ui-link-hover": ["primaryLight", 4],
@@ -202,6 +205,7 @@ export const recipes = [
 
       "--ui-accent": ["primary", 6],
       "--ui-accent-hover": ["primary", 7],
+      "--ui-accent-active": ["primary", 8],
 
       "--ui-link": ["primary", 6],
       "--ui-link-hover": ["primary", 7],
@@ -251,6 +255,7 @@ export const recipes = [
 
       "--ui-accent": ["primaryLight", 3],
       "--ui-accent-hover": ["primaryLight", 4],
+      "--ui-accent-active": ["primaryLight", 5],
 
       "--ui-link": ["secondaryLight", 3],
       "--ui-link-hover": ["secondaryLight", 2],
@@ -300,6 +305,7 @@ export const recipes = [
 
       "--ui-accent": ["primary", 5],
       "--ui-accent-hover": ["primary", 6],
+      "--ui-accent-active": ["primary", 7],
 
       "--ui-link": ["primary", 5],
       "--ui-link-hover": ["primary", 6],

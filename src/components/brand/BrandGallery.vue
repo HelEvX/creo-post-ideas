@@ -7,14 +7,6 @@
         <p>Click the tiles to copy the color to your clipboard.</p>
       </header>
 
-      <div class="brand-gallery__toggle">
-        <span>Light mode</span>
-        <button type="button" class="brand-gallery__toggle-switch">
-          <span class="brand-gallery__toggle-knob"></span>
-        </button>
-        <span>Dark mode</span>
-      </div>
-
       <div class="brand-gallery__content">
         <!-- Swatches -->
         <section class="brand-gallery__section--swatches">
@@ -91,12 +83,12 @@
       <div>
         <div class="brand-gallery__font-samples">
           <h2>Your title font is called <span>[Font Name]</span></h2>
-          <button>Get it here</button>
+          <button type="button" class="btn btn-primary">Get it here</button>
         </div>
 
         <div class="brand-gallery__font-samples">
           <p>Your body font is called <span>[Font Name]</span></p>
-          <button>Get it here</button>
+          <button type="button" class="btn btn-primary">Get it here</button>
         </div>
       </div>
     </section>
@@ -205,6 +197,10 @@ defineProps({
   padding: var(--space-10);
 }
 
+.brand-gallery__font-samples button {
+  margin-top: var(--space-10);
+}
+
 .brand-gallery__playground-header {
   display: flex;
   justify-content: space-between;
@@ -214,34 +210,6 @@ defineProps({
 
 .brand-gallery__playground-title {
   font-size: var(--fs-h4);
-}
-
-.brand-gallery__toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.8rem;
-  font-size: var(--fs-caption);
-}
-
-.brand-gallery__toggle-switch {
-  position: relative;
-  width: var(--space-30);
-  height: auto;
-  border-radius: 999px;
-  border: var(--ui-panel-border-soft);
-  background: var(--color-surface);
-  box-shadow: inset 0 1px 1px var(--color-shadow);
-}
-
-.brand-gallery__toggle-knob {
-  position: absolute;
-  aspect-ratio: 1 / 1;
-  top: 2px;
-  left: 2px;
-  width: 1.5rem;
-  height: auto;
-  border-radius: 50%;
-  background: var(--color-primary);
 }
 
 .brand-gallery__playground {

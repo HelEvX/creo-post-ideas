@@ -1,3 +1,17 @@
+<template>
+  <div class="format-selector-bar">
+    <button
+      v-for="f in formats"
+      :key="f.id"
+      type="button"
+      :class="['format-selector-bar__btn', f.id === modelValue ? 'btn-secondary btn-active' : 'btn-inactive']"
+      @click="select(f.id)">
+      <span class="format-selector-bar__icon"><i :class="f.icon"></i></span>
+      <span>{{ f.label }}</span>
+    </button>
+  </div>
+</template>
+
 <script setup>
 defineProps({
   modelValue: { type: String, default: "portrait" },
@@ -18,21 +32,6 @@ function select(id) {
 }
 </script>
 
-<template>
-  <div class="format-selector-bar">
-    <button
-      v-for="f in formats"
-      :key="f.id"
-      type="button"
-      class="format-selector-bar__btn"
-      :class="{ active: f.id === modelValue }"
-      @click="select(f.id)">
-      <span class="format-selector-bar__icon"><i :class="f.icon"></i></span>
-      <span>{{ f.label }}</span>
-    </button>
-  </div>
-</template>
-
 <style scoped>
 .format-selector-bar {
   display: flex;
@@ -49,15 +48,9 @@ function select(id) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.8rem 1.2rem;
-  background-color: var(--ui-alt-section-bg);
-  color: var(--ui-text);
-}
-
-.format-selector-bar__btn.active {
-  background-color: var(--ui-accent);
-  color: var(--ui-inverse);
+  flex: 1;
+  max-width: 12rem;
+  padding: var(--space-10) var(--space-20);
 }
 
 .format-selector-bar__icon i {

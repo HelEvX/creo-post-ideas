@@ -41,6 +41,7 @@ CREO-POST-IDEAS/
 │   │   │
 │   │   └── post-types/
 │   │       ├── IntroPost.vue             # new
+│   │       ├── HeadlinePost.vue          # new
 │   │       ├── QuotePost.vue             # new
 │   │       ├── ProductPost.vue           # new
 │   │       └── ParagraphPost.vue         # new

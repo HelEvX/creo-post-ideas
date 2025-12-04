@@ -196,7 +196,7 @@
 
 <script setup>
 import { ref, watch, onMounted, onBeforeUnmount } from "vue";
-import { getContrastRatio } from "../utils/colorBlender.js";
+import { getContrastRatio } from "../../utils/colorBlender.js";
 
 const props = defineProps({
   brandTokens: { type: Object, default: null },

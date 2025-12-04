@@ -107,7 +107,7 @@
                 <label for="review">Your review</label>
                 <textarea id="review" rows="5" required></textarea>
               </div>
-              <button type="submit">Send review</button>
+              <button class="btn-primary" type="submit">Send review</button>
             </form>
           </div>
         </div>
@@ -131,11 +131,11 @@
 </template>
 
 <script>
-import BrandLogo from "./components/BrandLogo.vue";
-import ControlsPanel from "./components/ControlsPanel.vue";
-import BrandPicker from "./components/BrandPicker.vue";
-import MainPreview from "./components/MainPreview.vue";
-import BrandGallery from "./components/BrandGallery.vue";
+import BrandLogo from "./components/brand/BrandLogo.vue";
+import ControlsPanel from "./components/controls/ControlsPanel.vue";
+import BrandPicker from "./components/brand/BrandPicker.vue";
+import MainPreview from "./components/preview/MainPreview.vue";
+import BrandGallery from "./components/brand/BrandGallery.vue";
 import InstagramGrid from "@/components/InstagramGrid.vue";
 import { buildBrandScales, getContrastRatio } from "./utils/colorBlender.js";
 

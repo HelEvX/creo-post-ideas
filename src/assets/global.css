@@ -304,27 +304,78 @@ li {
   margin-bottom: var(--space-20);
 }
 
-/* Buttons / Links */
+/* ======================================================
+   BUTTONS
+   ====================================================== */
+
 button,
 .btn {
-  background-color: var(--color-primary);
   color: var(--color-text-inverse);
   font-weight: var(--fw-title);
   font-family: var(--font-body);
-  padding: var(--space-10) var(--space-20);
-  border-radius: var(--radius-md);
+  padding: var(--space-5) var(--space-20);
+  border-radius: var(--radius-sm);
   border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  transition: var(--transition-default);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-5);
+  width: auto;
 }
-button:hover,
-.btn:hover {
+
+.btn-inactive {
+  background-color: transparent;
+  border: var(--ui-panel-border);
+  color: var(--ui-text);
+}
+
+/* ======================================================
+   PRIMARY BUTTONS
+   ====================================================== */
+
+.btn-primary {
+  background-color: var(--color-primary);
+}
+
+.btn-primary:hover {
   background-color: var(--color-primary-dark);
 }
-button:active,
-.btn:active {
+
+.btn-primary:active {
   background-color: var(--color-primary-darker);
 }
+
+.btn-primary:focus-visible {
+  background-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-lighter);
+}
+
+/* ======================================================
+   SECONDARY BUTTONS
+   ====================================================== */
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-secondary-dark);
+}
+
+.btn-secondary:active {
+  background-color: var(--color-secondary-darker);
+}
+
+.btn-secondary:focus-visible {
+  background-color: var(--color-secondary);
+  box-shadow: 0 0 0 2px var(--color-secondary-lighter);
+}
+
+/* ======================================================
+   LINKS
+   ====================================================== */
 
 /* Default link styling on light backgrounds */
 a {
@@ -384,7 +435,6 @@ textarea {
 
   /* Accents */
   --ui-accent: var(--color-primary);
-  --ui-accent-hover: var(--color-primary-dark);
 
   /* Links */
   --ui-link: var(--color-primary);

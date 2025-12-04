@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, computed, nextTick, onMounted } from "vue";
-import { recipes } from "../data/recipes.js";
-import { getContrastRatio } from "../utils/colorBlender.js";
+import { recipes } from "../../data/recipes.js";
+import { getContrastRatio } from "../../utils/colorBlender.js";
 
 // ---------------------------------------------
 // Props
@@ -271,7 +271,7 @@ defineExpose({ nextRecipe, prevRecipe });
   /* border: var(--ui-panel-border); */
   border-radius: var(--radius-md);
   padding: var(--space-20);
-  background: var(--ui-panel-bg);
+  background: var(--ui-section-bg);
   color: var(--ui-text);
   display: flex;
   flex-direction: column;
@@ -306,17 +306,15 @@ defineExpose({ nextRecipe, prevRecipe });
 }
 
 button {
-  background: var(--ui-accent);
-  color: var(--ui-inverse);
-  border: none;
-  border-radius: var(--radius-sm);
-  padding: var(--space-5) var(--space-20);
-  cursor: pointer;
-  transition: var(--transition-default);
+  background-color: var(--ui-accent);
 }
 
 button:hover {
-  background: var(--ui-accent-hover);
+  background-color: var(--ui-accent-hover);
+}
+
+button:active {
+  background-color: var(--ui-accent-active);
 }
 
 .reset-wrap {
