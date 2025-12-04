@@ -21,42 +21,42 @@
   /* --------------------------------------------
    Primary range
 --------------------------------------------- */
-  --primary-700: #035a43;
+  --primary-700: #035942;
   --primary-600: #04815f;
-  --primary-500: #05b184;
+  --primary-500: #05b384;
   --primary-400: #06d6a0;
-  --primary-300: #61fbd3;
+  --primary-300: rgba(5, 179, 132, 0.75);
 
   /* --------------------------------------------
    Secondary range
 --------------------------------------------- */
-  --secondary-700: #00363d;
-  --secondary-600: #004852;
-  --secondary-500: #006c7a;
-  --secondary-400: #008799;
-  --secondary-300: #00a3b8;
+  --secondary-700: #001b1f;
+  --secondary-600: #00262c;
+  --secondary-500: #00363d;
+  --secondary-400: #004852;
+  --secondary-300: #006c7a;
 
   /* --------------------------------------------
    Neutral / grayscale
 --------------------------------------------- */
   --neutral-900: #001214;
-  --neutral-800: #293233;
-  --neutral-700: #404d4f;
-  --neutral-600: #596566;
-  --neutral-500: #8c9495;
-  --neutral-400: #a8a8a8;
-  --neutral-300: #d9dcdc;
-  --neutral-200: #dfdae3;
-  --neutral-100: #e5e1e9;
-  --neutral-50: #f8f7f9;
+  --neutral-800: #314548; /* background, border-color */
+  --neutral-700: #405b5f; /* background, border-color, color */
+  --neutral-600: #597074; /* color */
+  --neutral-500: #8c9c9e; /* color */
+  --neutral-400: #a8a8a8; /* color */
+  --neutral-300: #cfcfcf; /* color */
+  --neutral-200: #d9dedf; /* background, border-color, background-color */
+  --neutral-100: #ececec; /* border-color, background */
+  --neutral-50: #f2f4f4; /* color, background, border-color, background-color */
   --white: #ffffff;
 
   /* ------------
    Greens
   ---------------- */
-  --green-600: #035a43;
+  --green-600: #035942;
   --green-500: #04815f;
-  --green-400: #05b184;
+  --green-400: #05b384;
 
   /* ------------
    Yellows
@@ -116,8 +116,8 @@
   --color-text-inverse: var(--white); /* always white */
 
   /* ==== STRUCTURAL / DARK SECTIONS ==== */
-  --color-header-bg: var(--secondary-600);
-  --color-footer-bg: var(--secondary-600);
+  --color-header-bg: var(--secondary-500);
+  --color-footer-bg: var(--secondary-500);
   --color-section-dark: var(--secondary-600);
   --color-section-dark-alt: var(--primary-600);
 

@@ -4,15 +4,15 @@
   <defs>
     <style>
       .st0 {
-        fill: #212529; <!-- DARK -->
+        fill: #314548; <!-- DARK -->
       }
 
       .st1 {
-        fill: #05b184; <!-- primary -->
+        fill: #05b384; <!-- primary -->
       }
 
       .st2 {
-        fill: #00a3b8; <!-- secondary-lighter -->
+        fill: #006c7a; <!-- secondary-lighter -->
       }
 
       .st3 {
@@ -20,15 +20,15 @@
       }
 
       .st4 {
-        fill: #f8f7f9;  <!-- LIGHT -->
+        fill: #f2f4f4;  <!-- LIGHT -->
       }
 
       .st5 {
-        fill: #006c7a;  <!-- secondary -->
+        fill: #00363d;  <!-- secondary -->
       }
 
       .st6 {
-        fill: #61fbd3;  <!-- primary-lighter -->
+        fill: rgba(5, 179, 132, 0.75);  <!-- primary-lighter -->
       }
 
     </style>

@@ -4,7 +4,7 @@
   <defs>
     <style>
       .st0 {
-        fill: #f8f7f9; <!-- LIGHT -->
+        fill: #f2f4f4; <!-- LIGHT -->
       }
 
       .st1 {
@@ -16,19 +16,19 @@
       }
 
       .st3 {
-        fill: #61fbd3; <!-- primary-lighter -->
+        fill: rgba(5, 179, 132, 0.75); <!-- primary-lighter -->
       }
 
       .st4 {
-        fill: #004852; <!-- ui-nav-bg -->
+        fill: #00363d; <!-- secondary -->
       }
 
       .st5 {
-        fill: #00a3b8; <!-- secondary-lighter -->
+        fill: #006c7a; <!-- secondary-lighter -->
       }
 
       .st6 {
-        fill: #006c7a; <!-- secondary -->
+        fill: #004852; <!-- secondary-light -->
       }
 
     </style>
