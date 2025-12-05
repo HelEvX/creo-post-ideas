@@ -104,8 +104,7 @@ export default {
 }
 
 label {
-  margin-right: 10px;
-  color: var(--ui-heading-alt);
+  font-weight: 500;
 }
 
 select {
@@ -114,6 +113,7 @@ select {
   border: var(--ui-panel-border-soft);
   font-family: var(--font-body);
   background: var(--ui-section-bg);
+  color: var(--ui-text);
 }
 
 /* Preview swatches */

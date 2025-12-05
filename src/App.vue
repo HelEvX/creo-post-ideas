@@ -193,34 +193,58 @@ export default {
         root.style.setProperty("--ui-muted", "var(--color-text-soft)");
         root.style.setProperty("--ui-faint", "var(--color-text-soft)");
       }
+
+      const primary = styles.getPropertyValue("--color-primary").trim();
+      const secondary = styles.getPropertyValue("--color-secondary").trim();
+
+      if (primary) {
+        const cDark = getContrastRatio(dark, primary);
+        const cLight = getContrastRatio(light, primary);
+        const best = cLight >= cDark ? "var(--color-text-inverse)" : "var(--color-text)";
+        root.style.setProperty("--color-on-primary", best);
+      }
+
+      if (secondary) {
+        const cDark = getContrastRatio(dark, secondary);
+        const cLight = getContrastRatio(light, secondary);
+        const best = cLight >= cDark ? "var(--color-text-inverse)" : "var(--color-text)";
+        root.style.setProperty("--color-on-secondary", best);
+      }
     },
 
     async onBrandPicked(payload) {
+      // ----------------------------------------------
+      // CASE 1: Reset → use default Creo brand
+      // ----------------------------------------------
       if (!payload) {
-        this.brandTokens = null;
+        const root = document.documentElement;
+        root.removeAttribute("style");
+
+        // IMPORTANT: ensure default slug exists
+        this.brandTokens = { slug: "creo" };
         this.scales = null;
+
         console.log("🔁 Reset to default Creo theme");
         this.updateDynamicTextRoles();
         return;
       }
 
-      // 1) Determine slug once
+      // ----------------------------------------------
+      // CASE 2: A real brand was selected
+      // ----------------------------------------------
       let slug;
       if (typeof payload === "object" && payload.tokens) {
-        // From BrandPicker: { slug, tokens }
         slug = payload.slug || payload.tokens.meta?.slug || payload.tokens.name.toLowerCase();
       } else {
-        // From reset / URL: "tropical" etc.
         slug = typeof payload === "string" ? payload : payload.slug;
       }
 
-      // 2) Load brand JSON with that slug
       const res = await fetch(`/brands/${slug}.json`);
       const data = await res.json();
 
-      // 3) Apply tokens to :root
       const root = document.documentElement;
       root.removeAttribute("style");
+
       for (const [k, v] of Object.entries(data)) {
         if (k.startsWith("color-") || k.startsWith("--color-") || k.startsWith("font-")) {
           const cssVar = k.startsWith("--") ? k : `--${k}`;
@@ -234,7 +258,6 @@ export default {
       root.style.setProperty("--ig-tile-bg", primary + "15");
       root.style.setProperty("--ig-tile-fg", textSoft);
 
-      // 4) Store tokens + slug for later resets
       await this.$nextTick();
       this.brandTokens = { ...data, slug };
       this.scales = buildBrandScales(this.brandTokens);

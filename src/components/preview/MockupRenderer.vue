@@ -1,6 +1,13 @@
 <template>
-  <SocialPostMockup :size="size" v-bind="designProps">
-    <component :is="currentPost" v-bind="postData" />
+  <SocialPostMockup
+    :size="size"
+    :backgroundClass="designProps.backgroundClass"
+    :backgroundTone="designProps.backgroundTone"
+    :brandLogo="designProps.brandLogo"
+    :usePhoto="designProps.usePhoto"
+    :photoSrc="designProps.photoSrc"
+    :showCornerShapes="designProps.showCornerShapes">
+    <component :is="currentPostComponent" v-bind="postData" />
   </SocialPostMockup>
 </template>
 
@@ -33,5 +40,7 @@ const postMap = {
   paragraph: ParagraphPost,
 };
 
-const currentPost = computed(() => postMap[postType] || FallbackPost);
+const currentPostComponent = computed(() => {
+  return postMap[postType] || FallbackPost;
+});
 </script>

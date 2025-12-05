@@ -109,11 +109,15 @@
   --color-title: var(--neutral-900);
   --color-title-alt: var(--secondary-600);
   --color-subtitle: var(--secondary-400);
-  --color-text: var(--neutral-900);
+  --color-text: var(--neutral-700);
   --color-text-soft: var(--neutral-600);
   --color-text-faint: rgba(255, 255, 255, 0.65); /* always white 65% */
   --color-text-muted: rgba(255, 255, 255, 0.85); /* always white 85% */
   --color-text-inverse: var(--white); /* always white */
+
+  /* Text on brand surfaces (will be overridden by JS) */
+  --color-on-primary: var(--color-text-inverse);
+  --color-on-secondary: var(--color-text-inverse);
 
   /* ==== STRUCTURAL / DARK SECTIONS ==== */
   --color-header-bg: var(--secondary-500);
@@ -223,6 +227,76 @@
 }
 
 /* ------------------------------------------------------
+   UI ROLE ASSIGNMENTS — connected to Creo semantic colors
+   ------------------------------------------------------ */
+
+:root {
+  /* Navigation + footer */
+  --ui-nav-bg: var(--color-header-bg);
+  --ui-footer-bg: var(--color-footer-bg);
+
+  /* Hero section */
+  --ui-hero-bg: var(--color-background);
+
+  /* Section backgrounds */
+  --ui-section-bg: var(--color-background);
+  --ui-alt-section-bg: var(--color-surface);
+
+  /* Panels backgrounds + borders */
+  --ui-panel-bg: var(--color-panel);
+  --ui-panel-border: var(--border-width) solid var(--color-border-medium);
+  --ui-panel-border-soft: var(--border-width) solid var(--color-border-light);
+
+  --ui-alt-panel-bg: var(--color-panel-alt);
+  --ui-alt-panel-border: var(--border-width) solid var(--color-border-dark);
+
+  --ui-color-border: 0.25rem solid var(--color-overlay);
+
+  /* Accents */
+  --ui-accent: var(--color-primary);
+  --ui-accent-hover: var(--color-primary-dark);
+  --ui-accent-active: var(--color-primary-darker);
+
+  /* Links */
+  --ui-link: var(--color-primary);
+  --ui-link-hover: var(--color-primary-dark);
+  --ui-link-on-dark: var(--color-primary-lighter);
+  --ui-link-on-dark-hover: var(--color-primary-light);
+
+  /* Text generalization */
+  --ui-text: var(--color-text);
+  --ui-heading: var(--color-title);
+  --ui-heading-alt: var(--color-title-alt);
+  --ui-caption: var(--color-subtitle);
+  --ui-soft: var(--color-text-soft);
+  --ui-faint: var(--color-text-faint);
+  --ui-muted: var(--color-text-muted);
+  --ui-inverse: var(--color-text-inverse);
+  --ui-disabled: var(--color-border-dark);
+
+  /* ------------------------------------------------------
+   UTILITY ASSIGNMENTS
+   Alerts / Statuses
+   ------------------------------------------------------ */
+
+  --ui-info-bg: var(--color-info);
+  --ui-warning-bg: var(--color-warning);
+  --ui-danger-bg: var(--color-danger);
+  --ui-success-bg: var(--color-success);
+  --ui-alert-text-on-color: var(--color-text-inverse);
+
+  --ui-info-text-on-light: var(--color-blue-600);
+  --ui-warning-text-on-light: var(--color-yellow-600);
+  --ui-danger-text-on-light: var(--color-red-600);
+  --ui-success-text-on-light: var(--color-green-600);
+
+  --ui-info-text-on-dark: var(--color-blue-400);
+  --ui-warning-text-on-dark: var(--color-yellow-400);
+  --ui-danger-text-on-dark: var(--color-red-400);
+  --ui-success-text-on-dark: var(--color-green-400);
+}
+
+/* ------------------------------------------------------
    BASE STYLES
    ------------------------------------------------------ */
 
@@ -235,8 +309,8 @@ body {
   font-weight: var(--fw-body);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--color-text);
-  background: var(--color-background);
+  color: var(--ui-text);
+  background: var(--ui-section-bg);
   margin: 0;
   -webkit-font-smoothing: antialiased;
 }
@@ -310,12 +384,12 @@ li {
 
 button,
 .btn {
-  color: var(--color-text-inverse);
+  color: var(--ui-text);
   font-weight: var(--fw-title);
   font-family: var(--font-body);
   padding: var(--space-5) var(--space-20);
   border-radius: var(--radius-sm);
-  border: none;
+  border-width: 1px;
   cursor: pointer;
   transition: var(--transition-default);
   display: inline-flex;
@@ -328,7 +402,6 @@ button,
 .btn-inactive {
   background-color: transparent;
   border: var(--ui-panel-border);
-  color: var(--ui-text);
 }
 
 /* ======================================================
@@ -337,18 +410,23 @@ button,
 
 .btn-primary {
   background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
 }
 
 .btn-primary:hover {
   background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
 }
 
 .btn-primary:active {
   background-color: var(--color-primary-darker);
+  border-color: var(--color-primary-darker);
 }
 
 .btn-primary:focus-visible {
   background-color: var(--color-primary);
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 2px var(--color-primary-lighter);
 }
 
@@ -358,18 +436,23 @@ button,
 
 .btn-secondary {
   background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+  color: var(--color-on-secondary);
 }
 
 .btn-secondary:hover {
   background-color: var(--color-secondary-dark);
+  border-color: var(--color-secondary-dark);
 }
 
 .btn-secondary:active {
   background-color: var(--color-secondary-darker);
+  border-color: var(--color-secondary-darker);
 }
 
 .btn-secondary:focus-visible {
   background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
   box-shadow: 0 0 0 2px var(--color-secondary-lighter);
 }
 
@@ -405,73 +488,6 @@ textarea {
   background: var(--color-surface);
   font-family: var(--font-body);
   box-sizing: border-box;
-}
-
-/* ------------------------------------------------------
-   UI ROLE ASSIGNMENTS — connected to Creo semantic colors
-   ------------------------------------------------------ */
-
-:root {
-  /* Navigation + footer */
-  --ui-nav-bg: var(--color-header-bg);
-  --ui-footer-bg: var(--color-footer-bg);
-
-  /* Hero section */
-  --ui-hero-bg: var(--color-background);
-
-  /* Section backgrounds */
-  --ui-section-bg: var(--color-background);
-  --ui-alt-section-bg: var(--color-surface);
-
-  /* Panels backgrounds + borders */
-  --ui-panel-bg: var(--color-panel);
-  --ui-panel-border: var(--border-width) solid var(--color-border-medium);
-  --ui-panel-border-soft: var(--border-width) solid var(--color-border-light);
-
-  --ui-alt-panel-bg: var(--color-panel-alt);
-  --ui-alt-panel-border: var(--border-width) solid var(--color-border-dark);
-
-  --ui-color-border: 0.25rem solid var(--color-overlay);
-
-  /* Accents */
-  --ui-accent: var(--color-primary);
-
-  /* Links */
-  --ui-link: var(--color-primary);
-  --ui-link-hover: var(--color-primary-dark);
-  --ui-link-on-dark: var(--color-primary-lighter);
-  --ui-link-on-dark-hover: var(--color-primary-light);
-
-  /* Text generalization */
-  --ui-text: var(--color-text);
-  --ui-heading: var(--color-title);
-  --ui-heading-alt: var(--color-title-alt);
-  --ui-caption: var(--color-subtitle);
-  --ui-soft: var(--color-text-soft);
-  --ui-faint: var(--color-text-faint);
-  --ui-muted: var(--color-text-muted);
-  --ui-inverse: var(--color-text-inverse);
-
-  /* ------------------------------------------------------
-   UTILITY ASSIGNMENTS
-   Alerts / Statuses
-   ------------------------------------------------------ */
-
-  --ui-info-bg: var(--color-info);
-  --ui-warning-bg: var(--color-warning);
-  --ui-danger-bg: var(--color-danger);
-  --ui-success-bg: var(--color-success);
-  --ui-alert-text-on-color: var(--color-text-inverse);
-
-  --ui-info-text-on-light: var(--color-blue-600);
-  --ui-warning-text-on-light: var(--color-yellow-600);
-  --ui-danger-text-on-light: var(--color-red-600);
-  --ui-success-text-on-light: var(--color-green-600);
-
-  --ui-info-text-on-dark: var(--color-blue-400);
-  --ui-warning-text-on-dark: var(--color-yellow-400);
-  --ui-danger-text-on-dark: var(--color-red-400);
-  --ui-success-text-on-dark: var(--color-green-400);
 }
 
 /* ======================================================

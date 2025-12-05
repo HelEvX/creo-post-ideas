@@ -1,44 +1,47 @@
 <template>
   <PostWrapper :aspectRatio="aspectRatio" :class="[`size--${size}`]">
-    <div class="social-post" :class="[`bg--${backgroundType}`]">
-      <div class="post-bg">
+    <div class="social-post">
+      <div class="post-bg" :class="backgroundClass">
+        <!-- plain color layer -->
         <div class="post-bg__color"></div>
-        <div class="post-bg__pattern"></div>
 
-        <div
-          v-if="usePhoto"
-          class="post-bg__image"
-          :style="{
-            backgroundImage: `url(${photoSrc})`,
-          }"></div>
+        <!-- pattern layer -->
+        <div class="post-bg__pattern" :class="patternClass"></div>
 
+        <!-- logo layer -->
+        <div v-if="brandLogo" class="post-bg__logo" v-html="coloredLogo"></div>
+
+        <!-- image layer -->
+        <div v-if="usePhoto" class="post-bg__image" :style="{ backgroundImage: `url(${photoSrc})` }"></div>
+
+        <!-- overlay (only active in image mode via CSS) -->
         <div class="post-bg__overlay"></div>
       </div>
 
-      <div v-if="showCornerShapes" class="corner-shape square corner-shape--bl"></div>
-      <div v-if="showCornerShapes" class="corner-shape rect corner-shape--br"></div>
+      <!-- <div v-if="showCornerShapes" class="corner-shape square corner-shape--bl"></div>
+      <div v-if="showCornerShapes" class="corner-shape rect corner-shape--br"></div> -->
 
-      <div class="post-content">
+      <div class="post-content" :class="`post-content--${backgroundTone}`">
         <slot />
       </div>
 
       <div class="post-watermark" v-if="showBrand">
         <BrandWatermark />
       </div>
-
-      <img v-if="shapesSrc" class="post-shapes" :src="shapesSrc" alt="" />
     </div>
   </PostWrapper>
 </template>
 
 <script setup>
-import { computed } from "vue";
 import BrandWatermark from "@/components/brand/BrandWatermark.vue";
 import PostWrapper from "@/components/mockup/PostWrapper.vue";
 
 const props = defineProps({
   size: String,
   backgroundType: String,
+  backgroundClass: String,
+  backgroundTone: String,
+  brandLogo: String,
   usePhoto: Boolean,
   photoSrc: String,
   showBrand: Boolean,
@@ -53,6 +56,55 @@ const props = defineProps({
   showQuote: Boolean,
   quote: String,
   shapesSrc: String,
+});
+
+import { ref, watch, computed } from "vue";
+
+const rawSvg = ref(null);
+
+// Load SVG file as text
+watch(
+  () => props.brandLogo,
+  async (url) => {
+    if (!url) {
+      rawSvg.value = null;
+      return;
+    }
+    rawSvg.value = await fetch(url).then((r) => r.text());
+  },
+  { immediate: true }
+);
+
+// Tone → pick primary or secondary color
+const toneColor = computed(() =>
+  props.backgroundTone === "secondary" ? "var(--color-primary)" : "var(--color-secondary)"
+);
+
+// Rewrite SVG fill/stroke to match brand colors
+const coloredLogo = computed(() => {
+  if (!rawSvg.value) return null;
+
+  const color = toneColor.value;
+
+  return (
+    rawSvg.value
+      // replace stroke in CSS blocks
+      .replace(/stroke:\s*#[0-9A-Fa-f]{3,6}/g, `stroke: ${color}`)
+      // replace fill in CSS blocks
+      .replace(/fill:\s*#[0-9A-Fa-f]{3,6}/g, `fill: ${color}`)
+      // also replace attribute-based colors if present
+      .replace(/stroke="[^"]*"/g, `stroke="${color}"`)
+      .replace(/fill="[^"]*"/g, `fill="${color}"`)
+  );
+});
+
+const patternClass = computed(() => {
+  if (!props.backgroundClass) return "";
+  // keep only pattern-* classes, drop bg--*
+  return props.backgroundClass
+    .split(" ")
+    .filter((cls) => cls.startsWith("pattern-"))
+    .join(" ");
 });
 
 const aspectRatio = computed(() => {
@@ -74,6 +126,10 @@ const aspectRatio = computed(() => {
 </script>
 
 <style scoped>
+/* =========================================
+   SIZING
+   ========================================= */
+
 .size--square {
   --safe-left: var(--safe-square-left);
   --safe-right: var(--safe-square-right);
@@ -107,9 +163,7 @@ const aspectRatio = computed(() => {
   --safe-right: 2.5rem;
   --safe-top: 2.5rem;
   --safe-bottom: 2.5rem;
-}
 
-.social-post {
   position: relative;
   width: 100%;
   height: 100%;
@@ -118,111 +172,11 @@ const aspectRatio = computed(() => {
   overflow: hidden;
 }
 
-.bg--midnight-dark .post-bg__pattern {
-  background: var(--secondary-700);
-  opacity: 0.15;
-}
-
-.bg--midnight-light .post-bg__color {
-  background: var(--secondary-500);
-  opacity: 0.15;
-}
-
-.bg--main .post-bg__color {
-  background: var(--color-primary);
-  opacity: 0.15;
-}
-
-.bg--pattern-dots .post-bg__pattern {
-  background-image: radial-gradient(var(--color-primary-light) 1px, transparent 1px);
-  background-size: 1.6rem 1.6rem;
-  opacity: 0.18;
-}
-
-.bg--pattern-lines .post-bg__pattern {
-  background-image: repeating-linear-gradient(
-    45deg,
-    var(--color-primary-light) 0,
-    var(--color-primary-light) 1rem,
-    transparent 1rem,
-    transparent 2rem
-  );
-  opacity: 0.12;
-}
-
-.bg--pattern-grid .post-bg__pattern {
-  background-image: linear-gradient(var(--color-primary-light) 1px, transparent 1px),
-    linear-gradient(90deg, var(--color-primary-light) 1px, transparent 1px);
-  background-size: 2rem 2rem;
-  opacity: 0.1;
-}
-
-.bg--pattern-noise .post-bg__pattern {
-  background-image: url("data:image/svg+xml,%3Csvg ... %3E");
-  opacity: 0.25;
-}
-
-.post-bg {
-  position: absolute;
-  inset: 0;
-}
-
-.post-bg__color,
-.post-bg__pattern,
-.post-bg__image,
-.post-bg__overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.post-bg__image {
-  background-size: cover;
-  background-position: center;
-}
-
-.post-bg__overlay {
-  background: var(--color-secondary);
-  opacity: 0.6;
-}
-
-.corner-shape.square {
-  position: absolute;
-  height: 40%;
-  aspect-ratio: 1 / 1;
-  clip-path: polygon(0 0, 100% 100%, 0 100%, 0 0);
-  background: var(--color-primary);
-  opacity: 0.2;
-}
-
-.corner-shape.rect {
-  position: absolute;
-  height: 30%;
-  aspect-ratio: 2 / 1;
-  clip-path: polygon(0 0, 100% 100%, 0 100%, 0 0);
-  background: var(--color-primary);
-  opacity: 0.2;
-}
-
-.corner-shape--tl {
-  top: 0;
-  left: 0;
-  transform: scaleY(-1);
-}
-.corner-shape--tr {
-  top: 0;
-  right: 0;
-  transform: scale(-1, -1);
-}
-.corner-shape--bl {
-  bottom: 0;
-  left: 0;
-}
-.corner-shape--br {
-  bottom: 0;
-  right: 0;
-  transform: scaleX(-1);
-}
+/* =========================================
+   =========================================
+   CONTENT STACK
+   =========================================
+   ========================================= */
 
 .post-content {
   position: absolute;
@@ -230,12 +184,19 @@ const aspectRatio = computed(() => {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  color: var(--ui-inverse);
   padding-left: var(--safe-left);
   padding-right: var(--safe-right);
   padding-top: var(--safe-top);
   padding-bottom: var(--safe-bottom);
   max-width: none;
+}
+
+.post-content--primary {
+  color: var(--color-on-primary);
+}
+
+.post-content--secondary {
+  color: var(--color-on-secondary);
 }
 
 .post-title {
@@ -249,6 +210,19 @@ const aspectRatio = computed(() => {
   font-size: var(--fs-body-lg);
   line-height: var(--lh-body);
 }
+
+.post-watermark {
+  position: absolute;
+  right: var(--safe-right);
+  bottom: var(--safe-bottom);
+  width: 4rem;
+  height: 4rem;
+  opacity: 0.6;
+}
+
+/* =========================================
+   LABELS
+   ========================================= */
 
 .post-label {
   display: flex;
@@ -277,6 +251,10 @@ const aspectRatio = computed(() => {
   font-size: var(--fs-body-sm);
 }
 
+/* =========================================
+   QUOTE POSTS
+   ========================================= */
+
 .post-quote {
   display: flex;
   gap: var(--space-20);
@@ -290,12 +268,99 @@ const aspectRatio = computed(() => {
   border-radius: var(--radius-sm);
 }
 
-.post-watermark {
+/* =========================================
+   =========================================
+   BACKGROUND STACK
+   =========================================
+   ========================================= */
+
+.post-bg {
   position: absolute;
-  right: var(--safe-right);
-  bottom: var(--safe-bottom);
-  width: 4rem;
-  height: 4rem;
+  inset: 0;
+}
+
+.post-bg__color,
+.post-bg__pattern,
+.post-bg__image,
+.post-bg__overlay,
+.post-bg__logo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* plain backgrounds */
+.bg--plain-primary .post-bg__color {
+  background: var(--color-primary);
+}
+
+.bg--plain-secondary .post-bg__color {
+  background: var(--color-secondary);
+}
+
+/* =========================================
+   LOGO
+   ========================================= */
+
+.post-bg__logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.post-bg__logo :deep(svg) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  scale: 100%;
+  opacity: 0.2;
+  transform: translate(-35%, 0);
+  overflow: hidden;
+}
+
+/* =========================================
+   PATTERNS
+   ========================================= */
+
+/* pattern mode: pattern class holds the actual pattern,
+   this just makes sure it shows on the pattern layer */
+/* .bg--pattern .post-bg__pattern {
+  opacity: 1;
+} */
+
+/* =========================================
+   IMAGE
+   ========================================= */
+
+.post-bg__image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(5px);
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  margin: -10px;
+}
+
+/* overlay is off by default; image mode turns it on */
+.post-bg__overlay {
+  opacity: 0;
+}
+
+/* image mode: show image and tone-dependent overlay */
+.bg--image .post-bg__image {
+  opacity: 1;
+}
+
+.bg--image.bg--plain-primary .post-bg__overlay {
+  background: var(--color-primary);
+  opacity: 0.6;
+}
+
+.bg--image.bg--plain-secondary .post-bg__overlay {
+  background: var(--color-secondary);
   opacity: 0.6;
 }
 </style>

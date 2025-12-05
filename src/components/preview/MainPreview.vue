@@ -1,16 +1,20 @@
 <template>
   <div class="app-main-shell">
-    <!-- Format selector -->
     <FormatSelector :modelValue="selectedSize" @update:size="selectedSize = $event" />
 
-    <!-- Main grid -->
     <div class="row main-preview-row">
-      <!-- Left sidebar -->
+      <!-- SIDEBAR -->
       <div class="col-12 col-lg-2 main-preview__sidebar">
-        <ContentTypePanel :selected="selectedPostType" @select="onContentTypeSelect" />
+        <ContentTypePanel
+          :selected="selectedPostType"
+          :tone="backgroundTone"
+          :selectedMode="backgroundMode"
+          @select="onContentTypeSelect"
+          @update-tone="backgroundTone = $event"
+          @update-mode="backgroundMode = $event" />
       </div>
 
-      <!-- Preview -->
+      <!-- PREVIEW -->
       <div class="col-12 col-lg-8 main-preview__content">
         <MockupWrapper :size="selectedSize">
           <MockupRenderer
@@ -18,17 +22,16 @@
             :postType="selectedPostType"
             :postData="activePostData"
             :designProps="{
-              backgroundType: selectedBackground,
-              usePhoto: usePhoto,
+              backgroundClass: backgroundClass,
+              backgroundTone: backgroundTone,
+              brandLogo: brandLogo,
+              usePhoto: backgroundMode === 'image',
               photoSrc: photoSrc,
-              showBrand: true,
-              showCornerShapes: true,
-              shapesSrc: shapesSrc,
+              showCornerShapes: backgroundMode !== 'logo',
             }" />
         </MockupWrapper>
       </div>
 
-      <!-- Notes (future use) -->
       <div class="col-12 col-lg-2 main-preview__styles">
         <div class="main-preview__styles__title">Current Style</div>
       </div>
@@ -37,28 +40,37 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 import ContentTypePanel from "../controls/ContentTypePanel.vue";
 import FormatSelector from "../controls/FormatSelector.vue";
 import MockupWrapper from "../preview/MockupWrapper.vue";
 import MockupRenderer from "../preview/MockupRenderer.vue";
-// import HeadlinePost from "../post-types/HeadlinePost.vue";
 
 import stockImage from "@/assets/img/stockphoto.webp";
 
-const selectedPostType = ref("info");
+const { brandTokens } = defineProps({
+  brandTokens: Object,
+});
 
+/* --------------------------------------------
+   POST TYPE STATE
+--------------------------------------------- */
+const selectedPostType = ref("info");
 const activePostData = ref({});
 
+/* --------------------------------------------
+   BACKGROUND STATE (tone + mode)
+--------------------------------------------- */
+const backgroundTone = ref("primary"); // "primary" | "secondary"
+const backgroundMode = ref("none"); // "none" | "logo" | "pattern" | "image"
+
 const selectedSize = ref("portrait");
-const selectedBackground = ref("midnight-dark");
-
 const photoSrc = ref(stockImage);
-const usePhoto = ref(true);
 
-const shapesSrc = "/src/assets/img/shapes0.svg";
-
+/* --------------------------------------------
+   POST CONTENT
+--------------------------------------------- */
 const postContent = {
   info: {
     headline: "Welkom bij je creatieve playground!",
@@ -94,8 +106,48 @@ const postContent = {
   },
 };
 
-activePostData.value = postContent.headline;
+/* --------------------------------------------
+   COMPUTED: CSS background class
+--------------------------------------------- */
+const backgroundClass = computed(() => {
+  const classes = [];
 
+  // base plain background (tone)
+  classes.push(backgroundTone.value === "secondary" ? "bg--plain-secondary" : "bg--plain-primary");
+
+  // pattern mode
+  if (backgroundMode.value === "pattern") return "bg--pattern pattern-distorted-mesh";
+
+  // logo mode
+  if (backgroundMode.value === "logo") {
+    classes.push("bg--logo");
+  }
+
+  // image mode
+  if (backgroundMode.value === "image") {
+    classes.push("bg--image");
+  }
+
+  return classes.join(" ");
+});
+
+/* --------------------------------------------
+   COMPUTED: Logo background URL
+--------------------------------------------- */
+const brandLogo = computed(() => {
+  if (backgroundMode.value !== "logo") return null;
+  if (!brandTokens?.slug) return null;
+  return `/src/assets/highlights/${brandTokens.slug}.svg`;
+});
+
+/* --------------------------------------------
+   INIT
+--------------------------------------------- */
+activePostData.value = postContent.info;
+
+/* --------------------------------------------
+   EVENT HANDLERS
+--------------------------------------------- */
 function onContentTypeSelect(type) {
   selectedPostType.value = type;
   activePostData.value = postContent[type];
@@ -103,10 +155,6 @@ function onContentTypeSelect(type) {
 </script>
 
 <style scoped>
-/* =======================================================
-   BASE LAYOUT STYLES (unchanged behavior)
-   ======================================================= */
-
 .app-main-shell {
   display: flex;
   flex-direction: column;
@@ -114,25 +162,21 @@ function onContentTypeSelect(type) {
   gap: var(--space-25);
 }
 
-/* The main row container */
 .main-preview-row {
-  align-items: flex-start; /* ensures columns align top on desktop */
-  flex-wrap: wrap; /* allows stacking on smaller screens */
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
-/* SIDEBAR */
 .main-preview__sidebar {
-  margin-bottom: var(--space-40); /* spacing when stacked */
+  margin-bottom: var(--space-40);
 }
 
-/* PREVIEW COLUMN */
 .main-preview__content {
-  margin-left: 0; /* reset mobile spacing */
+  margin-left: 0;
 }
 
-/* NOTES */
 .main-preview__styles {
-  padding: 2.5rem;
+  padding-right: 0;
 }
 
 .main-preview__styles__title {
@@ -144,21 +188,17 @@ function onContentTypeSelect(type) {
   color: var(--ui-caption);
 }
 
-/* =======================================================
-   DESKTOP ≥ 992px (lg breakpoint)
-   ======================================================= */
-
 @media (min-width: 992px) {
   .main-preview-row {
-    flex-wrap: nowrap; /* no stacking on desktop */
+    flex-wrap: nowrap;
   }
 
   .main-preview__sidebar {
-    margin-bottom: 0; /* sidebar aligns with preview */
+    margin-bottom: 0;
   }
 
   .main-preview__content {
-    margin-left: -2.5rem; /* align preview with notes, compensates grid padding */
+    margin-left: -2.5rem;
     border-left: var(--ui-panel-border-soft);
     border-right: var(--ui-panel-border-soft);
   }
@@ -168,23 +208,11 @@ function onContentTypeSelect(type) {
   }
 }
 
-/* =======================================================
-   TABLETS 768px – 991px (md breakpoint)
-   ======================================================= */
-
 @media (max-width: 991px) and (min-width: 768px) {
   .main-preview__sidebar {
     margin-bottom: var(--space-40);
   }
-
-  .main-preview__mockup {
-    margin-bottom: var(--space-40);
-  }
 }
-
-/* =======================================================
-   MOBILE < 768px
-   ======================================================= */
 
 @media (max-width: 767px) {
   .main-preview__styles__title {

@@ -157,6 +157,7 @@ function highlightIconStyle(file) {
 
 <style>
 @import url("https://use.typekit.net/xls1ldz.css");
+@import "@/assets/patterns.css";
 
 :root {
   --ig-tile-bg: #ffffff;
@@ -300,12 +301,12 @@ function highlightIconStyle(file) {
 }
 
 .ig-link {
-  color: #00376b;
+  color: #00376b !important;
   font-weight: 600;
   text-decoration: none;
 }
 .ig-link:hover {
-  color: #00376b;
+  color: #00376b !important;
   text-decoration: underline;
 }
 
@@ -444,97 +445,6 @@ function highlightIconStyle(file) {
 .ig-pattern {
   width: 100%;
   height: 100%;
-}
-
-/* ------------------------------------------------------------
-   CSSPATTERNS.COM PATTERNS
------------------------------------------------------------- */
-
-/* 1. GEOMETRIC FLOWERS
-   Source: https://css-pattern.com/geometric-flowers/ */
-
-.pattern-geometric-flowers {
-  --s: 64px; /* control the size*/
-  --c1: var(--color-primary);
-  --c2: var(--color-primary-dark);
-  --c3: var(--color-secondary);
-  --c4: var(--color-surface);
-
-  background: radial-gradient(var(--c1) 24%, #0000 25%),
-    radial-gradient(var(--c2) 30%, #0000 32%) calc(var(--s) / 2) calc(var(--s) / 2),
-    repeating-conic-gradient(from 30deg, var(--c3) 0 30deg, var(--c4) 0 25%);
-  background-size: var(--s) var(--s);
-}
-
-/* 2. DISTORTED MESH
-   Source: https://css-pattern.com/distorted-mesh/ */
-
-.pattern-distorted-mesh {
-  --s: 140px; /* control the size*/
-  --c1: var(--color-primary);
-  --c2: var(--color-primary-dark);
-
-  --_g: #0000 52%, var(--c1) 54% 57%, #0000 59%;
-  background: radial-gradient(farthest-side at -33.33% 50%, var(--_g)) 0 calc(var(--s) / 2),
-    radial-gradient(farthest-side at 50% 133.33%, var(--_g)) calc(var(--s) / 2) 0,
-    radial-gradient(farthest-side at 133.33% 50%, var(--_g)), radial-gradient(farthest-side at 50% -33.33%, var(--_g)),
-    var(--c2);
-  background-size: calc(var(--s) / 4.667) var(--s), var(--s) calc(var(--s) / 4.667);
-}
-
-/* 3. RHOMBUS & STRIPES
-   Source: https://css-pattern.com/rhombus-stripes/*/
-.pattern-rhombus-stripes {
-  --s: 64px; /* control the size*/
-  --c1: var(--color-primary);
-  --c2: var(--color-secondary);
-
-  background: conic-gradient(from -45deg, var(--c1) 90deg, #0000 0 180deg, var(--c2) 0 270deg, #0000 0) 0
-      calc(var(--s) / 2) / var(--s) var(--s),
-    conic-gradient(from 135deg at 50% 0, var(--c1) 90deg, var(--c2) 0) 0 0 / calc(2 * var(--s)) var(--s);
-}
-
-/* 4. NESTED DIAMOND
-   Source: https://css-pattern.com/nested-diamond/ */
-.pattern-nested-diamond {
-  --s: 100px; /* control the size*/
-  --c1: var(--color-primary);
-  --c2: var(--color-secondary);
-  --c3: var(--color-surface);
-
-  --_g: #0000, var(--c1) 1deg 30deg, var(--c2) 31deg 89deg, var(--c1) 90deg 119deg, #0000 120deg;
-  background: conic-gradient(from -60deg at 50% 28.86%, var(--_g)), conic-gradient(from 30deg at 71.14% 50%, var(--_g)),
-    conic-gradient(from 120deg at 50% 71.14%, var(--_g)), conic-gradient(from 210deg at 28.86% 50%, var(--_g)) var(--c3);
-  background-size: var(--s) var(--s);
-}
-
-/* 5. WAVY
-   Source: https://css-pattern.com/3d-wavy/ */
-.pattern-wavy {
-  --s: 100px; /* control the size*/
-  --c1: var(--color-primary-light);
-  --c2: var(--color-primary-dark);
-
-  --_g: var(--c2) 6% 14%, var(--c1) 16% 24%, var(--c2) 26% 34%, var(--c1) 36% 44%, var(--c2) 46% 54%, var(--c1) 56% 64%,
-    var(--c2) 66% 74%, var(--c1) 76% 84%, var(--c2) 86% 94%;
-  background: radial-gradient(100% 100% at 100% 0, var(--c1) 4%, var(--_g), #0008 96%, #0000),
-    radial-gradient(100% 100% at 0 100%, #0000, #0008 4%, var(--_g), var(--c1) 96%) var(--c1);
-  background-size: var(--s) var(--s);
-}
-
-/* 6. FOLDED ZIGZAG
-   Source: https://css-pattern.com/folded-zig-zag/ */
-.pattern-folded-zigzag {
-  --s: 84px; /* control the size*/
-  --c1: var(--color-surface);
-  --c2: var(--color-secondary-dark);
-  --c3: var(--color-primary-dark);
-
-  --a: from -30deg at;
-  background: linear-gradient(#0000 50%, #0004 0), conic-gradient(var(--a) 90%, var(--c1) 240deg, #0000 0),
-    conic-gradient(var(--a) 75%, var(--c2) 240deg, #0000 0), conic-gradient(var(--a) 25%, #0000 240deg, var(--c1) 0),
-    conic-gradient(var(--a) 40%, var(--c1) 240deg, var(--c3) 0);
-  background-size: calc(1.5 * var(--s)) var(--s);
 }
 
 /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
