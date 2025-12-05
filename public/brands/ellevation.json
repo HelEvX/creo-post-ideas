@@ -1,0 +1,77 @@
+{
+  "name": "Ellevation",
+  "meta": { "brand": "Ellevation", "version": "1.0" },
+  "font-title": "League Spartan, sans-serif",
+  "font-body": "Myriad Pro, sans-serif",
+  "fonts": {
+    "import": [
+      "https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap",
+      "https://use.typekit.net/xls1ldz.css"
+    ]
+  },
+
+  "color-primary": "#E4002B",
+  "color-primary-dark": "#C30025",
+  "color-primary-darker": "#9F001D",
+  "color-primary-light": "#F93158",
+  "color-primary-lighter": "#FFF8F9",
+
+  "color-secondary": "#FEBB14",
+  "color-secondary-dark": "#FEAE12",
+  "color-secondary-darker": "#FF9812",
+  "color-secondary-light": "#FCD34D",
+  "color-secondary-lighter": "#FEF6F2",
+
+  "color-surface": "#FFFFFF",
+  "color-panel": "#FAFAF9",
+  "color-panel-alt": "#FCD34D",
+  "color-overlay-accent": "rgba(252, 211, 77, 0.5)",
+
+  "color-title": "#1D1D1B",
+  "color-title-alt": "#E4002B",
+  "color-subtitle": "#2E2D2A",
+  "color-text": "#45443F",
+  "color-text-soft": "#7C7B76",
+
+  "color-header-bg": "#FFFFFF",
+  "color-footer-bg": "#2E2D2A",
+  "color-section-dark": "#F5F5F4",
+  "color-section-dark-alt": "#FEF6F2",
+
+  "color-border-dark": "#2E2D2A",
+  "color-border-medium": "#5E5D59",
+  "color-border-light": "#D1D0CC",
+
+  "color-info": "#009DE4",
+  "color-warning": "#FF9812",
+  "color-danger": "#E4002B",
+  "color-success": "#00E447",
+  "color-success-dark": "#00CC41",
+
+  "color-disabled-bg": "#7C7B76",
+  "color-disabled-text": "#7C7B76",
+
+  "ig": {
+    "avatar": "ellevation.webp",
+    "username": "ellevation.be",
+    "posts": 0,
+    "followers": 0,
+    "following": 0,
+    "title": "www.ellevation.be",
+    "threads": "@ellevation.be",
+    "businessType": "business coach",
+    "description": "Description part 1.\nDescription part 2\nDescription part 3\nDescription part 4",
+    "address": "Straat, Stad, Belgium xxxx",
+    "url": "https://www.ellevation.be",
+    "highlightIcon": "src/assets/highlights/ellevation.svg",
+    "highlights": [
+      { "label": "TEAM", "bg": "#cecece" },
+      { "label": "PROMOS", "bg": "#444" },
+      { "label": "SHOP", "bg": "#cecece" },
+      { "label": "SERVICES", "bg": "#444" },
+      { "label": "BLOG", "bg": "#cecece" },
+      { "label": "FAQ", "bg": "#444" },
+      { "label": "REVIEWS", "bg": "#cecece" }
+    ]
+  }
+}

@@ -80,6 +80,7 @@ export default {
       <option value="cardgameshop">Card Game Shop</option>
       <option value="blooloc">Blooloc</option>
       <option value="glaede">Glaede</option>
+      <option value="ellevation">Ellevation</option>
     </select>
 
     <div class="brand-preview">
