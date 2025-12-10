@@ -33,7 +33,22 @@
       </div>
 
       <div class="col-12 col-lg-2 main-preview__styles">
-        <div class="main-preview__styles__title">Current Style</div>
+        <h6>Current Style</h6>
+        <div>{title font name}</div>
+        <div>{body font name}</div>
+        <div class="content-type-panel__divider"></div>
+        <div class="main-preview__styles__swatches">
+          <div class="main-preview__styles__swatch"></div>
+          <div class="main-preview__styles__swatch"></div>
+          <div class="main-preview__styles__swatch"></div>
+          <div class="main-preview__styles__swatch"></div>
+          <div class="main-preview__styles__swatch"></div>
+          <div class="main-preview__styles__swatch"></div>
+          <div class="main-preview__styles__swatch"></div>
+        </div>
+        <div class="content-type-panel__divider"></div>
+        <div class="main-preview__styles__corners"></div>
+        <div class="main-preview__styles__shadows"></div>
       </div>
     </div>
   </div>
@@ -179,13 +194,53 @@ function onContentTypeSelect(type) {
   padding-right: 0;
 }
 
-.main-preview__styles__title {
-  font-size: var(--fs-body-xs);
-  font-weight: 700;
-  margin-bottom: var(--space-30);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--ui-caption);
+.main-preview__styles__swatches {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 1rem;
+}
+
+.main-preview__styles__swatch {
+  width: 100%;
+  height: 4rem;
+  border-radius: var(--radius-sm);
+}
+
+.main-preview__styles__swatches div {
+  background: var(--color-disabled-bg);
+}
+
+.main-preview__styles__swatches div:first-child {
+  background: var(--color-primary);
+}
+
+.main-preview__styles__swatches div:nth-child(2) {
+  background: var(--color-primary-dark);
+}
+
+.main-preview__styles__corners {
+  height: 5rem;
+  width: 5rem;
+  border-left: var(--ui-swatch-border);
+  border-top: var(--ui-swatch-border);
+  border-radius: var(--radius-lg) 0 0 0;
+  margin: 2rem 3rem 3rem 2rem;
+}
+
+.main-preview__styles__shadows {
+  height: 6rem;
+  width: 6rem;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  margin: 2rem;
+}
+
+.content-type-panel__divider {
+  height: 1px;
+  width: auto;
+  background: var(--color-border-light);
+  margin: var(--space-50) var(--space-20);
 }
 
 @media (min-width: 992px) {

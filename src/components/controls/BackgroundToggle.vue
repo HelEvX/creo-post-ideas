@@ -30,14 +30,14 @@ function toggle() {
 /* labels left and right */
 .tone-toggle__label {
   font-size: var(--fs-caption);
-  color: var(--ui-soft);
+  color: var(--dynamic-disabled);
   width: 1.5rem;
   text-align: center;
 }
 
 .tone-toggle__label.active {
   font-weight: 700;
-  color: var(--ui-heading);
+  color: var(--text-on-section);
 }
 
 /* TRACK */
@@ -49,7 +49,7 @@ function toggle() {
   border-radius: 32px;
   border: 2px solid var(--ui-panel-border);
   cursor: pointer;
-  transition: background-color 0.25s ease;
+  transition: var(--transition-default);
 }
 
 /* COLOR STATES */
@@ -61,18 +61,18 @@ function toggle() {
   background: var(--color-secondary);
 }
 
-/* THUMB */
+/* thumb */
 .tone-toggle__thumb {
   width: 24px;
   height: 24px;
-  background: var(--color-on-primary);
+  background: var(--text-on-primary);
   border-radius: 50%;
   transform: translateX(-66.67%);
-  transition: transform 0.25s ease;
+  transition: var(--transition-default);
 }
 
-.tone-toggle__thumb.active {
+.tone-toggle__track.secondary .tone-toggle__thumb {
+  background: var(--text-on-secondary);
   transform: translateX(66.67%);
-  background: var(--color-on-secondary);
 }
 </style>

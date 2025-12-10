@@ -13,6 +13,6 @@ import PostTextBlock from "../mockup/PostTextBlock.vue";
 
 <style>
 .fallback-post {
-  color: var(--ui-inverse);
+  color: var(--dynamic-text);
 }
 </style>

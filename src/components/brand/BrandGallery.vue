@@ -149,15 +149,15 @@ defineProps({
 /* COLORS */
 .brand-gallery__swatch--light-1 {
   background: var(--ui-section-bg);
-  color: var(--ui-text);
+  color: var(--dynamic-text);
 }
 .brand-gallery__swatch--light-2 {
   background: var(--ui-alt-section-bg);
-  color: var(--ui-text);
+  color: var(--dynamic-text);
 }
 .brand-gallery__swatch--light-3 {
   background: var(--ui-panel-bg);
-  color: var(--ui-text);
+  color: var(--dynamic-text);
 }
 .brand-gallery__swatch--light-4 {
   background: var(--ui-section-bg);
@@ -182,11 +182,11 @@ defineProps({
 }
 .brand-gallery__swatch--dark-4 {
   color: var(--ui-section-bg);
-  background: var(--ui-soft);
+  background: var(--dynamic-soft);
 }
 .brand-gallery__swatch--dark-5 {
   background: var(--ui-alt-panel-bg);
-  color: var(--ui-text);
+  color: var(--dynamic-text);
 }
 
 .brand-gallery__label {
@@ -215,7 +215,7 @@ defineProps({
 .brand-gallery__playground {
   padding: 1.6rem 2rem;
   background: var(--ui-section-bg);
-  color: var(--ui-text);
+  color: var(--dynamic-text);
   border-radius: var(--radius-md);
   border: var(--ui-panel-border-soft);
   font-size: var(--fs-body-sm);

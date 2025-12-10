@@ -48,6 +48,10 @@
   "color-disabled-bg": "",
   "color-disabled-text": "",
 
+  "color-text-inverse": "#ffffff",
+  "color-text-soft-inverse": "rgba(255,255,255,0.85)",
+  "color-disabled-text-inverse": "rgba(255,255,255,0.65)",
+
   "ig": {
     "avatar": "client.webp",
     "username": "client.be",

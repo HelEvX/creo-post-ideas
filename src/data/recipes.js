@@ -39,8 +39,6 @@ export const recipes = [
       "--ui-nav-bg": ["primary", 7],
       "--ui-footer-bg": ["primary", 7],
 
-      "--ui-hero-bg": ["neutral", 1],
-
       "--ui-section-bg": ["neutral", 0],
       "--ui-alt-section-bg": ["neutral", 1],
 
@@ -62,15 +60,9 @@ export const recipes = [
       "--ui-link-on-dark": ["secondary", 3],
       "--ui-link-on-dark-hover": ["secondary", 2],
 
-      "--ui-text": ["neutral", 10],
       "--ui-heading": ["primary", 7],
       "--ui-heading-alt": ["secondary", 7],
       "--ui-caption": ["neutral", 7],
-      "--ui-soft": ["neutral", 6],
-
-      "--ui-faint": "var(--color-text-faint)",
-      "--ui-muted": "var(--color-text-muted)",
-      "--ui-inverse": "var(--color-text-inverse)",
 
       "--ui-shadow": "rgba(0,0,0,0.10)",
 
@@ -88,8 +80,6 @@ export const recipes = [
     roles: {
       "--ui-nav-bg": ["primaryDark", 9],
       "--ui-footer-bg": ["primaryDark", 9],
-
-      "--ui-hero-bg": ["primaryDark", 9],
 
       "--ui-section-bg": ["neutral", 2],
       "--ui-alt-section-bg": ["primaryLight", 3],
@@ -112,15 +102,9 @@ export const recipes = [
       "--ui-link-on-dark": ["secondaryLight", 4],
       "--ui-link-on-dark-hover": ["secondaryLight", 3],
 
-      "--ui-text": ["neutral", 10],
       "--ui-heading": ["primaryLight", 0],
       "--ui-heading-alt": ["secondary", 8],
       "--ui-caption": ["neutral", 7],
-      "--ui-soft": ["neutral", 6],
-
-      "--ui-faint": "var(--color-text-faint)",
-      "--ui-muted": "var(--color-text-muted)",
-      "--ui-inverse": "var(--color-text-inverse)",
 
       "--ui-shadow": "rgba(0,0,0,0.18)",
 
@@ -138,8 +122,6 @@ export const recipes = [
     roles: {
       "--ui-nav-bg": ["primaryLight", 2],
       "--ui-footer-bg": ["primaryLight", 2],
-
-      "--ui-hero-bg": ["neutral", 0],
 
       "--ui-section-bg": ["neutral", 0],
       "--ui-alt-section-bg": ["neutral", 1],
@@ -162,15 +144,9 @@ export const recipes = [
       "--ui-link-on-dark": ["primary", 2],
       "--ui-link-on-dark-hover": ["primary", 3],
 
-      "--ui-text": ["neutral", 9],
       "--ui-heading": ["primary", 6],
       "--ui-heading-alt": ["primary", 7],
       "--ui-caption": ["neutral", 6],
-      "--ui-soft": ["neutral", 5],
-
-      "--ui-faint": "var(--color-text-faint)",
-      "--ui-muted": "var(--color-text-muted)",
-      "--ui-inverse": "var(--color-text-inverse)",
 
       "--ui-shadow": "rgba(0,0,0,0.05)",
 
@@ -188,8 +164,6 @@ export const recipes = [
     roles: {
       "--ui-nav-bg": ["secondary", 7],
       "--ui-footer-bg": ["secondary", 7],
-
-      "--ui-hero-bg": ["secondaryLight", 2],
 
       "--ui-section-bg": ["neutral", 0],
       "--ui-alt-section-bg": ["secondaryLight", 3],
@@ -212,15 +186,9 @@ export const recipes = [
       "--ui-link-on-dark": ["primaryLight", 3],
       "--ui-link-on-dark-hover": ["primaryLight", 2],
 
-      "--ui-text": ["neutral", 10],
       "--ui-heading": ["primary", 7],
       "--ui-heading-alt": ["secondary", 8],
       "--ui-caption": ["neutral", 7],
-      "--ui-soft": ["neutral", 6],
-
-      "--ui-faint": "var(--color-text-faint)",
-      "--ui-muted": "var(--color-text-muted)",
-      "--ui-inverse": "var(--color-text-inverse)",
 
       "--ui-shadow": "rgba(0,0,0,0.12)",
 
@@ -238,8 +206,6 @@ export const recipes = [
     roles: {
       "--ui-nav-bg": ["neutral", 10],
       "--ui-footer-bg": ["neutral", 10],
-
-      "--ui-hero-bg": ["neutral", 10],
 
       "--ui-section-bg": ["neutral", 9],
       "--ui-alt-section-bg": ["neutral", 8],
@@ -262,15 +228,9 @@ export const recipes = [
       "--ui-link-on-dark": ["primaryLight", 3],
       "--ui-link-on-dark-hover": ["primaryLight", 2],
 
-      "--ui-text": ["neutral", 0],
       "--ui-heading": ["primaryLight", 0],
       "--ui-heading-alt": ["secondaryLight", 2],
       "--ui-caption": ["neutral", 2],
-      "--ui-soft": ["neutral", 3],
-
-      "--ui-faint": ["neutral", 2],
-      "--ui-muted": ["neutral", 3],
-      "--ui-inverse": ["neutral", 0],
 
       "--ui-shadow": "rgba(0,0,0,0.30)",
 
@@ -288,8 +248,6 @@ export const recipes = [
     roles: {
       "--ui-nav-bg": ["neutral", 0],
       "--ui-footer-bg": ["neutral", 0],
-
-      "--ui-hero-bg": ["neutral", 0],
 
       "--ui-section-bg": ["neutral", 0],
       "--ui-alt-section-bg": ["neutral", 1],
@@ -312,15 +270,9 @@ export const recipes = [
       "--ui-link-on-dark": ["primary", 2],
       "--ui-link-on-dark-hover": ["primary", 3],
 
-      "--ui-text": ["neutral", 10],
       "--ui-heading": ["neutral", 9],
       "--ui-heading-alt": ["neutral", 8],
       "--ui-caption": ["neutral", 7],
-      "--ui-soft": ["neutral", 5],
-
-      "--ui-faint": "var(--color-text-faint)",
-      "--ui-muted": "var(--color-text-muted)",
-      "--ui-inverse": "var(--color-text-inverse)",
 
       "--ui-shadow": "rgba(0,0,0,0.04)",
 

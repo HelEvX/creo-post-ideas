@@ -25,6 +25,6 @@ const { name, description, image, price } = defineProps({
 
 <style>
 .product-post {
-  color: var(--ui-inverse);
+  color: var(--dynamic-text);
 }
 </style>

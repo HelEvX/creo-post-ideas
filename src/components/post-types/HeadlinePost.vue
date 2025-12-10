@@ -20,6 +20,6 @@ defineProps({
 
 <style>
 .headline-post {
-  color: var(--ui-inverse);
+  color: var(--dynamic-text);
 }
 </style>

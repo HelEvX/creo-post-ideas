@@ -29,7 +29,7 @@
   "color-title": "#12100e",
   "color-title-alt": "#f5d400",
   "color-subtitle": "#12100e",
-  "color-text": "#acacab",
+  "color-text": "#12100e",
   "color-text-soft": "rgba(18, 16, 14, 0.65)",
 
   "color-header-bg": "#ffffff",
@@ -49,6 +49,10 @@
 
   "color-disabled-bg": "#acacab",
   "color-disabled-text": "#acacab",
+
+  "color-text-inverse": "#ffffff",
+  "color-text-soft-inverse": "rgba(255,255,255,0.85)",
+  "color-disabled-text-inverse": "rgba(255,255,255,0.65)",
 
   "ig": {
     "avatar": "glaede.webp",

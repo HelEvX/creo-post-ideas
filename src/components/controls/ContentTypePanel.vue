@@ -1,6 +1,6 @@
 <template>
   <aside class="content-type-panel">
-    <div class="content-type-panel__title">Inhoud</div>
+    <h6>Inhoud</h6>
 
     <div class="content-type-panel__buttons">
       <button
@@ -15,13 +15,13 @@
 
     <div class="content-type-panel__divider"></div>
 
-    <div class="content-type-panel__title">Hoofdkleur</div>
+    <h6>Hoofdkleur</h6>
 
     <BackgroundToggle :tone="tone" @change="emit('update-tone', $event)" />
 
     <div class="content-type-panel__divider"></div>
 
-    <div class="content-type-panel__title">Achtergrond</div>
+    <h6>Achtergrond</h6>
 
     <div class="content-type-panel__buttons">
       <button
@@ -71,15 +71,6 @@ const modes = [
   margin-right: 2.5rem;
 }
 
-.content-type-panel__title {
-  font-size: var(--fs-body-xs);
-  font-weight: 700;
-  margin-bottom: var(--space-20);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--ui-caption);
-}
-
 .content-type-panel__buttons {
   display: flex;
   flex-direction: column;
@@ -96,7 +87,7 @@ const modes = [
 .content-type-panel__divider {
   height: 1px;
   width: auto;
-  background: var(--color-border-medium);
-  margin: var(--space-20) var(--space-10);
+  background: var(--color-border-light);
+  margin: var(--space-50) var(--space-20);
 }
 </style>

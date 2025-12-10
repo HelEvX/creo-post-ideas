@@ -128,9 +128,10 @@ watch(
 // CONTRAST CHECKER
 // ---------------------------------------------
 const contrastPairs = ref([
-  { id: "text-section", labelbg: "section", labelfg: "text", fg: "--ui-text", bg: "--ui-section-bg" },
-  { id: "text-alt-section", labelbg: "alt section", labelfg: "text", fg: "--ui-text", bg: "--ui-alt-section-bg" },
-  { id: "text-panel", labelbg: "panel", labelfg: "text", fg: "--ui-text", bg: "--ui-panel-bg" },
+  { id: "text-section", labelbg: "section", labelfg: "text", fg: "--color-text", bg: "--ui-section-bg" },
+  { id: "text-alt-section", labelbg: "alt section", labelfg: "text", fg: "--color-text", bg: "--ui-alt-section-bg" },
+  { id: "text-panel", labelbg: "panel", labelfg: "text", fg: "--color-text", bg: "--ui-panel-bg" },
+
   { id: "heading-section", labelbg: "section", labelfg: "title", fg: "--ui-heading", bg: "--ui-section-bg" },
   {
     id: "heading-alt-section",
@@ -139,8 +140,10 @@ const contrastPairs = ref([
     fg: "--ui-heading",
     bg: "--ui-alt-section-bg",
   },
-  { id: "soft-section", labelbg: "section", labelfg: "subtitle", fg: "--ui-soft", bg: "--ui-section-bg" },
+
+  { id: "soft-section", labelbg: "section", labelfg: "subtitle", fg: "--color-text-soft", bg: "--ui-section-bg" },
   { id: "caption-section", labelbg: "section", labelfg: "caption", fg: "--ui-caption", bg: "--ui-section-bg" },
+
   { id: "accent-section", labelbg: "section", labelfg: "accent", fg: "--ui-accent", bg: "--ui-section-bg" },
   { id: "link-section", labelbg: "section", labelfg: "link", fg: "--ui-link", bg: "--ui-section-bg" },
 ]);
@@ -160,17 +163,18 @@ function evalContrast(fgVar, bgVar) {
 }
 
 function pickReadableText(backgroundHex) {
-  const textDark = readCSSVar("--ui-text") || null;
-  const textLight = readCSSVar("--ui-inverse") || null;
+  // Real text series (static)
+  const textDark = readCSSVar("--color-text");
+  const textLight = readCSSVar("--color-text-inverse");
 
   if (!backgroundHex || !textDark || !textLight) {
-    return "var(--ui-text)";
+    return "var(--color-text)";
   }
 
   const contrastDark = getContrastRatio(textDark, backgroundHex);
   const contrastLight = getContrastRatio(textLight, backgroundHex);
 
-  return contrastLight >= contrastDark ? "var(--ui-inverse)" : "var(--ui-text)";
+  return contrastLight >= contrastDark ? "var(--color-text-inverse)" : "var(--color-text)";
 }
 
 function updateContrastChecks() {
@@ -185,7 +189,7 @@ function updateContrastChecks() {
     else if (result.level === "Fail") bgVar = "--color-danger";
 
     const bgHex = bgVar ? readCSSVar(bgVar) : null;
-    const textColor = bgHex ? pickReadableText(bgHex) : "var(--ui-text)";
+    const textColor = bgHex ? pickReadableText(bgHex) : "var(--color-text)";
 
     return {
       id: p.id,
@@ -207,13 +211,13 @@ defineExpose({ nextRecipe, prevRecipe });
 <template>
   <div class="recipe-shuffle">
     <div class="controls">
-      <button type="button" @click="prevRecipe">
+      <button type="button" class="btn-primary" @click="prevRecipe">
         <i class="fa-solid fa-chevron-left"></i>
       </button>
       <h5 class="recipe-title">
         {{ activeRecipe ? activeRecipe.title : "Brand default" }}
       </h5>
-      <button type="button" @click="nextRecipe">
+      <button type="button" class="btn-primary" @click="nextRecipe">
         <i class="fa-solid fa-chevron-right"></i>
       </button>
     </div>
@@ -234,8 +238,9 @@ defineExpose({ nextRecipe, prevRecipe });
       <table>
         <thead>
           <tr>
-            <th>Background</th>
-            <th>Text</th>
+            <th>Element</th>
+            <!-- <th>Text</th> -->
+            <th>Swatch</th>
             <!-- <th>Ratio</th> -->
             <th>Score</th>
           </tr>
@@ -243,7 +248,8 @@ defineExpose({ nextRecipe, prevRecipe });
         <tbody>
           <tr v-for="item in contrastResults" :key="item.id">
             <td>{{ item.labelbg }}</td>
-            <td>{{ item.labelfg }}</td>
+            <!-- <td>{{ item.labelfg }}</td> -->
+            <td><!-- <td>{{ item.swatch }}</td> --></td>
             <!-- <td>{{ item.ratio }}</td> -->
             <td
               :class="['result-cell', item.level ? item.level.toLowerCase().replace(' ', '-') : '']"
@@ -268,11 +274,10 @@ defineExpose({ nextRecipe, prevRecipe });
    CONTAINER
 --------------------------------------------- */
 .recipe-shuffle {
-  /* border: var(--ui-panel-border); */
   border-radius: var(--radius-md);
   padding: var(--space-20);
   background: var(--ui-section-bg);
-  color: var(--ui-text);
+  color: var(--text-on-section);
   display: flex;
   flex-direction: column;
 }
@@ -305,34 +310,25 @@ defineExpose({ nextRecipe, prevRecipe });
   text-align: center;
 }
 
-button {
-  background-color: var(--ui-accent);
-}
-
-button:hover {
-  background-color: var(--ui-accent-hover);
-}
-
-button:active {
-  background-color: var(--ui-accent-active);
-}
-
 .reset-wrap {
   text-align: center;
 }
 
 .reset-btn {
   background: none;
-  border: 1px solid var(--ui-accent);
-  color: var(--ui-accent);
+  border: var(--dynamic-text);
+  color: var(--dynamic-text);
   border-radius: var(--radius-sm);
   padding: var(--space-5) var(--space-20);
   cursor: pointer;
 }
 
 .reset-btn:hover {
-  background: var(--ui-accent);
-  color: var(--ui-inverse);
+  scale: 1.05;
+}
+
+.reset-btn:active {
+  scale: 0.95;
 }
 
 /* ---------------------------------------------

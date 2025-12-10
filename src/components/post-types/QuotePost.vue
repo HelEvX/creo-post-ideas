@@ -15,6 +15,6 @@ const { quote, author } = defineProps({
 
 <style>
 .quote-post {
-  color: var(--ui-inverse);
+  color: var(--dynamic-text);
 }
 </style>

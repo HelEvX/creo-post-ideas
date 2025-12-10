@@ -15,6 +15,6 @@ const { title, body } = defineProps({
 
 <style>
 .intro-post {
-  color: var(--ui-inverse);
+  color: var(--dynamic-text);
 }
 </style>

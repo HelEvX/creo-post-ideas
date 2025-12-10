@@ -50,11 +50,11 @@
     <!-- === END: Preview Zone === -->
 
     <!-- == START: Finalization Zone -->
-    <section class="col-12 app__finalization">
+    <!-- <section class="col-12 app__finalization">
       <div class="row">
         <BrandGallery :brandTokens="brandTokens" :scales="scales" />
       </div>
-    </section>
+    </section> -->
     <!-- == END: Finalization Zone -->
 
     <!-- INSTAGRAM GRID VIEW -->
@@ -135,7 +135,7 @@ import BrandLogo from "./components/brand/BrandLogo.vue";
 import ControlsPanel from "./components/controls/ControlsPanel.vue";
 import BrandPicker from "./components/brand/BrandPicker.vue";
 import MainPreview from "./components/preview/MainPreview.vue";
-import BrandGallery from "./components/brand/BrandGallery.vue";
+// import BrandGallery from "./components/brand/BrandGallery.vue";
 import InstagramGrid from "@/components/InstagramGrid.vue";
 import { buildBrandScales, getContrastRatio } from "./utils/colorBlender.js";
 
@@ -150,7 +150,7 @@ const demoImages = [
 
 export default {
   name: "App",
-  components: { BrandLogo, BrandPicker, ControlsPanel, MainPreview, BrandGallery, InstagramGrid },
+  components: { BrandLogo, BrandPicker, ControlsPanel, MainPreview, InstagramGrid },
 
   data() {
     return {
@@ -164,74 +164,74 @@ export default {
   methods: {
     updateDynamicTextRoles() {
       const root = document.documentElement;
-      const styles = getComputedStyle(root);
+      const cs = getComputedStyle(root);
 
-      // use the main section background as reference surface
-      const bg =
-        styles.getPropertyValue("--ui-section-bg").trim() || styles.getPropertyValue("--color-background").trim();
+      function decideMode(bgHex) {
+        if (!bgHex) return null;
+        const dark = cs.getPropertyValue("--color-text").trim();
+        const light = cs.getPropertyValue("--color-text-inverse").trim();
+        if (!dark || !light) return null;
 
-      const dark = styles.getPropertyValue("--color-text").trim();
-      const light = styles.getPropertyValue("--color-text-inverse").trim();
-
-      if (!bg || !dark || !light) return;
-
-      const contrastDark = getContrastRatio(dark, bg);
-      const contrastLight = getContrastRatio(light, bg);
-
-      const useLight = contrastLight >= contrastDark;
-
-      if (useLight) {
-        // dark background -> light text system
-        root.style.setProperty("--ui-text", "var(--color-text-inverse)");
-        root.style.setProperty("--ui-soft", "var(--color-text-muted)");
-        root.style.setProperty("--ui-muted", "var(--color-text-faint)");
-        root.style.setProperty("--ui-faint", "var(--color-text-faint)");
-      } else {
-        // light background -> dark text system
-        root.style.setProperty("--ui-text", "var(--color-text)");
-        root.style.setProperty("--ui-soft", "var(--color-text-soft)");
-        root.style.setProperty("--ui-muted", "var(--color-text-soft)");
-        root.style.setProperty("--ui-faint", "var(--color-text-soft)");
+        const cDark = getContrastRatio(dark, bgHex);
+        const cLight = getContrastRatio(light, bgHex);
+        return cLight >= cDark ? "light" : "dark";
       }
 
-      const primary = styles.getPropertyValue("--color-primary").trim();
-      const secondary = styles.getPropertyValue("--color-secondary").trim();
+      function apply(surfaceKey, bgVarName) {
+        const bg = cs.getPropertyValue(bgVarName).trim();
+        if (!bg) return;
 
-      if (primary) {
-        const cDark = getContrastRatio(dark, primary);
-        const cLight = getContrastRatio(light, primary);
-        const best = cLight >= cDark ? "var(--color-text-inverse)" : "var(--color-text)";
-        root.style.setProperty("--color-on-primary", best);
+        const mode = decideMode(bg);
+        if (!mode) return;
+
+        if (mode === "dark") {
+          root.style.setProperty(`--text-on-${surfaceKey}`, "var(--color-text)");
+          root.style.setProperty(`--text-soft-on-${surfaceKey}`, "var(--color-text-soft)");
+          root.style.setProperty(`--text-disabled-on-${surfaceKey}`, "var(--color-disabled-text)");
+        } else {
+          root.style.setProperty(`--text-on-${surfaceKey}`, "var(--color-text-inverse)");
+          root.style.setProperty(`--text-soft-on-${surfaceKey}`, "var(--color-text-soft-inverse)");
+          root.style.setProperty(`--text-disabled-on-${surfaceKey}`, "var(--color-disabled-text-inverse)");
+        }
       }
 
-      if (secondary) {
-        const cDark = getContrastRatio(dark, secondary);
-        const cLight = getContrastRatio(light, secondary);
-        const best = cLight >= cDark ? "var(--color-text-inverse)" : "var(--color-text)";
-        root.style.setProperty("--color-on-secondary", best);
-      }
+      const surfaces = [
+        ["nav", "--ui-nav-bg"],
+        ["footer", "--ui-footer-bg"],
+        ["section", "--ui-section-bg"],
+        ["alt-section", "--ui-alt-section-bg"],
+        ["panel", "--ui-panel-bg"],
+        ["alt-panel", "--ui-alt-panel-bg"],
+        ["primary", "--color-primary"],
+        ["secondary", "--color-secondary"],
+      ];
+
+      surfaces.forEach(([key, bgVar]) => apply(key, bgVar));
+
+      // body default = section
+      root.style.setProperty("--dynamic-text", "var(--text-on-section)");
+      root.style.setProperty("--dynamic-soft", "var(--text-soft-on-section)");
+      root.style.setProperty("--dynamic-disabled", "var(--text-disabled-on-section)");
     },
 
     async onBrandPicked(payload) {
-      // ----------------------------------------------
-      // CASE 1: Reset → use default Creo brand
-      // ----------------------------------------------
+      const root = document.documentElement;
+
       if (!payload) {
         const root = document.documentElement;
         root.removeAttribute("style");
 
-        // IMPORTANT: ensure default slug exists
         this.brandTokens = { slug: "creo" };
         this.scales = null;
 
-        console.log("🔁 Reset to default Creo theme");
         this.updateDynamicTextRoles();
+
+        // notify mockups to recompute text
+        window.dispatchEvent(new Event("brand-updated"));
+
         return;
       }
 
-      // ----------------------------------------------
-      // CASE 2: A real brand was selected
-      // ----------------------------------------------
       let slug;
       if (typeof payload === "object" && payload.tokens) {
         slug = payload.slug || payload.tokens.meta?.slug || payload.tokens.name.toLowerCase();
@@ -242,7 +242,6 @@ export default {
       const res = await fetch(`/brands/${slug}.json`);
       const data = await res.json();
 
-      const root = document.documentElement;
       root.removeAttribute("style");
 
       for (const [k, v] of Object.entries(data)) {
@@ -252,17 +251,17 @@ export default {
         }
       }
 
-      const primary = data["color-primary"] || "#888";
-      const textSoft = data["color-text-soft"] || "#444";
-
-      root.style.setProperty("--ig-tile-bg", primary + "15");
-      root.style.setProperty("--ig-tile-fg", textSoft);
+      root.style.setProperty("--ig-tile-bg", (data["color-primary"] || "#888") + "15");
+      root.style.setProperty("--ig-tile-fg", data["color-text-soft"] || "#444");
 
       await this.$nextTick();
       this.brandTokens = { ...data, slug };
       this.scales = buildBrandScales(this.brandTokens);
 
       this.updateDynamicTextRoles();
+
+      // notify mockups to recompute text for this brand
+      window.dispatchEvent(new Event("brand-updated"));
     },
   },
 
@@ -271,18 +270,13 @@ export default {
     const brand = params.get("brand");
     if (brand) this.onBrandPicked(brand);
 
-    // Handle reset event from RecipeShuffle
     window.addEventListener("brand-reset", (e) => {
       const { slug } = e.detail || {};
       if (slug) this.onBrandPicked(slug);
-
-      console.log("RESET EVENT RECEIVED:", e.detail);
     });
 
-    // NEW: react when recipes change the palette
     window.addEventListener("palette-updated", this.updateDynamicTextRoles);
 
-    // initial pass for default theme
     this.updateDynamicTextRoles();
   },
 
@@ -300,6 +294,10 @@ Stylings for components specific to the app shell
 ------------------------------------------------------
 */
 
+.app__layout {
+  margin: var(--space-100) 0;
+}
+
 @media (min-width: 992px) {
   .app__layout .row {
     align-items: stretch;
@@ -311,12 +309,11 @@ Stylings for components specific to the app shell
    ---------------------------------------------------- */
 .site-nav {
   background: var(--ui-nav-bg);
-  color: var(--ui-inverse);
   padding: var(--space-20) 0;
 }
 .site-footer {
   background: var(--ui-footer-bg);
-  color: var(--ui-muted);
+  color: var(--text-soft-on-footer);
 }
 
 /* ----------------------------------------------------
@@ -324,9 +321,8 @@ Stylings for components specific to the app shell
    ---------------------------------------------------- */
 .hero {
   height: fit-content;
-  background: var(--ui-hero-bg);
-  padding: var(--space-50) 0;
-  margin-bottom: var(--space-30);
+  background: var(--ui-section-bg);
+  margin-top: var(--space-75);
 }
 h1.hero-title {
   font-size: var(--fs-hero);
@@ -335,7 +331,7 @@ h1.hero-title {
 p.hero-subtitle {
   font-size: var(--fs-body-lg);
   font-weight: var(--fw-title);
-  color: var(--ui-soft);
+  color: var(--text-soft-on-hero);
   margin-bottom: 0;
 }
 
@@ -360,7 +356,7 @@ p.hero-subtitle {
 }
 
 .section h4 {
-  color: var(--ui-soft);
+  color: var(--dynamic-soft);
 }
 
 /* ----------------------------------------------------
@@ -390,14 +386,15 @@ p.hero-subtitle {
   border: var(--ui-panel-border);
   border-radius: var(--radius-md);
   overflow: hidden;
-  /* box-shadow: var(--shadow); */
   margin-bottom: var(--space-50);
+  color: var(--text-on-panel);
 }
 .card.alt {
   background: var(--ui-alt-panel-bg);
-  color: var(--ui-muted);
+  color: var(--text-on-alt-panel);
   border: var(--ui-alt-panel-border);
 }
+
 .card img {
   display: block;
   width: 100%;

@@ -200,9 +200,15 @@ import { getContrastRatio } from "../../utils/colorBlender.js";
 
 const props = defineProps({
   brandTokens: { type: Object, default: null },
+
+  // background to test against
   navBgVar: { type: String, default: "--ui-nav-bg" },
-  darkTextVar: { type: String, default: "--ui-text" },
-  lightTextVar: { type: String, default: "--ui-inverse" },
+
+  // dark text system (default)
+  darkTextVar: { type: String, default: "--color-text" },
+
+  // light text system (white)
+  lightTextVar: { type: String, default: "--color-text-inverse" },
 });
 
 const useInverse = ref(false);
@@ -221,11 +227,11 @@ function updateVariant() {
     return;
   }
 
-  const contrastDark = getContrastRatio(darkText, bg);
-  const contrastLight = getContrastRatio(lightText, bg);
+  const cDark = getContrastRatio(darkText, bg);
+  const cLight = getContrastRatio(lightText, bg);
 
-  // If light text has better contrast → background is dark → use inverse logo
-  useInverse.value = contrastLight >= contrastDark;
+  // if white text reads better → use inverse logo
+  useInverse.value = cLight >= cDark;
 }
 
 watch(() => props.brandTokens, updateVariant, { immediate: true });

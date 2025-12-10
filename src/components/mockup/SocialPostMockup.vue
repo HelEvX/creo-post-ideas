@@ -21,7 +21,7 @@
       <!-- <div v-if="showCornerShapes" class="corner-shape square corner-shape--bl"></div>
       <div v-if="showCornerShapes" class="corner-shape rect corner-shape--br"></div> -->
 
-      <div class="post-content" :class="`post-content--${backgroundTone}`">
+      <div class="post-content" :class="`post-content--${backgroundTone}`" :style="{ color: mockupTextColor }">
         <slot />
       </div>
 
@@ -35,6 +35,8 @@
 <script setup>
 import BrandWatermark from "@/components/brand/BrandWatermark.vue";
 import PostWrapper from "@/components/mockup/PostWrapper.vue";
+import { ref, watch, computed, onMounted, onBeforeUnmount } from "vue";
+import { getContrastRatio } from "@/utils/colorBlender.js";
 
 const props = defineProps({
   size: String,
@@ -58,9 +60,8 @@ const props = defineProps({
   shapesSrc: String,
 });
 
-import { ref, watch, computed } from "vue";
-
 const rawSvg = ref(null);
+const mockupTextColor = ref("inherit");
 
 // Load SVG file as text
 watch(
@@ -75,7 +76,7 @@ watch(
   { immediate: true }
 );
 
-// Tone → pick primary or secondary color
+// Tone → pick primary or secondary color for the logo
 const toneColor = computed(() =>
   props.backgroundTone === "secondary" ? "var(--color-primary)" : "var(--color-secondary)"
 );
@@ -86,21 +87,61 @@ const coloredLogo = computed(() => {
 
   const color = toneColor.value;
 
-  return (
-    rawSvg.value
-      // replace stroke in CSS blocks
-      .replace(/stroke:\s*#[0-9A-Fa-f]{3,6}/g, `stroke: ${color}`)
-      // replace fill in CSS blocks
-      .replace(/fill:\s*#[0-9A-Fa-f]{3,6}/g, `fill: ${color}`)
-      // also replace attribute-based colors if present
-      .replace(/stroke="[^"]*"/g, `stroke="${color}"`)
-      .replace(/fill="[^"]*"/g, `fill="${color}"`)
-  );
+  return rawSvg.value
+    .replace(/stroke:\s*#[0-9A-Fa-f]{3,6}/g, `stroke: ${color}`)
+    .replace(/fill:\s*#[0-9A-Fa-f]{3,6}/g, `fill: ${color}`)
+    .replace(/stroke="[^"]*"/g, `stroke="${color}"`)
+    .replace(/fill="[^"]*"/g, `fill="${color}"`);
 });
+
+// Decide text color for mockup based on brand vars
+function computeMockupTextColor() {
+  const root = document.documentElement;
+  const cs = getComputedStyle(root);
+
+  const dark = cs.getPropertyValue("--color-text").trim();
+  const light = cs.getPropertyValue("--color-text-inverse").trim();
+
+  if (!dark || !light) {
+    mockupTextColor.value = "inherit";
+    return;
+  }
+
+  // primary/secondary tone
+  const tone = props.backgroundTone === "secondary" ? "secondary" : "primary";
+  const bgVar = tone === "secondary" ? "--color-secondary" : "--color-primary";
+  const bg = cs.getPropertyValue(bgVar).trim();
+
+  if (!bg) {
+    mockupTextColor.value = "inherit";
+    return;
+  }
+
+  const cDark = getContrastRatio(dark, bg);
+  const cLight = getContrastRatio(light, bg);
+
+  mockupTextColor.value = cLight >= cDark ? light : dark;
+}
+
+onMounted(() => {
+  computeMockupTextColor();
+  window.addEventListener("brand-updated", computeMockupTextColor);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("brand-updated", computeMockupTextColor);
+});
+
+// Recompute if tone or bg class changes (primary/secondary, image, etc.)
+watch(
+  () => [props.backgroundTone, props.backgroundClass],
+  () => {
+    computeMockupTextColor();
+  }
+);
 
 const patternClass = computed(() => {
   if (!props.backgroundClass) return "";
-  // keep only pattern-* classes, drop bg--*
   return props.backgroundClass
     .split(" ")
     .filter((cls) => cls.startsWith("pattern-"))
@@ -191,12 +232,9 @@ const aspectRatio = computed(() => {
   max-width: none;
 }
 
-.post-content--primary {
-  color: var(--color-on-primary);
-}
-
+.post-content--primary,
 .post-content--secondary {
-  color: var(--color-on-secondary);
+  color: inherit;
 }
 
 .post-title {

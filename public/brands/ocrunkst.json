@@ -40,6 +40,9 @@
   "color-success-dark": "#25815d",
   "color-disabled-bg": "#c1c3c2",
   "color-disabled-text": "#c1c3c2",
+  "color-text-inverse": "#ffffff",
+  "color-text-soft-inverse": "rgba(255,255,255,0.85)",
+  "color-disabled-text-inverse": "rgba(255,255,255,0.65)",
 
   "ig": {
     "avatar": "client.webp",

@@ -114,7 +114,7 @@ select {
   border: var(--ui-panel-border-soft);
   font-family: var(--font-body);
   background: var(--ui-section-bg);
-  color: var(--ui-text);
+  color: var(--dynamic-text);
 }
 
 /* Preview swatches */

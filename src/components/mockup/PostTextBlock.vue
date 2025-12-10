@@ -24,7 +24,6 @@ defineProps({
 .post-text-block {
   display: block;
   width: 100%;
-  color: inherit;
 }
 
 .post-text-block__headline {
