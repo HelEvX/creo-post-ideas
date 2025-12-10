@@ -15,51 +15,56 @@ CREO-POST-IDEAS/
 ├── src/
 │   ├── components/
 │   │   ├── brand/
-│   │   │   ├── BrandGallery.vue
 │   │   │   ├── BrandLogo.vue
 │   │   │   ├── BrandPicker.vue
 │   │   │   └── BrandWatermark.vue
 │   │   │
 │   │   ├── controls/
-│   │   │   ├── ControlsPanel.vue
+│   │   │   ├── BackgroundToggle.vue
 │   │   │   ├── ContentTypePanel.vue
+│   │   │   ├── ControlsPanel.vue
 │   │   │   ├── FormatSelector.vue
 │   │   │   └── RecipeShuffle.vue
 │   │   │
 │   │   ├── preview/
 │   │   │   ├── MainPreview.vue
 │   │   │   ├── MockupWrapper.vue
-│   │   │   └── MockupRenderer.vue        # new
+│   │   │   └── MockupRenderer.vue
 │   │   │
 │   │   ├── mockup/
+│   │   │   ├── PostTextBlock.vue
 │   │   │   ├── SocialPostMockup.vue
-│   │   │   ├── PostWrapper.vue           # new
-│   │   │   ├── PostHeader.vue            # new
-│   │   │   ├── PostMedia.vue             # new
-│   │   │   ├── PostTextBlock.vue         # new
-│   │   │   └── PostFooter.vue            # new
+│   │   │   └── PostWrapper.vue
 │   │   │
 │   │   └── post-types/
-│   │       ├── IntroPost.vue             # new
-│   │       ├── HeadlinePost.vue          # new
-│   │       ├── QuotePost.vue             # new
-│   │       ├── ProductPost.vue           # new
-│   │       └── ParagraphPost.vue         # new
+│   │       ├── FallbackPost.vue
+│   │       ├── InfoPost.vue
+│   │       ├── IntroPost.vue
+│   │       ├── HeadlinePost.vue
+│   │       ├── QuotePost.vue
+│   │       ├── ProductPost.vue
+│   │       └── ParagraphPost.vue
+│   │
+│   ├── InstagramGrid.vue
 │   │
 │   ├── data/
 │   │   └── recipes.js         # Defines the style "Recipes" (Bold, Subtle, etc.)
+│   │
 │   ├── external/
 │   │   └── instagram-layout/
 │   │       │── css/
 │   │       │   ├── styles.css # inspiration for the instagram grid layout
 │   │       │   └── reset.css
 │   │       └── index.html
+│   │
 │   ├── utils/
 │   │   └── colorBlender.js    # Generates tints and shades for color scales
+│   │
 │   ├── App.vue                # Main application component and layout
 │   ├── main.js                # Application entry point
 │   ├── index.html             # root index for Vite
 │   └── ...                    # automatic files
+│
 ├── .eslintrc.js          # ESLint configuration
 ├── .gitignore            # Files and folders to ignore in Git
 ├── babel.config.js       # Babel configuration
