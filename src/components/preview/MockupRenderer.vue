@@ -1,5 +1,6 @@
 <template>
   <SocialPostMockup
+    :bgColors="getMockupBgColors(designProps.backgroundClass)"
     :size="size"
     :backgroundClass="designProps.backgroundClass"
     :backgroundTone="designProps.backgroundTone"
@@ -43,4 +44,51 @@ const postMap = {
 const currentPostComponent = computed(() => {
   return postMap[postType] || FallbackPost;
 });
+
+/* -------------------------------------------------
+   PATTERN COLOR MAP — NOW SUPPORTS SECONDARY MODE
+--------------------------------------------------- */
+
+const patternColorMap = {
+  "pattern-distorted-mesh": {
+    primary: ["--color-primary", "--color-primary-dark"],
+    secondary: ["--color-secondary", "--color-secondary-dark"],
+  },
+  "pattern-geometric-flowers": {
+    primary: ["--color-primary", "--color-primary-light"],
+    secondary: ["--color-secondary", "--color-secondary-light"],
+  },
+  "pattern-nested-diamond": {
+    primary: ["--color-primary", "--color-primary-dark"],
+    secondary: ["--color-secondary", "--color-secondary-dark"],
+  },
+  "pattern-wavy": {
+    primary: ["--color-primary", "--color-primary-light"],
+    secondary: ["--color-secondary", "--color-secondary-light"],
+  },
+};
+
+/* -------------------------------------------------
+   BACKGROUND COLOR RESOLUTION
+--------------------------------------------------- */
+
+function getMockupBgColors(backgroundClass) {
+  if (!backgroundClass) return ["--ui-section-bg"];
+
+  const parts = backgroundClass.split(" ");
+  const tone = designProps.backgroundTone === "secondary" ? "secondary" : "primary";
+
+  for (const p of parts) {
+    if (patternColorMap[p]) {
+      return patternColorMap[p][tone];
+    }
+  }
+
+  // plain backgrounds (primary / secondary / white)
+  if (parts.includes("bg--plain-primary")) return ["--color-primary"];
+  if (parts.includes("bg--plain-secondary")) return ["--color-secondary"];
+
+  // default fallback
+  return ["--ui-section-bg"];
+}
 </script>

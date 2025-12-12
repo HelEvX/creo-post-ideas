@@ -257,8 +257,82 @@ function blendScale(c1, c2, steps = 11) {
   return arr;
 }
 
+// ------------------------------------------------------------
+// Perceptual text color helper
+// ------------------------------------------------------------
+
+export function pickPerceptualTextColor(backgroundHex, darkTextHex, lightTextHex) {
+  // Fallback
+  if (!backgroundHex || !darkTextHex || !lightTextHex) {
+    return darkTextHex || lightTextHex || "#000000";
+  }
+
+  // Background characteristics
+  const [, s, l] = rgbToHsl(anyToRgb(backgroundHex)); // ignore hue
+  const isRichMidTone = s >= 0.5 && l >= 0.35 && l <= 0.7;
+
+  const contrastDark = getContrastRatio(darkTextHex, backgroundHex);
+  const contrastLight = getContrastRatio(lightTextHex, backgroundHex);
+
+  // Default winner: best contrast
+  let winner = contrastLight >= contrastDark ? lightTextHex : darkTextHex;
+
+  // Hybrid override:
+  // if both are between 3.0 and 4.5 AND bg is saturated mid-tone,
+  // we force light text because that usually looks more legible.
+  const darkMid = contrastDark >= 3 && contrastDark < 4.5;
+  const lightMid = contrastLight >= 3 && contrastLight < 4.5;
+
+  if (isRichMidTone && darkMid && lightMid) {
+    winner = lightTextHex;
+  }
+
+  return winner;
+}
+
 // Apply a token map to :root as CSS variables: --color-foo: #xxxxxx
 export function applyTokensToCSS(tokenMap) {
   const r = document.documentElement.style;
   Object.entries(tokenMap).forEach(([k, v]) => r.setProperty(`--${k}`, v));
+}
+
+export function evaluateContrastVisual(fgHex, bgHex, minAA = 4.5) {
+  if (!fgHex || !bgHex) {
+    return { ratio: 0, level: "fail" };
+  }
+
+  const ratio = getContrastRatio(fgHex, bgHex);
+
+  // 1) Pure WCAG ladder first
+  if (ratio >= 7) {
+    return { ratio, level: "AAA" }; // zeer goed
+  }
+  if (ratio >= minAA) {
+    return { ratio, level: "AA" }; // goed
+  }
+  if (ratio >= 3) {
+    return { ratio, level: "AA Large" }; // redelijk
+  }
+
+  // 2) Perceptual override on near-miss mid-tone backgrounds
+  const [, s, l] = rgbToHsl(anyToRgb(bgHex));
+
+  const isRichMidTone = s >= 0.45 && l >= 0.35 && l <= 0.72;
+
+  const white = "#ffffff";
+  const black = "#000000";
+
+  const contrastWhite = getContrastRatio(white, bgHex);
+  const contrastBlack = getContrastRatio(black, bgHex);
+
+  const best = Math.max(contrastWhite, contrastBlack);
+
+  // If background is a rich mid-toned color and best text is near acceptable
+  // treat it as a perceptual pass
+  if (isRichMidTone && best >= 3.2) {
+    return { ratio, level: "perceptual-pass" };
+  }
+
+  // 3) Real fail
+  return { ratio, level: "fail" };
 }

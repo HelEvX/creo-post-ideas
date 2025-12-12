@@ -1,12 +1,12 @@
 <template>
-  <PostWrapper :aspectRatio="aspectRatio" :class="[`size--${size}`]">
+  <PostWrapper :aspectRatio="aspectRatio" :class="[`size--${size}`, `layout--${aspectRatio}`]">
     <div class="social-post">
       <div class="post-bg" :class="backgroundClass">
         <!-- plain color layer -->
         <div class="post-bg__color"></div>
 
         <!-- pattern layer -->
-        <div class="post-bg__pattern" :class="patternClass"></div>
+        <div class="post-bg__pattern" :class="[patternClass, patternToneClass]"></div>
 
         <!-- logo layer -->
         <div v-if="brandLogo" class="post-bg__logo" v-html="coloredLogo"></div>
@@ -22,7 +22,14 @@
       <div v-if="showCornerShapes" class="corner-shape rect corner-shape--br"></div> -->
 
       <div class="post-content" :class="`post-content--${backgroundTone}`" :style="{ color: mockupTextColor }">
-        <slot />
+        <div
+          class="post-canvas"
+          :post-type="$attrs.postType || null"
+          :class="{
+            'info-autolayout-wrapper': $attrs.postType === 'info',
+          }">
+          <slot />
+        </div>
       </div>
 
       <div class="post-watermark" v-if="showBrand">
@@ -36,13 +43,23 @@
 import BrandWatermark from "@/components/brand/BrandWatermark.vue";
 import PostWrapper from "@/components/mockup/PostWrapper.vue";
 import { ref, watch, computed, onMounted, onBeforeUnmount } from "vue";
-import { getContrastRatio } from "@/utils/colorBlender.js";
+import { getTextModeForBackground } from "@/utils/colorLogic.js";
 
+/* ----------------------------------------------
+   PROPS
+---------------------------------------------- */
 const props = defineProps({
   size: String,
   backgroundType: String,
   backgroundClass: String,
   backgroundTone: String,
+
+  // MUST be fed from MockupRenderer — FIXED THERE TOO
+  bgColors: {
+    type: Array,
+    default: () => [],
+  },
+
   brandLogo: String,
   usePhoto: Boolean,
   photoSrc: String,
@@ -60,31 +77,27 @@ const props = defineProps({
   shapesSrc: String,
 });
 
+/* ----------------------------------------------
+   LOGO COLOR
+---------------------------------------------- */
 const rawSvg = ref(null);
-const mockupTextColor = ref("inherit");
 
-// Load SVG file as text
 watch(
   () => props.brandLogo,
   async (url) => {
-    if (!url) {
-      rawSvg.value = null;
-      return;
-    }
+    if (!url) return (rawSvg.value = null);
     rawSvg.value = await fetch(url).then((r) => r.text());
   },
   { immediate: true }
 );
 
-// Tone → pick primary or secondary color for the logo
+// IMPORTANT: your old logic was *reversed*
 const toneColor = computed(() =>
-  props.backgroundTone === "secondary" ? "var(--color-primary)" : "var(--color-secondary)"
+  props.backgroundTone === "secondary" ? "var(--color-secondary)" : "var(--color-primary)"
 );
 
-// Rewrite SVG fill/stroke to match brand colors
 const coloredLogo = computed(() => {
   if (!rawSvg.value) return null;
-
   const color = toneColor.value;
 
   return rawSvg.value
@@ -94,35 +107,71 @@ const coloredLogo = computed(() => {
     .replace(/fill="[^"]*"/g, `fill="${color}"`);
 });
 
-// Decide text color for mockup based on brand vars
-function computeMockupTextColor() {
-  const root = document.documentElement;
-  const cs = getComputedStyle(root);
+/* ----------------------------------------------
+   PATTERN MODE SWITCH
+---------------------------------------------- */
+const patternToneClass = computed(() => {
+  if (!props.backgroundClass?.includes("pattern-")) return "";
+  return props.backgroundTone === "secondary" ? "pattern--secondary" : "pattern--primary";
+});
 
+/* ----------------------------------------------
+   TEXT COLOR ENGINE (FINAL VERSION)
+---------------------------------------------- */
+function readVar(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+const mockupTextColor = ref("inherit");
+
+function computeMockupTextColor() {
+  const cs = getComputedStyle(document.documentElement);
   const dark = cs.getPropertyValue("--color-text").trim();
   const light = cs.getPropertyValue("--color-text-inverse").trim();
 
-  if (!dark || !light) {
-    mockupTextColor.value = "inherit";
-    return;
+  // If MockupRenderer forgot to send colors → use fallback detection
+  const bgVars = props.bgColors && props.bgColors.length > 0 ? props.bgColors : detectBackgroundVars();
+
+  let chosenMode = null;
+
+  for (const v of bgVars) {
+    const bg = readVar(v);
+    if (!bg) continue;
+
+    const mode = getTextModeForBackground(bg, dark, light);
+    if (!chosenMode) chosenMode = mode;
+
+    // If ANY bg forces white text → we accept white globally
+    if (mode === "light") {
+      mockupTextColor.value = light;
+      return;
+    }
   }
 
-  // primary/secondary tone
-  const tone = props.backgroundTone === "secondary" ? "secondary" : "primary";
-  const bgVar = tone === "secondary" ? "--color-secondary" : "--color-primary";
-  const bg = cs.getPropertyValue(bgVar).trim();
-
-  if (!bg) {
-    mockupTextColor.value = "inherit";
-    return;
-  }
-
-  const cDark = getContrastRatio(dark, bg);
-  const cLight = getContrastRatio(light, bg);
-
-  mockupTextColor.value = cLight >= cDark ? light : dark;
+  // Otherwise follow default
+  mockupTextColor.value = chosenMode === "dark" ? dark : light;
 }
 
+/* ----------------------------------------------
+   BACKGROUND FALLBACK DETECTOR
+---------------------------------------------- */
+function detectBackgroundVars() {
+  const cls = props.backgroundClass || "";
+
+  if (cls.includes("bg--plain-primary")) return ["--color-primary"];
+  if (cls.includes("bg--plain-secondary")) return ["--color-secondary"];
+
+  if (cls.includes("bg--image"))
+    return props.backgroundTone === "secondary" ? ["--color-secondary"] : ["--color-primary"];
+
+  if (cls.includes("pattern-")) return ["--pattern-base", "--pattern-alt"];
+
+  return ["--ui-section-bg"];
+}
+
+/* ----------------------------------------------
+   LISTENERS
+---------------------------------------------- */
 onMounted(() => {
   computeMockupTextColor();
   window.addEventListener("brand-updated", computeMockupTextColor);
@@ -132,14 +181,14 @@ onBeforeUnmount(() => {
   window.removeEventListener("brand-updated", computeMockupTextColor);
 });
 
-// Recompute if tone or bg class changes (primary/secondary, image, etc.)
 watch(
-  () => [props.backgroundTone, props.backgroundClass],
-  () => {
-    computeMockupTextColor();
-  }
+  () => [props.backgroundClass, props.backgroundTone, props.bgColors],
+  () => computeMockupTextColor()
 );
 
+/* ----------------------------------------------
+   PATTERN CLASS
+---------------------------------------------- */
 const patternClass = computed(() => {
   if (!props.backgroundClass) return "";
   return props.backgroundClass
@@ -148,6 +197,9 @@ const patternClass = computed(() => {
     .join(" ");
 });
 
+/* ----------------------------------------------
+   ASPECT RATIO
+---------------------------------------------- */
 const aspectRatio = computed(() => {
   switch (props.size) {
     case "square":
@@ -256,6 +308,21 @@ const aspectRatio = computed(() => {
   width: 4rem;
   height: 4rem;
   opacity: 0.6;
+}
+
+.post-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: relative;
+}
+
+/* InfoPost auto-layout only activates when needed */
+.info-autolayout-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
 }
 
 /* =========================================
@@ -400,5 +467,91 @@ const aspectRatio = computed(() => {
 .bg--image.bg--plain-secondary .post-bg__overlay {
   background: var(--color-secondary);
   opacity: 0.6;
+}
+
+/* ============================================
+   BASE AUTO-LAYOUT (applies to all ratios)
+=============================================== */
+
+.info-autolayout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+  padding: var(--space-40);
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden; /* never scroll, like a Figma frame */
+}
+
+/* TITLE + BODY should handle shrinkage */
+.info-autolayout .post-text-block__headline {
+  flex-shrink: 0;
+}
+.info-autolayout .post-text-block__body {
+  flex-shrink: 1;
+}
+
+/* ============================================
+   SQUARE 1:1  (default)
+=============================================== */
+
+.layout--square .info-autolayout {
+  flex-direction: column;
+  gap: var(--space-20);
+  padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+  font-size: 100%;
+}
+
+/* ============================================
+   PORTRAIT 5:4
+   Slight compression, but still column
+=============================================== */
+
+.layout--portrait .info-autolayout {
+  gap: var(--space-10);
+  padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+  font-size: 95%;
+}
+
+/* ============================================
+   STORY 9:16
+   Stronger compression + small type downscale
+=============================================== */
+
+.layout--story .info-autolayout {
+  gap: var(--space-5);
+  padding: calc(var(--safe-top) * 0.7) calc(var(--safe-right) * 0.7) calc(var(--safe-bottom) * 0.7)
+    calc(var(--safe-left) * 0.7);
+  font-size: 88%;
+}
+
+/* ============================================
+   LANDSCAPE 16:9
+   Switch to row layout (side-by-side)
+=============================================== */
+
+.layout--landscape .info-autolayout {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: var(--space-30);
+
+  padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+  font-size: 95%;
+}
+
+/* headline left, paragraph right in landscape */
+.layout--landscape .post-text-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 60%; /* prevents overflow */
+}
+
+/* allow paragraph to wrap earlier */
+.layout--landscape .post-text-block__body {
+  max-width: 100%;
 }
 </style>

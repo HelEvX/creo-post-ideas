@@ -1,7 +1,15 @@
 <script setup>
 import { ref, watch, computed, nextTick, onMounted } from "vue";
 import { recipes } from "../../data/recipes.js";
-import { getContrastRatio } from "../../utils/colorBlender.js";
+import {
+  getContrastRatio,
+  anyToRgb,
+  rgbToHsl,
+  tint,
+  shade,
+  tone,
+  evaluateContrastVisual,
+} from "../../utils/colorBlender.js";
 
 // ---------------------------------------------
 // Props
@@ -49,6 +57,38 @@ function resolveRoleValue(v, scales = props.scales) {
   }
   if (typeof v === "string" && v.startsWith("#")) return v;
   return null;
+}
+
+function pickReadablePillText(bgHex) {
+  const dark = readCSSVar("--color-text");
+  const light = readCSSVar("--color-text-inverse");
+
+  if (!bgHex || !dark || !light) return dark;
+
+  // Only extract lightness (l) because h and s are not used
+  const [, , l] = rgbToHsl(anyToRgb(bgHex));
+
+  // VERY LIGHT BACKGROUND → dark text
+  if (l >= 0.78) {
+    return dark;
+  }
+
+  // VERY DARK BACKGROUND → white text
+  if (l <= 0.32) {
+    return light;
+  }
+
+  // Mid-tones → choose best contrast with small perceptual override
+  const cDark = getContrastRatio(dark, bgHex);
+  const cLight = getContrastRatio(light, bgHex);
+
+  const bothMid = cDark >= 2.4 && cLight >= 2.4;
+
+  if (bothMid && cLight > cDark * 0.9) {
+    return light;
+  }
+
+  return cDark > cLight ? dark : light;
 }
 
 // ---------------------------------------------
@@ -128,79 +168,191 @@ watch(
 // CONTRAST CHECKER
 // ---------------------------------------------
 const contrastPairs = ref([
-  { id: "text-section", labelbg: "section", labelfg: "text", fg: "--color-text", bg: "--ui-section-bg" },
-  { id: "text-alt-section", labelbg: "alt section", labelfg: "text", fg: "--color-text", bg: "--ui-alt-section-bg" },
-  { id: "text-panel", labelbg: "panel", labelfg: "text", fg: "--color-text", bg: "--ui-panel-bg" },
-
-  { id: "heading-section", labelbg: "section", labelfg: "title", fg: "--ui-heading", bg: "--ui-section-bg" },
+  // MAIN BACKGROUND
   {
-    id: "heading-alt-section",
-    labelbg: "alt section",
-    labelfg: "title",
-    fg: "--ui-heading",
-    bg: "--ui-alt-section-bg",
+    id: "paragraph-main",
+    labelbg: "main bg",
+    labelfg: "paragraph",
+    fg: "--color-text",
+    bg: "--ui-section-bg",
+  },
+  {
+    id: "soft-main",
+    labelbg: "main bg",
+    labelfg: "soft",
+    fg: "--color-text-soft",
+    bg: "--ui-section-bg",
+  },
+  {
+    id: "disabled-main",
+    labelbg: "main bg",
+    labelfg: "disabled",
+    fg: "--color-disabled-text",
+    bg: "--ui-section-bg",
+  },
+  {
+    id: "caption-main",
+    labelbg: "main bg",
+    labelfg: "caption",
+    fg: "--ui-caption",
+    bg: "--ui-section-bg",
   },
 
-  { id: "soft-section", labelbg: "section", labelfg: "subtitle", fg: "--color-text-soft", bg: "--ui-section-bg" },
-  { id: "caption-section", labelbg: "section", labelfg: "caption", fg: "--ui-caption", bg: "--ui-section-bg" },
+  // CARD
+  {
+    id: "paragraph-card",
+    labelbg: "card bg",
+    labelfg: "paragraph",
+    fg: "--color-text",
+    bg: "--ui-panel-bg",
+  },
 
-  { id: "accent-section", labelbg: "section", labelfg: "accent", fg: "--ui-accent", bg: "--ui-section-bg" },
-  { id: "link-section", labelbg: "section", labelfg: "link", fg: "--ui-link", bg: "--ui-section-bg" },
+  // ACCENT
+  {
+    id: "text-accent",
+    labelbg: "accent bg",
+    labelfg: "inverse text",
+    fg: "--color-text-inverse",
+    bg: "--ui-accent",
+  },
+
+  // LABELS (optional system colors)
+  {
+    id: "label-main",
+    labelbg: "label",
+    labelfg: "label text",
+    fg: "--ui-heading",
+    bg: "--ui-section-bg",
+  },
+  {
+    id: "label-card",
+    labelbg: "label card",
+    labelfg: "label text",
+    fg: "--ui-heading",
+    bg: "--ui-panel-bg",
+  },
 ]);
 
 const contrastResults = ref([]);
 
-function evalContrast(fgVar, bgVar) {
-  const fg = readCSSVar(fgVar);
-  const bg = readCSSVar(bgVar);
-  if (!fg || !bg) return { ratio: "-", level: "N/A" };
-  const r = getContrastRatio(fg, bg);
-  let level = "Fail";
-  if (r >= 7) level = "AAA";
-  else if (r >= 4.5) level = "AA";
-  else if (r >= 3) level = "AA Large";
-  return { ratio: r.toFixed(2), level };
-}
-
-function pickReadableText(backgroundHex) {
-  // Real text series (static)
-  const textDark = readCSSVar("--color-text");
-  const textLight = readCSSVar("--color-text-inverse");
-
-  if (!backgroundHex || !textDark || !textLight) {
-    return "var(--color-text)";
-  }
-
-  const contrastDark = getContrastRatio(textDark, backgroundHex);
-  const contrastLight = getContrastRatio(textLight, backgroundHex);
-
-  return contrastLight >= contrastDark ? "var(--color-text-inverse)" : "var(--color-text)";
+function applyCssVar(cssVarName, hexValue) {
+  if (!cssVarName || !hexValue) return;
+  document.documentElement.style.setProperty(cssVarName, hexValue, "important");
 }
 
 function updateContrastChecks() {
   contrastResults.value = contrastPairs.value.map((p) => {
-    const result = evalContrast(p.fg, p.bg);
+    // Actual tested colors from CSS vars
+    const actualFgHex = readCSSVar(p.fg);
+    const actualBgHex = readCSSVar(p.bg);
 
-    // pick background variable based on AA/AAA/Fail
-    let bgVar = null;
-    if (result.level === "AAA") bgVar = "--color-success-dark";
-    else if (result.level === "AA") bgVar = "--color-success";
-    else if (result.level === "AA Large") bgVar = "--color-warning";
-    else if (result.level === "Fail") bgVar = "--color-danger";
+    const result = evaluateContrastVisual(actualFgHex, actualBgHex);
 
-    const bgHex = bgVar ? readCSSVar(bgVar) : null;
-    const textColor = bgHex ? pickReadableText(bgHex) : "var(--color-text)";
+    // status pill colors (unchanged behaviour)
+    let statusVar = null;
+    let userLabel = null;
+
+    // AAA → "prima" → dark green
+    if (result.level === "AAA") {
+      statusVar = "--color-success-dark";
+      userLabel = "prima";
+
+      // AA → "goed" → green
+    } else if (result.level === "AA") {
+      statusVar = "--color-success";
+      userLabel = "goed";
+
+      // AA Large → "redelijk" → orange/yellow
+    } else if (result.level === "AA Large") {
+      statusVar = "--color-warning";
+      userLabel = "redelijk";
+
+      // perceptual acceptable → treat as AA
+    } else if (result.level === "perceptual-pass") {
+      statusVar = "--color-success";
+      userLabel = "goed";
+
+      // fail → "probleem" → red
+    } else {
+      statusVar = "--color-danger";
+      userLabel = "probleem";
+    }
+
+    // resolve stoplight background color
+    const statusBg = statusVar ? readCSSVar(statusVar) : null;
+
+    // choose readable text for the pill (white or dark)
+    const statusText = statusBg ? pickReadablePillText(statusBg) : "var(--color-text)";
 
     return {
       id: p.id,
       labelbg: p.labelbg,
       labelfg: p.labelfg,
-      ratio: result.ratio,
-      level: result.level,
-      bg: bgHex,
-      fg: textColor,
+
+      ratio: result.ratio, // numeric ratio
+      level: result.level, // internal WCAG/perceptual code
+      label: userLabel, // NEW: user-facing Dutch label
+
+      // status pill styling
+      bg: statusBg,
+      fg: statusText,
+
+      // swatch + fix logic
+      cssVarFg: p.fg,
+      cssVarBg: p.bg,
+      swatchText: actualFgHex,
+      swatchBg: actualBgHex,
     };
   });
+}
+
+async function fixContrast(item) {
+  if (!item || !props.scales || !props.brandTokens) return;
+
+  const fgVar = item.cssVarFg;
+  const bgVar = item.cssVarBg;
+  if (!fgVar || !bgVar) return;
+
+  const currentFg = readCSSVar(fgVar);
+  const currentBg = readCSSVar(bgVar);
+
+  const targetRatio = 4.5; // AA text target
+  let ratio = getContrastRatio(currentFg, currentBg);
+
+  if (ratio >= targetRatio) return;
+
+  let fg = currentFg;
+  let attempts = 0;
+
+  // nudges: small increments, no jumps
+  const step = 0.04;
+
+  while (ratio < targetRatio && attempts < 40) {
+    // decide direction: lighten or darken text?
+    const lighter = tint(fg, step);
+    const darker = shade(fg, step);
+
+    const ratioL = getContrastRatio(lighter, currentBg);
+    const ratioD = getContrastRatio(darker, currentBg);
+
+    // pick better nudge
+    if (ratioL > ratio && ratioL >= ratioD) {
+      fg = lighter;
+      ratio = ratioL;
+    } else if (ratioD > ratio) {
+      fg = darker;
+      ratio = ratioD;
+    } else {
+      // fallback: gentle tone shift
+      fg = tone(fg, step);
+      ratio = getContrastRatio(fg, currentBg);
+    }
+
+    attempts += 1;
+  }
+
+  applyCssVar(fgVar, fg);
+  updateContrastChecks();
 }
 
 watch(index, () => updateContrastChecks(), { immediate: false });
@@ -235,36 +387,47 @@ defineExpose({ nextRecipe, prevRecipe });
 
     <div class="contrast-check">
       <h4>Contrast Check</h4>
-      <table>
-        <thead>
-          <tr>
-            <th>Element</th>
-            <!-- <th>Text</th> -->
-            <th>Swatch</th>
-            <!-- <th>Ratio</th> -->
-            <th>Score</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in contrastResults" :key="item.id">
-            <td>{{ item.labelbg }}</td>
-            <!-- <td>{{ item.labelfg }}</td> -->
-            <td><!-- <td>{{ item.swatch }}</td> --></td>
-            <!-- <td>{{ item.ratio }}</td> -->
-            <td
-              :class="['result-cell', item.level ? item.level.toLowerCase().replace(' ', '-') : '']"
-              :style="{
-                background: item.bg,
-                color: item.fg,
-              }">
-              <span v-if="item.level === 'AAA' || item.level === 'AA'" class="icon-pass">✓</span>
-              <span v-else-if="item.level && item.level.toLowerCase().includes('fail')" class="icon-fail">!</span>
 
-              {{ item.level || "—" }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="contrast-list">
+        <div v-for="item in contrastResults" :key="item.id" class="contrast-row">
+          <!-- LEFT: Color pair swatches -->
+          <div class="contrast-pair">
+            <div class="swatch-single" :style="{ background: item.swatchBg }">
+              <i class="fa-solid fa-square swatch-icon" :style="{ color: item.swatchText }"></i>
+              <span class="swatch-text-label" :style="{ color: item.swatchText }"
+                >A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+              </span>
+            </div>
+          </div>
+
+          <!-- MIDDLE: Score pill (existing logic) -->
+          <div
+            class="result-cell"
+            :class="item.level ? item.level.toLowerCase().replace(' ', '-') : ''"
+            :style="{
+              background: item.bg,
+              color: item.fg,
+            }">
+            <span
+              v-if="item.level === 'AAA' || item.level === 'AA' || item.level === 'perceptual-pass'"
+              class="icon-pass">
+              ✓
+            </span>
+            <span v-else-if="item.level && item.level.toLowerCase().includes('fail')" class="icon-fail"> ! </span>
+
+            {{ item.label || "—" }}
+          </div>
+
+          <!-- RIGHT: Fix button -->
+          <button
+            type="button"
+            class="fix-btn btn-neutral"
+            @click="fixContrast(item)"
+            :disabled="item.level === 'AAA' || item.level === 'AA'">
+            Verfijn
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -340,67 +503,94 @@ defineExpose({ nextRecipe, prevRecipe });
   text-align: center;
 }
 
-.contrast-check table {
-  width: 100%;
-  border-collapse: collapse;
+.icon-pass,
+.icon-fail {
+  /* width: 1.2rem; */
+  text-align: center;
+  color: inherit;
 }
 
-/* Make each row flex */
-.contrast-check tr {
+.contrast-list {
   display: flex;
-  width: 100%;
-  /* border-bottom: 1px solid var(--color-border-dark); */
-  padding: var(--space-5) 0;
+  flex-direction: column;
+  gap: var(--space-5);
 }
 
-@media (min-width: 576px) and (max-width: 992px) {
-  .contrast-check th {
-    display: none;
-  }
-  .contrast-check tr {
-    flex-direction: column;
-    margin-bottom: var(--space-10);
-  }
+/* ------------------------------------------------------
+   ADOBE-STYLE CONTRAST ROW LAYOUT (3 columns)
+   swatches   |   fix button   |   score pill
+------------------------------------------------------ */
+.contrast-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-20);
+  padding: var(--space-10) 0;
 }
 
-.contrast-check td:first-child,
-.contrast-check th:first-child {
-  width: 33.33%;
-  text-align: left;
-}
-
-.contrast-check td:nth-child(2),
-.contrast-check th:nth-child(2) {
+/* ------------------------------------------------------
+   COLOR PAIR — horizontal swatches exactly like Adobe
+------------------------------------------------------ */
+.contrast-pair {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-5);
   flex: 1 0 auto;
-  text-align: left;
 }
 
-/* last column tight + right */
-.contrast-check td:last-child,
-.contrast-check th:last-child {
-  flex-shrink: 0;
-  text-align: right;
+.swatch-pair {
+  display: flex;
+  flex-direction: row;
+  height: var(--space-20);
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid var(--color-border-medium);
 }
 
-.contrast-check th,
-.contrast-check td {
-  padding: var(--space-5) var(--space-10);
+.swatch-single {
+  width: var(--space-40);
+  height: var(--space-30);
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid var(--color-border-medium);
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  padding: 0 var(--space-10);
+  align-items: center;
+  justify-content: left;
+  gap: var(--space-5);
 }
 
-/* Pills */
-.contrast-check td.result-cell {
+.swatch-icon {
+  font-size: var(--fs-body-sm);
+  line-height: 1;
+}
+
+.swatch-text-label {
+  font-size: var(--fs-body-xs);
+  font-weight: 600;
+  line-height: 1;
+  text-wrap: nowrap;
+}
+
+/* ------------------------------------------------------
+   FIX BUTTON
+------------------------------------------------------ */
+
+.fix-btn {
+  align-self: stretch;
+}
+
+/* ------------------------------------------------------
+   SCORE PILL
+------------------------------------------------------ */
+.result-cell {
+  flex: 0 1 20%;
   font-weight: 500;
   padding: var(--space-5) var(--space-10);
   border-radius: var(--radius-md);
   display: inline-flex;
   align-items: center;
   gap: var(--space-5);
-}
-
-.icon-pass,
-.icon-fail {
-  /* width: 1.2rem; */
-  text-align: center;
-  color: inherit;
+  font-size: var(--fs-body-xs);
 }
 </style>

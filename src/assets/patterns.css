@@ -23,8 +23,8 @@
 
 .pattern-distorted-mesh {
   --s: 140px; /* control the size*/
-  --c1: var(--color-primary);
-  --c2: var(--color-primary-dark);
+  --c1: var(--pattern-base);
+  --c2: var(--pattern-alt);
 
   --_g: #0000 52%, var(--c1) 54% 57%, #0000 59%;
   background: radial-gradient(farthest-side at -33.33% 50%, var(--_g)) 0 calc(var(--s) / 2),

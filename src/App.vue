@@ -137,7 +137,8 @@ import BrandPicker from "./components/brand/BrandPicker.vue";
 import MainPreview from "./components/preview/MainPreview.vue";
 // import BrandGallery from "./components/brand/BrandGallery.vue";
 import InstagramGrid from "@/components/InstagramGrid.vue";
-import { buildBrandScales, getContrastRatio } from "./utils/colorBlender.js";
+import { buildBrandScales } from "./utils/colorBlender.js";
+import { getTextModeForBackground } from "./utils/colorLogic.js";
 
 const demoImages = [
   "pattern-geometric-flowers",
@@ -166,32 +167,32 @@ export default {
       const root = document.documentElement;
       const cs = getComputedStyle(root);
 
-      function decideMode(bgHex) {
-        if (!bgHex) return null;
-        const dark = cs.getPropertyValue("--color-text").trim();
-        const light = cs.getPropertyValue("--color-text-inverse").trim();
-        if (!dark || !light) return null;
+      const dark = cs.getPropertyValue("--color-text").trim();
+      const light = cs.getPropertyValue("--color-text-inverse").trim();
 
-        const cDark = getContrastRatio(dark, bgHex);
-        const cLight = getContrastRatio(light, bgHex);
-        return cLight >= cDark ? "light" : "dark";
-      }
+      const softDark = cs.getPropertyValue("--color-text-soft").trim();
+      const softLight = cs.getPropertyValue("--color-text-soft-inverse").trim();
+
+      const disabledDark = cs.getPropertyValue("--color-disabled-text").trim();
+      const disabledLight = cs.getPropertyValue("--color-disabled-text-inverse").trim();
 
       function apply(surfaceKey, bgVarName) {
         const bg = cs.getPropertyValue(bgVarName).trim();
         if (!bg) return;
 
-        const mode = decideMode(bg);
+        const mode = getTextModeForBackground(bg, dark, light);
         if (!mode) return;
 
         if (mode === "dark") {
-          root.style.setProperty(`--text-on-${surfaceKey}`, "var(--color-text)");
-          root.style.setProperty(`--text-soft-on-${surfaceKey}`, "var(--color-text-soft)");
-          root.style.setProperty(`--text-disabled-on-${surfaceKey}`, "var(--color-disabled-text)");
+          // background is light → use dark text series
+          root.style.setProperty(`--text-on-${surfaceKey}`, dark);
+          root.style.setProperty(`--text-soft-on-${surfaceKey}`, softDark);
+          root.style.setProperty(`--text-disabled-on-${surfaceKey}`, disabledDark);
         } else {
-          root.style.setProperty(`--text-on-${surfaceKey}`, "var(--color-text-inverse)");
-          root.style.setProperty(`--text-soft-on-${surfaceKey}`, "var(--color-text-soft-inverse)");
-          root.style.setProperty(`--text-disabled-on-${surfaceKey}`, "var(--color-disabled-text-inverse)");
+          // background is dark → use light text series
+          root.style.setProperty(`--text-on-${surfaceKey}`, light);
+          root.style.setProperty(`--text-soft-on-${surfaceKey}`, softLight);
+          root.style.setProperty(`--text-disabled-on-${surfaceKey}`, disabledLight);
         }
       }
 
@@ -208,10 +209,20 @@ export default {
 
       surfaces.forEach(([key, bgVar]) => apply(key, bgVar));
 
-      // body default = section
-      root.style.setProperty("--dynamic-text", "var(--text-on-section)");
-      root.style.setProperty("--dynamic-soft", "var(--text-soft-on-section)");
-      root.style.setProperty("--dynamic-disabled", "var(--text-disabled-on-section)");
+      // body defaults follow "section"
+      const textOnSection = cs.getPropertyValue("--text-on-section").trim();
+      const softOnSection = cs.getPropertyValue("--text-soft-on-section").trim();
+      const disabledOnSection = cs.getPropertyValue("--text-disabled-on-section").trim();
+
+      if (textOnSection) {
+        root.style.setProperty("--dynamic-text", textOnSection);
+      }
+      if (softOnSection) {
+        root.style.setProperty("--dynamic-soft", softOnSection);
+      }
+      if (disabledOnSection) {
+        root.style.setProperty("--dynamic-disabled", disabledOnSection);
+      }
     },
 
     async onBrandPicked(payload) {

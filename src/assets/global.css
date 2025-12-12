@@ -140,6 +140,10 @@
   --color-border-medium: var(--neutral-400);
   --color-border-dark: var(--neutral-800);
 
+  /* ==== PATTERNS ==== */
+  --pattern-base: var(--color-primary);
+  --pattern-alt: var(--color-primary-dark);
+
   /* ==== STATUS / FEEDBACK ==== */
   --color-info: var(--blue-500);
   --color-warning: var(--yellow-500);
@@ -200,6 +204,7 @@
   --border-width: 0.15rem;
   --border-width-lg: 0.35rem;
   --shadow: 0 0.1rem 0.6rem var(--color-shadow);
+  --shadow-sm: 0 1px 2px var(--color-shadow);
 
   /* Transitions */
   --transition-default: all 0.3s ease;
@@ -478,6 +483,30 @@ button,
 }
 
 /* ======================================================
+   NEUTRAL BUTTONS
+   ====================================================== */
+
+.btn-neutral {
+  background: transparent;
+  border: var(--border-width) solid var(--color-border-medium);
+  color: var(--color-text);
+  padding: var(--space-5) var(--space-20);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-default);
+  font-size: var(--fs-body-sm);
+}
+
+.btn-neutral:hover:not(:disabled) {
+  background: var(--color-border-light);
+}
+
+.btn-neutral:disabled {
+  opacity: 0.4;
+  cursor: initial;
+}
+
+/* ======================================================
    LINKS
    ====================================================== */
 
@@ -509,6 +538,20 @@ textarea {
   background: var(--ui-alt-section-bg);
   font-family: var(--font-body);
   box-sizing: border-box;
+}
+
+/* ======================================================
+   PATTERNS 
+   ====================================================== */
+
+.pattern--secondary {
+  --pattern-base: var(--color-secondary);
+  --pattern-alt: var(--color-secondary-dark);
+}
+
+.pattern--primary {
+  --pattern-base: var(--color-primary);
+  --pattern-alt: var(--color-primary-dark);
 }
 
 /* ======================================================

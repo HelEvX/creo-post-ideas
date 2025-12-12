@@ -20,6 +20,6 @@ defineProps({
 
 <style>
 .headline-post {
-  color: var(--dynamic-text);
+  color: inherit;
 }
 </style>

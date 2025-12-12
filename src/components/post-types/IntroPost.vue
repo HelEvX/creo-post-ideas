@@ -15,6 +15,6 @@ const { title, body } = defineProps({
 
 <style>
 .intro-post {
-  color: var(--dynamic-text);
+  color: inherit;
 }
 </style>
