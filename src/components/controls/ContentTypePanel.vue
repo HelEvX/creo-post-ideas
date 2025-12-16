@@ -1,6 +1,6 @@
 <template>
   <aside class="content-type-panel">
-    <h6>Inhoud</h6>
+    <h6>Type inhoud</h6>
 
     <div class="content-type-panel__buttons">
       <button
@@ -15,7 +15,7 @@
 
     <div class="content-type-panel__divider"></div>
 
-    <h6>Hoofdkleur</h6>
+    <h6>Kleurrijk [check]</h6>
 
     <BackgroundToggle :tone="tone" @change="emit('update-tone', $event)" />
 
@@ -66,8 +66,6 @@ const modes = [
 
 <style scoped>
 .content-type-panel {
-  /* padding: 2.5rem; */
-  /* margin-left: -2.5rem; */
   margin-right: 2.5rem;
 }
 
@@ -88,6 +86,6 @@ const modes = [
   height: 1px;
   width: auto;
   background: var(--color-border-light);
-  margin: var(--space-50) var(--space-20);
+  margin: var(--space-20) var(--space-30) var(--space-40);
 }
 </style>

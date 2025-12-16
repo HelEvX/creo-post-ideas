@@ -9,9 +9,16 @@
           :selected="selectedPostType"
           :tone="backgroundTone"
           :selectedMode="backgroundMode"
+          :mockupBgContext="mockupBgContext"
           @select="onContentTypeSelect"
-          @update-tone="backgroundTone = $event"
-          @update-mode="backgroundMode = $event" />
+          @update-tone="
+            backgroundTone = $event;
+            emit('update-tone', $event);
+          "
+          @update-mode="
+            backgroundMode = $event;
+            emit('update-mode', $event);
+          " />
       </div>
 
       <!-- PREVIEW -->
@@ -28,14 +35,15 @@
               usePhoto: backgroundMode === 'image',
               photoSrc: photoSrc,
               showCornerShapes: backgroundMode !== 'logo',
-            }" />
+            }"
+            :bgContext="mockupBgContext" />
         </MockupWrapper>
       </div>
 
       <div class="col-12 col-lg-2 main-preview__styles">
-        <h6>Current Style</h6>
-        <div>{title font name}</div>
-        <div>{body font name}</div>
+        <h6>Stijlkenmerken</h6>
+        <div class="title-font">{title font name}</div>
+        <div class="body-font">{body font name}</div>
         <div class="content-type-panel__divider"></div>
         <div class="main-preview__styles__swatches">
           <div class="main-preview__styles__swatch"></div>
@@ -55,7 +63,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watchEffect } from "vue";
 
 import ContentTypePanel from "../controls/ContentTypePanel.vue";
 import FormatSelector from "../controls/FormatSelector.vue";
@@ -63,6 +71,9 @@ import MockupWrapper from "../preview/MockupWrapper.vue";
 import MockupRenderer from "../preview/MockupRenderer.vue";
 
 import stockImage from "@/assets/img/stockphoto.webp";
+import { getTextModeForBackground } from "@/utils/colorLogic.js";
+
+const emit = defineEmits(["update-tone", "update-mode"]);
 
 const { brandTokens } = defineProps({
   brandTokens: Object,
@@ -88,33 +99,28 @@ const photoSrc = ref(stockImage);
 --------------------------------------------- */
 const postContent = {
   info: {
-    headline: "Welkom bij je creatieve playground!",
-    body: "Gebruik het linkerpaneel om verschillende posttypes te testen en te bekijken hoe ze eruit zien.",
+    headline: "Welkom",
+    body: "Gebruik het linkerpaneel om je posts uit te testen. Je vindt de verzameling stijlkenmerken in het rechterpaneel.",
   },
-
   headline: {
     headline: "Win tijd door je processen te automatiseren.",
     subtitle: "Ontdek hoe we jouw bedrijf kunnen ondersteunen.",
     icon: "/icons/chart-up.svg",
   },
-
   intro: {
     title: "Welkom bij Creo!",
     body: "We bouwen digitale ervaringen die merken versterken en teams efficiënter maken.",
   },
-
   quote: {
     quote: "De beste software is diegene die je nooit in de weg zit.",
     author: "Sarah De Smet, Project Manager",
   },
-
   product: {
     name: "Creo Dashboard Suite",
     description: "Een krachtige tool voor inzicht, automatisatie en workflowbeheer.",
     image: "/images/product-example.webp",
     price: "€49 / maand",
   },
-
   paragraph: {
     title: "Over onze werkwijze",
     body: "Ons team werkt nauw samen met klanten om digitale oplossingen te creëren die echt impact maken.",
@@ -126,24 +132,43 @@ const postContent = {
 --------------------------------------------- */
 const backgroundClass = computed(() => {
   const classes = [];
-
-  // base plain background (tone)
   classes.push(backgroundTone.value === "secondary" ? "bg--plain-secondary" : "bg--plain-primary");
 
-  // pattern mode
   if (backgroundMode.value === "pattern") return "bg--pattern pattern-distorted-mesh";
-
-  // logo mode
-  if (backgroundMode.value === "logo") {
-    classes.push("bg--logo");
-  }
-
-  // image mode
-  if (backgroundMode.value === "image") {
-    classes.push("bg--image");
-  }
+  if (backgroundMode.value === "logo") classes.push("bg--logo");
+  if (backgroundMode.value === "image") classes.push("bg--image");
 
   return classes.join(" ");
+});
+
+/* --------------------------------------------
+   MOCKUP BACKGROUND CONTEXT
+--------------------------------------------- */
+const mockupBgContext = computed(() => {
+  if (backgroundMode.value === "pattern") {
+    return {
+      type: "pattern",
+      tone: backgroundTone.value,
+      bgVars:
+        backgroundTone.value === "secondary"
+          ? ["--color-secondary", "--color-secondary-dark"]
+          : ["--color-primary", "--color-primary-dark"],
+    };
+  }
+
+  if (backgroundMode.value === "image") {
+    return {
+      type: "image",
+      tone: backgroundTone.value,
+      bgVars: backgroundTone.value === "secondary" ? ["--color-secondary"] : ["--color-primary"],
+    };
+  }
+
+  return {
+    type: "color",
+    tone: backgroundTone.value,
+    bgVars: backgroundTone.value === "secondary" ? ["--color-secondary"] : ["--color-primary"],
+  };
 });
 
 /* --------------------------------------------
@@ -153,6 +178,60 @@ const brandLogo = computed(() => {
   if (backgroundMode.value !== "logo") return null;
   if (!brandTokens?.slug) return null;
   return `/src/assets/highlights/${brandTokens.slug}.svg`;
+});
+
+/* --------------------------------------------
+   CSS VAR HELPERS
+--------------------------------------------- */
+function readVar(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+function setVar(name, value) {
+  document.documentElement.style.setProperty(name, value);
+}
+
+/* --------------------------------------------
+   MOCKUP TITLE COLOR ENGINE
+--------------------------------------------- */
+watchEffect(() => {
+  const dark = readVar("--color-text");
+  const light = readVar("--color-text-inverse");
+
+  const primary = readVar("--color-primary");
+  const secondary = readVar("--color-secondary");
+
+  /* ---------------------------
+     TITLE ON POST BACKGROUND
+  --------------------------- */
+  let titleOnPost = dark;
+
+  for (const v of mockupBgContext.value.bgVars || []) {
+    const bg = readVar(v);
+    if (!bg) continue;
+
+    const mode = getTextModeForBackground(bg, dark, light);
+    titleOnPost = mode === "light" ? light : dark;
+    break;
+  }
+
+  const accent = backgroundTone.value === "secondary" ? secondary : primary;
+
+  if (getTextModeForBackground(accent, dark, light) === "dark") {
+    titleOnPost = accent;
+  }
+
+  /* ---------------------------
+     TITLE ON CARD BACKGROUND
+  --------------------------- */
+  const panelBg = readVar("--ui-panel-bg");
+  const cardMode = getTextModeForBackground(panelBg, dark, light);
+  const titleOnCard = cardMode === "light" ? light : dark;
+
+  /* ---------------------------
+     APPLY
+  --------------------------- */
+  setVar("--mockup-title", titleOnPost);
+  setVar("--mockup-title-on-card", titleOnCard);
 });
 
 /* --------------------------------------------
@@ -184,6 +263,7 @@ function onContentTypeSelect(type) {
 
 .main-preview__sidebar {
   margin-bottom: var(--space-40);
+  text-align: center;
 }
 
 .main-preview__content {
@@ -192,6 +272,16 @@ function onContentTypeSelect(type) {
 
 .main-preview__styles {
   padding-right: 0;
+}
+
+.main-preview__styles h6 {
+  text-align: center;
+}
+
+.main-preview__styles .title-font {
+  font-family: var(--font-title);
+  font-weight: var(--fw-title);
+  margin-bottom: var(--space-20);
 }
 
 .main-preview__styles__swatches {
@@ -240,7 +330,7 @@ function onContentTypeSelect(type) {
   height: 1px;
   width: auto;
   background: var(--color-border-light);
-  margin: var(--space-50) var(--space-20);
+  margin: var(--space-20) var(--space-30) var(--space-40);
 }
 
 @media (min-width: 992px) {

@@ -35,27 +35,27 @@
     <section class="app__layout">
       <div class="container-full">
         <div class="row between">
-          <ControlsPanel :brandTokens="brandTokens" :scales="scales" @picked="onBrandPicked" />
+          <ControlsPanel
+            :brandTokens="brandTokens"
+            :scales="scales"
+            :mockupBgContext="mockupBgContext"
+            @picked="onBrandPicked" />
 
           <!-- MAIN COLUMN -->
           <main class="col-12 col-md-9 app__main">
             <!-- CANVAS -->
             <div class="app__canvas">
-              <MainPreview :brandTokens="brandTokens" :scales="scales" />
+              <MainPreview
+                :brandTokens="brandTokens"
+                :scales="scales"
+                @update-tone="backgroundTone = $event"
+                @update-mode="backgroundMode = $event" />
             </div>
           </main>
         </div>
       </div>
     </section>
     <!-- === END: Preview Zone === -->
-
-    <!-- == START: Finalization Zone -->
-    <!-- <section class="col-12 app__finalization">
-      <div class="row">
-        <BrandGallery :brandTokens="brandTokens" :scales="scales" />
-      </div>
-    </section> -->
-    <!-- == END: Finalization Zone -->
 
     <!-- INSTAGRAM GRID VIEW -->
     <section class="section section-gallery alt">
@@ -155,11 +155,45 @@ export default {
 
   data() {
     return {
-      brandTokens: null, // active brand JSON
-      scales: null, // built color scales for recipes
+      brandTokens: null,
+      scales: null,
+
+      // shared background state
+      backgroundTone: "primary", // "primary" | "secondary"
+      backgroundMode: "color", // "color" | "pattern" | "image"
 
       galleryImages: demoImages,
     };
+  },
+
+  computed: {
+    mockupBgContext() {
+      if (this.backgroundMode === "pattern") {
+        return {
+          type: "pattern",
+          tone: this.backgroundTone,
+          bgVars:
+            this.backgroundTone === "secondary"
+              ? ["--color-secondary", "--color-secondary-dark"]
+              : ["--color-primary", "--color-primary-dark"],
+        };
+      }
+
+      if (this.backgroundMode === "image") {
+        return {
+          type: "image",
+          tone: this.backgroundTone,
+          bgVars: this.backgroundTone === "secondary" ? ["--color-secondary"] : ["--color-primary"],
+        };
+      }
+
+      // plain color (default)
+      return {
+        type: "color",
+        tone: this.backgroundTone,
+        bgVars: this.backgroundTone === "secondary" ? ["--color-secondary"] : ["--color-primary"],
+      };
+    },
   },
 
   methods: {
@@ -184,12 +218,10 @@ export default {
         if (!mode) return;
 
         if (mode === "dark") {
-          // background is light → use dark text series
           root.style.setProperty(`--text-on-${surfaceKey}`, dark);
           root.style.setProperty(`--text-soft-on-${surfaceKey}`, softDark);
           root.style.setProperty(`--text-disabled-on-${surfaceKey}`, disabledDark);
         } else {
-          // background is dark → use light text series
           root.style.setProperty(`--text-on-${surfaceKey}`, light);
           root.style.setProperty(`--text-soft-on-${surfaceKey}`, softLight);
           root.style.setProperty(`--text-disabled-on-${surfaceKey}`, disabledLight);
@@ -209,37 +241,26 @@ export default {
 
       surfaces.forEach(([key, bgVar]) => apply(key, bgVar));
 
-      // body defaults follow "section"
       const textOnSection = cs.getPropertyValue("--text-on-section").trim();
       const softOnSection = cs.getPropertyValue("--text-soft-on-section").trim();
       const disabledOnSection = cs.getPropertyValue("--text-disabled-on-section").trim();
 
-      if (textOnSection) {
-        root.style.setProperty("--dynamic-text", textOnSection);
-      }
-      if (softOnSection) {
-        root.style.setProperty("--dynamic-soft", softOnSection);
-      }
-      if (disabledOnSection) {
-        root.style.setProperty("--dynamic-disabled", disabledOnSection);
-      }
+      if (textOnSection) root.style.setProperty("--dynamic-text", textOnSection);
+      if (softOnSection) root.style.setProperty("--dynamic-soft", softOnSection);
+      if (disabledOnSection) root.style.setProperty("--dynamic-disabled", disabledOnSection);
     },
 
     async onBrandPicked(payload) {
       const root = document.documentElement;
 
       if (!payload) {
-        const root = document.documentElement;
         root.removeAttribute("style");
 
         this.brandTokens = { slug: "creo" };
         this.scales = null;
 
         this.updateDynamicTextRoles();
-
-        // notify mockups to recompute text
         window.dispatchEvent(new Event("brand-updated"));
-
         return;
       }
 
@@ -270,8 +291,6 @@ export default {
       this.scales = buildBrandScales(this.brandTokens);
 
       this.updateDynamicTextRoles();
-
-      // notify mockups to recompute text for this brand
       window.dispatchEvent(new Event("brand-updated"));
     },
   },
@@ -287,7 +306,6 @@ export default {
     });
 
     window.addEventListener("palette-updated", this.updateDynamicTextRoles);
-
     this.updateDynamicTextRoles();
   },
 
@@ -389,46 +407,11 @@ p.hero-subtitle {
   color: var(--ui-link-on-dark-hover);
 }
 
-/* ----------------------------------------------------
-   GALLERY
-   ---------------------------------------------------- */
-.card {
-  background: var(--ui-panel-bg);
-  border: var(--ui-panel-border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  margin-bottom: var(--space-50);
-  color: var(--text-on-panel);
-}
-.card.alt {
-  background: var(--ui-alt-panel-bg);
-  color: var(--text-on-alt-panel);
-  border: var(--ui-alt-panel-border);
-}
-
-.card img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-/* Transitions */
-
-.site-nav,
-.site-footer,
-.hero,
-.section,
-.section-alt,
-.card {
-  transition: var(--transition-default);
-}
-
 /* ======================================================
    APP LAYOUT
    ====================================================== */
 
-.app__canvas,
-.app__finalization {
+.app__canvas {
   background: var(--ui-section-bg);
   border-radius: var(--radius-lg);
   padding: var(--space-25);
@@ -438,13 +421,21 @@ p.hero-subtitle {
   border: var(--ui-panel-border-soft);
 }
 
-.app__finalization {
-  margin: var(--space-50) 0;
-}
-
 .section-gallery h2 {
   text-align: center;
   padding-bottom: var(--space-50);
+}
+
+/* ======================================================
+   TRANSITIONS
+   ====================================================== */
+
+.site-nav,
+.site-footer,
+.hero,
+.section,
+.section-alt {
+  transition: var(--transition-default);
 }
 
 /* =======================================================

@@ -252,7 +252,7 @@ function blendScale(c1, c2, steps = 11) {
   const arr = [];
   for (let i = 0; i < steps; i++) {
     const t = i / (steps - 1);
-    arr.push(mix(c1, c2, t)); // <— uses your existing mix()
+    arr.push(mix(c1, c2, t)); // <— uses existing mix()
   }
   return arr;
 }

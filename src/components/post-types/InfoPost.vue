@@ -4,58 +4,59 @@
 
     <div class="overview-block">
       <!-- MAIN BACKGROUND -->
-      <div class="overview-section main-bg">
-        <div class="overview-title">Main Background</div>
 
-        <div class="overview-row fg--accent">
-          <i class="fa-solid fa-square-full icon-preview"></i>
-          <span class="label">Icon</span>
+      <div class="overview-cards">
+        <div class="overview-section main-bg">
+          <div class="overview-row fg--accent">
+            <i class="fa-solid fa-square-full icon-preview"></i>
+            <span class="label">Icon</span>
+          </div>
+
+          <div class="overview-row fg--heading">
+            <div class="title-preview">Card title 1</div>
+          </div>
+
+          <div class="overview-row fg--caption">
+            <div class="caption-preview">Card caption text 1</div>
+          </div>
+
+          <div class="overview-row fg--text">
+            <p class="paragraph-preview">This is paragraph preview text.</p>
+          </div>
+
+          <div class="overview-row fg--text-soft">
+            <p class="footer-preview">Terms & conditions</p>
+          </div>
         </div>
 
-        <div class="overview-row fg--heading">
-          <h2 class="title-preview">Title preview</h2>
-        </div>
+        <!-- CARD BACKGROUND -->
+        <div class="overview-section card-bg">
+          <div class="overview-row fg--accent">
+            <i class="fa-solid fa-square-full icon-preview"></i>
+            <span class="label">Icon</span>
+          </div>
 
-        <div class="overview-row fg--caption">
-          <div class="caption-preview">Caption preview</div>
-        </div>
+          <div class="overview-row fg--heading">
+            <div class="title-preview">Card Title 2</div>
+          </div>
 
-        <div class="overview-row fg--text">
-          <p class="paragraph-preview">This is paragraph preview text.</p>
-        </div>
+          <div class="overview-row fg--caption">
+            <div class="caption-preview">Card caption text 2</div>
+          </div>
 
-        <div class="overview-row fg--text-soft">
-          <p class="footer-preview">Footer / metadata preview</p>
-        </div>
-      </div>
+          <div class="overview-row fg--text">
+            <p class="paragraph-preview">This is paragraph preview text.</p>
+          </div>
 
-      <!-- CARD BACKGROUND -->
-      <div class="overview-section card-bg">
-        <div class="overview-title">Card Background</div>
-
-        <div class="overview-row fg--accent">
-          <i class="fa-solid fa-square-full icon-preview"></i>
-          <span class="label">Icon</span>
-        </div>
-
-        <div class="overview-row fg--heading">
-          <h3 class="title-preview">Card Title</h3>
-        </div>
-
-        <div class="overview-row fg--caption">
-          <div class="caption-preview">Card caption text</div>
-        </div>
-
-        <div class="overview-row fg--text">
-          <p class="paragraph-preview">Card paragraph preview text.</p>
+          <div class="overview-row fg--text-soft">
+            <p class="footer-preview">Terms & conditions</p>
+          </div>
         </div>
       </div>
 
       <!-- ACCENT BACKGROUND -->
       <div class="overview-section accent-bg">
-        <div class="overview-title">Accent Background</div>
-
-        <div class="overview-row fg--text-inverse">
+        <div class="fg--text-inverse">
           <p class="accent-preview">Text on accent background</p>
         </div>
       </div>
@@ -76,38 +77,31 @@ const { headline, body } = defineProps({
 /* =========================================================
    OVERVIEW BLOCK CONTAINER
    ======================================================= */
-.overview-block {
-  margin-top: var(--space-30);
+.info-post {
   display: flex;
   flex-direction: column;
-  gap: var(--space-30);
+  justify-content: space-between;
+  height: 100%;
+}
+.overview-block {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-evenly;
   width: 100%;
 }
 
 /* Logical grouping */
 .overview-section {
-  padding: var(--space-20);
+  padding: var(--space-10) var(--space-25);
   border-radius: var(--radius-md);
-  background: var(--ui-section-bg); /* default main background */
 }
 
-/* card background version */
-.card-bg {
-  background: var(--ui-panel-bg);
-}
-
-/* accent background version */
-.accent-bg {
-  background: var(--ui-accent);
-}
-
-/* Group label */
-.overview-title {
-  font-size: var(--fs-body-sm);
-  opacity: 0.7;
-  margin-bottom: var(--space-10);
-  font-weight: var(--fw-title);
-  text-transform: uppercase;
+.overview-cards {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-25);
+  justify-content: space-between;
 }
 
 /* =========================================================
@@ -130,7 +124,6 @@ const { headline, body } = defineProps({
 
 .caption-preview {
   font-size: var(--fs-body-sm);
-  opacity: 0.85;
 }
 
 .paragraph-preview {
@@ -141,13 +134,13 @@ const { headline, body } = defineProps({
 
 .footer-preview {
   font-size: var(--fs-body-sm);
-  opacity: 0.6;
   margin: 0;
 }
 
 .accent-preview {
   font-size: var(--fs-body-lg);
   font-weight: var(--fw-title);
+  margin: var(--space-10) 0;
 }
 
 /* icon */
@@ -155,34 +148,56 @@ const { headline, body } = defineProps({
   font-size: 1.8rem;
 }
 
-/* FG color mappings — matches contrastPairs exactly */
-.fg--accent {
-  color: var(--ui-accent);
+/* =========================================================
+   BACKGROUND COLOR MAPPINGS
+   ======================================================= */
+
+/* LEFT card 'REG' */
+.main-bg {
+  background: var(--ui-section-bg);
+  flex: 1;
 }
-.fg--heading {
-  color: var(--ui-heading);
+
+/* RIGHT card 'ALT' */
+.card-bg {
+  background: var(--ui-panel-bg);
+  flex: 1;
 }
-.fg--caption {
-  color: var(--ui-caption);
+
+/* BOTTOM card 'ACCENT' */
+.accent-bg {
+  background: var(--ui-accent);
 }
+
+/* =========================================================
+   FOREGROUND COLOR MAPPINGS
+   ======================================================= */
+
+/* titles */
+.main-bg .fg--heading {
+  color: var(--mockup-title);
+}
+
+.card-bg .fg--heading {
+  color: var(--mockup-title-on-card);
+}
+
+/* other text */
 .fg--text {
   color: var(--dynamic-text);
 }
 .fg--text-soft {
-  color: var(--color-text-soft);
+  color: var(--text-soft-on-panel);
+}
+
+/* still need fixing */
+.fg--caption {
+  color: var(--ui-caption);
+}
+.fg--accent {
+  color: var(--ui-accent);
 }
 .fg--text-inverse {
   color: var(--color-text-inverse);
-}
-
-/* backgrounds */
-.main-bg {
-  background: var(--ui-section-bg);
-}
-.card-bg {
-  background: var(--ui-panel-bg);
-}
-.accent-bg {
-  background: var(--ui-accent);
 }
 </style>

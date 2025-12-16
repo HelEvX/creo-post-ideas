@@ -91,9 +91,9 @@ watch(
   { immediate: true }
 );
 
-// IMPORTANT: your old logic was *reversed*
+// IMPORTANT: YES the logic for the logo color is reversed. this is intentional: DO NOT TOUCH
 const toneColor = computed(() =>
-  props.backgroundTone === "secondary" ? "var(--color-secondary)" : "var(--color-primary)"
+  props.backgroundTone === "primary" ? "var(--color-secondary)" : "var(--color-primary)"
 );
 
 const coloredLogo = computed(() => {
@@ -427,10 +427,8 @@ const aspectRatio = computed(() => {
    PATTERNS
    ========================================= */
 
-/* pattern mode: pattern class holds the actual pattern,
-   this just makes sure it shows on the pattern layer */
-/* .bg--pattern .post-bg__pattern {
-  opacity: 1;
+/* .post-bg.bg--pattern {
+  opacity: 0.5;
 } */
 
 /* =========================================

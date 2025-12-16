@@ -36,16 +36,16 @@ CREO-POST-IDEAS/
 │   │   │   ├── SocialPostMockup.vue
 │   │   │   └── PostWrapper.vue
 │   │   │
-│   │   └── post-types/
-│   │       ├── FallbackPost.vue
-│   │       ├── InfoPost.vue
-│   │       ├── IntroPost.vue
-│   │       ├── HeadlinePost.vue
-│   │       ├── QuotePost.vue
-│   │       ├── ProductPost.vue
-│   │       └── ParagraphPost.vue
-│   │
-│   ├── InstagramGrid.vue
+│   │   ├── post-types/
+│   │   │   ├── FallbackPost.vue
+│   │   │   ├── InfoPost.vue
+│   │   │   ├── IntroPost.vue
+│   │   │   ├── HeadlinePost.vue
+│   │   │   ├── QuotePost.vue
+│   │   │   ├── ProductPost.vue
+│   │   │   └── ParagraphPost.vue
+│   │   │
+│   │   └── InstagramGrid.vue
 │   │
 │   ├── data/
 │   │   └── recipes.js         # Defines the style "Recipes" (Bold, Subtle, etc.)
@@ -59,6 +59,7 @@ CREO-POST-IDEAS/
 │   │
 │   ├── utils/
 │   │   └── colorBlender.js    # Generates tints and shades for color scales
+│   │   └── colorLogic.js      # Ensures perceptual contrast for text on bg
 │   │
 │   ├── App.vue                # Main application component and layout
 │   ├── main.js                # Application entry point

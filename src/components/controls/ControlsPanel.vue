@@ -2,7 +2,7 @@
   <aside class="col-12 col-md-3 app__sidebar">
     <!-- Recipe Shuffle only after brand selected: -->
     <div class="app__sidebar-block" v-if="brandTokens">
-      <RecipeShuffle :brandTokens="brandTokens" :scales="scales" />
+      <RecipeShuffle :brandTokens="brandTokens" :scales="scales" :bgContext="mockupBgContext" />
     </div>
   </aside>
 </template>
@@ -18,6 +18,16 @@ export default {
   props: {
     brandTokens: Object,
     scales: Object,
+
+    // passed down from the preview/toggle state (parent must provide this)
+    mockupBgContext: {
+      type: Object,
+      default: () => ({
+        type: "color",
+        tone: "primary",
+        bgVars: ["--ui-section-bg"],
+      }),
+    },
   },
 };
 </script>

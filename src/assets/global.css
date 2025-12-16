@@ -386,8 +386,8 @@ h5 {
   line-height: var(--lh-heading);
 }
 h6 {
-  margin-top: 1rem;
-  margin-bottom: 1.4rem;
+  margin-top: var(--space-10);
+  margin-bottom: var(--space-20);
   font-size: var(--fs-h6);
   line-height: var(--lh-heading);
   font-weight: 700;
@@ -483,27 +483,47 @@ button,
 }
 
 /* ======================================================
-   NEUTRAL BUTTONS
+   NEUTRAL BUTTONS — FULLY ISOLATED
    ====================================================== */
 
 .btn-neutral {
-  background: transparent;
+  background-color: var(--ui-text-on-dark);
+  color: var(--ui-text-on-light);
+
   border: var(--border-width) solid var(--color-border-medium);
-  color: var(--color-text);
   padding: var(--space-5) var(--space-20);
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: var(--transition-default);
   font-size: var(--fs-body-sm);
+
+  /* CRITICAL: prevent parent influence */
+  opacity: 1;
+  mix-blend-mode: normal;
 }
 
+/* Hover */
 .btn-neutral:hover:not(:disabled) {
-  background: var(--color-border-light);
+  background-color: var(--ui-text-on-dark);
+  filter: brightness(1.08);
 }
 
+/* Active */
+.btn-neutral:active:not(:disabled) {
+  transform: translateY(1px);
+  filter: brightness(0.95);
+}
+
+/* Disabled — NO OPACITY */
 .btn-neutral:disabled {
-  opacity: 0.4;
-  cursor: initial;
+  background-color: var(--ui-text-on-dark);
+  color: var(--ui-text-on-light);
+
+  border-color: var(--color-border-light);
+  cursor: default;
+
+  /* visual “disabled” without transparency */
+  filter: grayscale(1) brightness(1.15);
 }
 
 /* ======================================================

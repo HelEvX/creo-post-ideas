@@ -1,365 +1,3 @@
-<script setup>
-import { ref, watch, computed, nextTick, onMounted } from "vue";
-import { recipes } from "../../data/recipes.js";
-import {
-  getContrastRatio,
-  anyToRgb,
-  rgbToHsl,
-  tint,
-  shade,
-  tone,
-  evaluateContrastVisual,
-} from "../../utils/colorBlender.js";
-
-// ---------------------------------------------
-// Props
-// ---------------------------------------------
-const props = defineProps({
-  brandTokens: { type: Object, required: true },
-  scales: { type: Object, required: false },
-});
-
-// ---------------------------------------------
-// Reactive State
-// ---------------------------------------------
-const index = ref(-1); // -1 means brand default
-const total = recipes.length;
-const activeRecipe = computed(() => {
-  const i = index.value;
-  if (i < 0) return null;
-  // force reactivity by copying the object
-  return { ...recipes[i] };
-});
-
-// ---------------------------------------------
-// Lifecycle
-// ---------------------------------------------
-onMounted(() => {
-  console.log("RecipeShuffle mounted");
-});
-
-// ---------------------------------------------
-// Helpers
-// ---------------------------------------------
-function readCSSVar(name) {
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-}
-
-function resolveRoleValue(v, scales = props.scales) {
-  if (Array.isArray(v)) {
-    const [scaleName, idx] = v;
-    const arr = scales?.[scaleName];
-    return arr?.[idx] || null;
-  }
-  if (typeof v === "string" && v.startsWith("var(")) {
-    const cssVarName = v.slice(4, -1).trim();
-    return readCSSVar(cssVarName);
-  }
-  if (typeof v === "string" && v.startsWith("#")) return v;
-  return null;
-}
-
-function pickReadablePillText(bgHex) {
-  const dark = readCSSVar("--color-text");
-  const light = readCSSVar("--color-text-inverse");
-
-  if (!bgHex || !dark || !light) return dark;
-
-  // Only extract lightness (l) because h and s are not used
-  const [, , l] = rgbToHsl(anyToRgb(bgHex));
-
-  // VERY LIGHT BACKGROUND → dark text
-  if (l >= 0.78) {
-    return dark;
-  }
-
-  // VERY DARK BACKGROUND → white text
-  if (l <= 0.32) {
-    return light;
-  }
-
-  // Mid-tones → choose best contrast with small perceptual override
-  const cDark = getContrastRatio(dark, bgHex);
-  const cLight = getContrastRatio(light, bgHex);
-
-  const bothMid = cDark >= 2.4 && cLight >= 2.4;
-
-  if (bothMid && cLight > cDark * 0.9) {
-    return light;
-  }
-
-  return cDark > cLight ? dark : light;
-}
-
-// ---------------------------------------------
-// Apply Recipe
-// ---------------------------------------------
-function applyActiveRecipe() {
-  if (!props.scales || !activeRecipe.value) return;
-  const roles = activeRecipe.value.roles;
-  const root = document.documentElement;
-
-  // deep clone so new values are always re-resolved
-  const scalesCopy = JSON.parse(JSON.stringify(props.scales));
-
-  for (const [cssVar, spec] of Object.entries(roles)) {
-    const hex = resolveRoleValue(spec, scalesCopy);
-    if (hex) root.style.setProperty(cssVar, hex, "important");
-  }
-
-  // Log which recipe was applied
-  console.log("🎨 Applied recipe:", activeRecipe.value?.title);
-
-  // force repaint
-  root.offsetHeight;
-
-  // NEW: notify the rest of the app (logo, text, etc.) that the palette changed
-  window.dispatchEvent(
-    new CustomEvent("palette-updated", {
-      detail: {
-        recipeTitle: activeRecipe.value?.title || null,
-      },
-    })
-  );
-}
-
-// ---------------------------------------------
-// Navigation
-// ---------------------------------------------
-function advance(step) {
-  const max = total;
-  index.value = index.value < 0 ? 0 : (index.value + step + max) % max;
-
-  applyActiveRecipe();
-}
-
-function nextRecipe() {
-  if (!props.scales) {
-    return;
-  }
-  advance(+1);
-}
-function prevRecipe() {
-  if (!props.scales) {
-    return;
-  }
-  advance(-1);
-}
-
-function resetBrand() {
-  const slug = props.brandTokens?.slug;
-  if (!slug) return;
-  window.dispatchEvent(new CustomEvent("brand-reset", { detail: { slug } }));
-}
-
-// ---------------------------------------------
-// Watcher — rebuild scales when brand changes
-// ---------------------------------------------
-watch(
-  () => props.scales,
-  () => {
-    index.value = -1;
-    nextTick(updateContrastChecks);
-  },
-  { immediate: true }
-);
-
-// ---------------------------------------------
-// CONTRAST CHECKER
-// ---------------------------------------------
-const contrastPairs = ref([
-  // MAIN BACKGROUND
-  {
-    id: "paragraph-main",
-    labelbg: "main bg",
-    labelfg: "paragraph",
-    fg: "--color-text",
-    bg: "--ui-section-bg",
-  },
-  {
-    id: "soft-main",
-    labelbg: "main bg",
-    labelfg: "soft",
-    fg: "--color-text-soft",
-    bg: "--ui-section-bg",
-  },
-  {
-    id: "disabled-main",
-    labelbg: "main bg",
-    labelfg: "disabled",
-    fg: "--color-disabled-text",
-    bg: "--ui-section-bg",
-  },
-  {
-    id: "caption-main",
-    labelbg: "main bg",
-    labelfg: "caption",
-    fg: "--ui-caption",
-    bg: "--ui-section-bg",
-  },
-
-  // CARD
-  {
-    id: "paragraph-card",
-    labelbg: "card bg",
-    labelfg: "paragraph",
-    fg: "--color-text",
-    bg: "--ui-panel-bg",
-  },
-
-  // ACCENT
-  {
-    id: "text-accent",
-    labelbg: "accent bg",
-    labelfg: "inverse text",
-    fg: "--color-text-inverse",
-    bg: "--ui-accent",
-  },
-
-  // LABELS (optional system colors)
-  {
-    id: "label-main",
-    labelbg: "label",
-    labelfg: "label text",
-    fg: "--ui-heading",
-    bg: "--ui-section-bg",
-  },
-  {
-    id: "label-card",
-    labelbg: "label card",
-    labelfg: "label text",
-    fg: "--ui-heading",
-    bg: "--ui-panel-bg",
-  },
-]);
-
-const contrastResults = ref([]);
-
-function applyCssVar(cssVarName, hexValue) {
-  if (!cssVarName || !hexValue) return;
-  document.documentElement.style.setProperty(cssVarName, hexValue, "important");
-}
-
-function updateContrastChecks() {
-  contrastResults.value = contrastPairs.value.map((p) => {
-    // Actual tested colors from CSS vars
-    const actualFgHex = readCSSVar(p.fg);
-    const actualBgHex = readCSSVar(p.bg);
-
-    const result = evaluateContrastVisual(actualFgHex, actualBgHex);
-
-    // status pill colors (unchanged behaviour)
-    let statusVar = null;
-    let userLabel = null;
-
-    // AAA → "prima" → dark green
-    if (result.level === "AAA") {
-      statusVar = "--color-success-dark";
-      userLabel = "prima";
-
-      // AA → "goed" → green
-    } else if (result.level === "AA") {
-      statusVar = "--color-success";
-      userLabel = "goed";
-
-      // AA Large → "redelijk" → orange/yellow
-    } else if (result.level === "AA Large") {
-      statusVar = "--color-warning";
-      userLabel = "redelijk";
-
-      // perceptual acceptable → treat as AA
-    } else if (result.level === "perceptual-pass") {
-      statusVar = "--color-success";
-      userLabel = "goed";
-
-      // fail → "probleem" → red
-    } else {
-      statusVar = "--color-danger";
-      userLabel = "probleem";
-    }
-
-    // resolve stoplight background color
-    const statusBg = statusVar ? readCSSVar(statusVar) : null;
-
-    // choose readable text for the pill (white or dark)
-    const statusText = statusBg ? pickReadablePillText(statusBg) : "var(--color-text)";
-
-    return {
-      id: p.id,
-      labelbg: p.labelbg,
-      labelfg: p.labelfg,
-
-      ratio: result.ratio, // numeric ratio
-      level: result.level, // internal WCAG/perceptual code
-      label: userLabel, // NEW: user-facing Dutch label
-
-      // status pill styling
-      bg: statusBg,
-      fg: statusText,
-
-      // swatch + fix logic
-      cssVarFg: p.fg,
-      cssVarBg: p.bg,
-      swatchText: actualFgHex,
-      swatchBg: actualBgHex,
-    };
-  });
-}
-
-async function fixContrast(item) {
-  if (!item || !props.scales || !props.brandTokens) return;
-
-  const fgVar = item.cssVarFg;
-  const bgVar = item.cssVarBg;
-  if (!fgVar || !bgVar) return;
-
-  const currentFg = readCSSVar(fgVar);
-  const currentBg = readCSSVar(bgVar);
-
-  const targetRatio = 4.5; // AA text target
-  let ratio = getContrastRatio(currentFg, currentBg);
-
-  if (ratio >= targetRatio) return;
-
-  let fg = currentFg;
-  let attempts = 0;
-
-  // nudges: small increments, no jumps
-  const step = 0.04;
-
-  while (ratio < targetRatio && attempts < 40) {
-    // decide direction: lighten or darken text?
-    const lighter = tint(fg, step);
-    const darker = shade(fg, step);
-
-    const ratioL = getContrastRatio(lighter, currentBg);
-    const ratioD = getContrastRatio(darker, currentBg);
-
-    // pick better nudge
-    if (ratioL > ratio && ratioL >= ratioD) {
-      fg = lighter;
-      ratio = ratioL;
-    } else if (ratioD > ratio) {
-      fg = darker;
-      ratio = ratioD;
-    } else {
-      // fallback: gentle tone shift
-      fg = tone(fg, step);
-      ratio = getContrastRatio(fg, currentBg);
-    }
-
-    attempts += 1;
-  }
-
-  applyCssVar(fgVar, fg);
-  updateContrastChecks();
-}
-
-watch(index, () => updateContrastChecks(), { immediate: false });
-
-defineExpose({ nextRecipe, prevRecipe });
-</script>
-
 <template>
   <div class="recipe-shuffle">
     <div class="controls">
@@ -375,13 +13,13 @@ defineExpose({ nextRecipe, prevRecipe });
     </div>
 
     <p class="recipe-desc">
-      {{ activeRecipe ? activeRecipe.description : "Site-matched palette loaded from the brand JSON." }}
+      {{ activeRecipe ? activeRecipe.description : "De kleuren van de website." }}
     </p>
 
     <!-- Reset button -->
     <div class="reset-wrap">
       <button type="button" class="reset-btn" @click="resetBrand">
-        <i class="fa-solid fa-rotate-left"></i> Reset Brand
+        <i class="fa-solid fa-rotate-left"></i> Terug naar basis
       </button>
     </div>
 
@@ -431,6 +69,319 @@ defineExpose({ nextRecipe, prevRecipe });
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref, watch, computed, nextTick, onMounted } from "vue";
+import { recipes } from "../../data/recipes.js";
+import { getContrastRatio, tint, shade, evaluateContrastVisual } from "../../utils/colorBlender.js";
+import { getTextModeForBackground } from "../../utils/colorLogic.js";
+
+/* --------------------------------------------------
+   PROPS
+-------------------------------------------------- */
+const props = defineProps({
+  brandTokens: { type: Object, required: true },
+  scales: { type: Object, required: false },
+
+  // background context from mockup (primary / secondary / pattern)
+  bgContext: {
+    type: Object,
+    default: () => ({
+      bgVars: ["--ui-section-bg"],
+    }),
+  },
+});
+
+/* --------------------------------------------------
+   STATE
+-------------------------------------------------- */
+const index = ref(-1);
+const total = recipes.length;
+
+const activeRecipe = computed(() => {
+  if (index.value < 0) return null;
+  return { ...recipes[index.value] };
+});
+
+/* --------------------------------------------------
+   LIFECYCLE
+-------------------------------------------------- */
+onMounted(() => {
+  console.log("RecipeShuffle mounted");
+});
+
+/* --------------------------------------------------
+   CSS VARIABLE RESOLUTION (CRITICAL FIX)
+-------------------------------------------------- */
+function readCSSVar(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+// Resolves chained vars:
+// --ui-panel-bg → var(--color-panel) → #hex
+function resolveCssColor(value, depth = 0) {
+  if (!value) return null;
+  if (depth > 10) return value;
+
+  const v = value.trim();
+
+  if (v.startsWith("--")) {
+    const next = readCSSVar(v);
+    if (!next || next === v) return null;
+    return resolveCssColor(next, depth + 1);
+  }
+
+  if (v.startsWith("var(")) {
+    const inner = v.slice(4, -1).trim();
+    return resolveCssColor(inner, depth + 1);
+  }
+
+  return v;
+}
+
+/* --------------------------------------------------
+   HELPERS
+-------------------------------------------------- */
+function pickReadablePillText(bgHex) {
+  const dark = resolveCssColor("--color-text");
+  const light = resolveCssColor("--color-text-inverse");
+  if (!bgHex || !dark || !light) return dark;
+
+  const mode = getTextModeForBackground(bgHex, dark, light);
+  return mode === "dark" ? dark : light;
+}
+
+function applyCssVar(cssVarName, hexValue) {
+  if (!cssVarName || !hexValue) return;
+  document.documentElement.style.setProperty(cssVarName, hexValue, "important");
+}
+
+/* --------------------------------------------------
+   APPLY RECIPE
+-------------------------------------------------- */
+function applyActiveRecipe() {
+  if (!props.scales || !activeRecipe.value) return;
+
+  const root = document.documentElement;
+  const roles = activeRecipe.value.roles;
+  const scalesCopy = JSON.parse(JSON.stringify(props.scales));
+
+  for (const [cssVar, spec] of Object.entries(roles)) {
+    const hex = Array.isArray(spec)
+      ? scalesCopy?.[spec[0]]?.[spec[1]]
+      : spec?.startsWith("var(")
+      ? resolveCssColor(spec)
+      : spec;
+
+    if (hex) root.style.setProperty(cssVar, hex, "important");
+  }
+
+  root.offsetHeight;
+  window.dispatchEvent(new CustomEvent("palette-updated"));
+}
+
+/* --------------------------------------------------
+   NAVIGATION
+-------------------------------------------------- */
+function advance(step) {
+  const max = total;
+  index.value = index.value < 0 ? 0 : (index.value + step + max) % max;
+  applyActiveRecipe();
+}
+function nextRecipe() {
+  if (!props.scales) return;
+  advance(+1);
+}
+function prevRecipe() {
+  if (!props.scales) return;
+  advance(-1);
+}
+function resetBrand() {
+  const slug = props.brandTokens?.slug;
+  if (!slug) return;
+  window.dispatchEvent(new CustomEvent("brand-reset", { detail: { slug } }));
+}
+
+/* --------------------------------------------------
+   WATCHERS
+-------------------------------------------------- */
+watch(
+  () => props.scales,
+  () => {
+    index.value = -1;
+    nextTick(updateContrastChecks);
+  },
+  { immediate: true }
+);
+
+watch(index, updateContrastChecks);
+
+watch(() => props.bgContext, updateContrastChecks, { deep: true });
+
+/* --------------------------------------------------
+   CONTRAST PAIRS
+-------------------------------------------------- */
+const contrastPairs = ref([
+  { id: "paragraph-main", fg: "--text-on-panel", bg: "--ui-surface-bg" },
+  { id: "soft-main", fg: "--text-soft-on-panel", bg: "--ui-surface-bg" },
+  { id: "caption-main", fg: "--ui-caption", bg: "--ui-surface-bg" },
+  //
+  { id: "paragraph-alt", fg: "--text-on-panel", bg: "--ui-panel-bg" },
+  { id: "soft-alt", fg: "--text-soft-on-panel", bg: "--ui-panel-bg" },
+  { id: "caption-alt", fg: "--ui-caption", bg: "--ui-panel-bg" },
+  //
+
+  //
+  { id: "paragraph-card", fg: "--color-text", bg: "--ui-panel-bg" },
+  { id: "text-accent", fg: "--color-text-inverse", bg: "--ui-accent" },
+  { id: "label-main", fg: "--color-text", bg: "CONTEXT" },
+  { id: "label-card", fg: "--ui-accent", bg: "--ui-alt-panel-bg" },
+]);
+
+const contrastResults = ref([]);
+
+/* --------------------------------------------------
+   CONTRAST CHECK (SCORING)
+-------------------------------------------------- */
+function updateContrastChecks() {
+  const contextBgs = props.bgContext?.bgVars?.map(resolveCssColor).filter(Boolean) || [];
+
+  contrastResults.value = contrastPairs.value.map((p) => {
+    const fg = resolveCssColor(p.fg);
+
+    // resolve background
+    const bgList = p.bg === "CONTEXT" ? contextBgs : [resolveCssColor(p.bg)].filter(Boolean);
+
+    if (!fg || bgList.length === 0) {
+      return {
+        id: p.id,
+        ratio: 0,
+        level: "fail",
+        label: "probleem",
+        bg: "#d9534f",
+        fg: "#ffffff",
+        swatchText: fg,
+        swatchBg: bgList[0] || null,
+        cssVarFg: p.fg,
+        cssVarBg: p.bg,
+      };
+    }
+
+    // worst-case contrast across all backgrounds
+    const ratios = bgList.map((bg) => getContrastRatio(fg, bg));
+    const worstRatio = Math.min(...ratios);
+    const worstBg = bgList[ratios.indexOf(worstRatio)];
+
+    const result = evaluateContrastVisual(fg, worstBg);
+
+    let statusVar;
+    let label;
+
+    if (result.level === "AAA") {
+      statusVar = "--color-success-dark";
+      label = "prima";
+    } else if (result.level === "AA" || result.level === "perceptual-pass") {
+      statusVar = "--color-success";
+      label = "goed";
+    } else if (result.level === "AA Large") {
+      statusVar = "--color-warning";
+      label = "redelijk";
+    } else {
+      statusVar = "--color-danger";
+      label = "probleem";
+    }
+
+    const pillBg = resolveCssColor(statusVar);
+    const pillFg = pickReadablePillText(pillBg);
+
+    return {
+      id: p.id,
+      ratio: worstRatio,
+      level: result.level,
+      label,
+
+      bg: pillBg,
+      fg: pillFg,
+
+      cssVarFg: p.fg,
+      cssVarBg: p.bg,
+
+      swatchText: fg,
+      swatchBg: worstBg,
+    };
+  });
+}
+
+/* --------------------------------------------------
+   FIX CONTRAST (FINAL BEHAVIOR)
+-------------------------------------------------- */
+async function fixContrast(item) {
+  if (!item || !props.scales) return;
+
+  // only allow fixes where it makes sense
+  if (item.label !== "redelijk" && item.label !== "probleem") return;
+
+  const fgVar = item.cssVarFg;
+  const bgVar = item.cssVarBg;
+
+  let fg = resolveCssColor(fgVar);
+  let bg = resolveCssColor(bgVar);
+  if (!fg || !bg) return;
+
+  const targetRatio = item.label === "redelijk" ? 3 : 4.5;
+  let ratio = getContrastRatio(fg, bg);
+  if (ratio >= targetRatio) return;
+
+  const white = readCSSVar("--color-text-inverse");
+  const isPureWhiteText = getContrastRatio(fg, white) < 1.05;
+
+  const step = 0.04;
+  let attempts = 0;
+
+  while (ratio < targetRatio && attempts < 40) {
+    let nextFg = fg;
+    let nextBg = bg;
+
+    if (isPureWhiteText) {
+      // text cannot go lighter -> move background darker
+      nextBg = shade(bg, step);
+    } else {
+      // try improving text first, without killing saturation
+      const lighter = tint(fg, step);
+      const darker = shade(fg, step);
+
+      const rL = getContrastRatio(lighter, bg);
+      const rD = getContrastRatio(darker, bg);
+
+      if (rL > ratio && rL >= rD) {
+        nextFg = lighter;
+      } else if (rD > ratio) {
+        nextFg = darker;
+      } else {
+        // ceiling hit -> nudge background instead
+        nextBg = shade(bg, step);
+      }
+    }
+
+    const nextRatio = getContrastRatio(nextFg, nextBg);
+    if (nextRatio <= ratio) break;
+
+    fg = nextFg;
+    bg = nextBg;
+    ratio = nextRatio;
+    attempts++;
+  }
+
+  applyCssVar(fgVar, fg);
+  if (isPureWhiteText) {
+    applyCssVar(bgVar, bg);
+  }
+
+  updateContrastChecks();
+}
+
+defineExpose({ nextRecipe, prevRecipe });
+</script>
 
 <style scoped>
 /* ---------------------------------------------
@@ -499,7 +450,7 @@ defineExpose({ nextRecipe, prevRecipe });
 --------------------------------------------- */
 .contrast-check {
   width: 100%;
-  margin-top: var(--space-20);
+  margin-top: var(--space-50);
   text-align: center;
 }
 
