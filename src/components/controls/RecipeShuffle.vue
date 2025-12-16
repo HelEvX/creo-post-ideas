@@ -394,6 +394,8 @@ defineExpose({ nextRecipe, prevRecipe });
   color: var(--text-on-section);
   display: flex;
   flex-direction: column;
+  max-width: 680px;
+  margin: 0 auto;
 }
 
 /* ---------------------------------------------
@@ -405,12 +407,6 @@ defineExpose({ nextRecipe, prevRecipe });
   background: var(--color-overlay);
   border-radius: var(--radius-sm);
   padding: var(--space-10);
-}
-
-@media (min-width: 576px) and (max-width: 992px) {
-  .controls {
-    flex-direction: column;
-  }
 }
 
 .recipe-title {

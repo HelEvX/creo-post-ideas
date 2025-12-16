@@ -4,7 +4,7 @@
 
     <div class="row main-preview-row">
       <!-- SIDEBAR -->
-      <div class="col-12 col-lg-2 main-preview__sidebar">
+      <div class="col-12 col-3xl-2 col-xl-4 main-preview__sidebar">
         <ContentTypePanel
           :selected="selectedPostType"
           :tone="backgroundTone"
@@ -22,7 +22,7 @@
       </div>
 
       <!-- PREVIEW -->
-      <div class="col-12 col-lg-8 main-preview__content">
+      <div class="col-12 col-3xl-8 col-xl-8 main-preview__content">
         <MockupWrapper :size="selectedSize">
           <MockupRenderer
             :size="selectedSize"
@@ -40,7 +40,7 @@
         </MockupWrapper>
       </div>
 
-      <div class="col-12 col-lg-2 main-preview__styles">
+      <div class="col-12 col-3xl-2 col-xxl-12 main-preview__styles">
         <h6>Stijlkenmerken</h6>
         <div class="title-font">{title font name}</div>
         <div class="body-font">{body font name}</div>
@@ -334,10 +334,6 @@ function onContentTypeSelect(type) {
 }
 
 @media (min-width: 992px) {
-  .main-preview-row {
-    flex-wrap: nowrap;
-  }
-
   .main-preview__sidebar {
     margin-bottom: 0;
   }
