@@ -210,6 +210,8 @@ export default {
       const disabledDark = cs.getPropertyValue("--color-disabled-text").trim();
       const disabledLight = cs.getPropertyValue("--color-disabled-text-inverse").trim();
 
+      const titleDark = cs.getPropertyValue("--ui-heading").trim(); // neutral-900
+
       function apply(surfaceKey, bgVarName) {
         const bg = cs.getPropertyValue(bgVarName).trim();
         if (!bg) return;
@@ -221,10 +223,12 @@ export default {
           root.style.setProperty(`--text-on-${surfaceKey}`, dark);
           root.style.setProperty(`--text-soft-on-${surfaceKey}`, softDark);
           root.style.setProperty(`--text-disabled-on-${surfaceKey}`, disabledDark);
+          root.style.setProperty(`--title-on-${surfaceKey}`, titleDark);
         } else {
           root.style.setProperty(`--text-on-${surfaceKey}`, light);
           root.style.setProperty(`--text-soft-on-${surfaceKey}`, softLight);
           root.style.setProperty(`--text-disabled-on-${surfaceKey}`, disabledLight);
+          root.style.setProperty(`--title-on-${surfaceKey}`, light);
         }
       }
 
@@ -242,14 +246,15 @@ export default {
       surfaces.forEach(([key, bgVar]) => apply(key, bgVar));
 
       const textOnSection = cs.getPropertyValue("--text-on-section").trim();
+      const titleOnSection = cs.getPropertyValue("--title-on-section").trim();
       const softOnSection = cs.getPropertyValue("--text-soft-on-section").trim();
       const disabledOnSection = cs.getPropertyValue("--text-disabled-on-section").trim();
 
       if (textOnSection) root.style.setProperty("--dynamic-text", textOnSection);
+      if (titleOnSection) root.style.setProperty("--dynamic-title", titleOnSection);
       if (softOnSection) root.style.setProperty("--dynamic-soft", softOnSection);
       if (disabledOnSection) root.style.setProperty("--dynamic-disabled", disabledOnSection);
     },
-
     async onBrandPicked(payload) {
       const root = document.documentElement;
 

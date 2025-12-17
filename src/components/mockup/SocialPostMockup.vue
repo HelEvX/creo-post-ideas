@@ -21,7 +21,7 @@
       <!-- <div v-if="showCornerShapes" class="corner-shape square corner-shape--bl"></div>
       <div v-if="showCornerShapes" class="corner-shape rect corner-shape--br"></div> -->
 
-      <div class="post-content" :class="`post-content--${backgroundTone}`" :style="{ color: mockupTextColor }">
+      <div class="post-content" :class="`post-content--${backgroundTone}`" :style="mockupTextVars">
         <div
           class="post-canvas"
           :post-type="$attrs.postType || null"
@@ -115,80 +115,6 @@ const patternToneClass = computed(() => {
   return props.backgroundTone === "secondary" ? "pattern--secondary" : "pattern--primary";
 });
 
-/* ----------------------------------------------
-   TEXT COLOR ENGINE (FINAL VERSION)
----------------------------------------------- */
-function readVar(name) {
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-}
-
-const mockupTextColor = ref("inherit");
-
-function computeMockupTextColor() {
-  const cs = getComputedStyle(document.documentElement);
-  const dark = cs.getPropertyValue("--color-text").trim();
-  const light = cs.getPropertyValue("--color-text-inverse").trim();
-
-  // If MockupRenderer forgot to send colors → use fallback detection
-  const bgVars = props.bgColors && props.bgColors.length > 0 ? props.bgColors : detectBackgroundVars();
-
-  let chosenMode = null;
-
-  for (const v of bgVars) {
-    const bg = readVar(v);
-    if (!bg) continue;
-
-    const mode = getTextModeForBackground(bg, dark, light);
-    if (!chosenMode) chosenMode = mode;
-
-    // If ANY bg forces white text → we accept white globally
-    if (mode === "light") {
-      mockupTextColor.value = light;
-      return;
-    }
-  }
-
-  // Otherwise follow default
-  mockupTextColor.value = chosenMode === "dark" ? dark : light;
-}
-
-/* ----------------------------------------------
-   BACKGROUND FALLBACK DETECTOR
----------------------------------------------- */
-function detectBackgroundVars() {
-  const cls = props.backgroundClass || "";
-
-  if (cls.includes("bg--plain-primary")) return ["--color-primary"];
-  if (cls.includes("bg--plain-secondary")) return ["--color-secondary"];
-
-  if (cls.includes("bg--image"))
-    return props.backgroundTone === "secondary" ? ["--color-secondary"] : ["--color-primary"];
-
-  if (cls.includes("pattern-")) return ["--pattern-base", "--pattern-alt"];
-
-  return ["--ui-section-bg"];
-}
-
-/* ----------------------------------------------
-   LISTENERS
----------------------------------------------- */
-onMounted(() => {
-  computeMockupTextColor();
-  window.addEventListener("brand-updated", computeMockupTextColor);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("brand-updated", computeMockupTextColor);
-});
-
-watch(
-  () => [props.backgroundClass, props.backgroundTone, props.bgColors],
-  () => computeMockupTextColor()
-);
-
-/* ----------------------------------------------
-   PATTERN CLASS
----------------------------------------------- */
 const patternClass = computed(() => {
   if (!props.backgroundClass) return "";
   return props.backgroundClass
@@ -196,6 +122,60 @@ const patternClass = computed(() => {
     .filter((cls) => cls.startsWith("pattern-"))
     .join(" ");
 });
+
+/* ----------------------------------------------
+   MOCKUP TEXT ROLES (LOCAL)
+---------------------------------------------- */
+function readVar(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+const mockupTextVars = ref({
+  "--dynamic-text": "",
+  "--dynamic-title": "",
+});
+
+function recomputeMockupTextVars() {
+  const cs = getComputedStyle(document.documentElement);
+
+  const bodyDark = cs.getPropertyValue("--color-text").trim();
+  const titleDark = cs.getPropertyValue("--color-title").trim();
+  const light = cs.getPropertyValue("--color-text-inverse").trim();
+
+  if (!props.bgColors || props.bgColors.length === 0) return;
+  const bgVars = props.bgColors;
+
+  let needsLight = false;
+
+  for (const v of bgVars) {
+    const bg = readVar(v);
+    if (!bg) continue;
+    if (getTextModeForBackground(bg, bodyDark, light) === "light") {
+      needsLight = true;
+      break;
+    }
+  }
+
+  mockupTextVars.value = {
+    "--dynamic-text": needsLight ? light : bodyDark,
+    "--dynamic-title": needsLight ? light : titleDark,
+  };
+}
+
+onMounted(() => {
+  requestAnimationFrame(recomputeMockupTextVars);
+  window.addEventListener("brand-updated", recomputeMockupTextVars);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("brand-updated", recomputeMockupTextVars);
+});
+
+watch(
+  () => [props.backgroundClass, props.backgroundTone, props.bgColors],
+  () => requestAnimationFrame(recomputeMockupTextVars),
+  { immediate: true, flush: "post", deep: true }
+);
 
 /* ----------------------------------------------
    ASPECT RATIO
@@ -282,12 +262,13 @@ const aspectRatio = computed(() => {
   padding-top: var(--safe-top);
   padding-bottom: var(--safe-bottom);
   max-width: none;
-}
-
-.post-content--primary,
-.post-content--secondary {
   color: inherit;
 }
+
+/* .post-content--primary,
+.post-content--secondary {
+  color: inherit;
+} */
 
 .post-title {
   font-family: var(--font-title);
@@ -311,10 +292,7 @@ const aspectRatio = computed(() => {
 }
 
 .post-canvas {
-  width: 100%;
   height: 100%;
-  display: block;
-  position: relative;
 }
 
 /* InfoPost auto-layout only activates when needed */

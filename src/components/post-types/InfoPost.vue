@@ -80,7 +80,6 @@ const { headline, body } = defineProps({
 .info-post {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: 100%;
 }
 .overview-block {
@@ -88,7 +87,6 @@ const { headline, body } = defineProps({
   flex: 1;
   flex-direction: column;
   justify-content: space-evenly;
-  width: 100%;
 }
 
 /* Logical grouping */
@@ -101,7 +99,6 @@ const { headline, body } = defineProps({
   display: flex;
   flex-direction: row;
   gap: var(--space-25);
-  justify-content: space-between;
 }
 
 /* =========================================================

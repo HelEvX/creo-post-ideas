@@ -63,7 +63,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watchEffect } from "vue";
+import { ref, computed } from "vue";
 
 import ContentTypePanel from "../controls/ContentTypePanel.vue";
 import FormatSelector from "../controls/FormatSelector.vue";
@@ -71,7 +71,7 @@ import MockupWrapper from "../preview/MockupWrapper.vue";
 import MockupRenderer from "../preview/MockupRenderer.vue";
 
 import stockImage from "@/assets/img/stockphoto.webp";
-import { getTextModeForBackground } from "@/utils/colorLogic.js";
+// import { getTextModeForBackground } from "@/utils/colorLogic.js";
 
 const emit = defineEmits(["update-tone", "update-mode"]);
 
@@ -178,60 +178,6 @@ const brandLogo = computed(() => {
   if (backgroundMode.value !== "logo") return null;
   if (!brandTokens?.slug) return null;
   return `/src/assets/highlights/${brandTokens.slug}.svg`;
-});
-
-/* --------------------------------------------
-   CSS VAR HELPERS
---------------------------------------------- */
-function readVar(name) {
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-}
-function setVar(name, value) {
-  document.documentElement.style.setProperty(name, value);
-}
-
-/* --------------------------------------------
-   MOCKUP TITLE COLOR ENGINE
---------------------------------------------- */
-watchEffect(() => {
-  const dark = readVar("--color-text");
-  const light = readVar("--color-text-inverse");
-
-  const primary = readVar("--color-primary");
-  const secondary = readVar("--color-secondary");
-
-  /* ---------------------------
-     TITLE ON POST BACKGROUND
-  --------------------------- */
-  let titleOnPost = dark;
-
-  for (const v of mockupBgContext.value.bgVars || []) {
-    const bg = readVar(v);
-    if (!bg) continue;
-
-    const mode = getTextModeForBackground(bg, dark, light);
-    titleOnPost = mode === "light" ? light : dark;
-    break;
-  }
-
-  const accent = backgroundTone.value === "secondary" ? secondary : primary;
-
-  if (getTextModeForBackground(accent, dark, light) === "dark") {
-    titleOnPost = accent;
-  }
-
-  /* ---------------------------
-     TITLE ON CARD BACKGROUND
-  --------------------------- */
-  const panelBg = readVar("--ui-panel-bg");
-  const cardMode = getTextModeForBackground(panelBg, dark, light);
-  const titleOnCard = cardMode === "light" ? light : dark;
-
-  /* ---------------------------
-     APPLY
-  --------------------------- */
-  setVar("--mockup-title", titleOnPost);
-  setVar("--mockup-title-on-card", titleOnCard);
 });
 
 /* --------------------------------------------

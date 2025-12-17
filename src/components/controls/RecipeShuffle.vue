@@ -5,7 +5,7 @@
         <i class="fa-solid fa-chevron-left"></i>
       </button>
       <h5 class="recipe-title">
-        {{ activeRecipe ? activeRecipe.title : "Brand default" }}
+        {{ activeRecipe ? activeRecipe.title : "Basiskleuren" }}
       </h5>
       <button type="button" class="btn-primary" @click="nextRecipe">
         <i class="fa-solid fa-chevron-right"></i>
@@ -13,14 +13,12 @@
     </div>
 
     <p class="recipe-desc">
-      {{ activeRecipe ? activeRecipe.description : "De kleuren van de website." }}
+      {{ activeRecipe ? activeRecipe.description : "De huisstijl zoals op de website." }}
     </p>
 
     <!-- Reset button -->
     <div class="reset-wrap">
-      <button type="button" class="reset-btn" @click="resetBrand">
-        <i class="fa-solid fa-rotate-left"></i> Terug naar basis
-      </button>
+      <button type="button" class="reset-btn" @click="resetBrand"><i class="fa-solid fa-rotate-left"></i> Reset</button>
     </div>
 
     <div class="contrast-check">
@@ -222,20 +220,22 @@ watch(() => props.bgContext, updateContrastChecks, { deep: true });
    CONTRAST PAIRS
 -------------------------------------------------- */
 const contrastPairs = ref([
-  { id: "paragraph-main", fg: "--text-on-panel", bg: "--ui-surface-bg" },
-  { id: "soft-main", fg: "--text-soft-on-panel", bg: "--ui-surface-bg" },
-  { id: "caption-main", fg: "--ui-caption", bg: "--ui-surface-bg" },
-  //
-  { id: "paragraph-alt", fg: "--text-on-panel", bg: "--ui-panel-bg" },
-  { id: "soft-alt", fg: "--text-soft-on-panel", bg: "--ui-panel-bg" },
-  { id: "caption-alt", fg: "--ui-caption", bg: "--ui-panel-bg" },
-  //
+  // main bg (primary/secondary via CONTEXT)
+  { id: "main-title", fg: "--dynamic-title", bg: "CONTEXT" },
+  { id: "main-paragraph", fg: "--dynamic-text", bg: "CONTEXT" },
 
-  //
-  { id: "paragraph-card", fg: "--color-text", bg: "--ui-panel-bg" },
-  { id: "text-accent", fg: "--color-text-inverse", bg: "--ui-accent" },
-  { id: "label-main", fg: "--color-text", bg: "CONTEXT" },
-  { id: "label-card", fg: "--ui-accent", bg: "--ui-alt-panel-bg" },
+  // card 1 bg (left) = ui-section-bg
+  { id: "card1-caption", fg: "--ui-caption", bg: "--ui-section-bg" },
+  { id: "card1-title", fg: "--title-on-section", bg: "--ui-section-bg" },
+  { id: "card1-paragraph", fg: "--text-on-section", bg: "--ui-section-bg" },
+
+  // card 2 bg (right) = ui-panel-bg
+  { id: "card2-caption", fg: "--ui-caption", bg: "--ui-panel-bg" },
+  { id: "card2-title", fg: "--title-on-panel", bg: "--ui-panel-bg" },
+  { id: "card2-paragraph", fg: "--text-on-panel", bg: "--ui-panel-bg" },
+
+  // accent bg + inverse text
+  { id: "accent-text", fg: "--color-text-inverse", bg: "--ui-accent" },
 ]);
 
 const contrastResults = ref([]);
@@ -415,7 +415,7 @@ defineExpose({ nextRecipe, prevRecipe });
 }
 
 .recipe-desc {
-  font-size: 1.3rem;
+  font-size: var(--fs-body-xs);
   opacity: 0.8;
   text-align: center;
 }
