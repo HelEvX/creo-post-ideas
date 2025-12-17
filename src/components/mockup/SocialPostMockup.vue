@@ -133,6 +133,7 @@ function readVar(name) {
 const mockupTextVars = ref({
   "--dynamic-text": "",
   "--dynamic-title": "",
+  "--dynamic-text-accent": "",
 });
 
 function recomputeMockupTextVars() {
@@ -156,15 +157,34 @@ function recomputeMockupTextVars() {
     }
   }
 
+  const mainText = needsLight ? light : bodyDark;
+  const mainTitle = needsLight ? light : titleDark;
+
+  // accent background text
+  let accentText = bodyDark;
+  const accentBg = readVar("--dynamic-accent");
+
+  if (accentBg) {
+    const accentMode = getTextModeForBackground(accentBg, bodyDark, light);
+    accentText = accentMode === "light" ? light : bodyDark;
+  }
+
   mockupTextVars.value = {
-    "--dynamic-text": needsLight ? light : bodyDark,
-    "--dynamic-title": needsLight ? light : titleDark,
+    "--dynamic-text": mainText,
+    "--dynamic-title": mainTitle,
+    "--dynamic-text-accent": accentText,
   };
 }
 
 onMounted(() => {
-  requestAnimationFrame(recomputeMockupTextVars);
   window.addEventListener("brand-updated", recomputeMockupTextVars);
+  window.addEventListener("accent-updated", recomputeMockupTextVars);
+
+  if (props.bgColors && props.bgColors.length) {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(recomputeMockupTextVars);
+    });
+  }
 });
 
 onBeforeUnmount(() => {
@@ -173,8 +193,13 @@ onBeforeUnmount(() => {
 
 watch(
   () => [props.backgroundClass, props.backgroundTone, props.bgColors],
-  () => requestAnimationFrame(recomputeMockupTextVars),
-  { immediate: true, flush: "post", deep: true }
+  () => {
+    if (!props.bgColors || props.bgColors.length === 0) return;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(recomputeMockupTextVars);
+    });
+  },
+  { immediate: false, flush: "post", deep: true }
 );
 
 /* ----------------------------------------------

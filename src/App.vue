@@ -212,6 +212,9 @@ export default {
 
       const titleDark = cs.getPropertyValue("--ui-heading").trim(); // neutral-900
 
+      // const accentPri = cs.getPropertyValue("--color-primary").trim();
+      // const accentSec = cs.getPropertyValue("--color-secondary").trim();
+
       function apply(surfaceKey, bgVarName) {
         const bg = cs.getPropertyValue(bgVarName).trim();
         if (!bg) return;
@@ -249,11 +252,13 @@ export default {
       const titleOnSection = cs.getPropertyValue("--title-on-section").trim();
       const softOnSection = cs.getPropertyValue("--text-soft-on-section").trim();
       const disabledOnSection = cs.getPropertyValue("--text-disabled-on-section").trim();
+      // const accentOnBg = cs.getPropertyValue("--accent-on-bg").trim();
 
       if (textOnSection) root.style.setProperty("--dynamic-text", textOnSection);
       if (titleOnSection) root.style.setProperty("--dynamic-title", titleOnSection);
       if (softOnSection) root.style.setProperty("--dynamic-soft", softOnSection);
       if (disabledOnSection) root.style.setProperty("--dynamic-disabled", disabledOnSection);
+      // if (accentOnBg) root.style.setProperty("--dynamic-accent", accentOnBg);
     },
     async onBrandPicked(payload) {
       const root = document.documentElement;

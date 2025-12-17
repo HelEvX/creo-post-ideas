@@ -1,6 +1,6 @@
 <template>
   <SocialPostMockup
-    :bgColors="getMockupBgColors(designProps.backgroundClass)"
+    :bgColors="resolvedBgColors"
     :size="size"
     :backgroundClass="designProps.backgroundClass"
     :backgroundTone="designProps.backgroundTone"
@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, watch } from "vue";
 
 import SocialPostMockup from "../mockup/SocialPostMockup.vue";
 
@@ -44,6 +44,8 @@ const postMap = {
 const currentPostComponent = computed(() => {
   return postMap[postType] || FallbackPost;
 });
+
+const emit = defineEmits(["bg-resolved"]);
 
 /* -------------------------------------------------
    PATTERN COLOR MAP — NOW SUPPORTS SECONDARY MODE
@@ -91,4 +93,14 @@ function getMockupBgColors(backgroundClass) {
   // default fallback
   return ["--ui-section-bg"];
 }
+
+const resolvedBgColors = computed(() => getMockupBgColors(designProps.backgroundClass));
+
+watch(
+  resolvedBgColors,
+  (bgVars) => {
+    emit("bg-resolved", bgVars);
+  },
+  { immediate: true }
+);
 </script>

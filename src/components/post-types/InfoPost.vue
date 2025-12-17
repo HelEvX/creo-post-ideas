@@ -7,58 +7,40 @@
 
       <div class="overview-cards">
         <div class="overview-section main-bg">
-          <div class="overview-row fg--accent">
-            <i class="fa-solid fa-square-full icon-preview"></i>
-            <span class="label">Icon</span>
+          <div class="overview-row fg--caption">
+            <i class="fa-solid fa-heart icon-preview"></i>
+            <span class="label caption-preview">Card caption</span>
           </div>
 
           <div class="overview-row fg--heading">
             <div class="title-preview">Card title 1</div>
           </div>
 
-          <div class="overview-row fg--caption">
-            <div class="caption-preview">Card caption text 1</div>
-          </div>
-
           <div class="overview-row fg--text">
             <p class="paragraph-preview">This is paragraph preview text.</p>
-          </div>
-
-          <div class="overview-row fg--text-soft">
-            <p class="footer-preview">Terms & conditions</p>
           </div>
         </div>
 
         <!-- CARD BACKGROUND -->
         <div class="overview-section card-bg">
-          <div class="overview-row fg--accent">
-            <i class="fa-solid fa-square-full icon-preview"></i>
-            <span class="label">Icon</span>
+          <div class="overview-row fg--caption">
+            <i class="fa-solid fa-link icon-preview"></i>
+            <span class="label caption-preview">Card caption</span>
           </div>
 
           <div class="overview-row fg--heading">
             <div class="title-preview">Card Title 2</div>
           </div>
 
-          <div class="overview-row fg--caption">
-            <div class="caption-preview">Card caption text 2</div>
-          </div>
-
           <div class="overview-row fg--text">
             <p class="paragraph-preview">This is paragraph preview text.</p>
-          </div>
-
-          <div class="overview-row fg--text-soft">
-            <p class="footer-preview">Terms & conditions</p>
           </div>
         </div>
       </div>
 
       <!-- ACCENT BACKGROUND -->
-      <div class="overview-section accent-bg">
-        <div class="fg--text-inverse">
-          <p class="accent-preview">Text on accent background</p>
-        </div>
+      <div class="overview-section accent-bg" :style="accentTextVars">
+        <p class="accent-preview">Text on accent background</p>
       </div>
     </div>
   </div>
@@ -149,13 +131,13 @@ const { headline, body } = defineProps({
    BACKGROUND COLOR MAPPINGS
    ======================================================= */
 
-/* LEFT card 'REG' */
+/* LEFT card */
 .main-bg {
   background: var(--ui-section-bg);
   flex: 1;
 }
 
-/* RIGHT card 'ALT' */
+/* RIGHT card */
 .card-bg {
   background: var(--ui-panel-bg);
   flex: 1;
@@ -163,38 +145,33 @@ const { headline, body } = defineProps({
 
 /* BOTTOM card 'ACCENT' */
 .accent-bg {
-  background: var(--ui-accent);
+  background: var(--dynamic-accent);
+  color: var(--dynamic-text-accent);
 }
 
 /* =========================================================
-   FOREGROUND COLOR MAPPINGS
+   FOREGROUND COLOR MAPPINGS (CORRECT SEMANTICS)
    ======================================================= */
 
-/* titles */
+/* LEFT card = section surface */
 .main-bg .fg--heading {
-  color: var(--mockup-title);
+  color: var(--title-on-section);
 }
-
-.card-bg .fg--heading {
-  color: var(--mockup-title-on-card);
+.main-bg .fg--text {
+  color: var(--text-on-section);
 }
-
-/* other text */
-.fg--text {
-  color: var(--dynamic-text);
-}
-.fg--text-soft {
-  color: var(--text-soft-on-panel);
-}
-
-/* still need fixing */
-.fg--caption {
+.main-bg .fg--caption {
   color: var(--ui-caption);
 }
-.fg--accent {
-  color: var(--ui-accent);
+
+/* RIGHT card = panel surface */
+.card-bg .fg--heading {
+  color: var(--title-on-panel);
 }
-.fg--text-inverse {
-  color: var(--color-text-inverse);
+.card-bg .fg--text {
+  color: var(--text-on-panel);
+}
+.card-bg .fg--caption {
+  color: var(--ui-caption);
 }
 </style>

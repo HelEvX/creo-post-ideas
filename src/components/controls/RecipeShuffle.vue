@@ -69,7 +69,7 @@
 </template>
 
 <script setup>
-import { ref, watch, computed, nextTick, onMounted } from "vue";
+import { ref, watch, computed, nextTick, onMounted, onBeforeUnmount } from "vue";
 import { recipes } from "../../data/recipes.js";
 import { getContrastRatio, tint, shade, evaluateContrastVisual } from "../../utils/colorBlender.js";
 import { getTextModeForBackground } from "../../utils/colorLogic.js";
@@ -104,12 +104,27 @@ const activeRecipe = computed(() => {
 /* --------------------------------------------------
    LIFECYCLE
 -------------------------------------------------- */
+function onPaletteUpdated() {
+  scheduleContrastUpdate();
+}
+
+function onBrandUpdated() {
+  scheduleContrastUpdate();
+}
+
 onMounted(() => {
-  console.log("RecipeShuffle mounted");
+  window.addEventListener("palette-updated", onPaletteUpdated);
+  window.addEventListener("brand-updated", onBrandUpdated);
+  scheduleContrastUpdate();
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("palette-updated", onPaletteUpdated);
+  window.removeEventListener("brand-updated", onBrandUpdated);
 });
 
 /* --------------------------------------------------
-   CSS VARIABLE RESOLUTION (CRITICAL FIX)
+   CSS VARIABLE RESOLUTION
 -------------------------------------------------- */
 function readCSSVar(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -152,6 +167,17 @@ function pickReadablePillText(bgHex) {
 function applyCssVar(cssVarName, hexValue) {
   if (!cssVarName || !hexValue) return;
   document.documentElement.style.setProperty(cssVarName, hexValue, "important");
+}
+
+function raf() {
+  return new Promise((resolve) => requestAnimationFrame(resolve));
+}
+
+async function scheduleContrastUpdate() {
+  await nextTick();
+  await raf();
+  await raf();
+  updateContrastChecks();
 }
 
 /* --------------------------------------------------
@@ -207,35 +233,35 @@ watch(
   () => props.scales,
   () => {
     index.value = -1;
-    nextTick(updateContrastChecks);
+    scheduleContrastUpdate();
   },
   { immediate: true }
 );
 
-watch(index, updateContrastChecks);
+watch(index, scheduleContrastUpdate);
 
-watch(() => props.bgContext, updateContrastChecks, { deep: true });
+watch(() => props.bgContext, scheduleContrastUpdate, { deep: true });
 
 /* --------------------------------------------------
    CONTRAST PAIRS
 -------------------------------------------------- */
 const contrastPairs = ref([
   // main bg (primary/secondary via CONTEXT)
-  { id: "main-title", fg: "--dynamic-title", bg: "CONTEXT" },
-  { id: "main-paragraph", fg: "--dynamic-text", bg: "CONTEXT" },
+  { id: "main-title", fg: "--dynamic-title", bg: "CONTEXT" }, // check large title against main post background
+  { id: "main-paragraph", fg: "--dynamic-text", bg: "CONTEXT" }, // check large paragraph against main post background
 
   // card 1 bg (left) = ui-section-bg
-  { id: "card1-caption", fg: "--ui-caption", bg: "--ui-section-bg" },
-  { id: "card1-title", fg: "--title-on-section", bg: "--ui-section-bg" },
-  { id: "card1-paragraph", fg: "--text-on-section", bg: "--ui-section-bg" },
+  { id: "card1-caption", fg: "--ui-caption", bg: "--ui-section-bg" }, // check card icon+caption against card background for card 1
+  { id: "card1-title", fg: "--title-on-section", bg: "--ui-section-bg" }, // check card title against card background for card 1
+  { id: "card1-paragraph", fg: "--text-on-section", bg: "--ui-section-bg" }, // check card paragraph against card background for card 1
 
   // card 2 bg (right) = ui-panel-bg
-  { id: "card2-caption", fg: "--ui-caption", bg: "--ui-panel-bg" },
-  { id: "card2-title", fg: "--title-on-panel", bg: "--ui-panel-bg" },
-  { id: "card2-paragraph", fg: "--text-on-panel", bg: "--ui-panel-bg" },
+  { id: "card2-caption", fg: "--ui-caption", bg: "--ui-panel-bg" }, // check card icon+caption against card background for card 2
+  { id: "card2-title", fg: "--title-on-panel", bg: "--ui-panel-bg" }, // check card title against card background for card 2
+  { id: "card2-paragraph", fg: "--text-on-panel", bg: "--ui-panel-bg" }, // check card paragraph against card background for card 2
 
   // accent bg + inverse text
-  { id: "accent-text", fg: "--color-text-inverse", bg: "--ui-accent" },
+  { id: "accent-text", fg: "--dynamic-text", bg: "--dynamic-accent" }, // check text against accent bg for the decorative element
 ]);
 
 const contrastResults = ref([]);
@@ -243,16 +269,35 @@ const contrastResults = ref([]);
 /* --------------------------------------------------
    CONTRAST CHECK (SCORING)
 -------------------------------------------------- */
+function dynamicTitleForBg(bgHex) {
+  const dark = resolveCssColor("--color-title");
+  const light = resolveCssColor("--color-text-inverse");
+  if (!bgHex || !dark || !light) return dark;
+  const mode = getTextModeForBackground(bgHex, dark, light);
+  return mode === "dark" ? dark : light;
+}
+
+function dynamicBodyForBg(bgHex) {
+  const dark = resolveCssColor("--color-text");
+  const light = resolveCssColor("--color-text-inverse");
+  if (!bgHex || !dark || !light) return dark;
+  const mode = getTextModeForBackground(bgHex, dark, light);
+  return mode === "dark" ? dark : light;
+}
+
+function fgForBgPair(fgVar, bgHex) {
+  if (fgVar === "--dynamic-title") return dynamicTitleForBg(bgHex);
+  if (fgVar === "--dynamic-text") return dynamicBodyForBg(bgHex);
+  return resolveCssColor(fgVar);
+}
+
 function updateContrastChecks() {
   const contextBgs = props.bgContext?.bgVars?.map(resolveCssColor).filter(Boolean) || [];
 
   contrastResults.value = contrastPairs.value.map((p) => {
-    const fg = resolveCssColor(p.fg);
-
-    // resolve background
     const bgList = p.bg === "CONTEXT" ? contextBgs : [resolveCssColor(p.bg)].filter(Boolean);
 
-    if (!fg || bgList.length === 0) {
+    if (bgList.length === 0) {
       return {
         id: p.id,
         ratio: 0,
@@ -260,19 +305,40 @@ function updateContrastChecks() {
         label: "probleem",
         bg: "#d9534f",
         fg: "#ffffff",
-        swatchText: fg,
-        swatchBg: bgList[0] || null,
+        swatchText: null,
+        swatchBg: null,
         cssVarFg: p.fg,
         cssVarBg: p.bg,
       };
     }
 
-    // worst-case contrast across all backgrounds
-    const ratios = bgList.map((bg) => getContrastRatio(fg, bg));
+    // compute worst-case ratio across all backgrounds
+    const ratios = bgList.map((bg) => {
+      const fg = fgForBgPair(p.fg, bg);
+      if (!fg) return 0;
+      return getContrastRatio(fg, bg);
+    });
+
     const worstRatio = Math.min(...ratios);
     const worstBg = bgList[ratios.indexOf(worstRatio)];
+    const worstFg = fgForBgPair(p.fg, worstBg);
 
-    const result = evaluateContrastVisual(fg, worstBg);
+    if (!worstFg) {
+      return {
+        id: p.id,
+        ratio: 0,
+        level: "fail",
+        label: "probleem",
+        bg: "#d9534f",
+        fg: "#ffffff",
+        swatchText: null,
+        swatchBg: worstBg,
+        cssVarFg: p.fg,
+        cssVarBg: p.bg,
+      };
+    }
+
+    const result = evaluateContrastVisual(worstFg, worstBg);
 
     let statusVar;
     let label;
@@ -306,7 +372,7 @@ function updateContrastChecks() {
       cssVarFg: p.fg,
       cssVarBg: p.bg,
 
-      swatchText: fg,
+      swatchText: worstFg,
       swatchBg: worstBg,
     };
   });

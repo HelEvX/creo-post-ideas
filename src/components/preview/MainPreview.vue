@@ -36,7 +36,7 @@
               photoSrc: photoSrc,
               showCornerShapes: backgroundMode !== 'logo',
             }"
-            :bgContext="mockupBgContext" />
+            @bg-resolved="resolvedBgColors = $event" />
         </MockupWrapper>
       </div>
 
@@ -63,7 +63,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 
 import ContentTypePanel from "../controls/ContentTypePanel.vue";
 import FormatSelector from "../controls/FormatSelector.vue";
@@ -74,6 +74,7 @@ import stockImage from "@/assets/img/stockphoto.webp";
 // import { getTextModeForBackground } from "@/utils/colorLogic.js";
 
 const emit = defineEmits(["update-tone", "update-mode"]);
+const resolvedBgColors = ref([]);
 
 const { brandTokens } = defineProps({
   brandTokens: Object,
@@ -90,6 +91,24 @@ const activePostData = ref({});
 --------------------------------------------- */
 const backgroundTone = ref("primary"); // "primary" | "secondary"
 const backgroundMode = ref("none"); // "none" | "logo" | "pattern" | "image"
+
+watch(
+  backgroundTone,
+  (tone) => {
+    const root = document.documentElement;
+
+    if (tone === "secondary") {
+      root.style.setProperty("--dynamic-accent", "var(--ui-accent-on-secondary)", "important");
+    } else {
+      root.style.setProperty("--dynamic-accent", "var(--ui-accent-on-primary)", "important");
+    }
+
+    window.dispatchEvent(new Event("accent-updated"));
+  },
+  { immediate: true }
+);
+
+// IMAGE
 
 const selectedSize = ref("portrait");
 const photoSrc = ref(stockImage);
@@ -144,32 +163,9 @@ const backgroundClass = computed(() => {
 /* --------------------------------------------
    MOCKUP BACKGROUND CONTEXT
 --------------------------------------------- */
-const mockupBgContext = computed(() => {
-  if (backgroundMode.value === "pattern") {
-    return {
-      type: "pattern",
-      tone: backgroundTone.value,
-      bgVars:
-        backgroundTone.value === "secondary"
-          ? ["--color-secondary", "--color-secondary-dark"]
-          : ["--color-primary", "--color-primary-dark"],
-    };
-  }
-
-  if (backgroundMode.value === "image") {
-    return {
-      type: "image",
-      tone: backgroundTone.value,
-      bgVars: backgroundTone.value === "secondary" ? ["--color-secondary"] : ["--color-primary"],
-    };
-  }
-
-  return {
-    type: "color",
-    tone: backgroundTone.value,
-    bgVars: backgroundTone.value === "secondary" ? ["--color-secondary"] : ["--color-primary"],
-  };
-});
+const mockupBgContext = computed(() => ({
+  bgVars: resolvedBgColors.value.length ? resolvedBgColors.value : ["--ui-section-bg"],
+}));
 
 /* --------------------------------------------
    COMPUTED: Logo background URL

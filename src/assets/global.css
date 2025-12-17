@@ -277,27 +277,39 @@
   --ui-link-on-dark: var(--color-primary-lighter);
   --ui-link-on-dark-hover: var(--color-primary-light);
 
-  /* Heading colors - NOT DYNAMIC */
+  /* Heading colors */
   --ui-heading: var(--color-title);
   --ui-heading-alt: var(--color-title-alt);
   --ui-caption: var(--color-subtitle);
 
-  /* Dynamic text switch setup */
+  /* ------------------------------------------------------
+   DYNAMIC TEXT SWITCH SETUP
+   ------------------------------------------------------ */
+
+  /* Behaviours */
   --ui-text-on-light: var(--color-text); /* neutral-800 */
   --ui-text-on-dark: var(--color-text-inverse); /* white */
 
   --ui-title-on-light: var(--color-title); /* neutral-900 */
   --ui-title-on-dark: var(--color-text-inverse); /* white */
+
   --ui-soft-on-light: var(--color-text-soft);
   --ui-soft-on-dark: var(--color-text-soft-inverse);
+
   --ui-disabled-on-light: var(--color-disabled-text);
   --ui-disabled-on-dark: var(--color-disabled-text-inverse);
+
+  --ui-accent-on-primary: var(--color-secondary);
+  --ui-accent-on-secondary: var(--color-primary);
 
   /* default: light bg */
   --dynamic-text: var(--ui-text-on-light);
   --dynamic-title: var(--ui-title-on-light);
   --dynamic-soft: var(--ui-soft-on-light);
   --dynamic-disabled: var(--ui-disabled-on-light);
+
+  /* default: primary bg */
+  --dynamic-accent: var(--ui-accent-on-primary);
 
   /* ------------------------------------------------------
    UTILITY ASSIGNMENTS
