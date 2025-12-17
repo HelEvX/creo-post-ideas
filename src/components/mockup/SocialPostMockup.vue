@@ -50,31 +50,32 @@ import { getTextModeForBackground } from "@/utils/colorLogic.js";
 ---------------------------------------------- */
 const props = defineProps({
   size: String,
-  backgroundType: String,
+  backgroundType: String, // ?
   backgroundClass: String,
   backgroundTone: String,
-
-  // MUST be fed from MockupRenderer — FIXED THERE TOO
+  useColoredBackground: {
+    type: Boolean,
+    default: true,
+  },
   bgColors: {
     type: Array,
     default: () => [],
   },
-
   brandLogo: String,
   usePhoto: Boolean,
   photoSrc: String,
   showBrand: Boolean,
   showCornerShapes: Boolean,
-  showLabel: Boolean,
-  labelSize: String,
-  labelColor: String,
-  labelIcon: Boolean,
-  labelText: String,
+  showLabel: Boolean, // ?
+  labelSize: String, // ?
+  labelColor: String, // ?
+  labelIcon: Boolean, // ?
+  labelText: String, // ?
   title: String,
   subtitle: String,
   showQuote: Boolean,
   quote: String,
-  shapesSrc: String,
+  shapesSrc: String, // ?
 });
 
 /* ----------------------------------------------
@@ -167,6 +168,23 @@ function recomputeMockupTextVars() {
   if (accentBg) {
     const accentMode = getTextModeForBackground(accentBg, bodyDark, light);
     accentText = accentMode === "light" ? light : bodyDark;
+  }
+
+  if (!props.useColoredBackground) {
+    const cs = getComputedStyle(document.documentElement);
+
+    const titleColor =
+      props.backgroundTone === "secondary"
+        ? cs.getPropertyValue("--color-secondary").trim()
+        : cs.getPropertyValue("--color-primary").trim();
+
+    const bodyText = cs.getPropertyValue("--ui-text-on-light").trim();
+
+    mockupTextVars.value = {
+      "--dynamic-title": titleColor,
+      "--dynamic-text": bodyText,
+    };
+    return;
   }
 
   mockupTextVars.value = {
@@ -404,6 +422,10 @@ const aspectRatio = computed(() => {
 
 .bg--plain-secondary .post-bg__color {
   background: var(--color-secondary);
+}
+
+.bg--plain-neutral .post-bg__color {
+  background: var(--ui-alt-section-bg);
 }
 
 /* =========================================

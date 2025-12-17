@@ -3,44 +3,43 @@
     <PostTextBlock :headlineText="headline" :bodyText="body" textAlign="left" />
 
     <div class="overview-block">
-      <!-- MAIN BACKGROUND -->
-
       <div class="overview-cards">
-        <div class="overview-section main-bg">
-          <div class="overview-row fg--caption">
+        <!-- LEFT CARD (section surface) -->
+        <div class="overview-card overview-card--section">
+          <div class="overview-row overview-row--caption">
             <i class="fa-solid fa-heart icon-preview"></i>
-            <span class="label caption-preview">Card caption</span>
+            <span>Card caption</span>
           </div>
 
-          <div class="overview-row fg--heading">
-            <div class="title-preview">Card title 1</div>
+          <div class="overview-row overview-row--title">
+            <div>Card title 1</div>
           </div>
 
-          <div class="overview-row fg--text">
-            <p class="paragraph-preview">This is paragraph preview text.</p>
+          <div class="overview-row overview-row--text">
+            <p>This is paragraph preview text.</p>
           </div>
         </div>
 
-        <!-- CARD BACKGROUND -->
-        <div class="overview-section card-bg">
-          <div class="overview-row fg--caption">
+        <!-- RIGHT CARD (panel surface) -->
+        <div class="overview-card overview-card--panel">
+          <div class="overview-row overview-row--caption">
             <i class="fa-solid fa-link icon-preview"></i>
-            <span class="label caption-preview">Card caption</span>
+            <span>Card caption</span>
           </div>
 
-          <div class="overview-row fg--heading">
-            <div class="title-preview">Card Title 2</div>
+          <div class="overview-row overview-row--title">
+            <div>Card title 2</div>
           </div>
 
-          <div class="overview-row fg--text">
-            <p class="paragraph-preview">This is paragraph preview text.</p>
+          <div class="overview-row overview-row--text">
+            <p>This is paragraph preview text.</p>
           </div>
         </div>
       </div>
 
-      <!-- ACCENT BACKGROUND -->
-      <div class="overview-section accent-bg" :style="accentTextVars">
-        <p class="accent-preview">Text on accent background</p>
+      <!-- ACCENT -->
+      <div class="overview-accent">
+        <p>Text on accent background</p>
       </div>
     </div>
   </div>
@@ -57,13 +56,15 @@ const { headline, body } = defineProps({
 
 <style scoped>
 /* =========================================================
-   OVERVIEW BLOCK CONTAINER
+   LAYOUT
    ======================================================= */
+
 .info-post {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
+
 .overview-block {
   display: flex;
   flex: 1;
@@ -71,21 +72,62 @@ const { headline, body } = defineProps({
   justify-content: space-evenly;
 }
 
-/* Logical grouping */
-.overview-section {
-  padding: var(--space-10) var(--space-25);
-  border-radius: var(--radius-md);
-}
-
 .overview-cards {
   display: flex;
-  flex-direction: row;
   gap: var(--space-25);
 }
 
 /* =========================================================
-   INDIVIDUAL ROWS
+   CARD SURFACES
    ======================================================= */
+
+.overview-card {
+  flex: 1;
+  padding: var(--space-10) var(--space-25);
+  border-radius: var(--radius-md);
+}
+
+.overview-card--section {
+  background: var(--ui-section-bg);
+  color: var(--text-on-section);
+}
+
+.overview-card--panel {
+  background: var(--ui-panel-bg);
+  color: var(--text-on-panel);
+}
+
+/* titles override body text */
+.overview-card--section .overview-row--title {
+  color: var(--title-on-section);
+}
+
+.overview-card--panel .overview-row--title {
+  color: var(--title-on-panel);
+}
+
+/* captions are shared */
+.overview-row--caption {
+  color: var(--ui-caption);
+}
+
+/* =========================================================
+   ACCENT SURFACE
+   ======================================================= */
+
+.overview-accent {
+  padding: var(--space-10) var(--space-25);
+  border-radius: var(--radius-md);
+  background: var(--dynamic-accent);
+  color: var(--dynamic-text-accent);
+  font-size: var(--fs-body-lg);
+  font-weight: var(--fw-title);
+}
+
+/* =========================================================
+   ROW STRUCTURE
+   ======================================================= */
+
 .overview-row {
   display: flex;
   align-items: center;
@@ -93,85 +135,19 @@ const { headline, body } = defineProps({
   padding: var(--space-5) 0;
 }
 
-/* mimic real sizes */
-.title-preview {
+/* typography */
+.overview-row--title {
   font-size: var(--fs-h4);
   line-height: var(--lh-heading);
-  margin: 0;
-  padding: 0;
 }
 
-.caption-preview {
-  font-size: var(--fs-body-sm);
-}
-
-.paragraph-preview {
+.overview-row--text {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  margin: 0;
-}
-
-.footer-preview {
-  font-size: var(--fs-body-sm);
-  margin: 0;
-}
-
-.accent-preview {
-  font-size: var(--fs-body-lg);
-  font-weight: var(--fw-title);
-  margin: var(--space-10) 0;
 }
 
 /* icon */
 .icon-preview {
   font-size: 1.8rem;
-}
-
-/* =========================================================
-   BACKGROUND COLOR MAPPINGS
-   ======================================================= */
-
-/* LEFT card */
-.main-bg {
-  background: var(--ui-section-bg);
-  flex: 1;
-}
-
-/* RIGHT card */
-.card-bg {
-  background: var(--ui-panel-bg);
-  flex: 1;
-}
-
-/* BOTTOM card 'ACCENT' */
-.accent-bg {
-  background: var(--dynamic-accent);
-  color: var(--dynamic-text-accent);
-}
-
-/* =========================================================
-   FOREGROUND COLOR MAPPINGS (CORRECT SEMANTICS)
-   ======================================================= */
-
-/* LEFT card = section surface */
-.main-bg .fg--heading {
-  color: var(--title-on-section);
-}
-.main-bg .fg--text {
-  color: var(--text-on-section);
-}
-.main-bg .fg--caption {
-  color: var(--ui-caption);
-}
-
-/* RIGHT card = panel surface */
-.card-bg .fg--heading {
-  color: var(--title-on-panel);
-}
-.card-bg .fg--text {
-  color: var(--text-on-panel);
-}
-.card-bg .fg--caption {
-  color: var(--ui-caption);
 }
 </style>

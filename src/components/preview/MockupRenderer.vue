@@ -74,8 +74,10 @@ const patternColorMap = {
    BACKGROUND COLOR RESOLUTION
 --------------------------------------------------- */
 
+const NEUTRAL_BG_VAR = "--ui-alt-section-bg";
+
 function getMockupBgColors(backgroundClass) {
-  if (!backgroundClass) return ["--ui-section-bg"];
+  if (!backgroundClass) return [NEUTRAL_BG_VAR];
 
   const parts = backgroundClass.split(" ");
   const tone = designProps.backgroundTone === "secondary" ? "secondary" : "primary";
@@ -86,12 +88,16 @@ function getMockupBgColors(backgroundClass) {
     }
   }
 
-  // plain backgrounds (primary / secondary / white)
+  // plain backgrounds
+  if (!designProps.useColoredBackground) {
+    return [NEUTRAL_BG_VAR];
+  }
+
   if (parts.includes("bg--plain-primary")) return ["--color-primary"];
   if (parts.includes("bg--plain-secondary")) return ["--color-secondary"];
 
   // default fallback
-  return ["--ui-section-bg"];
+  return [NEUTRAL_BG_VAR];
 }
 
 const resolvedBgColors = computed(() => getMockupBgColors(designProps.backgroundClass));

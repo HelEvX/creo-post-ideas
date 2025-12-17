@@ -1,3 +1,5 @@
+<!-- NOT USED ANYMORE -->
+
 <template>
   <div class="brand-gallery">
     <!-- Color playground -->

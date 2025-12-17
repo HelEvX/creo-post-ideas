@@ -8,6 +8,7 @@
         <ContentTypePanel
           :selected="selectedPostType"
           :tone="backgroundTone"
+          :colored="useColoredBackground"
           :selectedMode="backgroundMode"
           :mockupBgContext="mockupBgContext"
           @select="onContentTypeSelect"
@@ -18,7 +19,8 @@
           @update-mode="
             backgroundMode = $event;
             emit('update-mode', $event);
-          " />
+          "
+          @update-colored="useColoredBackground = $event" />
       </div>
 
       <!-- PREVIEW -->
@@ -29,14 +31,16 @@
             :postType="selectedPostType"
             :postData="activePostData"
             :designProps="{
-              backgroundClass: backgroundClass,
-              backgroundTone: backgroundTone,
-              brandLogo: brandLogo,
+              backgroundClass,
+              backgroundTone,
+              useColoredBackground,
+              brandLogo,
               usePhoto: backgroundMode === 'image',
-              photoSrc: photoSrc,
+              photoSrc,
               showCornerShapes: backgroundMode !== 'logo',
             }"
-            @bg-resolved="resolvedBgColors = $event" />
+            @bg-resolved="resolvedBgColors = $event"
+            @update-colored="useColoredBackground = $event" />
         </MockupWrapper>
       </div>
 
@@ -71,7 +75,6 @@ import MockupWrapper from "../preview/MockupWrapper.vue";
 import MockupRenderer from "../preview/MockupRenderer.vue";
 
 import stockImage from "@/assets/img/stockphoto.webp";
-// import { getTextModeForBackground } from "@/utils/colorLogic.js";
 
 const emit = defineEmits(["update-tone", "update-mode"]);
 const resolvedBgColors = ref([]);
@@ -90,6 +93,7 @@ const activePostData = ref({});
    BACKGROUND STATE (tone + mode)
 --------------------------------------------- */
 const backgroundTone = ref("primary"); // "primary" | "secondary"
+const useColoredBackground = ref(true); // color background ON
 const backgroundMode = ref("none"); // "none" | "logo" | "pattern" | "image"
 
 watch(
@@ -151,7 +155,12 @@ const postContent = {
 --------------------------------------------- */
 const backgroundClass = computed(() => {
   const classes = [];
-  classes.push(backgroundTone.value === "secondary" ? "bg--plain-secondary" : "bg--plain-primary");
+
+  if (useColoredBackground.value) {
+    classes.push(backgroundTone.value === "secondary" ? "bg--plain-secondary" : "bg--plain-primary");
+  } else {
+    classes.push("bg--plain-neutral");
+  }
 
   if (backgroundMode.value === "pattern") return "bg--pattern pattern-distorted-mesh";
   if (backgroundMode.value === "logo") classes.push("bg--logo");

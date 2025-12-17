@@ -16,7 +16,7 @@ defineProps({
 .mockup-bounds {
   width: 100%;
   max-width: 100%;
-  padding: 2rem 0;
+  /* padding: 2rem 0; */
 
   display: flex;
   justify-content: flex-start;

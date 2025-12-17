@@ -334,7 +334,9 @@ Stylings for components specific to the app shell
 */
 
 .app__layout {
-  margin: var(--space-100) 0;
+  margin: var(--space-75) 0;
+  padding: var(--space-25) 0;
+  background-color: var(--ui-alt-section-bg);
 }
 
 @media (min-width: 992px) {
@@ -418,25 +420,6 @@ p.hero-subtitle {
 }
 
 /* ======================================================
-   APP LAYOUT
-   ====================================================== */
-
-.app__canvas {
-  background: var(--ui-section-bg);
-  border-radius: var(--radius-lg);
-  padding: var(--space-25);
-}
-
-.app__canvas {
-  border: var(--ui-panel-border-soft);
-}
-
-.section-gallery h2 {
-  text-align: center;
-  padding-bottom: var(--space-50);
-}
-
-/* ======================================================
    TRANSITIONS
    ====================================================== */
 
@@ -448,32 +431,72 @@ p.hero-subtitle {
   transition: var(--transition-default);
 }
 
+/* ======================================================
+   APP LAYOUT
+   ====================================================== */
+
+.app__canvas {
+  background: var(--ui-section-bg);
+  border-radius: var(--radius-lg);
+  /* border: var(--ui-panel-border-soft); */
+  padding: var(--space-25);
+}
+
+.app__main,
+.app__sidebar {
+  margin: var(--space-25) 0;
+}
+
+.section-gallery h2 {
+  text-align: center;
+  padding-bottom: var(--space-50);
+}
+
 /* =======================================================
    DESKTOP ≥ 992px (lg breakpoint)
    Make sidebar and main column equal height
    ======================================================= */
 
 @media (min-width: 992px) {
-  /* Let the two columns in this row stretch to the same height */
   .app__layout .row.between {
     align-items: stretch;
   }
-
-  /* Columns become flex containers so their inner panels can fill them */
   .app__sidebar,
   .app__main {
     display: flex;
     flex-direction: column;
   }
-
-  /* Sidebar content (the pale panel) fills the full column height */
   .app__sidebar > * {
     height: 100%;
   }
-
-  /* Canvas panel fills the full main column height */
   .app__canvas {
     height: 100%;
+  }
+}
+
+/* =======================================================
+   TABLET
+   ======================================================= */
+
+@media (max-width: 991px) {
+  .app__sidebar {
+    margin: 0;
+  }
+}
+
+/* =======================================================
+   MOBILE
+   ======================================================= */
+
+@media (max-width: 767px) {
+  .app__sidebar {
+    margin: 0;
+  }
+}
+
+@media (max-width: 575px) {
+  .app__sidebar {
+    margin: 0;
   }
 }
 </style>

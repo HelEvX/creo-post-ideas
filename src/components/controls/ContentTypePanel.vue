@@ -15,7 +15,10 @@
 
     <div class="content-type-panel__divider"></div>
 
-    <h6>Kleurrijk [check]</h6>
+    <label class="colored-toggle">
+      <h6>Kleurrijk</h6>
+      <input type="checkbox" :checked="colored" @change="emit('update-colored', $event.target.checked)" />
+    </label>
 
     <BackgroundToggle :tone="tone" @change="emit('update-tone', $event)" />
 
@@ -39,11 +42,15 @@
 <script setup>
 import BackgroundToggle from "./BackgroundToggle.vue";
 
-const emit = defineEmits(["select", "update-tone", "update-mode"]);
+const emit = defineEmits(["select", "update-tone", "update-mode", "update-colored"]);
 
 const { selected, tone, selectedMode } = defineProps({
   selected: String,
   tone: String, // "primary" | "secondary"
+  colored: {
+    type: Boolean,
+    default: true,
+  },
   selectedMode: String, // "none" | "logo" | "pattern" | "image"
 });
 
@@ -87,5 +94,17 @@ const modes = [
   width: auto;
   background: var(--color-border-light);
   margin: var(--space-20) var(--space-30) var(--space-40);
+}
+
+.colored-toggle {
+  display: flex;
+  align-items: top;
+  justify-content: center;
+}
+
+.colored-toggle input {
+  height: 20px;
+  flex: 0;
+  margin: var(--space-10) var(--space-20) 0;
 }
 </style>
