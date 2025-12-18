@@ -137,6 +137,14 @@ const mockupTextVars = ref({
   "--dynamic-text-accent": "",
 });
 
+const resolvedText = computed(() => {
+  return {
+    title: mockupTextVars.value["--dynamic-title"] || null,
+    body: mockupTextVars.value["--dynamic-text"] || null,
+    accent: mockupTextVars.value["--dynamic-text-accent"] || null,
+  };
+});
+
 function recomputeMockupTextVars() {
   const cs = getComputedStyle(document.documentElement);
 
@@ -239,6 +247,45 @@ const aspectRatio = computed(() => {
       return "1080 / 1350";
   }
 });
+
+/* ----------------------------------------------
+   EXPORT TO STYLE INSPECTOR
+---------------------------------------------- */
+
+function resolveHex(varName) {
+  return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+}
+
+const resolvedVisualContext = computed(() => {
+  const toneVar = props.backgroundTone === "secondary" ? "--color-secondary" : "--color-primary";
+
+  const baseHex = resolveHex(toneVar);
+
+  return {
+    background: {
+      role: props.backgroundTone,
+      hex: baseHex,
+    },
+    overlay: {
+      active: props.backgroundClass?.includes("bg--image"),
+      hex: baseHex,
+      opacity: props.backgroundClass?.includes("bg--image") ? 0.6 : 0,
+    },
+  };
+});
+
+const emit = defineEmits(["resolved-visuals"]);
+
+watch(
+  () => [resolvedVisualContext.value, resolvedText.value],
+  () => {
+    emit("resolved-visuals", {
+      ...resolvedVisualContext.value,
+      text: resolvedText.value,
+    });
+  },
+  { immediate: true, deep: true }
+);
 </script>
 
 <style scoped>
@@ -286,6 +333,7 @@ const aspectRatio = computed(() => {
   max-width: 100%;
   max-height: 100%;
   overflow: hidden;
+  border-radius: var(--radius-sm);
 }
 
 /* =========================================
@@ -307,11 +355,6 @@ const aspectRatio = computed(() => {
   max-width: none;
   color: inherit;
 }
-
-/* .post-content--primary,
-.post-content--secondary {
-  color: inherit;
-} */
 
 .post-title {
   font-family: var(--font-title);
@@ -449,14 +492,6 @@ const aspectRatio = computed(() => {
 }
 
 /* =========================================
-   PATTERNS
-   ========================================= */
-
-/* .post-bg.bg--pattern {
-  opacity: 0.5;
-} */
-
-/* =========================================
    IMAGE
    ========================================= */
 
@@ -503,7 +538,6 @@ const aspectRatio = computed(() => {
   padding: var(--space-40);
   width: 100%;
   height: 100%;
-  box-sizing: border-box;
   overflow: hidden; /* never scroll, like a Figma frame */
 }
 

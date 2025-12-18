@@ -4,7 +4,7 @@
 
     <div class="row main-preview-row">
       <!-- SIDEBAR -->
-      <div class="col-12 col-3xl-2 col-xl-4 main-preview__sidebar">
+      <div class="col-12 col-3xl-2 main-preview__sidebar">
         <ContentTypePanel
           :selected="selectedPostType"
           :tone="backgroundTone"
@@ -24,7 +24,7 @@
       </div>
 
       <!-- PREVIEW -->
-      <div class="col-12 col-3xl-8 col-xl-8 main-preview__content">
+      <div class="col-12 col-3xl-8 main-preview__content">
         <MockupWrapper :size="selectedSize">
           <MockupRenderer
             :size="selectedSize"
@@ -40,27 +40,13 @@
               showCornerShapes: backgroundMode !== 'logo',
             }"
             @bg-resolved="resolvedBgColors = $event"
-            @update-colored="useColoredBackground = $event" />
+            @update-colored="useColoredBackground = $event"
+            @resolved-styles="resolvedStyles = $event" />
         </MockupWrapper>
       </div>
 
       <div class="col-12 col-3xl-2 col-xxl-12 main-preview__styles">
-        <h6>Stijlkenmerken</h6>
-        <div class="title-font">{title font name}</div>
-        <div class="body-font">{body font name}</div>
-        <div class="content-type-panel__divider"></div>
-        <div class="main-preview__styles__swatches">
-          <div class="main-preview__styles__swatch"></div>
-          <div class="main-preview__styles__swatch"></div>
-          <div class="main-preview__styles__swatch"></div>
-          <div class="main-preview__styles__swatch"></div>
-          <div class="main-preview__styles__swatch"></div>
-          <div class="main-preview__styles__swatch"></div>
-          <div class="main-preview__styles__swatch"></div>
-        </div>
-        <div class="content-type-panel__divider"></div>
-        <div class="main-preview__styles__corners"></div>
-        <div class="main-preview__styles__shadows"></div>
+        <StyleInspectorPanel :titleFont="resolvedStyles?.fonts?.title" :bodyFont="resolvedStyles?.fonts?.body" />
       </div>
     </div>
   </div>
@@ -76,12 +62,16 @@ import MockupRenderer from "../preview/MockupRenderer.vue";
 
 import stockImage from "@/assets/img/stockphoto.webp";
 
+import StyleInspectorPanel from "../preview/StyleInspectorPanel.vue";
+
 const emit = defineEmits(["update-tone", "update-mode"]);
 const resolvedBgColors = ref([]);
 
 const { brandTokens } = defineProps({
   brandTokens: Object,
 });
+
+const resolvedStyles = ref(null);
 
 /* --------------------------------------------
    POST TYPE STATE
@@ -215,100 +205,18 @@ function onContentTypeSelect(type) {
 .main-preview__sidebar {
   margin-bottom: var(--space-40);
   text-align: center;
+  justify-items: center;
 }
 
-.main-preview__content {
-  margin-left: 0;
-}
-
-.main-preview__styles {
-  padding-right: 0;
-}
-
-.main-preview__styles h6 {
-  text-align: center;
-}
-
-.main-preview__styles .title-font {
-  font-family: var(--font-title);
-  font-weight: var(--fw-title);
-  margin-bottom: var(--space-20);
-}
-
-.main-preview__styles__swatches {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  gap: 1rem;
-}
-
-.main-preview__styles__swatch {
-  width: 100%;
-  height: 4rem;
-  border-radius: var(--radius-sm);
-}
-
-.main-preview__styles__swatches div {
-  background: var(--color-disabled-bg);
-}
-
-.main-preview__styles__swatches div:first-child {
-  background: var(--color-primary);
-}
-
-.main-preview__styles__swatches div:nth-child(2) {
-  background: var(--color-primary-dark);
-}
-
-.main-preview__styles__corners {
-  height: 5rem;
-  width: 5rem;
-  border-left: var(--ui-swatch-border);
-  border-top: var(--ui-swatch-border);
-  border-radius: var(--radius-lg) 0 0 0;
-  margin: 2rem 3rem 3rem 2rem;
-}
-
-.main-preview__styles__shadows {
-  height: 6rem;
-  width: 6rem;
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow);
-  margin: 2rem;
-}
-
-.content-type-panel__divider {
-  height: 1px;
-  width: auto;
-  background: var(--color-border-light);
-  margin: var(--space-20) var(--space-30) var(--space-40);
-}
-
-@media (min-width: 992px) {
+@media (min-width: 1600px) {
   .main-preview__sidebar {
     margin-bottom: 0;
   }
-
-  .main-preview__content {
-    margin-left: -2.5rem;
-    border-left: var(--ui-panel-border-soft);
-    border-right: var(--ui-panel-border-soft);
-  }
-
-  .main-preview__styles {
-    padding-left: 2.5rem;
-  }
 }
 
-@media (max-width: 991px) and (min-width: 768px) {
+@media (min-width: 768px) and (max-width: 1599px) {
   .main-preview__sidebar {
     margin-bottom: var(--space-40);
-  }
-}
-
-@media (max-width: 767px) {
-  .main-preview__styles__title {
-    margin-top: var(--space-20);
   }
 }
 </style>

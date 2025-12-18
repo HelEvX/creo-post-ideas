@@ -181,7 +181,6 @@ function highlightIconStyle(file) {
   width: 935px;
   margin: 0 auto;
   padding: 40px 20px;
-  box-sizing: border-box;
 }
 
 /* HEADER */
@@ -240,7 +239,6 @@ function highlightIconStyle(file) {
 /* BUTTONS */
 .ig-btn {
   all: unset;
-  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -388,7 +386,6 @@ function highlightIconStyle(file) {
   margin: 0 auto 6px;
   border-radius: 50%;
   border: 1px solid #dbdbdb;
-  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;

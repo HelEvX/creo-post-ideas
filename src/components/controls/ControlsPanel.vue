@@ -19,7 +19,6 @@ export default {
     brandTokens: Object,
     scales: Object,
 
-    // passed down from the preview/toggle state (parent must provide this)
     mockupBgContext: {
       type: Object,
       default: () => ({
@@ -31,25 +30,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.app__sidebar,
-.app__sidebar-block {
-  padding-top: var(--space-25);
-  padding-bottom: var(--space-25);
-}
-
-.app__sidebar {
-  background: var(--color-overlay-accent);
-  color: var(--color-title);
-  border-top-right-radius: var(--radius-lg);
-  border-bottom-right-radius: var(--radius-lg);
-}
-
-.app__sidebar-block {
-  background: var(--color-overlay-soft);
-  border-radius: var(--radius-md);
-  margin-bottom: var(--space-10);
-  padding: var(--space-10);
-}
-</style>

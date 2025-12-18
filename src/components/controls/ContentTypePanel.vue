@@ -1,40 +1,42 @@
 <template>
   <aside class="content-type-panel">
-    <h6>Type inhoud</h6>
+    <div>
+      <h6>Type inhoud</h6>
 
-    <div class="content-type-panel__buttons">
-      <button
-        v-for="type in types"
-        :key="type.id"
-        type="button"
-        :class="['content-type-panel__btn', selected === type.id ? 'btn-primary btn-active' : 'btn-inactive']"
-        @click="emit('select', type.id)">
-        {{ type.label }}
-      </button>
+      <div class="content-type-panel__buttons">
+        <button
+          v-for="type in types"
+          :key="type.id"
+          type="button"
+          :class="['content-type-panel__btn', selected === type.id ? 'btn-primary btn-active' : 'btn-inactive']"
+          @click="emit('select', type.id)">
+          {{ type.label }}
+        </button>
+      </div>
     </div>
 
-    <div class="content-type-panel__divider"></div>
+    <div class="panel-alt">
+      <label class="colored-check">
+        <h6>Kleurrijk</h6>
+        <input type="checkbox" :checked="colored" @change="emit('update-colored', $event.target.checked)" />
+      </label>
 
-    <label class="colored-toggle">
-      <h6>Kleurrijk</h6>
-      <input type="checkbox" :checked="colored" @change="emit('update-colored', $event.target.checked)" />
-    </label>
+      <BackgroundToggle :tone="tone" @change="emit('update-tone', $event)" />
+    </div>
 
-    <BackgroundToggle :tone="tone" @change="emit('update-tone', $event)" />
+    <div>
+      <h6>Achtergrond</h6>
 
-    <div class="content-type-panel__divider"></div>
-
-    <h6>Achtergrond</h6>
-
-    <div class="content-type-panel__buttons">
-      <button
-        v-for="mode in modes"
-        :key="mode.id"
-        type="button"
-        :class="['content-type-panel__btn', selectedMode === mode.id ? 'btn-primary btn-active' : 'btn-inactive']"
-        @click="emit('update-mode', mode.id)">
-        {{ mode.label }}
-      </button>
+      <div class="content-type-panel__buttons">
+        <button
+          v-for="mode in modes"
+          :key="mode.id"
+          type="button"
+          :class="['content-type-panel__btn', selectedMode === mode.id ? 'btn-primary btn-active' : 'btn-inactive']"
+          @click="emit('update-mode', mode.id)">
+          {{ mode.label }}
+        </button>
+      </div>
     </div>
   </aside>
 </template>
@@ -72,14 +74,38 @@ const modes = [
 </script>
 
 <style scoped>
+.panel-alt {
+  /* background-color: var(--ui-alt-section-bg); */
+  border-left: var(--ui-panel-border-soft);
+  border-right: var(--ui-panel-border-soft);
+  padding: 0 var(--space-20);
+}
 .content-type-panel {
-  margin-right: 2.5rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-50);
+}
+.content-type-panel div {
+  align-content: center;
 }
 
 .content-type-panel__buttons {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: var(--space-10);
+}
+
+@media (min-width: 768px) and (max-width: 1599px) {
+  .content-type-panel {
+    flex-direction: row;
+  }
+  .content-type-panel__buttons {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
 }
 
 .content-type-panel__btn {
@@ -89,22 +115,11 @@ const modes = [
   padding: var(--space-10) var(--space-20);
 }
 
-.content-type-panel__divider {
-  height: 1px;
-  width: auto;
-  background: var(--color-border-light);
-  margin: var(--space-20) var(--space-30) var(--space-40);
+.colored-check {
+  margin-bottom: var(--space-20);
 }
 
-.colored-toggle {
-  display: flex;
-  align-items: top;
-  justify-content: center;
-}
-
-.colored-toggle input {
+.colored-check input {
   height: 20px;
-  flex: 0;
-  margin: var(--space-10) var(--space-20) 0;
 }
 </style>

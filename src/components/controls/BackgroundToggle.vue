@@ -47,6 +47,7 @@ function toggle() {
   height: 32px;
   padding: 3px;
   border-radius: 32px;
+  flex: 0 0 64px;
   border: 2px solid var(--ui-panel-border);
   cursor: pointer;
   transition: var(--transition-default);

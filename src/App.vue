@@ -135,7 +135,6 @@ import BrandLogo from "./components/brand/BrandLogo.vue";
 import ControlsPanel from "./components/controls/ControlsPanel.vue";
 import BrandPicker from "./components/brand/BrandPicker.vue";
 import MainPreview from "./components/preview/MainPreview.vue";
-// import BrandGallery from "./components/brand/BrandGallery.vue";
 import InstagramGrid from "@/components/InstagramGrid.vue";
 import { buildBrandScales } from "./utils/colorBlender.js";
 import { getTextModeForBackground } from "./utils/colorLogic.js";
@@ -400,6 +399,11 @@ p.hero-subtitle {
   color: var(--dynamic-soft);
 }
 
+.section-gallery h2 {
+  text-align: center;
+  padding-bottom: var(--space-50);
+}
+
 /* ----------------------------------------------------
    LINKS
    ---------------------------------------------------- */
@@ -447,9 +451,37 @@ p.hero-subtitle {
   margin: var(--space-25) 0;
 }
 
-.section-gallery h2 {
-  text-align: center;
-  padding-bottom: var(--space-50);
+.app__sidebar,
+.app__sidebar-block {
+  padding-top: var(--space-25);
+  padding-bottom: var(--space-25);
+}
+
+.app__sidebar {
+  border-radius: var(--radius-lg);
+  background: var(--ui-nav-bg);
+  margin-left: var(--space-25);
+  margin-right: var(--space-25);
+}
+
+.app__sidebar-block {
+  background: var(--color-overlay-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-10);
+}
+
+/* =======================================================
+   VERY LARGE SCREENS
+   Sidebar sticks to left screen edge
+   ======================================================= */
+
+@media (min-width: 1400px) {
+  .app__sidebar {
+    margin-left: 0;
+    margin-right: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 }
 
 /* =======================================================
@@ -457,7 +489,7 @@ p.hero-subtitle {
    Make sidebar and main column equal height
    ======================================================= */
 
-@media (min-width: 992px) {
+/* @media (min-width: 992px) {
   .app__layout .row.between {
     align-items: stretch;
   }
@@ -466,37 +498,16 @@ p.hero-subtitle {
     display: flex;
     flex-direction: column;
   }
-  .app__sidebar > * {
-    height: 100%;
-  }
   .app__canvas {
     height: 100%;
   }
-}
+} */
 
 /* =======================================================
    TABLET
    ======================================================= */
 
-@media (max-width: 991px) {
-  .app__sidebar {
-    margin: 0;
-  }
-}
-
 /* =======================================================
    MOBILE
    ======================================================= */
-
-@media (max-width: 767px) {
-  .app__sidebar {
-    margin: 0;
-  }
-}
-
-@media (max-width: 575px) {
-  .app__sidebar {
-    margin: 0;
-  }
-}
 </style>

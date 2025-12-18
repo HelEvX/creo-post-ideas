@@ -1,29 +1,32 @@
 <template>
   <div class="recipe-shuffle">
-    <div class="controls">
-      <button type="button" class="btn-primary" @click="prevRecipe">
-        <i class="fa-solid fa-chevron-left"></i>
-      </button>
-      <h5 class="recipe-title">
-        {{ activeRecipe ? activeRecipe.title : "Basiskleuren" }}
-      </h5>
-      <button type="button" class="btn-primary" @click="nextRecipe">
-        <i class="fa-solid fa-chevron-right"></i>
-      </button>
-    </div>
+    <div class="recipe-info-container">
+      <div class="controls">
+        <button type="button" class="btn-primary" @click="prevRecipe">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <h5 class="recipe-title">
+          {{ activeRecipe ? activeRecipe.title : "Basiskleuren" }}
+        </h5>
+        <button type="button" class="btn-primary" @click="nextRecipe">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
 
-    <p class="recipe-desc">
-      {{ activeRecipe ? activeRecipe.description : "De huisstijl zoals op de website." }}
-    </p>
+      <p class="recipe-desc">
+        {{ activeRecipe ? activeRecipe.description : "De huisstijl zoals op de website." }}
+      </p>
 
-    <!-- Reset button -->
-    <div class="reset-wrap">
-      <button type="button" class="reset-btn" @click="resetBrand"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+      <!-- Reset button -->
+      <div class="reset-wrap">
+        <button type="button" class="reset-btn" @click="resetBrand">
+          <i class="fa-solid fa-rotate-left"></i> Reset
+        </button>
+      </div>
+      <h4>Contrast Check</h4>
     </div>
 
     <div class="contrast-check">
-      <h4>Contrast Check</h4>
-
       <div class="contrast-list">
         <div v-for="item in contrastResults" :key="item.id" class="contrast-row">
           <!-- LEFT: Color pair swatches -->
@@ -453,6 +456,13 @@ defineExpose({ nextRecipe, prevRecipe });
 /* ---------------------------------------------
    CONTAINER
 --------------------------------------------- */
+
+.recipe-info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
 .recipe-shuffle {
   border-radius: var(--radius-md);
   padding: var(--space-20);
@@ -460,8 +470,7 @@ defineExpose({ nextRecipe, prevRecipe });
   color: var(--text-on-section);
   display: flex;
   flex-direction: column;
-  max-width: 680px;
-  margin: 0 auto;
+  gap: var(--space-30);
 }
 
 /* ---------------------------------------------
@@ -469,15 +478,18 @@ defineExpose({ nextRecipe, prevRecipe });
 --------------------------------------------- */
 .controls {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   background: var(--color-overlay);
   border-radius: var(--radius-sm);
   padding: var(--space-10);
+  width: 100%;
 }
 
 .recipe-title {
-  margin: var(--space-5) auto;
+  align-items: center;
   text-align: center;
+  padding: var(--space-10);
+  margin-bottom: 0;
 }
 
 .recipe-desc {
@@ -488,6 +500,7 @@ defineExpose({ nextRecipe, prevRecipe });
 
 .reset-wrap {
   text-align: center;
+  padding: var(--space-10) 0 var(--space-30);
 }
 
 .reset-btn {
@@ -512,7 +525,6 @@ defineExpose({ nextRecipe, prevRecipe });
 --------------------------------------------- */
 .contrast-check {
   width: 100%;
-  margin-top: var(--space-50);
   text-align: center;
 }
 
@@ -571,6 +583,36 @@ defineExpose({ nextRecipe, prevRecipe });
   align-items: center;
   justify-content: left;
   gap: var(--space-5);
+}
+
+@media (min-width: 992px) and (max-width: 1399px) {
+  .controls {
+    width: 50%;
+  }
+  .contrast-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-5) var(--space-50);
+  }
+  .contrast-row {
+    width: calc((100% - 50px) / 2);
+  }
+}
+@media (max-width: 991px) {
+  .controls {
+    width: 80%;
+    justify-content: space-between;
+  }
+  .contrast-list {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+}
+@media (max-width: 767px) {
+  .controls {
+    width: 100%;
+    justify-content: space-between;
+  }
 }
 
 .swatch-icon {

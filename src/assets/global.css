@@ -142,7 +142,7 @@
 
   /* ==== PATTERNS ==== */
   --pattern-base: var(--color-primary);
-  --pattern-alt: var(--color-primary-dark);
+  --pattern-alt: var(--color-logo-bg);
 
   /* ==== STATUS / FEEDBACK ==== */
   --color-info: var(--blue-500);
@@ -337,6 +337,12 @@
    BASE STYLES
    ------------------------------------------------------ */
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 html {
   font-size: 62.5%;
 } /* 10px baseline */
@@ -409,7 +415,7 @@ h6 {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  /* color: var(--ui-caption); */
+  color: var(--ui-text-on-light);
 }
 
 p,
@@ -563,31 +569,30 @@ label {
   display: block;
   margin-bottom: var(--space-5);
   font-weight: 300;
-  color: var(--color-text-soft);
+  color: var(--dynamic-soft);
 }
 input,
 textarea {
   width: 100%;
   padding: 1.2rem 1.6rem;
-  border: var(--border-width) solid var(--color-border-medium);
+  border: var(--ui-panel-border);
   border-radius: var(--radius-md);
   background: var(--ui-alt-section-bg);
   font-family: var(--font-body);
-  box-sizing: border-box;
 }
 
 /* ======================================================
    PATTERNS 
    ====================================================== */
 
-.pattern--secondary {
-  --pattern-base: var(--color-secondary);
-  --pattern-alt: var(--color-secondary-dark);
+.pattern--primary {
+  --pattern-base: var(--color-primary-darker);
+  --pattern-alt: var(--color-logo-bg);
 }
 
-.pattern--primary {
-  --pattern-base: var(--color-primary);
-  --pattern-alt: var(--color-primary-dark);
+.pattern--secondary {
+  --pattern-base: var(--color-secondary-lighter);
+  --pattern-alt: var(--white-15);
 }
 
 /* ======================================================
@@ -602,7 +607,6 @@ textarea {
   margin-right: auto;
   padding-left: 2.5rem;
   padding-right: 2.5rem;
-  box-sizing: border-box;
 }
 .container {
   max-width: 165rem;
@@ -646,7 +650,6 @@ textarea {
 [class*=" col-"] {
   padding-left: 2.5rem;
   padding-right: 2.5rem;
-  box-sizing: border-box;
   width: 100%;
 }
 

@@ -7,13 +7,14 @@
     :brandLogo="designProps.brandLogo"
     :usePhoto="designProps.usePhoto"
     :photoSrc="designProps.photoSrc"
-    :showCornerShapes="designProps.showCornerShapes">
+    :showCornerShapes="designProps.showCornerShapes"
+    @resolved-visuals="onResolvedVisuals">
     <component :is="currentPostComponent" v-bind="postData" />
   </SocialPostMockup>
 </template>
 
 <script setup>
-import { computed, watch } from "vue";
+import { computed, watch, ref } from "vue";
 
 import SocialPostMockup from "../mockup/SocialPostMockup.vue";
 
@@ -45,7 +46,7 @@ const currentPostComponent = computed(() => {
   return postMap[postType] || FallbackPost;
 });
 
-const emit = defineEmits(["bg-resolved"]);
+const emit = defineEmits(["bg-resolved", "resolved-styles"]);
 
 /* -------------------------------------------------
    PATTERN COLOR MAP — NOW SUPPORTS SECONDARY MODE
@@ -106,6 +107,39 @@ watch(
   resolvedBgColors,
   (bgVars) => {
     emit("bg-resolved", bgVars);
+  },
+  { immediate: true }
+);
+
+/* -------------------------------------------------
+   CATCH PROPS
+--------------------------------------------------- */
+
+const resolvedVisuals = ref(null);
+
+function onResolvedVisuals(payload) {
+  resolvedVisuals.value = payload;
+}
+
+const resolvedStyles = computed(() => {
+  if (!resolvedVisuals.value) return null;
+
+  const cs = getComputedStyle(document.documentElement);
+
+  return {
+    ...resolvedVisuals.value,
+    fonts: {
+      title: cs.getPropertyValue("--font-title").trim().split(",")[0],
+      body: cs.getPropertyValue("--font-body").trim().split(",")[0],
+    },
+  };
+});
+
+watch(
+  resolvedStyles,
+  (val) => {
+    if (!val) return;
+    emit("resolved-styles", val);
   },
   { immediate: true }
 );

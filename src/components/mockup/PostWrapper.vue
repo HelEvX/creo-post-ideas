@@ -32,7 +32,7 @@ defineProps({
 
 .size--square.post-wrapper,
 .size--portrait.post-wrapper {
-  width: 66%;
+  width: calc(50% / 1080 * 1350);
 }
 
 .size--story.post-wrapper {
