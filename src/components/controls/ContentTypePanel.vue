@@ -18,7 +18,11 @@
     <div class="panel-alt">
       <label class="colored-check">
         <h6>Kleurrijk</h6>
-        <input type="checkbox" :checked="colored" @change="emit('update-colored', $event.target.checked)" />
+        <input
+          type="checkbox"
+          class="colored-check__input"
+          :checked="colored"
+          @change="emit('update-colored', $event.target.checked)" />
       </label>
 
       <BackgroundToggle :tone="tone" @change="emit('update-tone', $event)" />
@@ -66,7 +70,7 @@ const types = [
 ];
 
 const modes = [
-  { id: "none", label: "Geen" },
+  { id: "none", label: "Effen" },
   { id: "logo", label: "Logo" },
   { id: "pattern", label: "Patroon" },
   { id: "image", label: "Afbeelding" },
@@ -74,18 +78,13 @@ const modes = [
 </script>
 
 <style scoped>
-.panel-alt {
-  /* background-color: var(--ui-alt-section-bg); */
-  border-left: var(--ui-panel-border-soft);
-  border-right: var(--ui-panel-border-soft);
-  padding: 0 var(--space-20);
-}
 .content-type-panel {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: var(--space-50);
 }
+
 .content-type-panel div {
   align-content: center;
 }
@@ -93,18 +92,24 @@ const modes = [
 .content-type-panel__buttons {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: var(--space-10);
 }
 
 @media (min-width: 768px) and (max-width: 1599px) {
   .content-type-panel {
     flex-direction: row;
+    align-items: flex-start;
   }
+
   .content-type-panel__buttons {
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: flex-start;
+  }
+
+  .panel-alt {
+    border-left: var(--ui-panel-border-soft);
+    border-right: var(--ui-panel-border-soft);
+    padding: 0 var(--space-20);
   }
 }
 
@@ -115,11 +120,28 @@ const modes = [
   padding: var(--space-10) var(--space-20);
 }
 
+/* ===============================
+   COLORED CHECKBOX — NATIVE
+   =============================== */
+
 .colored-check {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-10);
   margin-bottom: var(--space-20);
 }
 
-.colored-check input {
-  height: 20px;
+.colored-check h6 {
+  margin: 0;
+}
+
+/* native checkbox, themed */
+.colored-check__input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+
+  accent-color: var(--color-primary);
 }
 </style>

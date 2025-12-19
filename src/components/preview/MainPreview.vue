@@ -27,6 +27,7 @@
       <div class="col-12 col-3xl-8 main-preview__content">
         <MockupWrapper :size="selectedSize">
           <MockupRenderer
+            :key="brandTokens?.slug || 'default'"
             :size="selectedSize"
             :postType="selectedPostType"
             :postData="activePostData"
@@ -46,7 +47,11 @@
       </div>
 
       <div class="col-12 col-3xl-2 col-xxl-12 main-preview__styles">
-        <StyleInspectorPanel :titleFont="resolvedStyles?.fonts?.title" :bodyFont="resolvedStyles?.fonts?.body" />
+        <StyleInspectorPanel
+          :key="brandTokens?.slug || 'default'"
+          :titleFont="resolvedStyles?.fonts?.title"
+          :bodyFont="resolvedStyles?.fonts?.body"
+          :styles="resolvedStyles" />
       </div>
     </div>
   </div>
@@ -211,6 +216,11 @@ function onContentTypeSelect(type) {
 @media (min-width: 1600px) {
   .main-preview__sidebar {
     margin-bottom: 0;
+  }
+
+  .main-preview__content {
+    border-left: var(--ui-panel-border-soft);
+    border-right: var(--ui-panel-border-soft);
   }
 }
 

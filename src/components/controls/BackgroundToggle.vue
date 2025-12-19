@@ -29,9 +29,9 @@ function toggle() {
 
 /* labels left and right */
 .tone-toggle__label {
-  font-size: var(--fs-caption);
+  font-size: var(--fs-body-lg);
   color: var(--dynamic-disabled);
-  width: 1.5rem;
+  width: var(--space-20);
   text-align: center;
 }
 

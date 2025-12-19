@@ -42,7 +42,7 @@
 <script setup>
 import BrandWatermark from "@/components/brand/BrandWatermark.vue";
 import PostWrapper from "@/components/mockup/PostWrapper.vue";
-import { ref, watch, computed, onMounted, onBeforeUnmount } from "vue";
+import { ref, watch, computed } from "vue";
 import { getTextModeForBackground } from "@/utils/colorLogic.js";
 
 /* ----------------------------------------------
@@ -50,7 +50,6 @@ import { getTextModeForBackground } from "@/utils/colorLogic.js";
 ---------------------------------------------- */
 const props = defineProps({
   size: String,
-  backgroundType: String, // ?
   backgroundClass: String,
   backgroundTone: String,
   useColoredBackground: {
@@ -66,16 +65,6 @@ const props = defineProps({
   photoSrc: String,
   showBrand: Boolean,
   showCornerShapes: Boolean,
-  showLabel: Boolean, // ?
-  labelSize: String, // ?
-  labelColor: String, // ?
-  labelIcon: Boolean, // ?
-  labelText: String, // ?
-  title: String,
-  subtitle: String,
-  showQuote: Boolean,
-  quote: String,
-  shapesSrc: String, // ?
 });
 
 /* ----------------------------------------------
@@ -86,13 +75,16 @@ const rawSvg = ref(null);
 watch(
   () => props.brandLogo,
   async (url) => {
-    if (!url) return (rawSvg.value = null);
+    if (!url) {
+      rawSvg.value = null;
+      return;
+    }
     rawSvg.value = await fetch(url).then((r) => r.text());
   },
   { immediate: true }
 );
 
-// IMPORTANT: YES the logic for the logo color is reversed. this is intentional: DO NOT TOUCH
+// intentionally reversed, do not touch
 const toneColor = computed(() =>
   props.backgroundTone === "primary" ? "var(--color-secondary)" : "var(--color-primary)"
 );
@@ -109,23 +101,7 @@ const coloredLogo = computed(() => {
 });
 
 /* ----------------------------------------------
-   PATTERN MODE SWITCH
----------------------------------------------- */
-const patternToneClass = computed(() => {
-  if (!props.backgroundClass?.includes("pattern-")) return "";
-  return props.backgroundTone === "secondary" ? "pattern--secondary" : "pattern--primary";
-});
-
-const patternClass = computed(() => {
-  if (!props.backgroundClass) return "";
-  return props.backgroundClass
-    .split(" ")
-    .filter((cls) => cls.startsWith("pattern-"))
-    .join(" ");
-});
-
-/* ----------------------------------------------
-   MOCKUP TEXT ROLES (LOCAL)
+   TEXT COLORS (LOCAL)
 ---------------------------------------------- */
 function readVar(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -137,27 +113,24 @@ const mockupTextVars = ref({
   "--dynamic-text-accent": "",
 });
 
-const resolvedText = computed(() => {
-  return {
-    title: mockupTextVars.value["--dynamic-title"] || null,
-    body: mockupTextVars.value["--dynamic-text"] || null,
-    accent: mockupTextVars.value["--dynamic-text-accent"] || null,
-  };
-});
+const resolvedText = computed(() => ({
+  title: mockupTextVars.value["--dynamic-title"] || null,
+  body: mockupTextVars.value["--dynamic-text"] || null,
+  accent: mockupTextVars.value["--dynamic-text-accent"] || null,
+}));
 
 function recomputeMockupTextVars() {
+  if (!props.bgColors || props.bgColors.length === 0) return;
+
   const cs = getComputedStyle(document.documentElement);
 
   const bodyDark = cs.getPropertyValue("--color-text").trim();
   const titleDark = cs.getPropertyValue("--color-title").trim();
   const light = cs.getPropertyValue("--color-text-inverse").trim();
 
-  if (!props.bgColors || props.bgColors.length === 0) return;
-  const bgVars = props.bgColors;
-
   let needsLight = false;
 
-  for (const v of bgVars) {
+  for (const v of props.bgColors) {
     const bg = readVar(v);
     if (!bg) continue;
     if (getTextModeForBackground(bg, bodyDark, light) === "light") {
@@ -169,30 +142,10 @@ function recomputeMockupTextVars() {
   const mainText = needsLight ? light : bodyDark;
   const mainTitle = needsLight ? light : titleDark;
 
-  // accent background text
   let accentText = bodyDark;
   const accentBg = readVar("--dynamic-accent");
-
   if (accentBg) {
-    const accentMode = getTextModeForBackground(accentBg, bodyDark, light);
-    accentText = accentMode === "light" ? light : bodyDark;
-  }
-
-  if (!props.useColoredBackground) {
-    const cs = getComputedStyle(document.documentElement);
-
-    const titleColor =
-      props.backgroundTone === "secondary"
-        ? cs.getPropertyValue("--color-secondary").trim()
-        : cs.getPropertyValue("--color-primary").trim();
-
-    const bodyText = cs.getPropertyValue("--ui-text-on-light").trim();
-
-    mockupTextVars.value = {
-      "--dynamic-title": titleColor,
-      "--dynamic-text": bodyText,
-    };
-    return;
+    accentText = getTextModeForBackground(accentBg, bodyDark, light) === "light" ? light : bodyDark;
   }
 
   mockupTextVars.value = {
@@ -202,30 +155,13 @@ function recomputeMockupTextVars() {
   };
 }
 
-onMounted(() => {
-  window.addEventListener("brand-updated", recomputeMockupTextVars);
-  window.addEventListener("accent-updated", recomputeMockupTextVars);
-
-  if (props.bgColors && props.bgColors.length) {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(recomputeMockupTextVars);
-    });
-  }
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("brand-updated", recomputeMockupTextVars);
-});
-
+/* ----------------------------------------------
+   RECOMPUTE ON PROP CHANGE
+---------------------------------------------- */
 watch(
-  () => [props.backgroundClass, props.backgroundTone, props.bgColors],
-  () => {
-    if (!props.bgColors || props.bgColors.length === 0) return;
-    requestAnimationFrame(() => {
-      requestAnimationFrame(recomputeMockupTextVars);
-    });
-  },
-  { immediate: false, flush: "post", deep: true }
+  () => [props.backgroundClass, props.backgroundTone, props.bgColors, props.useColoredBackground],
+  recomputeMockupTextVars,
+  { immediate: true, deep: true }
 );
 
 /* ----------------------------------------------
@@ -251,28 +187,37 @@ const aspectRatio = computed(() => {
 /* ----------------------------------------------
    EXPORT TO STYLE INSPECTOR
 ---------------------------------------------- */
-
 function resolveHex(varName) {
   return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
 }
 
-const resolvedVisualContext = computed(() => {
-  const toneVar = props.backgroundTone === "secondary" ? "--color-secondary" : "--color-primary";
+const resolvedVisualContext = computed(() => ({
+  background: {
+    hex: props.backgroundTone === "secondary" ? resolveHex("--color-secondary") : resolveHex("--color-primary"),
+  },
 
-  const baseHex = resolveHex(toneVar);
+  surfaces: {
+    section: resolveHex("--ui-section-bg"),
+    panel: resolveHex("--ui-panel-bg"),
+  },
 
-  return {
-    background: {
-      role: props.backgroundTone,
-      hex: baseHex,
-    },
-    overlay: {
-      active: props.backgroundClass?.includes("bg--image"),
-      hex: baseHex,
-      opacity: props.backgroundClass?.includes("bg--image") ? 0.6 : 0,
-    },
-  };
-});
+  accents: {
+    accent: resolveHex("--dynamic-accent"),
+  },
+
+  textStatic: {
+    titleOnSection: resolveHex("--title-on-section"),
+    titleOnPanel: resolveHex("--title-on-panel"),
+    bodyOnSection: resolveHex("--text-on-section"),
+    bodyOnPanel: resolveHex("--text-on-panel"),
+    caption: resolveHex("--ui-caption"),
+  },
+
+  overlay: {
+    active: props.backgroundClass?.includes("bg--image"),
+    hex: props.backgroundTone === "secondary" ? resolveHex("--color-secondary") : resolveHex("--color-primary"),
+  },
+}));
 
 const emit = defineEmits(["resolved-visuals"]);
 

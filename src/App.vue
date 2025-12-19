@@ -336,6 +336,7 @@ Stylings for components specific to the app shell
   margin: var(--space-75) 0;
   padding: var(--space-25) 0;
   background-color: var(--ui-alt-section-bg);
+  height: auto;
 }
 
 @media (min-width: 992px) {

@@ -32,11 +32,11 @@ defineProps({
 
 .size--square.post-wrapper,
 .size--portrait.post-wrapper {
-  width: calc(50% / 1080 * 1350);
+  width: calc(100% / 1920 * 1350);
 }
 
 .size--story.post-wrapper {
-  width: 50%;
+  width: calc(100% / 1920 * 1080);
 }
 
 @media (max-width: 991px) {

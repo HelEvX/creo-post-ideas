@@ -4,42 +4,88 @@
 
     <div class="main-preview__styles__container">
       <div class="styles__fonts">
-        <div class="title-font">{{ titleFont }}</div>
-        <div class="body-font">{{ bodyFont }}</div>
+        <div class="title-font">Titels: {{ titleFont }}</div>
+        <div class="body-font">Tekst: {{ bodyFont }}</div>
       </div>
 
-      <div class="content-type-panel__divider"></div>
+      <!-- <div class="styles__hint">Tik op een kleur om te kopieren.</div> -->
 
       <div class="main-preview__styles__swatches">
-        <div
-          v-for="(color, index) in swatches"
-          :key="index"
+        <button
+          v-for="color in swatches"
+          :key="color"
           class="main-preview__styles__swatch"
-          :style="{ background: color }" />
+          :style="{ background: color, color: swatchTextColor(color) }"
+          @click="copyColor(color)">
+          <span class="swatch__label">{{ color }}</span>
+          <span v-if="copied === color" class="swatch__toast">Gekopieerd</span>
+        </button>
       </div>
 
-      <div class="content-type-panel__divider"></div>
-
-      <div class="main-preview__styles__corners"></div>
-      <div class="main-preview__styles__shadows"></div>
+      <div>
+        <div class="main-preview__styles__corners"></div>
+        <div class="main-preview__styles__shadows"></div>
+      </div>
     </div>
   </aside>
 </template>
 
 <script setup>
-defineProps({
+import { computed, ref } from "vue";
+import { getTextModeForBackground } from "@/utils/colorLogic.js";
+
+const props = defineProps({
   titleFont: String,
   bodyFont: String,
-  swatches: {
-    type: Array,
-    default: () => [],
-  },
+  styles: Object,
 });
+
+const copied = ref(null);
+
+function readCss(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+const swatchInk = computed(() => {
+  const dark = readCss("--color-text") || "#111111";
+  const light = readCss("--color-text-inverse") || "#ffffff";
+  return { dark, light };
+});
+
+function swatchTextColor(bgHex) {
+  const { dark, light } = swatchInk.value;
+  return getTextModeForBackground(bgHex, dark, light) === "light" ? light : dark;
+}
+
+function isColor(value) {
+  return typeof value === "string" && (value.startsWith("#") || value.startsWith("rgb") || value.startsWith("hsl"));
+}
+
+function collectColors(obj, out) {
+  if (!obj) return;
+  for (const v of Object.values(obj)) {
+    if (isColor(v)) out.push(v);
+    else if (typeof v === "object") collectColors(v, out);
+  }
+}
+
+const swatches = computed(() => {
+  const colors = [];
+  collectColors(props.styles, colors);
+  return Array.from(new Set(colors));
+});
+
+async function copyColor(hex) {
+  await navigator.clipboard.writeText(hex);
+  copied.value = hex;
+  setTimeout(() => (copied.value = null), 1000);
+}
 </script>
 
 <style scoped>
 .main-preview__styles {
   padding-right: 0;
+  height: 100%;
 }
 
 .main-preview__styles h6 {
@@ -49,34 +95,80 @@ defineProps({
 .main-preview__styles__container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
+  align-items: flex-start;
+  gap: var(--space-50);
 }
 
-.content-type-panel__divider {
-  height: 1px;
-  width: auto;
-  background: var(--color-border-light);
-  margin: var(--space-20) var(--space-30) var(--space-30);
+.styles__hint {
+  text-align: center;
+  font-size: var(--fs-body-sm);
+  opacity: 0.8;
+  margin: 0 var(--space-30) var(--space-20);
 }
 
 .title-font {
   font-family: var(--font-title);
   font-weight: var(--fw-title);
   margin-bottom: var(--space-20);
+  text-align: left;
+}
+
+.body-font {
+  text-align: center;
 }
 
 .main-preview__styles__swatches {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--space-20);
+  width: 100%;
 }
 
 .main-preview__styles__swatch {
   width: 100%;
   height: 4rem;
   border-radius: var(--radius-sm);
+  border: 0;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
+
+.swatch__meta {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.9rem;
+  color: var(--dynamic-text);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.swatch__code {
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.swatch__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.95;
+}
+
+.swatch__toast {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.45rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: var(--white);
+  font-size: var(--fs-body-xs);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+}
+
+/* CORNERS & SHADOW STYLES */
 
 .main-preview__styles__corners {
   height: 5rem;
@@ -95,22 +187,38 @@ defineProps({
   margin: 2rem;
 }
 
+/* ================================ */
+/* ======== RESPONSIVE ============ */
+/* ================================ */
+
 @media (max-width: 1599px) {
   .main-preview__styles__container {
     flex-direction: row;
-    height: 100%;
   }
-  .content-type-panel__divider {
-    width: 1px;
-    height: auto;
+
+  .styles__hint {
+    display: none;
   }
+
   .main-preview__styles__swatches {
     flex-direction: row;
-    gap: 1rem;
+    flex: 1;
+    padding: 0 var(--space-50);
   }
-  .main-preview__styles__swatch {
-    height: 100%;
-    width: 4rem;
+
+  .swatch__code {
+    display: none;
+  }
+
+  .swatch__meta {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .swatch__toast {
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
   }
 }
 </style>
