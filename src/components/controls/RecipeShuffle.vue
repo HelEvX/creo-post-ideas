@@ -553,7 +553,7 @@ defineExpose({ nextRecipe, prevRecipe });
 }
 
 /* ------------------------------------------------------
-   COLOR PAIR — horizontal swatches exactly like Adobe
+   COLOR PAIR
 ------------------------------------------------------ */
 .contrast-pair {
   display: flex;

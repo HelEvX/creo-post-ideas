@@ -94,8 +94,8 @@ function getMockupBgColors(backgroundClass) {
     return [NEUTRAL_BG_VAR];
   }
 
-  if (parts.includes("bg--plain-primary")) return ["--color-primary"];
-  if (parts.includes("bg--plain-secondary")) return ["--color-secondary"];
+  if (parts.includes("bg--plain-primary")) return ["--ui-primary-bg"];
+  if (parts.includes("bg--plain-secondary")) return ["--ui-secondary-bg"];
 
   // default fallback
   return [NEUTRAL_BG_VAR];

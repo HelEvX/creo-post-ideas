@@ -16,8 +16,9 @@
       <div class="container">
         <div class="row align-center">
           <div class="col-12">
-            <h1 class="hero-title">Visualize Your Brand's Social Style</h1>
-            <p class="hero-subtitle">Preview your posts using your site's look & feel.</p>
+            <h1 class="hero-title">Jouw huisstijl, jouw socials</h1>
+            <p class="hero-subtitle">Visualiseer posts die perfect bij je website passen.</p>
+            <!-- Preview your posts using your site's look & feel. -->
           </div>
         </div>
       </div>
@@ -78,11 +79,32 @@
         <div class="row">
           <div class="col-12">
             <div class="text-block-900">
-              <h2>About this tool</h2>
+              <h2>Jouw missie: betere Instagram posts!</h2>
               <p>
-                This tool helps ensure visual consistency between your website and social channels by applying your
-                theme across interface elements and mockups.
+                Je weet welke kleur je logo heeft en hoe je website eruit ziet, dat spreekt. Maar zelf een post voor
+                Instagram of andere sociale mediakanalen ontwerpen is daarom niet altijd eenvoudig. Misschien twijfel je
+                wel eens over het lettertype? Of vraag je jezelf af welke kleur het beste gaat werken als achtergrond
+                voor je tekst? Via enkele eenvoudige <strong>voorbeeld</strong>en van instagram (<strong>ig</strong>)
+                posts, geeft deze tool je een goed startpunt. Een leesbare kleurcombinatie kiezen doe je hier in een
+                oogopslag!
               </p>
+              <p>Maar we doen meer dan dat!</p>
+              <p>
+                Heb je een boodschap in gedachten waar gerust een straffe kleurenmix bij past, of ben je net op zoek
+                naar iets eenvoudig en strak? Maak je graag indruk met een evenwichtig, uitgekiend grid maar ben je toch
+                benieuwd naar opties om eens af te wisselen?
+              </p>
+              <p>
+                Probeer dan ons kleurreceptenboek uit. Inderdaad, we gaan je helpen om het bekende gerecht van jouw
+                huisstijl wat bij te kruiden. Met een beetje extra 'peper' (donker) en 'zout' (licht) krijgt je ontwerp
+                een iets ander smaakje maar de basisingrediënten blijven natuurlijk dezelfde.
+              </p>
+              <p>
+                Want het blijft belangrijk dat jouw klanten je merk direct herkennen wanneer ze door hun 'feed'
+                scrollen.
+              </p>
+              <!-- This tool helps ensure visual consistency between your website and social channels by applying your
+                theme across interface elements and mockups. -->
             </div>
           </div>
         </div>
@@ -94,20 +116,20 @@
       <div class="container">
         <div class="row center">
           <div class="col-12">
-            <h2>Send your feedback</h2>
+            <h2>Geef ons feedback</h2>
           </div>
           <!-- blog text width (900px max) -->
           <div class="col-12">
             <form class="review-form text-block-900" @submit.prevent="submitReview">
               <div class="form-row">
-                <label for="name">Your name</label>
+                <label for="name">Jouw (bedrijfs-) naam</label>
                 <input id="name" type="text" required />
               </div>
               <div class="form-row">
-                <label for="review">Your review</label>
+                <label for="review">Jouw feedback</label>
                 <textarea id="review" rows="5" required></textarea>
               </div>
-              <button class="btn-primary" type="submit">Send review</button>
+              <button class="btn-primary" type="submit">Verzend</button>
             </form>
           </div>
         </div>
@@ -117,12 +139,12 @@
     <!-- FOOTER -->
     <footer class="site-footer">
       <div class="container">
-        <div class="row between align-center">
+        <div class="row">
           <div class="col-12 col-md-6">
-            <p>© 2025 Creo Websolutions</p>
+            <p>_webpage by <span>Creo Websolutions</span></p>
           </div>
           <div class="col-12 col-md-6 right">
-            <a href="#" class="footer-link">Privacy</a>
+            <a href="#">Privacy</a>
           </div>
         </div>
       </div>
@@ -167,22 +189,24 @@ export default {
 
   computed: {
     mockupBgContext() {
+      // pattern bg
       if (this.backgroundMode === "pattern") {
         return {
           type: "pattern",
           tone: this.backgroundTone,
           bgVars:
             this.backgroundTone === "secondary"
-              ? ["--color-secondary", "--color-secondary-dark"]
-              : ["--color-primary", "--color-primary-dark"],
+              ? ["--ui-secondary-bg", "--ui-secondary-bg"]
+              : ["--ui-primary-bg", "--ui-primary-bg"],
         };
       }
 
+      // image bg
       if (this.backgroundMode === "image") {
         return {
           type: "image",
           tone: this.backgroundTone,
-          bgVars: this.backgroundTone === "secondary" ? ["--color-secondary"] : ["--color-primary"],
+          bgVars: this.backgroundTone === "secondary" ? ["--ui-secondary-bg"] : ["--ui-primary-bg"],
         };
       }
 
@@ -190,7 +214,7 @@ export default {
       return {
         type: "color",
         tone: this.backgroundTone,
-        bgVars: this.backgroundTone === "secondary" ? ["--color-secondary"] : ["--color-primary"],
+        bgVars: this.backgroundTone === "secondary" ? ["--ui-secondary-bg"] : ["--ui-primary-bg"],
       };
     },
   },
@@ -209,10 +233,7 @@ export default {
       const disabledDark = cs.getPropertyValue("--color-disabled-text").trim();
       const disabledLight = cs.getPropertyValue("--color-disabled-text-inverse").trim();
 
-      const titleDark = cs.getPropertyValue("--ui-heading").trim(); // neutral-900
-
-      // const accentPri = cs.getPropertyValue("--color-primary").trim();
-      // const accentSec = cs.getPropertyValue("--color-secondary").trim();
+      const titleDark = cs.getPropertyValue("--ui-heading").trim();
 
       function apply(surfaceKey, bgVarName) {
         const bg = cs.getPropertyValue(bgVarName).trim();
@@ -223,14 +244,20 @@ export default {
 
         if (mode === "dark") {
           root.style.setProperty(`--text-on-${surfaceKey}`, dark);
+          root.style.setProperty(`--title-on-${surfaceKey}`, titleDark);
           root.style.setProperty(`--text-soft-on-${surfaceKey}`, softDark);
           root.style.setProperty(`--text-disabled-on-${surfaceKey}`, disabledDark);
-          root.style.setProperty(`--title-on-${surfaceKey}`, titleDark);
+          root.style.setProperty(`--link-on-${surfaceKey}`, softDark);
+          root.style.setProperty(`--hover-on-${surfaceKey}`, titleDark);
+          root.style.setProperty(`--logo-on-${surfaceKey}`, titleDark);
         } else {
           root.style.setProperty(`--text-on-${surfaceKey}`, light);
+          root.style.setProperty(`--title-on-${surfaceKey}`, light);
           root.style.setProperty(`--text-soft-on-${surfaceKey}`, softLight);
           root.style.setProperty(`--text-disabled-on-${surfaceKey}`, disabledLight);
-          root.style.setProperty(`--title-on-${surfaceKey}`, light);
+          root.style.setProperty(`--link-on-${surfaceKey}`, softLight);
+          root.style.setProperty(`--hover-on-${surfaceKey}`, light);
+          root.style.setProperty(`--logo-on-${surfaceKey}`, light);
         }
       }
 
@@ -241,8 +268,8 @@ export default {
         ["alt-section", "--ui-alt-section-bg"],
         ["panel", "--ui-panel-bg"],
         ["alt-panel", "--ui-alt-panel-bg"],
-        ["primary", "--color-primary"],
-        ["secondary", "--color-secondary"],
+        ["primary", "--ui-primary-bg"], // changed
+        ["secondary", "--ui-secondary-bg"], // changed
       ];
 
       surfaces.forEach(([key, bgVar]) => apply(key, bgVar));
@@ -251,13 +278,17 @@ export default {
       const titleOnSection = cs.getPropertyValue("--title-on-section").trim();
       const softOnSection = cs.getPropertyValue("--text-soft-on-section").trim();
       const disabledOnSection = cs.getPropertyValue("--text-disabled-on-section").trim();
-      // const accentOnBg = cs.getPropertyValue("--accent-on-bg").trim();
+      const linkOnFooter = cs.getPropertyValue("--link-on-footer").trim();
+      const hoverOnFooter = cs.getPropertyValue("--hover-on-footer").trim();
+      const logoOnNav = cs.getPropertyValue("--logo-on-nav").trim();
 
       if (textOnSection) root.style.setProperty("--dynamic-text", textOnSection);
       if (titleOnSection) root.style.setProperty("--dynamic-title", titleOnSection);
       if (softOnSection) root.style.setProperty("--dynamic-soft", softOnSection);
       if (disabledOnSection) root.style.setProperty("--dynamic-disabled", disabledOnSection);
-      // if (accentOnBg) root.style.setProperty("--dynamic-accent", accentOnBg);
+      if (linkOnFooter) root.style.setProperty("--dynamic-link", linkOnFooter);
+      if (hoverOnFooter) root.style.setProperty("--dynamic-hover", hoverOnFooter);
+      if (logoOnNav) root.style.setProperty("--dynamic-logo", logoOnNav);
     },
     async onBrandPicked(payload) {
       const root = document.documentElement;
@@ -354,7 +385,16 @@ Stylings for components specific to the app shell
 }
 .site-footer {
   background: var(--ui-footer-bg);
-  color: var(--text-soft-on-footer);
+  padding: var(--space-10) 0;
+}
+
+.site-footer p {
+  color: var(--dynamic-link);
+  margin-bottom: 0;
+}
+
+.site-footer p span {
+  color: var(--dynamic-accent);
 }
 
 /* ----------------------------------------------------
@@ -414,14 +454,14 @@ p.hero-subtitle {
 .site-footer a,
 .hero a,
 .site-nav a {
-  color: var(--ui-link-on-dark);
+  color: var(--dynamic-link);
 }
 
 .section.alt a:hover,
 .site-footer a:hover,
 .hero a:hover,
 .site-nav a:hover {
-  color: var(--ui-link-on-dark-hover);
+  color: var(--dynamic-hover);
 }
 
 /* ======================================================

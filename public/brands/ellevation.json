@@ -67,7 +67,7 @@
     "description": "Description part 1.\nDescription part 2\nDescription part 3\nDescription part 4",
     "address": "Straat, Stad, Belgium xxxx",
     "url": "https://www.ellevation.be",
-    "highlightIcon": "src/assets/highlights/ellevation.svg",
+    "highlightIcon": "ellevation-small.svg",
     "highlights": [
       { "label": "TEAM", "bg": "#cecece" },
       { "label": "PROMOS", "bg": "#444" },

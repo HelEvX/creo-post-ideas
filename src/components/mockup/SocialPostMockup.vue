@@ -84,9 +84,8 @@ watch(
   { immediate: true }
 );
 
-// intentionally reversed, do not touch
 const toneColor = computed(() =>
-  props.backgroundTone === "primary" ? "var(--color-secondary)" : "var(--color-primary)"
+  props.backgroundTone === "primary" ? "var(--ui-secondary-bg)" : "var(--ui-primary-bg)"
 );
 
 const coloredLogo = computed(() => {
@@ -98,6 +97,23 @@ const coloredLogo = computed(() => {
     .replace(/fill:\s*#[0-9A-Fa-f]{3,6}/g, `fill: ${color}`)
     .replace(/stroke="[^"]*"/g, `stroke="${color}"`)
     .replace(/fill="[^"]*"/g, `fill="${color}"`);
+});
+
+/* ----------------------------------------------
+   PATTERN CLASSES
+---------------------------------------------- */
+
+const patternClass = computed(() => {
+  if (!props.backgroundClass) return "";
+  return props.backgroundClass
+    .split(" ")
+    .filter((cls) => cls.startsWith("pattern-"))
+    .join(" ");
+});
+
+const patternToneClass = computed(() => {
+  if (!props.backgroundClass?.includes("pattern-")) return "";
+  return props.backgroundTone === "secondary" ? "pattern--secondary" : "pattern--primary";
 });
 
 /* ----------------------------------------------
@@ -193,7 +209,7 @@ function resolveHex(varName) {
 
 const resolvedVisualContext = computed(() => ({
   background: {
-    hex: props.backgroundTone === "secondary" ? resolveHex("--color-secondary") : resolveHex("--color-primary"),
+    hex: props.backgroundTone === "secondary" ? resolveHex("--ui-secondary-bg") : resolveHex("--ui-primary-bg"),
   },
 
   surfaces: {
@@ -215,7 +231,7 @@ const resolvedVisualContext = computed(() => ({
 
   overlay: {
     active: props.backgroundClass?.includes("bg--image"),
-    hex: props.backgroundTone === "secondary" ? resolveHex("--color-secondary") : resolveHex("--color-primary"),
+    hex: props.backgroundTone === "secondary" ? resolveHex("--ui-secondary-bg") : resolveHex("--ui-primary-bg"),
   },
 }));
 
@@ -366,23 +382,6 @@ watch(
 }
 
 /* =========================================
-   QUOTE POSTS
-   ========================================= */
-
-.post-quote {
-  display: flex;
-  gap: var(--space-20);
-  margin-top: var(--space-30);
-}
-
-.post-quote__icon {
-  width: 3rem;
-  height: 3rem;
-  background: var(--color-primary-light);
-  border-radius: var(--radius-sm);
-}
-
-/* =========================================
    =========================================
    BACKGROUND STACK
    =========================================
@@ -403,13 +402,13 @@ watch(
   pointer-events: none;
 }
 
-/* plain backgrounds */
+/* plain backgrounds - DYNAMIC */
 .bg--plain-primary .post-bg__color {
-  background: var(--color-primary);
+  background: var(--ui-primary-bg);
 }
 
 .bg--plain-secondary .post-bg__color {
-  background: var(--color-secondary);
+  background: var(--ui-secondary-bg);
 }
 
 .bg--plain-neutral .post-bg__color {
@@ -463,12 +462,12 @@ watch(
 }
 
 .bg--image.bg--plain-primary .post-bg__overlay {
-  background: var(--color-primary);
+  background: var(--ui-primary-bg);
   opacity: 0.6;
 }
 
 .bg--image.bg--plain-secondary .post-bg__overlay {
-  background: var(--color-secondary);
+  background: var(--ui-secondary-bg);
   opacity: 0.6;
 }
 

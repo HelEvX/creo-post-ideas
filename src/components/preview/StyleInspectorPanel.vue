@@ -4,11 +4,13 @@
 
     <div class="main-preview__styles__container">
       <div class="styles__fonts">
-        <div class="title-font">Titels: {{ titleFont }}</div>
-        <div class="body-font">Tekst: {{ bodyFont }}</div>
+        <p class="styles__hint">Lettertype titels</p>
+        <div class="title-font">{{ titleFont }}</div>
+        <p class="styles__hint">Lettertype tekst</p>
+        <div class="body-font">{{ bodyFont }}</div>
       </div>
 
-      <!-- <div class="styles__hint">Tik op een kleur om te kopieren.</div> -->
+      <p class="styles__hint">Tik op een kleur om te kopieren.</p>
 
       <div class="main-preview__styles__swatches">
         <button
@@ -47,8 +49,8 @@ function readCss(name) {
 }
 
 const swatchInk = computed(() => {
-  const dark = readCss("--color-text") || "#111111";
-  const light = readCss("--color-text-inverse") || "#ffffff";
+  const dark = readCss("--color-text") || "var(--ui-text)";
+  const light = readCss("--color-text-inverse") || "var(--white)";
   return { dark, light };
 });
 
@@ -99,22 +101,23 @@ async function copyColor(hex) {
   gap: var(--space-50);
 }
 
-.styles__hint {
-  text-align: center;
+p.styles__hint {
+  text-align: left;
   font-size: var(--fs-body-sm);
   opacity: 0.8;
-  margin: 0 var(--space-30) var(--space-20);
+  border-bottom: var(--ui-panel-border);
+  margin: 0 0 var(--space-5);
 }
 
 .title-font {
   font-family: var(--font-title);
   font-weight: var(--fw-title);
-  margin-bottom: var(--space-20);
-  text-align: left;
 }
 
-.body-font {
-  text-align: center;
+.body-font,
+.title-font {
+  margin-bottom: var(--space-20);
+  text-align: left;
 }
 
 .main-preview__styles__swatches {

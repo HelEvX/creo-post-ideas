@@ -1,7 +1,7 @@
 <template>
   <aside class="content-type-panel">
     <div>
-      <h6>Type inhoud</h6>
+      <h6>Kies een opmaak:</h6>
 
       <div class="content-type-panel__buttons">
         <button
@@ -17,12 +17,12 @@
 
     <div class="panel-alt">
       <label class="colored-check">
-        <h6>Kleurrijk</h6>
         <input
           type="checkbox"
           class="colored-check__input"
           :checked="colored"
           @change="emit('update-colored', $event.target.checked)" />
+        <h6>Kleurrijk</h6>
       </label>
 
       <BackgroundToggle :tone="tone" @change="emit('update-tone', $event)" />
@@ -126,14 +126,16 @@ const modes = [
 
 .colored-check {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  align-items: top;
+  justify-content: center;
   gap: var(--space-10);
   margin-bottom: var(--space-20);
 }
 
 .colored-check h6 {
   margin: 0;
+  text-align: left;
 }
 
 /* native checkbox, themed */
@@ -142,6 +144,6 @@ const modes = [
   height: 18px;
   cursor: pointer;
 
-  accent-color: var(--color-primary);
+  accent-color: var(--ui-primary-bg);
 }
 </style>

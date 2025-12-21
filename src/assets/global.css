@@ -141,7 +141,7 @@
   --color-border-dark: var(--neutral-800);
 
   /* ==== PATTERNS ==== */
-  --pattern-base: var(--color-primary);
+  --pattern-base: var(--ui-primary-bg);
   --pattern-alt: var(--color-logo-bg);
 
   /* ==== STATUS / FEEDBACK ==== */
@@ -282,6 +282,10 @@
   --ui-heading-alt: var(--color-title-alt);
   --ui-caption: var(--color-subtitle);
 
+  /* MOCKUP */
+  --ui-primary-bg: var(--color-primary);
+  --ui-secondary-bg: var(--color-secondary);
+
   /* ------------------------------------------------------
    DYNAMIC TEXT SWITCH SETUP
    ------------------------------------------------------ */
@@ -302,6 +306,12 @@
   --ui-accent-on-primary: var(--color-secondary);
   --ui-accent-on-secondary: var(--color-primary);
 
+  --ui-link-on-light: var(--color-primary-dark);
+  --ui-link-on-dark: var(--color-primary-lighter);
+
+  --ui-hover-on-light: var(--color-primary-darker);
+  --ui-hover-on-dark: var(--color-primary-light);
+
   /* default: light bg */
   --dynamic-text: var(--ui-text-on-light);
   --dynamic-title: var(--ui-title-on-light);
@@ -310,6 +320,10 @@
 
   /* default: primary bg */
   --dynamic-accent: var(--ui-accent-on-primary);
+
+  /* default: dark bg */
+  --dynamic-link: var(--ui-link-on-dark);
+  --dynamic-hover: var(--ui-hover-on-dark);
 
   /* ------------------------------------------------------
    UTILITY ASSIGNMENTS
@@ -457,8 +471,8 @@ button,
    ====================================================== */
 
 .btn-primary {
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
+  background-color: var(--ui-primary-bg);
+  border-color: var(--ui-primary-bg);
   color: var(--text-on-primary);
 }
 
@@ -473,8 +487,8 @@ button,
 }
 
 .btn-primary:focus-visible {
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
+  background-color: var(--ui-primary-bg);
+  border-color: var(--ui-primary-bg);
   box-shadow: 0 0 0 2px var(--color-primary-lighter);
 }
 
@@ -483,8 +497,8 @@ button,
    ====================================================== */
 
 .btn-secondary {
-  background-color: var(--color-secondary);
-  border-color: var(--color-secondary);
+  background-color: var(--ui-secondary-bg);
+  border-color: var(--ui-secondary-bg);
   color: var(--text-on-secondary);
 }
 
@@ -499,8 +513,8 @@ button,
 }
 
 .btn-secondary:focus-visible {
-  background-color: var(--color-secondary);
-  border-color: var(--color-secondary);
+  background-color: var(--ui-secondary-bg);
+  border-color: var(--ui-secondary-bg);
   box-shadow: 0 0 0 2px var(--color-secondary-lighter);
 }
 
@@ -586,12 +600,12 @@ textarea {
    ====================================================== */
 
 .pattern--primary {
-  --pattern-base: var(--color-primary-darker);
+  --pattern-base: var(--ui-primary-bg);
   --pattern-alt: var(--color-logo-bg);
 }
 
 .pattern--secondary {
-  --pattern-base: var(--color-secondary-lighter);
+  --pattern-base: var(--ui-secondary-bg);
   --pattern-alt: var(--white-15);
 }
 

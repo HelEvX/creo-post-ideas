@@ -55,11 +55,11 @@ function toggle() {
 
 /* COLOR STATES */
 .tone-toggle__track.primary {
-  background: var(--color-primary);
+  background: var(--ui-primary-bg);
 }
 
 .tone-toggle__track.secondary {
-  background: var(--color-secondary);
+  background: var(--ui-secondary-bg);
 }
 
 /* thumb */

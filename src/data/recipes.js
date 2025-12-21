@@ -66,8 +66,15 @@ export const recipes = [
 
       "--ui-shadow": "rgba(0,0,0,0.10)",
 
+      // IG GRID
+
       "--ig-tile-bg": ["primary", 1],
       "--ig-tile-fg": ["primary", 7],
+
+      // MOCKUP
+
+      "--ui-primary-bg": ["primary", 1],
+      "--ui-secondary-bg": ["secondary", 1],
     },
   },
   // ======================================================

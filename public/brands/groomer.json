@@ -56,7 +56,7 @@
     "description": "Eco webwinkel voor je huisdier.\n💚 Cruelty free\n🌱 Vegan\n🌍 100% natuurlijk",
     "address": "Bosstraat 46/018, Lummen, Belgium 3560",
     "url": "https://www.groomer.be",
-    "highlightIcon": "src/assets/highlights/groomer.svg",
+    "highlightIcon": "groomer-small.svg",
     "highlights": [
       { "label": "TEAM", "bg": "#385f3b" },
       { "label": "PROMOS", "bg": "#ced574" },

@@ -8,15 +8,15 @@
         <div class="overview-card overview-card--section">
           <div class="overview-row overview-row--caption">
             <i class="fa-solid fa-heart icon-preview"></i>
-            <span>Card caption</span>
+            <span>Caption</span>
           </div>
 
           <div class="overview-row overview-row--title">
-            <div>Card title 1</div>
+            <div>Grote tekst</div>
           </div>
 
           <div class="overview-row overview-row--text">
-            <p>This is paragraph preview text.</p>
+            <p>Kleine tekst</p>
           </div>
         </div>
 
@@ -24,22 +24,26 @@
         <div class="overview-card overview-card--panel">
           <div class="overview-row overview-row--caption">
             <i class="fa-solid fa-link icon-preview"></i>
-            <span>Card caption</span>
+            <span>Caption</span>
           </div>
 
           <div class="overview-row overview-row--title">
-            <div>Card title 2</div>
+            <div>Grote tekst</div>
           </div>
 
           <div class="overview-row overview-row--text">
-            <p>This is paragraph preview text.</p>
+            <p>Kleine tekst.</p>
           </div>
         </div>
       </div>
 
       <!-- ACCENT -->
       <div class="overview-accent">
-        <p>Text on accent background</p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat.
+        </p>
       </div>
     </div>
   </div>
@@ -116,12 +120,15 @@ const { headline, body } = defineProps({
    ======================================================= */
 
 .overview-accent {
-  padding: var(--space-10) var(--space-25);
+  padding: var(--space-20) var(--space-30);
   border-radius: var(--radius-md);
   background: var(--dynamic-accent);
   color: var(--dynamic-text-accent);
   font-size: var(--fs-body-lg);
   font-weight: var(--fw-title);
+}
+.overview-accent p {
+  margin-bottom: 0;
 }
 
 /* =========================================================

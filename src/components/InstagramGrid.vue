@@ -61,9 +61,13 @@
       <div v-for="(h, i) in ig.highlights" :key="i" class="ig-highlight">
         <div class="ig-highlight-img">
           <!-- inner circle with background color per highlight -->
-          <div class="ig-highlight-circle" :style="{ backgroundColor: h.bg }">
+          <div
+            class="ig-highlight-circle"
+            :style="{
+              backgroundColor: `var(${highlightPairs[i].bg})`,
+            }">
             <!-- same SVG for all, recolored -->
-            <div class="ig-highlight-icon" :style="highlightIconStyle(ig.highlightIcon)"></div>
+            <div class="ig-highlight-icon" :style="highlightIconStyle(ig.highlightIcon, i)"></div>
           </div>
         </div>
         <div class="ig-highlight-label">{{ h.label }}</div>
@@ -105,11 +109,21 @@
 <script setup>
 import { computed } from "vue";
 
+const highlightPairs = [
+  { bg: "--ui-primary-bg", fg: "--text-on-primary" },
+  { bg: "--ui-secondary-bg", fg: "--text-on-secondary" },
+  { bg: "--ui-panel-bg", fg: "--text-on-panel" },
+  { bg: "--ui-alt-panel-bg", fg: "--text-on-alt-panel" },
+  { bg: "--ui-section-bg", fg: "--text-on-section" },
+  { bg: "--ui-alt-section-bg", fg: "--text-on-alt-section" },
+  { bg: "--ui-nav-bg", fg: "--text-on-nav" },
+];
+
 const props = defineProps({
   ig: {
     type: Object,
     default: () => ({
-      highlightIcon: "brand.svg", // DEFAULT SVG so Vue NEVER breaks
+      highlightIcon: "creo-small.svg", // DEFAULT SVG
       avatar: "",
       username: "",
       posts: 0,
@@ -130,7 +144,7 @@ const props = defineProps({
   highlightFg: { type: String, default: "#d3d3d3" },
 });
 
-// avatar (unchanged)
+// avatar
 const avatarSrc = computed(() => {
   const raw = props.ig.avatar || "";
   if (raw.startsWith("http")) return raw;
@@ -138,7 +152,7 @@ const avatarSrc = computed(() => {
 });
 
 // mask-style SVG recoloring
-function highlightIconStyle(file) {
+function highlightIconStyle(file, i) {
   if (!file) return {};
   const url = new URL(`../assets/highlights/${file}`, import.meta.url).href;
   return {
@@ -150,9 +164,11 @@ function highlightIconStyle(file) {
     maskPosition: "center",
     WebkitMaskSize: "contain",
     maskSize: "contain",
-    backgroundColor: props.highlightFg,
+    backgroundColor: `var(${highlightPairs[i].fg})`,
   };
 }
+
+console.log(props.ig.highlights);
 </script>
 
 <style>
@@ -399,12 +415,13 @@ function highlightIconStyle(file) {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 /* SVG mask recoloring */
 .ig-highlight-icon {
-  width: 36px;
-  height: 36px;
+  width: 80px;
+  height: 80px;
 }
 
 /* LABEL */

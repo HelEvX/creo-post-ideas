@@ -67,7 +67,7 @@ export default {
 
 <template>
   <div class="brand-switcher-container">
-    <label for="brand-select">Select a Brand:</label>
+    <label for="brand-select">Kies een merk:</label>
     <select id="brand-select" @change="onChange">
       <option value="">Creo (default)</option>
       <option value="groomer">Groomer</option>
