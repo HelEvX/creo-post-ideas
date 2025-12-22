@@ -1,7 +1,7 @@
 <template>
   <aside class="content-type-panel">
     <div>
-      <h6>Kies een opmaak:</h6>
+      <h6>Inhoud</h6>
 
       <div class="content-type-panel__buttons">
         <button
@@ -82,11 +82,8 @@ const modes = [
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--space-50);
-}
-
-.content-type-panel div {
-  align-content: center;
+  gap: var(--space-30);
+  text-align: left;
 }
 
 .content-type-panel__buttons {
@@ -115,8 +112,7 @@ const modes = [
 
 .content-type-panel__btn {
   display: inline-flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: stretch;
   padding: var(--space-10) var(--space-20);
 }
 
@@ -127,7 +123,7 @@ const modes = [
 .colored-check {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: left;
   gap: var(--space-10);
   margin: var(--space-10) 0 var(--space-20) 0;
 }

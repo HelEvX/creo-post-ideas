@@ -211,34 +211,55 @@
   --transition-default: all 0.3s ease;
 
   /* ------------------------------------------------------
-     INSTAGRAM SAFE ZONES (scaled to mockup size)
-     ------------------------------------------------------ */
-  --ref-width: 1080; /* px – IG design reference */
-  --scale-factor: calc(var(--mockup-width) / var(--ref-width));
+   INSTAGRAM CROPPING ZONES
+   - Grid crops: percentage-based (ratio-driven)
+   - Story UI: percentage-based (viewport-driven)
+   - No pixel scaling
+------------------------------------------------------ */
 
   /* Square (1:1 → grid crops the sides to 4:5 then 4:3) */
-  --safe-square-left: calc(96px * var(--scale-factor));
-  --safe-square-right: calc(96px * var(--scale-factor));
-  --safe-square-top: calc(120px * var(--scale-factor));
-  --safe-square-bottom: calc(150px * var(--scale-factor));
+  --safe-square-left: 12.5%;
+  --safe-square-right: 12.5%;
+  --safe-square-top: 0;
+  --safe-square-bottom: 0;
+
+  --safe-square-left-enabled: 1;
+  --safe-square-right-enabled: 1;
+  --safe-square-top-enabled: 0;
+  --safe-square-bottom-enabled: 0;
 
   /* Portrait (1080×1350 → grid crops to 4:5 then 4:3) */
-  --safe-portrait-left: calc(96px * var(--scale-factor));
-  --safe-portrait-right: calc(96px * var(--scale-factor));
-  --safe-portrait-top: calc(120px * var(--scale-factor));
-  --safe-portrait-bottom: calc(180px * var(--scale-factor));
+  --safe-portrait-left: 3.148%;
+  --safe-portrait-right: 3.148%;
+  --safe-portrait-top: 0;
+  --safe-portrait-bottom: 0;
+
+  --safe-portrait-left-enabled: 1;
+  --safe-portrait-right-enabled: 1;
+  --safe-portrait-top-enabled: 0;
+  --safe-portrait-bottom-enabled: 0;
 
   /* Landscape (1080 × 566 → cropped to 4:3 in grid) */
-  --safe-landscape-left: calc(163px * var(--scale-factor));
-  --safe-landscape-right: calc(163px * var(--scale-factor));
-  --safe-landscape-top: calc(50px * var(--scale-factor));
-  --safe-landscape-bottom: calc(80px * var(--scale-factor));
+  --safe-landscape-left: 28.888%;
+  --safe-landscape-right: 28.888%;
+  --safe-landscape-top: 0;
+  --safe-landscape-bottom: 0;
 
-  /* Story / Reel (dedicated safe regions) */
-  --safe-story-left: calc(120px * var(--scale-factor));
-  --safe-story-right: calc(120px * var(--scale-factor));
-  --safe-story-top: calc(250px * var(--scale-factor));
-  --safe-story-bottom: calc(350px * var(--scale-factor));
+  --safe-landscape-left-enabled: 1;
+  --safe-landscape-right-enabled: 1;
+  --safe-landscape-top-enabled: 0;
+  --safe-landscape-bottom-enabled: 0;
+
+  /* Story → Reel (1080 x 1920 → cropped to 4:3 in grid) */
+  --safe-story-top: 12.5%;
+  --safe-story-bottom: 12.5%;
+  --safe-story-left: 0;
+  --safe-story-right: 0;
+
+  --safe-story-top-enabled: 1;
+  --safe-story-bottom-enabled: 1;
+  --safe-story-left-enabled: 0;
+  --safe-story-right-enabled: 0;
 }
 
 /* ------------------------------------------------------

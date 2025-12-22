@@ -214,7 +214,6 @@ function onContentTypeSelect(type) {
 }
 
 .main-preview__sidebar {
-  margin-bottom: var(--space-40);
   text-align: center;
   justify-items: center;
 }

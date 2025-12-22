@@ -1,17 +1,17 @@
 <template>
   <aside class="main-preview__styles">
-    <h6>Stijlkenmerken</h6>
+    <div class="styles__fonts">
+      <h6>Lettertypes</h6>
+      <p class="styles__hint">Grote tekst</p>
+      <div class="title-font">{{ titleFont }}</div>
+      <p class="styles__hint">Gewone tekst</p>
+      <div class="body-font">{{ bodyFont }}</div>
+    </div>
 
-    <div class="main-preview__styles__container">
-      <div class="styles__fonts">
-        <p class="styles__hint">Lettertype titels</p>
-        <div class="title-font">{{ titleFont }}</div>
-        <p class="styles__hint">Lettertype tekst</p>
-        <div class="body-font">{{ bodyFont }}</div>
-      </div>
-
-      <div class="main-preview__styles__swatches">
-        <p class="styles__hint">Tik op een kleur om te kopieren.</p>
+    <div class="main-preview__styles__swatches">
+      <h6>Kleuren</h6>
+      <p class="styles__hint">Tik op een kleur om te kopieren.</p>
+      <div class="main-preview__styles__swatch-container">
         <button
           v-for="color in swatches"
           :key="color"
@@ -22,12 +22,12 @@
           <span v-if="copied === color" class="swatch__toast">Gekopieerd</span>
         </button>
       </div>
+    </div>
 
-      <!-- <div>
+    <!-- <div>
         <div class="main-preview__styles__corners"></div>
         <div class="main-preview__styles__shadows"></div>
       </div> -->
-    </div>
   </aside>
 </template>
 
@@ -87,17 +87,14 @@ async function copyColor(hex) {
 .main-preview__styles {
   padding-right: 0;
   height: 100%;
-}
-
-.main-preview__styles h6 {
-  text-align: center;
-}
-
-.main-preview__styles__container {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-30);
+}
+
+.main-preview__styles h6 {
+  text-align: left;
 }
 
 p.styles__hint {
@@ -119,11 +116,15 @@ p.styles__hint {
   text-align: left;
 }
 
-.main-preview__styles__swatches {
+/* .main-preview__styles__swatches {
+} */
+
+.main-preview__styles__swatch-container {
   display: flex;
   flex-direction: column;
-  gap: var(--space-20);
+
   width: 100%;
+  gap: var(--space-20);
 }
 
 .main-preview__styles__swatch {

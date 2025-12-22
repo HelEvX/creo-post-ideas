@@ -23,7 +23,7 @@ function toggle() {
 .tone-toggle {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
   gap: var(--space-10);
 }
 
@@ -43,11 +43,11 @@ function toggle() {
 /* TRACK */
 .tone-toggle__track {
   position: relative;
-  width: 64px;
-  height: 32px;
+  width: 56px;
+  height: 28px;
   padding: 3px;
-  border-radius: 32px;
-  flex: 0 0 64px;
+  border-radius: 28px;
+  flex: 0 0 56px;
   border: 2px solid var(--ui-panel-border);
   cursor: pointer;
   transition: var(--transition-default);
@@ -64,8 +64,8 @@ function toggle() {
 
 /* thumb */
 .tone-toggle__thumb {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   background: var(--text-on-primary);
   border-radius: 50%;
   transform: translateX(-66.67%);

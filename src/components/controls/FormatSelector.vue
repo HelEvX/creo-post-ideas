@@ -67,7 +67,7 @@ function select(id) {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 0;
+  left: 0;
   text-align: center;
   padding: var(--space-10) var(--space-20) 0;
   font-size: var(--fs-body-xxs);

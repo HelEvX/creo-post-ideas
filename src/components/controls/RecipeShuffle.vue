@@ -305,9 +305,9 @@ function updateContrastChecks() {
         id: p.id,
         ratio: 0,
         level: "fail",
-        label: "probleem",
-        bg: "#d9534f",
-        fg: "#ffffff",
+        label: "ongeschikt",
+        bg: "var(--ui-danger-bg)",
+        fg: "var(--ui-dynamic-text)",
         swatchText: null,
         swatchBg: null,
         cssVarFg: p.fg,
@@ -331,9 +331,9 @@ function updateContrastChecks() {
         id: p.id,
         ratio: 0,
         level: "fail",
-        label: "probleem",
-        bg: "#d9534f",
-        fg: "#ffffff",
+        label: "ongeschikt",
+        bg: "var(--ui-danger-bg)",
+        fg: "var(--ui-dynamic-text)",
         swatchText: null,
         swatchBg: worstBg,
         cssVarFg: p.fg,
@@ -354,10 +354,10 @@ function updateContrastChecks() {
       label = "goed";
     } else if (result.level === "AA Large") {
       statusVar = "--color-warning";
-      label = "redelijk";
+      label = "kan beter";
     } else {
       statusVar = "--color-danger";
-      label = "probleem";
+      label = "ongeschikt";
     }
 
     const pillBg = resolveCssColor(statusVar);
@@ -388,7 +388,7 @@ async function fixContrast(item) {
   if (!item || !props.scales) return;
 
   // only allow fixes where it makes sense
-  if (item.label !== "redelijk" && item.label !== "probleem") return;
+  if (item.label !== "kan beter" && item.label !== "ongeschikt") return;
 
   const fgVar = item.cssVarFg;
   const bgVar = item.cssVarBg;
@@ -397,7 +397,7 @@ async function fixContrast(item) {
   let bg = resolveCssColor(bgVar);
   if (!fg || !bg) return;
 
-  const targetRatio = item.label === "redelijk" ? 3 : 4.5;
+  const targetRatio = item.label === "kan beter" ? 3 : 4.5;
   let ratio = getContrastRatio(fg, bg);
   if (ratio >= targetRatio) return;
 

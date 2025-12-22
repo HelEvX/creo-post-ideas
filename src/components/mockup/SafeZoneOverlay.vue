@@ -1,6 +1,9 @@
 <template>
   <div class="safe-zone-overlay" aria-hidden="true">
-    <div class="safe-zone-rect"></div>
+    <div class="unsafe top"></div>
+    <div class="unsafe bottom"></div>
+    <div class="unsafe left"></div>
+    <div class="unsafe right"></div>
   </div>
 </template>
 
@@ -21,23 +24,44 @@ defineProps({
   z-index: 20;
 }
 
-.safe-zone-overlay::after {
-  content: "Safe zone";
+.unsafe {
   position: absolute;
-  top: calc(var(--safe-top) - 1.5rem);
-  left: var(--safe-left);
-  font-size: 0.75rem;
-  opacity: 0.7;
+  background: var(--color-shadow);
 }
 
-.safe-zone-rect {
-  position: absolute;
-  top: var(--safe-top);
-  right: var(--safe-right);
-  bottom: var(--safe-bottom);
-  left: var(--safe-left);
+/* top */
+.unsafe.top {
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--safe-top);
+  border-bottom: calc(2px * var(--safe-top-enabled)) dotted var(--white);
+}
 
-  outline: 2px dashed rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.08);
+/* bottom */
+.unsafe.bottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--safe-bottom);
+  border-top: calc(2px * var(--safe-bottom-enabled)) dotted var(--white);
+}
+
+/* left */
+.unsafe.left {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--safe-left);
+  border-right: calc(2px * var(--safe-left-enabled)) dotted var(--white);
+}
+
+/* right */
+.unsafe.right {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: var(--safe-right);
+  border-left: calc(2px * var(--safe-right-enabled)) dotted var(--white);
 }
 </style>

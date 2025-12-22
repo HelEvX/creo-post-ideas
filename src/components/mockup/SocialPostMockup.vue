@@ -1,6 +1,6 @@
 <template>
-  <PostWrapper :aspectRatio="aspectRatio" :class="[`size--${size}`, `layout--${aspectRatio}`]">
-    <div class="social-post">
+  <PostWrapper :size="size">
+    <div class="social-post" :class="`size--${size}`">
       <div class="post-bg" :class="backgroundClass">
         <!-- plain color layer -->
         <div class="post-bg__color"></div>
@@ -187,26 +187,6 @@ watch(
 );
 
 /* ----------------------------------------------
-   ASPECT RATIO
----------------------------------------------- */
-const aspectRatio = computed(() => {
-  switch (props.size) {
-    case "square":
-      return "1 / 1";
-    case "portrait":
-      return "1080 / 1350";
-    case "story":
-      return "1080 / 1920";
-    case "landscape":
-      return "1080 / 566";
-    case "cover":
-      return "1584 / 396";
-    default:
-      return "1080 / 1350";
-  }
-});
-
-/* ----------------------------------------------
    EXPORT TO STYLE INSPECTOR
 ---------------------------------------------- */
 function resolveHex(varName) {
@@ -260,32 +240,52 @@ watch(
    SIZING
    ========================================= */
 
-.size--square {
+.social-post.size--square {
   --safe-left: var(--safe-square-left);
   --safe-right: var(--safe-square-right);
   --safe-top: var(--safe-square-top);
   --safe-bottom: var(--safe-square-bottom);
+
+  --safe-top-enabled: var(--safe-square-top-enabled);
+  --safe-bottom-enabled: var(--safe-square-bottom-enabled);
+  --safe-left-enabled: var(--safe-square-left-enabled);
+  --safe-right-enabled: var(--safe-square-right-enabled);
 }
 
-.size--portrait {
+.social-post.size--portrait {
   --safe-left: var(--safe-portrait-left);
   --safe-right: var(--safe-portrait-right);
   --safe-top: var(--safe-portrait-top);
   --safe-bottom: var(--safe-portrait-bottom);
+
+  --safe-top-enabled: var(--safe-portrait-top-enabled);
+  --safe-bottom-enabled: var(--safe-portrait-bottom-enabled);
+  --safe-left-enabled: var(--safe-portrait-left-enabled);
+  --safe-right-enabled: var(--safe-portrait-right-enabled);
 }
 
-.size--landscape {
+.social-post.size--landscape {
   --safe-left: var(--safe-landscape-left);
   --safe-right: var(--safe-landscape-right);
   --safe-top: var(--safe-landscape-top);
   --safe-bottom: var(--safe-landscape-bottom);
+
+  --safe-top-enabled: var(--safe-landscape-top-enabled);
+  --safe-bottom-enabled: var(--safe-landscape-bottom-enabled);
+  --safe-left-enabled: var(--safe-landscape-left-enabled);
+  --safe-right-enabled: var(--safe-landscape-right-enabled);
 }
 
-.size--story {
+.social-post.size--story {
   --safe-left: var(--safe-story-left);
   --safe-right: var(--safe-story-right);
   --safe-top: var(--safe-story-top);
   --safe-bottom: var(--safe-story-bottom);
+
+  --safe-top-enabled: var(--safe-story-top-enabled);
+  --safe-bottom-enabled: var(--safe-story-bottom-enabled);
+  --safe-left-enabled: var(--safe-story-left-enabled);
+  --safe-right-enabled: var(--safe-story-right-enabled);
 }
 
 .social-post {
@@ -321,6 +321,16 @@ watch(
   padding-bottom: var(--safe-bottom);
   max-width: none;
   color: inherit;
+}
+
+/* Story needs inset-based safe area because padding-top/bottom % uses width */
+.social-post.size--story .post-content {
+  inset: auto;
+  top: var(--safe-top);
+  right: var(--safe-right);
+  bottom: var(--safe-bottom);
+  left: var(--safe-left);
+  padding: 0;
 }
 
 .post-title {

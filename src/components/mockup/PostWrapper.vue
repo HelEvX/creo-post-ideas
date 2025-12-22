@@ -1,50 +1,45 @@
 <template>
-  <div class="post-wrapper" :style="{ '--mockup-aspect': aspectRatio }">
+  <div class="post-wrapper" :class="`size--${size}`" :style="{ aspectRatio: aspectMap[size] }">
     <slot />
   </div>
 </template>
 
 <script setup>
 defineProps({
-  aspectRatio: {
-    type: String,
-    required: true,
-  },
+  size: { type: String, required: true },
 });
+
+const aspectMap = {
+  square: "1 / 1",
+  portrait: "4 / 5",
+  story: "9 / 16",
+  landscape: "16 / 9",
+};
 </script>
 
 <style scoped>
 .post-wrapper {
   position: relative;
   width: 100%;
-  height: auto;
-  aspect-ratio: var(--mockup-aspect);
   max-width: 100%;
-  max-height: 100%;
   overflow: hidden;
-  box-shadow: var(--shadow);
-  --mockup-width: 100%;
 }
 
-/* responsive width by format, now on the wrapper */
+/* landscape fills width */
 .size--landscape.post-wrapper {
   width: 100%;
 }
 
+/* all vertical formats share perceived width */
 .size--square.post-wrapper,
-.size--portrait.post-wrapper {
-  width: calc(100% / 1920 * 1350);
-}
-
+.size--portrait.post-wrapper,
 .size--story.post-wrapper {
-  width: calc(100% / 1920 * 1080);
+  width: min(100%, calc(100vh * (1080 / 1920)));
 }
 
+/* mobile */
 @media (max-width: 991px) {
-  .size--square.post-wrapper,
-  .size--portrait.post-wrapper,
-  .size--story.post-wrapper,
-  .size--landscape.post-wrapper {
+  .post-wrapper {
     width: 100%;
   }
 }

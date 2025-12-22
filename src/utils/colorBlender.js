@@ -305,13 +305,13 @@ export function evaluateContrastVisual(fgHex, bgHex, minAA = 4.5) {
 
   // 1) Pure WCAG ladder first
   if (ratio >= 7) {
-    return { ratio, level: "AAA" }; // zeer goed
+    return { ratio, level: "AAA" }; // prima
   }
   if (ratio >= minAA) {
     return { ratio, level: "AA" }; // goed
   }
   if (ratio >= 3) {
-    return { ratio, level: "AA Large" }; // redelijk
+    return { ratio, level: "AA Large" }; // kan beter
   }
 
   // 2) Perceptual override on near-miss mid-tone backgrounds
