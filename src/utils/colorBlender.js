@@ -311,7 +311,7 @@ export function evaluateContrastVisual(fgHex, bgHex, minAA = 4.5) {
     return { ratio, level: "AA" }; // goed
   }
   if (ratio >= 3) {
-    return { ratio, level: "AA Large" }; // kan beter
+    return { ratio, level: "AA Large" }; // beperkt
   }
 
   // 2) Perceptual override on near-miss mid-tone backgrounds

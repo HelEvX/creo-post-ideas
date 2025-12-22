@@ -6,7 +6,7 @@
           <i class="fa-solid fa-chevron-left"></i>
         </button>
         <h5 class="recipe-title">
-          {{ activeRecipe ? activeRecipe.title : "Basiskleuren" }}
+          {{ activeRecipe ? activeRecipe.title : "Basis" }}
         </h5>
         <button type="button" class="btn-primary" @click="nextRecipe">
           <i class="fa-solid fa-chevron-right"></i>
@@ -63,7 +63,7 @@
             class="fix-btn btn-neutral"
             @click="fixContrast(item)"
             :disabled="item.level === 'AAA' || item.level === 'AA'">
-            <i class="fa-solid fa-wrench"></i>
+            <i class="fa-solid fa-wrench fix-btn_icon"></i>
           </button>
         </div>
       </div>
@@ -305,7 +305,7 @@ function updateContrastChecks() {
         id: p.id,
         ratio: 0,
         level: "fail",
-        label: "ongeschikt",
+        label: "slecht",
         bg: "var(--ui-danger-bg)",
         fg: "var(--ui-dynamic-text)",
         swatchText: null,
@@ -331,7 +331,7 @@ function updateContrastChecks() {
         id: p.id,
         ratio: 0,
         level: "fail",
-        label: "ongeschikt",
+        label: "slecht",
         bg: "var(--ui-danger-bg)",
         fg: "var(--ui-dynamic-text)",
         swatchText: null,
@@ -354,10 +354,10 @@ function updateContrastChecks() {
       label = "goed";
     } else if (result.level === "AA Large") {
       statusVar = "--color-warning";
-      label = "kan beter";
+      label = "beperkt";
     } else {
       statusVar = "--color-danger";
-      label = "ongeschikt";
+      label = "slecht";
     }
 
     const pillBg = resolveCssColor(statusVar);
@@ -388,7 +388,7 @@ async function fixContrast(item) {
   if (!item || !props.scales) return;
 
   // only allow fixes where it makes sense
-  if (item.label !== "kan beter" && item.label !== "ongeschikt") return;
+  if (item.label !== "beperkt" && item.label !== "slecht") return;
 
   const fgVar = item.cssVarFg;
   const bgVar = item.cssVarBg;
@@ -397,7 +397,7 @@ async function fixContrast(item) {
   let bg = resolveCssColor(bgVar);
   if (!fg || !bg) return;
 
-  const targetRatio = item.label === "kan beter" ? 3 : 4.5;
+  const targetRatio = item.label === "beperkt" ? 3 : 4.5;
   let ratio = getContrastRatio(fg, bg);
   if (ratio >= targetRatio) return;
 
@@ -478,10 +478,10 @@ defineExpose({ nextRecipe, prevRecipe });
 --------------------------------------------- */
 .controls {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   background: var(--color-overlay);
   border-radius: var(--radius-sm);
-  padding: var(--space-10);
+  margin-bottom: var(--space-20);
   width: 100%;
 }
 
@@ -500,7 +500,7 @@ defineExpose({ nextRecipe, prevRecipe });
 
 .reset-wrap {
   text-align: center;
-  padding: var(--space-10) 0 var(--space-30);
+  margin-bottom: var(--space-30);
 }
 
 .reset-btn {
@@ -547,42 +547,29 @@ defineExpose({ nextRecipe, prevRecipe });
 ------------------------------------------------------ */
 .contrast-row {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: var(--space-20);
   padding: var(--space-10) 0;
+  width: 100%;
 }
 
 /* ------------------------------------------------------
    COLOR PAIR
 ------------------------------------------------------ */
 .contrast-pair {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--space-5);
-  flex: 1 0 auto;
-}
-
-.swatch-pair {
-  display: flex;
-  flex-direction: row;
-  height: var(--space-20);
-  border-radius: var(--radius-sm);
-  border: var(--border-width) solid var(--color-border-medium);
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .swatch-single {
-  width: var(--space-40);
-  height: var(--space-30);
-  border-radius: var(--radius-sm);
-  border: var(--border-width) solid var(--color-border-medium);
   display: flex;
-  flex: 1;
-  overflow: hidden;
-  padding: 0 var(--space-10);
   align-items: center;
-  justify-content: left;
   gap: var(--space-5);
+  padding: var(--space-5) var(--space-10);
+  border-radius: var(--radius-sm);
+  border: var(--ui-panel-border);
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 @media (min-width: 992px) and (max-width: 1399px) {
@@ -595,7 +582,7 @@ defineExpose({ nextRecipe, prevRecipe });
     gap: var(--space-5) var(--space-50);
   }
   .contrast-row {
-    width: calc((100% - 50px) / 2);
+    width: calc((100% - var(--space-100)) / 3);
   }
 }
 @media (max-width: 991px) {
@@ -615,11 +602,6 @@ defineExpose({ nextRecipe, prevRecipe });
   }
 }
 
-.swatch-icon {
-  font-size: var(--fs-body-sm);
-  line-height: 1;
-}
-
 .swatch-text-label {
   font-size: var(--fs-body-xs);
   font-weight: 600;
@@ -632,21 +614,30 @@ defineExpose({ nextRecipe, prevRecipe });
 ------------------------------------------------------ */
 
 .fix-btn {
-  align-self: stretch;
-  color: var(--dynamic-text);
+  flex: 0 0 var(--space-30);
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fix-btn_icon {
+  font-size: var(--fs-body-sm);
 }
 
 /* ------------------------------------------------------
    SCORE PILL
 ------------------------------------------------------ */
 .result-cell {
-  flex: 0 1 20%;
-  font-weight: 500;
-  padding: var(--space-5) var(--space-10);
-  border-radius: var(--radius-md);
+  flex: 0 0 7rem;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: var(--space-5);
+  font-weight: 600;
   font-size: var(--fs-body-xs);
+  border-radius: var(--radius-md);
+  white-space: nowrap;
 }
 </style>
