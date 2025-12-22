@@ -22,6 +22,8 @@ const aspectMap = {
   position: relative;
   width: 100%;
   max-width: 100%;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
 }
 

@@ -10,7 +10,7 @@
 
     <div class="main-preview__styles__swatches">
       <h6>Kleuren</h6>
-      <p class="styles__hint">Tik op een kleur om te kopieren.</p>
+      <p class="styles__hint">Klik om te kopieren</p>
       <div class="main-preview__styles__swatch-container">
         <button
           v-for="color in swatches"
@@ -24,10 +24,16 @@
       </div>
     </div>
 
-    <!-- <div>
+    <div class="main-preview__styles__other">
+      <div>
+        <h6>Randen & hoeken</h6>
         <div class="main-preview__styles__corners"></div>
+      </div>
+      <div>
+        <h6>Shaduw</h6>
         <div class="main-preview__styles__shadows"></div>
-      </div> -->
+      </div>
+    </div>
   </aside>
 </template>
 
@@ -90,7 +96,12 @@ async function copyColor(hex) {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--space-30);
+  gap: var(--space-20);
+}
+@media (max-width: 991px) {
+  .main-preview__styles {
+    padding: var(--space-50) var(--space-20) var(--space-20);
+  }
 }
 
 .main-preview__styles h6 {
@@ -99,7 +110,7 @@ async function copyColor(hex) {
 
 p.styles__hint {
   text-align: left;
-  font-size: var(--fs-body-sm);
+  font-size: var(--fs-body-xs);
   opacity: 0.8;
   border-bottom: var(--ui-panel-border);
   margin: 0 0 var(--space-5);
@@ -116,8 +127,11 @@ p.styles__hint {
   text-align: left;
 }
 
-/* .main-preview__styles__swatches {
-} */
+/* swatch styling */
+
+.main-preview__styles div {
+  width: 100%;
+}
 
 .main-preview__styles__swatch-container {
   display: flex;
@@ -125,6 +139,10 @@ p.styles__hint {
 
   width: 100%;
   gap: var(--space-20);
+}
+
+.main-preview__styles__swatches {
+  margin-bottom: var(--space-20);
 }
 
 .main-preview__styles__swatch {
@@ -137,19 +155,8 @@ p.styles__hint {
   overflow: hidden;
 }
 
-.swatch__meta {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 0.9rem;
-  color: var(--dynamic-text);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
-}
-
-.swatch__code {
-  font-weight: 600;
+.swatch__label {
+  font-weight: 500;
   letter-spacing: 0.06em;
 }
 
@@ -170,58 +177,35 @@ p.styles__hint {
   padding: 0.5rem 1rem;
   border-radius: var(--radius-sm);
 }
-
-/* CORNERS & SHADOW STYLES */
-
-.main-preview__styles__corners {
-  height: 5rem;
-  width: 5rem;
-  border-left: var(--ui-swatch-border);
-  border-top: var(--ui-swatch-border);
-  border-radius: var(--radius-lg) 0 0 0;
-  margin: 2rem 3rem 3rem 2rem;
-}
-
-.main-preview__styles__shadows {
-  height: 6rem;
-  width: 6rem;
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow);
-  margin: 2rem;
-}
-
-/* ================================ */
-/* ======== RESPONSIVE ============ */
-/* ================================ */
-
 @media (max-width: 1199px) {
-  .main-preview__styles__container {
-    flex-direction: row;
-  }
-
-  .styles__hint {
-    display: none;
-  }
-
-  .main-preview__styles__swatches {
-    flex-direction: row;
-    flex: 1;
-    padding: 0 var(--space-50);
-  }
-
-  .swatch__code {
-    display: none;
-  }
-
-  .swatch__meta {
-    justify-content: center;
-    padding: 0;
-  }
-
   .swatch__toast {
     left: 50%;
     transform: translateX(-50%);
     right: auto;
   }
+}
+
+/* CORNERS & SHADOW STYLES */
+
+.main-preview__styles__other {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.main-preview__styles__other h6 {
+  margin-bottom: var(--space-10);
+}
+
+.main-preview__styles__corners {
+  padding: var(--space-25);
+  border: var(--border-solid-card);
+  border-radius: var(--border-radius-card);
+}
+
+.main-preview__styles__shadows {
+  padding: var(--space-25);
+  box-shadow: var(--shadow);
 }
 </style>

@@ -22,6 +22,76 @@ This tool is a **strategic guidance system**, not a graphic editor. It empowers 
 
 ---
 
+## 🧩 Architecture Overview (How the Preview System Fits Together)
+
+The preview pipeline is deliberately layered. Each component has a single responsibility, which keeps layout logic, rendering logic, and visual composition cleanly separated.
+
+### Preview Component Stack
+
+```
+<MainPreview>
+ └─ <MockupWrapper :size>
+    └─ <MockupRenderer :size>
+       └─ <SocialPostMockup :size>
+          └─ <PostWrapper :size>
+             └─ .post-wrapper (DOM)
+```
+
+### Responsibilities per Layer
+
+**`MockupWrapper`**
+UI-level layout container for the dashboard.
+
+- Controls perceived width of the mockup in the preview column
+- Handles responsive behaviour between formats (story vs landscape)
+- Does not know anything about aspect ratios or post internals
+
+**`MockupRenderer`**
+Orchestration layer.
+
+- Selects which post type component to render
+- Resolves background color variables
+- Emits resolved visual styles for the style inspector
+- Passes state and props downward
+
+**`SocialPostMockup`**
+Visual composition of a post.
+
+- Background stack (color, pattern, image, overlay)
+- Safe zone overlay (feed + story)
+- Content stacking and watermark
+- Applies safe-area CSS variables per format
+
+**`PostWrapper`**
+Canvas contract.
+
+- Enforces the correct aspect ratio (1:1, 4:5, 9:16, 16:9)
+- Clips overflow
+- Guarantees a predictable mockup canvas
+
+**`.post-wrapper`**
+The actual DOM element created by `PostWrapper`.
+
+### Key Design Rules
+
+- Aspect ratio logic exists **only** in `PostWrapper`
+- Responsive sizing logic exists **only** in `MockupWrapper`
+- Visual composition exists **only** in `SocialPostMockup`
+- No layout breakpoints leak into mockup visuals
+
+This separation is intentional and avoids the most common failure mode of preview tools: mixing dashboard layout concerns with mockup rendering logic.
+
+If something looks wrong:
+
+- width or scaling issue → check `MockupWrapper`
+- wrong format ratio → check `PostWrapper`
+- visual overlap / safe zones / backgrounds → check `SocialPostMockup`
+- wrong content or styles → check `MockupRenderer`
+
+This structure is safe to extend with new formats, new platforms, or additional overlays without refactoring existing logic.
+
+---
+
 ## 🧱 Tech Stack
 
 | Tool/Technology                        | Purpose                                       |

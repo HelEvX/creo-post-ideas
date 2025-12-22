@@ -8,7 +8,7 @@
 
     <div class="row main-preview-row">
       <!-- SIDEBAR -->
-      <div class="col-12 col-xl-12 col-xxl-2 main-preview__sidebar">
+      <div class="col-12 col-xxl-2 main-preview__sidebar">
         <ContentTypePanel
           :selected="selectedPostType"
           :tone="backgroundTone"
@@ -28,7 +28,7 @@
       </div>
 
       <!-- PREVIEW -->
-      <div class="col-12 col-xl-10 col-xxl-8 main-preview__content">
+      <div class="col-12 col-lg-10 col-xl-10 col-xxl-8 main-preview__content">
         <MockupWrapper :size="selectedSize">
           <MockupRenderer
             :key="brandTokens?.slug || 'default'"
@@ -51,7 +51,7 @@
         </MockupWrapper>
       </div>
 
-      <div class="col-12 col-xl-2 col-xxl-2 main-preview__styles">
+      <div class="col-12 col-lg-2 main-preview__styles">
         <StyleInspectorPanel
           :key="brandTokens?.slug || 'default'"
           :titleFont="resolvedStyles?.fonts?.title"
@@ -208,13 +208,20 @@ function onContentTypeSelect(type) {
   gap: var(--space-25);
 }
 
-.main-preview-row {
-  align-items: flex-start;
-  flex-wrap: wrap;
+.main-preview__content {
+  padding-top: var(--space-10);
 }
 
-.main-preview__sidebar {
-  text-align: center;
-  justify-items: center;
+@media (min-width: 1400px) {
+  .main-preview__content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 1399px) {
+  .main-preview__sidebar {
+    display: none;
+  }
 }
 </style>

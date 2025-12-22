@@ -67,12 +67,14 @@ const { headline, body } = defineProps({
 
 .overview-block {
   display: flex;
-  flex: 1;
   flex-direction: row;
   gap: var(--space-20);
   flex-wrap: wrap;
-  justify-content: space-evenly;
 }
+
+/* =========================================================
+   CARD SURFACES
+   ======================================================= */
 
 .overview-cards {
   display: flex;
@@ -80,14 +82,11 @@ const { headline, body } = defineProps({
   gap: var(--space-25);
 }
 
-/* =========================================================
-   CARD SURFACES
-   ======================================================= */
-
 .overview-card {
   flex: 1;
   padding: var(--space-10) var(--space-25);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card); /* client input */
+  box-shadow: var(--shadow-card); /* client input */
 }
 
 .overview-card--section {
@@ -137,14 +136,13 @@ const { headline, body } = defineProps({
 
 .overview-row {
   display: flex;
-  align-items: top;
   gap: var(--space-10);
   padding: var(--space-5) 0;
 }
 
 /* typography */
 .overview-row--title {
-  font-size: var(--fs-h4);
+  font-size: var(--fs-h5);
   line-height: var(--lh-heading);
 }
 

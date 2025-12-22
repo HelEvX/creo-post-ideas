@@ -82,27 +82,21 @@
               <h2>Jouw missie: betere Instagram posts!</h2>
               <p>
                 Je weet welke kleur je logo heeft en hoe je website eruit ziet, dat spreekt. Maar zelf een post voor
-                Instagram of andere sociale mediakanalen ontwerpen is daarom niet altijd eenvoudig. Misschien twijfel je
-                wel eens over het lettertype? Of vraag je jezelf af welke kleur het beste gaat werken als achtergrond
-                voor je tekst? Via enkele eenvoudige <strong>voorbeeld</strong>en van instagram (<strong>ig</strong>)
-                posts, geeft deze tool je een goed startpunt. Een leesbare kleurcombinatie kiezen doe je hier in een
-                oogopslag!
+                Instagram of andere sociale mediakanalen ontwerpen is daarom niet altijd eenvoudig. Want het blijft
+                belangrijk dat jouw klanten je merk direct herkennen wanneer ze door hun 'feed' scrollen.
               </p>
-              <p>Maar we doen meer dan dat!</p>
+              <p>
+                Misschien twijfel je wel eens over het lettertype? Of vraag je jezelf af welke kleur het beste gaat
+                werken als achtergrond voor je tekst? Via enkele eenvoudige <strong>voorbeeld</strong>en van instagram
+                (<strong>ig</strong>) posts, geeft deze tool je een goed startpunt. Een leesbare kleurcombinatie kiezen
+                doe je hier in een oogopslag!
+              </p>
               <p>
                 Heb je een boodschap in gedachten waar gerust een straffe kleurenmix bij past, of ben je net op zoek
                 naar iets eenvoudig en strak? Maak je graag indruk met een evenwichtig, uitgekiend grid maar ben je toch
                 benieuwd naar opties om eens af te wisselen?
               </p>
-              <p>
-                Probeer dan ons kleurreceptenboek uit. Inderdaad, we gaan je helpen om het bekende gerecht van jouw
-                huisstijl wat bij te kruiden. Met een beetje extra 'peper' (donker) en 'zout' (licht) krijgt je ontwerp
-                een iets ander smaakje maar de basisingrediënten blijven natuurlijk dezelfde.
-              </p>
-              <p>
-                Want het blijft belangrijk dat jouw klanten je merk direct herkennen wanneer ze door hun 'feed'
-                scrollen.
-              </p>
+              <p>...</p>
               <!-- This tool helps ensure visual consistency between your website and social channels by applying your
                 theme across interface elements and mockups. -->
             </div>
@@ -512,7 +506,11 @@ p.hero-subtitle {
 }
 
 /* =======================================================
-   VERY LARGE SCREENS
+   VERY LARGE SCREENS ≥ 1600px (3xl breakpoint)
+   ======================================================= */
+
+/* =======================================================
+   LARGE SCREENS ≥ 1400px (xxl breakpoint)
    Sidebar sticks to left screen edge
    ======================================================= */
 
@@ -526,29 +524,37 @@ p.hero-subtitle {
 }
 
 /* =======================================================
-   DESKTOP ≥ 992px (lg breakpoint)
-   Make sidebar and main column equal height
+   DESKTOP ≥ 1200px (xl breakpoint)
    ======================================================= */
 
-/* @media (min-width: 992px) {
-  .app__layout .row.between {
-    align-items: stretch;
+/* =======================================================
+   DESKTOP ≥ 992px (lg breakpoint)
+   ======================================================= */
+
+/* =======================================================
+   TABLET HOR ≥ 768px (md breakpoint)
+   ======================================================= */
+
+/* =======================================================
+   TABLET VER ≥ 576px (sm breakpoint)
+   ======================================================= */
+@media (max-width: 767px) {
+  .app__sidebar {
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 0;
   }
-  .app__sidebar,
   .app__main {
-    display: flex;
-    flex-direction: column;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border-radius: 0;
   }
   .app__canvas {
-    height: 100%;
+    border-radius: 0;
   }
-} */
+}
 
 /* =======================================================
-   TABLET
-   ======================================================= */
-
-/* =======================================================
-   MOBILE
+   MOBILE < 576px (xs breakpoint)
    ======================================================= */
 </style>

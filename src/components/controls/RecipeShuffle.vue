@@ -569,12 +569,11 @@ defineExpose({ nextRecipe, prevRecipe });
   border-radius: var(--radius-sm);
   border: var(--ui-panel-border);
   overflow: hidden;
-  white-space: nowrap;
 }
 
-@media (min-width: 992px) and (max-width: 1399px) {
+@media (max-width: 1399px) {
   .controls {
-    width: 50%;
+    width: 33.33%;
   }
   .contrast-list {
     flex-direction: row;
@@ -587,18 +586,27 @@ defineExpose({ nextRecipe, prevRecipe });
 }
 @media (max-width: 991px) {
   .controls {
-    width: 80%;
+    width: 50%;
     justify-content: space-between;
+  }
+  .contrast-row {
+    width: calc((100% - var(--space-50)) / 2);
+  }
+}
+@media (min-width: 576px) and (max-width: 767px) {
+  .controls {
+    width: 100%;
+    justify-content: space-evenly;
   }
   .contrast-list {
     flex-direction: column;
     flex-wrap: nowrap;
   }
 }
-@media (max-width: 767px) {
+@media (max-width: 575px) {
   .controls {
     width: 100%;
-    justify-content: space-between;
+    justify-content: space-around;
   }
 }
 
@@ -616,13 +624,6 @@ defineExpose({ nextRecipe, prevRecipe });
 .fix-btn {
   flex: 0 0 var(--space-30);
   padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.fix-btn_icon {
-  font-size: var(--fs-body-sm);
 }
 
 /* ------------------------------------------------------
@@ -638,6 +639,5 @@ defineExpose({ nextRecipe, prevRecipe });
   font-weight: 600;
   font-size: var(--fs-body-xs);
   border-radius: var(--radius-md);
-  white-space: nowrap;
 }
 </style>

@@ -17,12 +17,12 @@
 
     <div class="panel-alt">
       <label class="colored-check">
+        <h6>Kleurrijk</h6>
         <input
           type="checkbox"
           class="colored-check__input"
           :checked="colored"
           @change="emit('update-colored', $event.target.checked)" />
-        <h6>Kleurrijk</h6>
       </label>
 
       <BackgroundToggle :tone="tone" @change="emit('update-tone', $event)" />
@@ -138,7 +138,6 @@ const modes = [
   width: 18px;
   height: 18px;
   cursor: pointer;
-
-  accent-color: var(--ui-primary-bg);
+  accent-color: var(--ui-accent-hover);
 }
 </style>

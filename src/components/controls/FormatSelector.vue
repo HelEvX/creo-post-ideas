@@ -1,18 +1,25 @@
 <template>
   <div class="format-selector-bar">
-    <button
-      v-for="f in formats"
-      :key="f.id"
-      type="button"
-      :class="['format-selector-bar__btn', f.id === modelValue ? 'btn-secondary btn-active' : 'btn-inactive']"
-      @click="select(f.id)">
-      <span class="format-selector-bar__icon"><i :class="f.icon"></i></span>
-      <span>{{ f.label }}</span>
-    </button>
-    <label class="safezone-toggle">
-      <input type="checkbox" :checked="showSafeZones" @change="emit('update:safeZones', $event.target.checked)" />
-      Safe zones
-    </label>
+    <div class="safe-div">
+      <label class="safezone-toggle">
+        <input type="checkbox" :checked="showSafeZones" @change="emit('update:safeZones', $event.target.checked)" />
+        Safe zones
+      </label>
+    </div>
+
+    <div class="format-selector-bar__buttons">
+      <button
+        v-for="f in formats"
+        :key="f.id"
+        type="button"
+        :class="['format-selector-bar__btn', f.id === modelValue ? 'btn-secondary btn-active' : 'btn-inactive']"
+        @click="select(f.id)">
+        <span class="format-selector-bar__icon"><i :class="f.icon"></i></span>
+        <span class="format-selector-bar__label">{{ f.label }}</span>
+      </button>
+    </div>
+
+    <div class="empty-div"></div>
   </div>
 </template>
 
@@ -38,15 +45,23 @@ function select(id) {
 
 <style scoped>
 .format-selector-bar {
-  position: relative;
   display: flex;
-  justify-content: center;
-  gap: 1.6rem;
-  padding: var(--space-5) 0;
+  justify-content: space-between;
+  padding: var(--space-5);
   background: var(--ui-alt-section-bg);
   border: var(--ui-panel-border-soft);
   border-radius: var(--radius-md);
-  /* box-shadow: var(--shadow); */
+}
+.format-selector-bar__buttons {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-10);
+  flex: 1 0 80%;
+}
+
+.safe-div,
+.empty-div {
+  flex: 1 0 10%;
 }
 
 .format-selector-bar__btn {
@@ -55,7 +70,16 @@ function select(id) {
   align-items: center;
   flex: 1;
   max-width: 12rem;
-  padding: var(--space-10) var(--space-20);
+  padding: var(--space-10) 0;
+}
+
+@media (max-width: 767px) {
+  .format-selector-bar__btn {
+    max-width: 6rem;
+  }
+  .format-selector-bar__label {
+    display: none;
+  }
 }
 
 .format-selector-bar__icon i {
@@ -64,13 +88,15 @@ function select(id) {
 }
 
 .safezone-toggle {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-end;
+  gap: var(--space-10);
   text-align: center;
-  padding: var(--space-10) var(--space-20) 0;
+  padding: var(--space-10);
   font-size: var(--fs-body-xxs);
+  line-height: 1;
   margin: 0;
 }
 

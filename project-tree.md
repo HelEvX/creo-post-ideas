@@ -50,13 +50,6 @@ CREO-POST-IDEAS/
 │   ├── data/
 │   │   └── recipes.js         # Defines the style "Recipes" (Bold, Subtle, etc.)
 │   │
-│   ├── external/
-│   │   └── instagram-layout/
-│   │       │── css/
-│   │       │   ├── styles.css # inspiration for the instagram grid layout
-│   │       │   └── reset.css
-│   │       └── index.html
-│   │
 │   ├── utils/
 │   │   └── colorBlender.js    # Generates tints and shades for color scales
 │   │   └── colorLogic.js      # Ensures perceptual contrast for text on bg
@@ -76,4 +69,37 @@ CREO-POST-IDEAS/
 ├── project-tree.md
 ├── README.md
 └── vite.config.js        # Vite build tool configuration
+
+-----------------------------------------
+
+MainPreview.vue structure (flattened)
+
+.app-main-shell
+└─ .row.main-preview-row
+   └─ .main-preview__content
+      └─ <MockupWrapper :size>
+         └─ <MockupRenderer :size>
+            └─ <SocialPostMockup :size>
+               └─ <PostWrapper :size>
+                  └─ .post-wrapper
+                     └─ .social-post.size--{size}
+                        ├─ .post-bg.{backgroundClass}
+                        │  ├─ .post-bg__color
+                        │  ├─ .post-bg__pattern.{patternClass}.{patternToneClass}
+                        │  ├─ .post-bg__logo        (conditional)
+                        │  ├─ .post-bg__image       (conditional)
+                        │  └─ .post-bg__overlay
+                        │
+                        ├─ <SafeZoneOverlay />      (conditional)
+                        │
+                        ├─ .post-content.post-content--{backgroundTone}
+                        │  └─ .post-canvas
+                        │     ├─ [attr] post-type="{postType | null}"
+                        │     ├─ .info-autolayout-wrapper   (only if postType === "info")
+                        │     └─ <slot />                   (InfoPost, QuotePost, etc.)
+                        │
+                        └─ .post-watermark           (conditional)
+                           └─ <BrandWatermark />
+
+
 ```

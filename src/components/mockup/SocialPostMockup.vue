@@ -288,19 +288,12 @@ watch(
   --safe-right-enabled: var(--safe-story-right-enabled);
 }
 
+/* fallback */
 .social-post {
   --safe-left: 2.5rem;
   --safe-right: 2.5rem;
   --safe-top: 2.5rem;
   --safe-bottom: 2.5rem;
-
-  position: relative;
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  max-height: 100%;
-  overflow: hidden;
-  border-radius: var(--radius-sm);
 }
 
 /* =========================================
@@ -315,22 +308,8 @@ watch(
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding-left: var(--safe-left);
-  padding-right: var(--safe-right);
-  padding-top: var(--safe-top);
-  padding-bottom: var(--safe-bottom);
   max-width: none;
   color: inherit;
-}
-
-/* Story needs inset-based safe area because padding-top/bottom % uses width */
-.social-post.size--story .post-content {
-  inset: auto;
-  top: var(--safe-top);
-  right: var(--safe-right);
-  bottom: var(--safe-bottom);
-  left: var(--safe-left);
-  padding: 0;
 }
 
 .post-title {
@@ -356,6 +335,7 @@ watch(
 
 .post-canvas {
   height: 100%;
+  padding: var(--space-20);
 }
 
 /* InfoPost auto-layout only activates when needed */
@@ -507,68 +487,5 @@ watch(
 }
 .info-autolayout .post-text-block__body {
   flex-shrink: 1;
-}
-
-/* ============================================
-   SQUARE 1:1  (default)
-=============================================== */
-
-.layout--square .info-autolayout {
-  flex-direction: column;
-  gap: var(--space-20);
-  padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
-  font-size: 100%;
-}
-
-/* ============================================
-   PORTRAIT 5:4
-   Slight compression, but still column
-=============================================== */
-
-.layout--portrait .info-autolayout {
-  gap: var(--space-10);
-  padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
-  font-size: 95%;
-}
-
-/* ============================================
-   STORY 9:16
-   Stronger compression + small type downscale
-=============================================== */
-
-.layout--story .info-autolayout {
-  gap: var(--space-5);
-  padding: calc(var(--safe-top) * 0.7) calc(var(--safe-right) * 0.7) calc(var(--safe-bottom) * 0.7)
-    calc(var(--safe-left) * 0.7);
-  font-size: 88%;
-}
-
-/* ============================================
-   LANDSCAPE 16:9
-   Switch to row layout (side-by-side)
-=============================================== */
-
-.layout--landscape .info-autolayout {
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-
-  gap: var(--space-30);
-
-  padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
-  font-size: 95%;
-}
-
-/* headline left, paragraph right in landscape */
-.layout--landscape .post-text-block {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 60%; /* prevents overflow */
-}
-
-/* allow paragraph to wrap earlier */
-.layout--landscape .post-text-block__body {
-  max-width: 100%;
 }
 </style>

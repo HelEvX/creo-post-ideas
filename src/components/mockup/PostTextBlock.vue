@@ -3,9 +3,9 @@
     <div class="post-text-block__headline">
       {{ headlineText }}
     </div>
-    <p class="post-text-block__body">
+    <div class="post-text-block__body">
       {{ bodyText }}
-    </p>
+    </div>
   </div>
 </template>
 
