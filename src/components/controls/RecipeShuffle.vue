@@ -63,7 +63,7 @@
             class="fix-btn btn-neutral"
             @click="fixContrast(item)"
             :disabled="item.level === 'AAA' || item.level === 'AA'">
-            Verfijn
+            <i class="fa-solid fa-wrench"></i>
           </button>
         </div>
       </div>
@@ -633,6 +633,7 @@ defineExpose({ nextRecipe, prevRecipe });
 
 .fix-btn {
   align-self: stretch;
+  color: var(--dynamic-text);
 }
 
 /* ------------------------------------------------------

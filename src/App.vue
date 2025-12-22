@@ -43,7 +43,7 @@
             @picked="onBrandPicked" />
 
           <!-- MAIN COLUMN -->
-          <main class="col-12 col-3xl-9 col-xxl-8 app__main">
+          <main class="col-12 col-xxl-9 col-3xl-9 app__main">
             <!-- CANVAS -->
             <div class="app__canvas">
               <MainPreview

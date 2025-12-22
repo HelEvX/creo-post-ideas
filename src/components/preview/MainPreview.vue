@@ -1,10 +1,14 @@
 <template>
   <div class="app-main-shell">
-    <FormatSelector :modelValue="selectedSize" @update:size="selectedSize = $event" />
+    <FormatSelector
+      :modelValue="selectedSize"
+      :showSafeZones="showSafeZones"
+      @update:size="selectedSize = $event"
+      @update:safeZones="showSafeZones = $event" />
 
     <div class="row main-preview-row">
       <!-- SIDEBAR -->
-      <div class="col-12 col-3xl-2 main-preview__sidebar">
+      <div class="col-12 col-xl-12 col-xxl-2 main-preview__sidebar">
         <ContentTypePanel
           :selected="selectedPostType"
           :tone="backgroundTone"
@@ -24,7 +28,7 @@
       </div>
 
       <!-- PREVIEW -->
-      <div class="col-12 col-3xl-8 main-preview__content">
+      <div class="col-12 col-xl-10 col-xxl-8 main-preview__content">
         <MockupWrapper :size="selectedSize">
           <MockupRenderer
             :key="brandTokens?.slug || 'default'"
@@ -40,13 +44,14 @@
               photoSrc,
               showCornerShapes: backgroundMode !== 'logo',
             }"
+            :showSafeZone="showSafeZones"
             @bg-resolved="resolvedBgColors = $event"
             @update-colored="useColoredBackground = $event"
             @resolved-styles="resolvedStyles = $event" />
         </MockupWrapper>
       </div>
 
-      <div class="col-12 col-3xl-2 col-xxl-12 main-preview__styles">
+      <div class="col-12 col-xl-2 col-xxl-2 main-preview__styles">
         <StyleInspectorPanel
           :key="brandTokens?.slug || 'default'"
           :titleFont="resolvedStyles?.fonts?.title"
@@ -110,6 +115,7 @@ watch(
 // IMAGE
 
 const selectedSize = ref("portrait");
+const showSafeZones = ref(false);
 const photoSrc = ref(stockImage);
 
 /* --------------------------------------------
@@ -118,7 +124,7 @@ const photoSrc = ref(stockImage);
 const postContent = {
   info: {
     headline: "Welkom",
-    body: "Gebruik het linkerpaneel om je posts uit te testen. Je vindt de verzameling stijlkenmerken in het rechterpaneel.",
+    body: "Kies een kleurrecept uit en controleer het contrast. ",
   },
   headline: {
     headline: "Win tijd door je processen te automatiseren.",
@@ -211,22 +217,5 @@ function onContentTypeSelect(type) {
   margin-bottom: var(--space-40);
   text-align: center;
   justify-items: center;
-}
-
-@media (min-width: 1600px) {
-  .main-preview__sidebar {
-    margin-bottom: 0;
-  }
-
-  .main-preview__content {
-    border-left: var(--ui-panel-border-soft);
-    border-right: var(--ui-panel-border-soft);
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1599px) {
-  .main-preview__sidebar {
-    margin-bottom: var(--space-40);
-  }
 }
 </style>

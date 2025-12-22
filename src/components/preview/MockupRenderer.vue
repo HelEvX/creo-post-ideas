@@ -7,7 +7,7 @@
     :brandLogo="designProps.brandLogo"
     :usePhoto="designProps.usePhoto"
     :photoSrc="designProps.photoSrc"
-    :showCornerShapes="designProps.showCornerShapes"
+    :showSafeZone="showSafeZone"
     @resolved-visuals="onResolvedVisuals">
     <component :is="currentPostComponent" v-bind="postData" />
   </SocialPostMockup>
@@ -26,11 +26,12 @@ import ProductPost from "../post-types/ProductPost.vue";
 import ParagraphPost from "../post-types/ParagraphPost.vue";
 import FallbackPost from "../post-types/FallbackPost.vue";
 
-const { size, postType, postData, designProps } = defineProps({
+const props = defineProps({
   size: String,
   postType: String,
   postData: Object,
   designProps: Object,
+  showSafeZone: Boolean,
 });
 
 const postMap = {
@@ -43,13 +44,13 @@ const postMap = {
 };
 
 const currentPostComponent = computed(() => {
-  return postMap[postType] || FallbackPost;
+  return postMap[props.postType] || FallbackPost;
 });
 
 const emit = defineEmits(["bg-resolved", "resolved-styles"]);
 
 /* -------------------------------------------------
-   PATTERN COLOR MAP — NOW SUPPORTS SECONDARY MODE
+   PATTERN COLOR MAP
 --------------------------------------------------- */
 
 const patternColorMap = {
@@ -71,17 +72,13 @@ const patternColorMap = {
   },
 };
 
-/* -------------------------------------------------
-   BACKGROUND COLOR RESOLUTION
---------------------------------------------------- */
-
 const NEUTRAL_BG_VAR = "--ui-alt-section-bg";
 
 function getMockupBgColors(backgroundClass) {
   if (!backgroundClass) return [NEUTRAL_BG_VAR];
 
   const parts = backgroundClass.split(" ");
-  const tone = designProps.backgroundTone === "secondary" ? "secondary" : "primary";
+  const tone = props.designProps.backgroundTone === "secondary" ? "secondary" : "primary";
 
   for (const p of parts) {
     if (patternColorMap[p]) {
@@ -89,19 +86,17 @@ function getMockupBgColors(backgroundClass) {
     }
   }
 
-  // plain backgrounds
-  if (!designProps.useColoredBackground) {
+  if (!props.designProps.useColoredBackground) {
     return [NEUTRAL_BG_VAR];
   }
 
   if (parts.includes("bg--plain-primary")) return ["--ui-primary-bg"];
   if (parts.includes("bg--plain-secondary")) return ["--ui-secondary-bg"];
 
-  // default fallback
   return [NEUTRAL_BG_VAR];
 }
 
-const resolvedBgColors = computed(() => getMockupBgColors(designProps.backgroundClass));
+const resolvedBgColors = computed(() => getMockupBgColors(props.designProps.backgroundClass));
 
 watch(
   resolvedBgColors,
@@ -112,7 +107,7 @@ watch(
 );
 
 /* -------------------------------------------------
-   CATCH PROPS
+   RESOLVED VISUALS
 --------------------------------------------------- */
 
 const resolvedVisuals = ref(null);

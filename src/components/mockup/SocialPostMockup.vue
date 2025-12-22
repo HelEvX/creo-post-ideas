@@ -21,6 +21,8 @@
       <!-- <div v-if="showCornerShapes" class="corner-shape square corner-shape--bl"></div>
       <div v-if="showCornerShapes" class="corner-shape rect corner-shape--br"></div> -->
 
+      <SafeZoneOverlay v-if="showSafeZone" />
+
       <div class="post-content" :class="`post-content--${backgroundTone}`" :style="mockupTextVars">
         <div
           class="post-canvas"
@@ -44,6 +46,7 @@ import BrandWatermark from "@/components/brand/BrandWatermark.vue";
 import PostWrapper from "@/components/mockup/PostWrapper.vue";
 import { ref, watch, computed } from "vue";
 import { getTextModeForBackground } from "@/utils/colorLogic.js";
+import SafeZoneOverlay from "@/components/mockup/SafeZoneOverlay.vue";
 
 /* ----------------------------------------------
    PROPS
@@ -64,7 +67,10 @@ const props = defineProps({
   usePhoto: Boolean,
   photoSrc: String,
   showBrand: Boolean,
-  showCornerShapes: Boolean,
+  showSafeZone: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 /* ----------------------------------------------

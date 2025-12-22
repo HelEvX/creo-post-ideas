@@ -10,9 +10,8 @@
         <div class="body-font">{{ bodyFont }}</div>
       </div>
 
-      <p class="styles__hint">Tik op een kleur om te kopieren.</p>
-
       <div class="main-preview__styles__swatches">
+        <p class="styles__hint">Tik op een kleur om te kopieren.</p>
         <button
           v-for="color in swatches"
           :key="color"
@@ -24,10 +23,10 @@
         </button>
       </div>
 
-      <div>
+      <!-- <div>
         <div class="main-preview__styles__corners"></div>
         <div class="main-preview__styles__shadows"></div>
-      </div>
+      </div> -->
     </div>
   </aside>
 </template>
@@ -98,7 +97,7 @@ async function copyColor(hex) {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--space-50);
+  gap: var(--space-30);
 }
 
 p.styles__hint {
@@ -130,8 +129,8 @@ p.styles__hint {
 .main-preview__styles__swatch {
   width: 100%;
   height: 4rem;
+  border: var(--ui-panel-border-soft);
   border-radius: var(--radius-sm);
-  border: 0;
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -194,7 +193,7 @@ p.styles__hint {
 /* ======== RESPONSIVE ============ */
 /* ================================ */
 
-@media (max-width: 1599px) {
+@media (max-width: 1199px) {
   .main-preview__styles__container {
     flex-direction: row;
   }

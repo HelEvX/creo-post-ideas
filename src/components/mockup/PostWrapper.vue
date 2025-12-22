@@ -23,6 +23,7 @@ defineProps({
   max-height: 100%;
   overflow: hidden;
   box-shadow: var(--shadow);
+  --mockup-width: 100%;
 }
 
 /* responsive width by format, now on the wrapper */

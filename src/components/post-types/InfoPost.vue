@@ -8,15 +8,15 @@
         <div class="overview-card overview-card--section">
           <div class="overview-row overview-row--caption">
             <i class="fa-solid fa-heart icon-preview"></i>
-            <span>Caption</span>
+            <span>Kies je opmaak</span>
           </div>
 
           <div class="overview-row overview-row--title">
-            <div>Grote tekst</div>
+            <div>Dit is 'info'</div>
           </div>
 
           <div class="overview-row overview-row--text">
-            <p>Kleine tekst</p>
+            <div>Kies een ander formaat om te testen.</div>
           </div>
         </div>
 
@@ -24,26 +24,22 @@
         <div class="overview-card overview-card--panel">
           <div class="overview-row overview-row--caption">
             <i class="fa-solid fa-link icon-preview"></i>
-            <span>Caption</span>
+            <span>Kies je achtergrond</span>
           </div>
 
           <div class="overview-row overview-row--title">
-            <div>Grote tekst</div>
+            <div>Zet 'kleurrijk' aan of uit</div>
           </div>
 
           <div class="overview-row overview-row--text">
-            <p>Kleine tekst.</p>
+            <div>Kies daarna een achtergrond uit de lijst.</div>
           </div>
         </div>
       </div>
 
       <!-- ACCENT -->
       <div class="overview-accent">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat.
-        </p>
+        <p>Je vindt de verzameling stijlkenmerken in het rechterpaneel. Deze kan je met een klik kopiëren.</p>
       </div>
     </div>
   </div>
@@ -72,12 +68,15 @@ const { headline, body } = defineProps({
 .overview-block {
   display: flex;
   flex: 1;
-  flex-direction: column;
+  flex-direction: row;
+  gap: var(--space-20);
+  flex-wrap: wrap;
   justify-content: space-evenly;
 }
 
 .overview-cards {
   display: flex;
+  flex: 60%;
   gap: var(--space-25);
 }
 
@@ -126,6 +125,7 @@ const { headline, body } = defineProps({
   color: var(--dynamic-text-accent);
   font-size: var(--fs-body-lg);
   font-weight: var(--fw-title);
+  flex: 40%;
 }
 .overview-accent p {
   margin-bottom: 0;
@@ -137,7 +137,7 @@ const { headline, body } = defineProps({
 
 .overview-row {
   display: flex;
-  align-items: center;
+  align-items: top;
   gap: var(--space-10);
   padding: var(--space-5) 0;
 }
@@ -156,5 +156,6 @@ const { headline, body } = defineProps({
 /* icon */
 .icon-preview {
   font-size: 1.8rem;
+  padding: var(--space-5) 0;
 }
 </style>

@@ -95,7 +95,7 @@ const modes = [
   gap: var(--space-10);
 }
 
-@media (min-width: 768px) and (max-width: 1599px) {
+@media (min-width: 768px) and (max-width: 1399px) {
   .content-type-panel {
     flex-direction: row;
     align-items: flex-start;
@@ -127,10 +127,9 @@ const modes = [
 .colored-check {
   display: flex;
   flex-direction: row;
-  align-items: top;
   justify-content: center;
   gap: var(--space-10);
-  margin-bottom: var(--space-20);
+  margin: var(--space-10) 0 var(--space-20) 0;
 }
 
 .colored-check h6 {

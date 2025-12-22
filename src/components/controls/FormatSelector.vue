@@ -9,22 +9,26 @@
       <span class="format-selector-bar__icon"><i :class="f.icon"></i></span>
       <span>{{ f.label }}</span>
     </button>
+    <label class="safezone-toggle">
+      <input type="checkbox" :checked="showSafeZones" @change="emit('update:safeZones', $event.target.checked)" />
+      Safe zones
+    </label>
   </div>
 </template>
 
 <script setup>
 defineProps({
   modelValue: { type: String, default: "portrait" },
+  showSafeZones: { type: Boolean, default: false },
 });
 
-const emit = defineEmits(["update:size"]);
+const emit = defineEmits(["update:size", "update:safeZones"]);
 
 const formats = [
   { id: "square", label: "Square", icon: "fa-solid fa-square" },
   { id: "landscape", label: "Landscape", icon: "fa-regular fa-image" },
   { id: "portrait", label: "Portrait", icon: "fa-solid fa-image-portrait" },
   { id: "story", label: "Story", icon: "fa-regular fa-id-badge" },
-  // { id: "cover", label: "Banner", icon: "fa-solid fa-panorama" },
 ];
 
 function select(id) {
@@ -34,6 +38,7 @@ function select(id) {
 
 <style scoped>
 .format-selector-bar {
+  position: relative;
   display: flex;
   justify-content: center;
   gap: 1.6rem;
@@ -54,7 +59,22 @@ function select(id) {
 }
 
 .format-selector-bar__icon i {
-  font-size: 1.6rem;
+  font-size: var(--fs-body);
   line-height: 1;
+}
+
+.safezone-toggle {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  text-align: center;
+  padding: var(--space-10) var(--space-20) 0;
+  font-size: var(--fs-body-xxs);
+  margin: 0;
+}
+
+.safezone-toggle input {
+  height: 1.5rem;
 }
 </style>
