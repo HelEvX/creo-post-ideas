@@ -70,12 +70,12 @@ function select(id) {
   align-items: center;
   flex: 1;
   max-width: 12rem;
-  padding: var(--space-10) 0;
 }
 
 @media (max-width: 767px) {
   .format-selector-bar__btn {
     max-width: 6rem;
+    padding: 0;
   }
   .format-selector-bar__label {
     display: none;

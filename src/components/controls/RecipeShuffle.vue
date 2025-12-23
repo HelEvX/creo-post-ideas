@@ -593,20 +593,22 @@ defineExpose({ nextRecipe, prevRecipe });
     width: calc((100% - var(--space-50)) / 2);
   }
 }
-@media (min-width: 576px) and (max-width: 767px) {
+@media (max-width: 767px) {
   .controls {
     width: 100%;
     justify-content: space-evenly;
   }
-  .contrast-list {
-    flex-direction: column;
-    flex-wrap: nowrap;
+  .contrast-row {
+    width: calc((100% - var(--space-50)) / 2);
   }
 }
 @media (max-width: 575px) {
   .controls {
     width: 100%;
     justify-content: space-around;
+  }
+  .contrast-row {
+    width: 100%;
   }
 }
 

@@ -59,14 +59,14 @@
     <!-- === END: Preview Zone === -->
 
     <!-- INSTAGRAM GRID VIEW -->
-    <section class="section section-gallery alt">
+    <section class="section section-gallery">
       <div class="container">
         <div class="row">
           <div class="col-12">
             <h2>Instagram Grid Preview</h2>
           </div>
 
-          <div class="col-12" style="display: flex; justify-content: center">
+          <div class="col-12 section-gallery__grid">
             <InstagramGrid v-if="brandTokens && brandTokens.ig" :ig="brandTokens.ig" :images="galleryImages" />
           </div>
         </div>
@@ -74,7 +74,7 @@
     </section>
 
     <!-- ABOUT (purpose of tool) -->
-    <section class="section section-about">
+    <section class="section section-about alt">
       <div class="container">
         <div class="row">
           <div class="col-12">
@@ -106,7 +106,7 @@
     </section>
 
     <!-- REVIEW FORM -->
-    <section class="section section-review alt">
+    <section class="section section-review">
       <div class="container">
         <div class="row center">
           <div class="col-12">
@@ -358,7 +358,7 @@ Stylings for components specific to the app shell
 */
 
 .app__layout {
-  margin: var(--space-75) 0;
+  margin: var(--space-75) 0 0;
   padding: var(--space-25) 0;
   background-color: var(--ui-alt-section-bg);
   height: auto;
@@ -436,7 +436,7 @@ p.hero-subtitle {
 
 .section-gallery h2 {
   text-align: center;
-  padding-bottom: var(--space-50);
+  padding-top: var(--space-30);
 }
 
 /* ----------------------------------------------------
@@ -503,6 +503,12 @@ p.hero-subtitle {
   background: var(--color-overlay-soft);
   border-radius: var(--radius-md);
   padding: var(--space-10);
+}
+
+@media (max-width: 991px) {
+  .section-gallery__grid {
+    padding: 0 !important;
+  }
 }
 
 /* =======================================================

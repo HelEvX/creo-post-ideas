@@ -395,6 +395,8 @@
 
 html {
   font-size: 54%; /* mobile baseline */
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 @media (min-width: 768px) {

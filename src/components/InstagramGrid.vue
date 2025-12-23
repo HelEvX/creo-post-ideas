@@ -54,55 +54,55 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- HIGHLIGHTS -->
-    <div class="ig-highlights">
-      <div v-for="(h, i) in ig.highlights" :key="i" class="ig-highlight">
-        <div class="ig-highlight-img">
-          <!-- inner circle with background color per highlight -->
-          <div
-            class="ig-highlight-circle"
-            :style="{
-              backgroundColor: `var(${highlightPairs[i].bg})`,
-            }">
-            <!-- same SVG for all, recolored -->
-            <div class="ig-highlight-icon" :style="highlightIconStyle(ig.highlightIcon, i)"></div>
+      <!-- HIGHLIGHTS -->
+      <div class="ig-highlights">
+        <div v-for="(h, i) in ig.highlights" :key="i" class="ig-highlight">
+          <div class="ig-highlight-img">
+            <!-- inner circle with background color per highlight -->
+            <div
+              class="ig-highlight-circle"
+              :style="{
+                backgroundColor: `var(${highlightPairs[i].bg})`,
+              }">
+              <!-- same SVG for all, recolored -->
+              <div class="ig-highlight-icon" :style="highlightIconStyle(ig.highlightIcon, i)"></div>
+            </div>
+          </div>
+          <div class="ig-highlight-label">{{ h.label }}</div>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="ig-tabs">
+        <div class="ig-tab">
+          <div class="ig-tab-inner active">
+            <i class="fa-solid fa-table-cells"></i>
           </div>
         </div>
-        <div class="ig-highlight-label">{{ h.label }}</div>
+
+        <div class="ig-tab">
+          <div class="ig-tab-inner">
+            <i class="fa-solid fa-clapperboard"></i>
+          </div>
+        </div>
+
+        <div class="ig-tab">
+          <div class="ig-tab-inner">
+            <i class="fa-solid fa-user-tag"></i>
+          </div>
+        </div>
       </div>
+
+      <!-- GRID -->
+      <section class="ig-grid">
+        <div v-for="(img, i) in images" :key="i" class="ig-tile">
+          <div class="ig-pattern" :class="img"></div>
+        </div>
+      </section>
+
+      <div class="loader"></div>
     </div>
-
-    <!-- TABS -->
-    <div class="ig-tabs">
-      <div class="ig-tab">
-        <div class="ig-tab-inner active">
-          <i class="fa-solid fa-table-cells"></i>
-        </div>
-      </div>
-
-      <div class="ig-tab">
-        <div class="ig-tab-inner">
-          <i class="fa-solid fa-clapperboard"></i>
-        </div>
-      </div>
-
-      <div class="ig-tab">
-        <div class="ig-tab-inner">
-          <i class="fa-solid fa-user-tag"></i>
-        </div>
-      </div>
-    </div>
-
-    <!-- GALLERY -->
-    <section class="ig-gallery">
-      <div v-for="(img, i) in images" :key="i" class="ig-tile">
-        <div class="ig-pattern" :class="img"></div>
-      </div>
-    </section>
-
-    <div class="loader"></div>
   </div>
 </template>
 
@@ -180,23 +180,21 @@ console.log(props.ig.highlights);
   --ig-tile-fg: #333333;
 }
 
-/* OUTER FRAME */
+/* FONTS & COLORS like Instagram */
 #instagram-preview {
   font-family: "segoe-ui", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
   line-height: 18px;
   color: #000;
   background: var(--white);
-  max-width: 975px;
-  margin: 0 auto;
-  padding: 3rem 2rem 0;
 }
 
-/* INNER WRAPPER */
+/* WRAPPER */
 .ig-wrapper {
-  width: 935px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: var(--space-25) 0;
+  width: 100%;
+  max-width: 992px;
 }
 
 /* HEADER */
@@ -436,7 +434,7 @@ console.log(props.ig.highlights);
    GALLERY
 ------------------------------------------------------------ */
 
-.ig-gallery {
+.ig-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
