@@ -511,7 +511,7 @@ button,
   color: inherit;
   font-weight: var(--fw-title);
   font-family: var(--font-body);
-  font-size: 0.95em;
+  font-size: 0.75em;
   padding: var(--space-5) var(--space-20);
   border-radius: var(--radius-sm);
   border-width: 1px;
