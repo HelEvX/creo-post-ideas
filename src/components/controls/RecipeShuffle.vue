@@ -39,7 +39,7 @@
             </div>
           </div>
 
-          <!-- MIDDLE: Score pill (existing logic) -->
+          <!-- MIDDLE: Score pill -->
           <div
             class="result-cell"
             :class="item.level ? item.level.toLowerCase().replace(' ', '-') : ''"
@@ -62,8 +62,9 @@
             type="button"
             class="fix-btn btn-neutral"
             @click="fixContrast(item)"
-            :disabled="item.level === 'AAA' || item.level === 'AA'">
+            :disabled="item.label === 'prima' || item.label === 'goed'">
             <i class="fa-solid fa-wrench fix-btn_icon"></i>
+            <span v-if="item._noFixPossible" class="no-fix-hint"> geen beter contrast gevonden</span>
           </button>
         </div>
       </div>
@@ -84,7 +85,7 @@ const props = defineProps({
   brandTokens: { type: Object, required: true },
   scales: { type: Object, required: false },
 
-  // background context from mockup (primary / secondary / pattern)
+  // background context from mockup (primary / secondary / neutral / pattern)
   bgContext: {
     type: Object,
     default: () => ({
@@ -103,6 +104,8 @@ const activeRecipe = computed(() => {
   if (index.value < 0) return null;
   return { ...recipes[index.value] };
 });
+
+const noFixMap = ref(Object.create(null));
 
 /* --------------------------------------------------
    LIFECYCLE
@@ -134,22 +137,36 @@ function readCSSVar(name) {
 }
 
 // Resolves chained vars:
-// --ui-panel-bg → var(--color-panel) → #hex
 function resolveCssColor(value, depth = 0) {
   if (!value) return null;
   if (depth > 10) return value;
 
   const v = value.trim();
 
+  // CSS var name: --foo
   if (v.startsWith("--")) {
     const next = readCSSVar(v);
-    if (!next || next === v) return null;
+    if (!next || next.trim() === "" || next.trim() === v) return null;
     return resolveCssColor(next, depth + 1);
   }
 
+  // var(--foo) or var(--foo, fallback)
   if (v.startsWith("var(")) {
     const inner = v.slice(4, -1).trim();
-    return resolveCssColor(inner, depth + 1);
+
+    // split on first comma only: " --foo, #fff " -> ["--foo", "#fff"]
+    const commaIdx = inner.indexOf(",");
+    const name = (commaIdx === -1 ? inner : inner.slice(0, commaIdx)).trim();
+    const fallback = (commaIdx === -1 ? "" : inner.slice(commaIdx + 1)).trim();
+
+    const resolved = resolveCssColor(name, depth + 1);
+
+    // if var is missing/empty, try fallback (can be a color or another var(...))
+    if (!resolved || resolved.trim() === "") {
+      return fallback ? resolveCssColor(fallback, depth + 1) : null;
+    }
+
+    return resolved;
   }
 
   return v;
@@ -207,6 +224,8 @@ function applyActiveRecipe() {
   window.dispatchEvent(new CustomEvent("palette-updated"));
 }
 
+// add opacity
+
 /* --------------------------------------------------
    NAVIGATION
 -------------------------------------------------- */
@@ -253,13 +272,13 @@ const contrastPairs = ref([
   { id: "main-title", fg: "--dynamic-title", bg: "CONTEXT" }, // check large title against main post background
   { id: "main-paragraph", fg: "--dynamic-text", bg: "CONTEXT" }, // check large paragraph against main post background
 
-  // card 1 bg (left) = ui-section-bg
-  { id: "card1-caption", fg: "--ui-caption", bg: "--ui-section-bg" }, // check card icon+caption against card background for card 1
-  { id: "card1-title", fg: "--title-on-section", bg: "--ui-section-bg" }, // check card title against card background for card 1
-  { id: "card1-paragraph", fg: "--text-on-section", bg: "--ui-section-bg" }, // check card paragraph against card background for card 1
+  // card 1 bg (left) = ui-alt-panel-bg
+  { id: "card1-caption", fg: "--dynamic-alt-caption", bg: "--ui-alt-panel-bg" }, // check card icon+caption against card background for card 1
+  { id: "card1-title", fg: "--title-on-alt-panel", bg: "--ui-alt-panel-bg" }, // check card title against card background for card 1
+  { id: "card1-paragraph", fg: "--text-on-alt-panel", bg: "--ui-alt-panel-bg" }, // check card paragraph against card background for card 1
 
   // card 2 bg (right) = ui-panel-bg
-  { id: "card2-caption", fg: "--ui-caption", bg: "--ui-panel-bg" }, // check card icon+caption against card background for card 2
+  { id: "card2-caption", fg: "--dynamic-caption", bg: "--ui-panel-bg" }, // check card icon+caption against card background for card 2
   { id: "card2-title", fg: "--title-on-panel", bg: "--ui-panel-bg" }, // check card title against card background for card 2
   { id: "card2-paragraph", fg: "--text-on-panel", bg: "--ui-panel-bg" }, // check card paragraph against card background for card 2
 
@@ -319,7 +338,8 @@ function updateContrastChecks() {
     const ratios = bgList.map((bg) => {
       const fg = fgForBgPair(p.fg, bg);
       if (!fg) return 0;
-      return getContrastRatio(fg, bg);
+      const r = getContrastRatio(fg, bg);
+      return Number.isFinite(r) ? r : 0;
     });
 
     const worstRatio = Math.min(...ratios);
@@ -338,10 +358,13 @@ function updateContrastChecks() {
         swatchBg: worstBg,
         cssVarFg: p.fg,
         cssVarBg: p.bg,
+        _noFixPossible: !!noFixMap.value[p.id],
       };
     }
 
     const result = evaluateContrastVisual(worstFg, worstBg);
+
+    // map result
 
     let statusVar;
     let label;
@@ -367,6 +390,7 @@ function updateContrastChecks() {
       id: p.id,
       ratio: worstRatio,
       level: result.level,
+      perceptual: result.perceptual,
       label,
 
       bg: pillBg,
@@ -377,6 +401,8 @@ function updateContrastChecks() {
 
       swatchText: worstFg,
       swatchBg: worstBg,
+
+      _noFixPossible: !!noFixMap.value[p.id],
     };
   });
 }
@@ -388,64 +414,83 @@ async function fixContrast(item) {
   if (!item || !props.scales) return;
 
   // only allow fixes where it makes sense
-  if (item.label !== "beperkt" && item.label !== "slecht") return;
+  if (item.label === "prima" || item.label === "goed") return;
+
+  // clear previous hint
+  noFixMap.value[item.id] = false;
 
   const fgVar = item.cssVarFg;
   const bgVar = item.cssVarBg;
+
+  // cannot edit context backgrounds
+  if (bgVar === "CONTEXT") {
+    noFixMap.value[item.id] = true;
+    updateContrastChecks();
+    return;
+  }
 
   let fg = resolveCssColor(fgVar);
   let bg = resolveCssColor(bgVar);
   if (!fg || !bg) return;
 
-  const targetRatio = item.label === "beperkt" ? 3 : 4.5;
-  let ratio = getContrastRatio(fg, bg);
-  if (ratio >= targetRatio) return;
+  const currentRatio = getContrastRatio(fg, bg);
+  if (!Number.isFinite(currentRatio)) return;
 
-  const white = readCSSVar("--color-text-inverse");
-  const isPureWhiteText = getContrastRatio(fg, white) < 1.05;
+  const white = resolveCssColor("--color-text-inverse");
+  const isWhiteText = fg.toLowerCase() === white.toLowerCase();
 
   const step = 0.04;
-  let attempts = 0;
 
-  while (ratio < targetRatio && attempts < 40) {
-    let nextFg = fg;
-    let nextBg = bg;
+  let nextFg = fg;
+  let nextBg = bg;
 
-    if (isPureWhiteText) {
-      // text cannot go lighter -> move background darker
-      nextBg = shade(bg, step);
+  // ---------------------------------------------
+  // STEP DECISION LOGIC
+  // ---------------------------------------------
+
+  if (!isWhiteText) {
+    // prefer adjusting text first
+    const darkerText = shade(fg, step);
+    const lighterText = tint(fg, step);
+
+    const rD = getContrastRatio(darkerText, bg);
+    const rL = getContrastRatio(lighterText, bg);
+
+    // pick the better of the two
+    if (Number.isFinite(rD) && rD > currentRatio && rD >= rL) {
+      nextFg = darkerText;
+    } else if (Number.isFinite(rL) && rL > currentRatio) {
+      nextFg = lighterText;
     } else {
-      // try improving text first, without killing saturation
-      const lighter = tint(fg, step);
-      const darker = shade(fg, step);
-
-      const rL = getContrastRatio(lighter, bg);
-      const rD = getContrastRatio(darker, bg);
-
-      if (rL > ratio && rL >= rD) {
-        nextFg = lighter;
-      } else if (rD > ratio) {
-        nextFg = darker;
-      } else {
-        // ceiling hit -> nudge background instead
-        nextBg = shade(bg, step);
-      }
+      // text ceiling reached, nudge background instead
+      nextBg = shade(bg, step);
     }
-
-    const nextRatio = getContrastRatio(nextFg, nextBg);
-    if (nextRatio <= ratio) break;
-
-    fg = nextFg;
-    bg = nextBg;
-    ratio = nextRatio;
-    attempts++;
+  } else {
+    // text is white → only background can move
+    nextBg = shade(bg, step);
   }
 
-  applyCssVar(fgVar, fg);
-  if (isPureWhiteText) {
-    applyCssVar(bgVar, bg);
+  const nextRatio = getContrastRatio(nextFg, nextBg);
+
+  // ---------------------------------------------
+  // NO IMPROVEMENT → FEEDBACK
+  // ---------------------------------------------
+
+  if (!Number.isFinite(nextRatio) || nextRatio <= currentRatio) {
+    noFixMap.value[item.id] = true;
+    updateContrastChecks();
+    return;
   }
 
+  // ---------------------------------------------
+  // APPLY ONE STEP ONLY
+  // ---------------------------------------------
+
+  applyCssVar(fgVar, nextFg);
+  applyCssVar(bgVar, nextBg);
+
+  // re-evaluate after DOM update
+  await nextTick();
   updateContrastChecks();
 }
 
@@ -467,7 +512,6 @@ defineExpose({ nextRecipe, prevRecipe });
   border-radius: var(--radius-md);
   padding: var(--space-20);
   background: var(--ui-section-bg);
-  color: var(--text-on-section);
   display: flex;
   flex-direction: column;
   gap: var(--space-30);
@@ -479,7 +523,7 @@ defineExpose({ nextRecipe, prevRecipe });
 .controls {
   display: flex;
   justify-content: space-between;
-  background: var(--color-overlay);
+  background: var(--color-overlay-soft);
   border-radius: var(--radius-sm);
   margin-bottom: var(--space-20);
   width: 100%;
@@ -494,6 +538,7 @@ defineExpose({ nextRecipe, prevRecipe });
 
 .recipe-desc {
   font-size: var(--fs-body-xs);
+  color: var(--dynamic-soft);
   opacity: 0.8;
   text-align: center;
 }
@@ -567,7 +612,7 @@ defineExpose({ nextRecipe, prevRecipe });
   gap: var(--space-5);
   padding: var(--space-5) var(--space-10);
   border-radius: var(--radius-sm);
-  border: var(--ui-panel-border);
+  border: var(--ui-panel-border-soft);
   overflow: hidden;
 }
 
@@ -614,7 +659,7 @@ defineExpose({ nextRecipe, prevRecipe });
 
 .swatch-text-label {
   font-size: var(--fs-body-xs);
-  font-weight: 600;
+  font-weight: var(--fw-title);
   line-height: 1;
   text-wrap: nowrap;
 }
@@ -626,6 +671,30 @@ defineExpose({ nextRecipe, prevRecipe });
 .fix-btn {
   flex: 0 0 var(--space-30);
   padding: 0;
+  position: relative;
+}
+
+.no-fix-hint {
+  position: absolute;
+  min-width: 8rem;
+  z-index: 50;
+  top: 25%;
+  right: 0;
+  transform: translate(100%, -50%);
+  font-size: var(--fs-body-tiny);
+  background-color: var(--black-75);
+  padding: var(--space-5) var(--space-10);
+  border-radius: var(--radius-sm);
+  font-weight: 300;
+  color: var(--white);
+  text-align: left;
+}
+@media (max-width: 767px) {
+  .no-fix-hint {
+    top: 100%;
+    right: 25%;
+    transform: translateX(75%);
+  }
 }
 
 /* ------------------------------------------------------
@@ -638,7 +707,7 @@ defineExpose({ nextRecipe, prevRecipe });
   justify-content: center;
   text-align: center;
   gap: var(--space-5);
-  font-weight: 600;
+  font-weight: var(--fw-title);
   font-size: var(--fs-body-xs);
   border-radius: var(--radius-md);
 }

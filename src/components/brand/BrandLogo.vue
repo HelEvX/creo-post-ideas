@@ -24,7 +24,7 @@
           width="22.8"
           height="22.8"
           transform="translate(-18.2 13.1) rotate(-25.6)"
-          fill="var(--color-primary)" />
+          fill="var(--color-primary-light)" />
         <rect
           x="35.3"
           y="22.3"
@@ -45,7 +45,7 @@
           width="22.8"
           height="22.8"
           transform="translate(-20.3 31.7) rotate(-25.6)"
-          fill="var(--ui-nav-bg)" />
+          fill="var(--color-tertiary)" />
         <rect
           x="75"
           y="36.3"
@@ -59,7 +59,7 @@
           width="22.8"
           height="22.8"
           transform="translate(-38.8 29.5) rotate(-25.6)"
-          fill="var(--color-secondary-lighter)" />
+          fill="var(--color-primary)" />
         <rect
           x="61"
           y="75.9"
@@ -141,14 +141,14 @@
           width="22.8"
           height="22.8"
           transform="translate(-20.3 31.7) rotate(-25.6)"
-          fill="var(--ui-nav-bg)" />
+          fill="var(--color-tertiary)" />
         <rect
           x="75"
           y="36.3"
           width="22.8"
           height="22.8"
           transform="translate(-12.1 42) rotate(-25.6)"
-          fill="var(--color-secondary-lighter)" />
+          fill="var(--color-primary)" />
         <rect
           x="34.2"
           y="88.8"

@@ -29,7 +29,6 @@ function toggle() {
 
 /* labels left and right */
 .tone-toggle__label {
-  font-size: var(--fs-body-lg);
   color: var(--dynamic-disabled);
   width: var(--space-20);
   text-align: center;
@@ -37,18 +36,18 @@ function toggle() {
 
 .tone-toggle__label.active {
   font-weight: 700;
-  color: var(--text-on-section);
+  color: var(--dynamic-text);
 }
 
 /* TRACK */
 .tone-toggle__track {
   position: relative;
-  width: 56px;
-  height: 28px;
+  width: 40px;
+  height: 20px;
   padding: 3px;
-  border-radius: 28px;
-  flex: 0 0 56px;
-  border: 2px solid var(--ui-panel-border);
+  border-radius: 20px;
+  flex: 0 0 40px;
+  border-color: var(--color-border-light);
   cursor: pointer;
   transition: var(--transition-default);
 }
@@ -64,8 +63,8 @@ function toggle() {
 
 /* thumb */
 .tone-toggle__thumb {
-  width: 20px;
-  height: 20px;
+  width: 14px;
+  height: 14px;
   background: var(--text-on-primary);
   border-radius: 50%;
   transform: translateX(-66.67%);

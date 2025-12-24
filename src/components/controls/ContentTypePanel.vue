@@ -1,6 +1,6 @@
 <template>
   <aside class="content-type-panel">
-    <div>
+    <div class="content-type-panel__content">
       <h6>Inhoud</h6>
 
       <div class="content-type-panel__buttons">
@@ -15,21 +15,20 @@
       </div>
     </div>
 
-    <div class="panel-alt">
-      <label class="colored-check">
-        <h6>Kleurrijk</h6>
-        <input
-          type="checkbox"
-          class="colored-check__input"
-          :checked="colored"
-          @change="emit('update-colored', $event.target.checked)" />
-      </label>
-
-      <BackgroundToggle :tone="tone" @change="emit('update-tone', $event)" />
-    </div>
-
-    <div>
+    <div class="content-type-panel__bg">
       <h6>Achtergrond</h6>
+      <div class="bg-toggle-section">
+        <label class="colored-check">
+          <input
+            type="checkbox"
+            class="colored-check__input"
+            :checked="colored"
+            @change="emit('update-colored', $event.target.checked)" />
+          <span>Kleurrijk</span>
+        </label>
+
+        <BackgroundToggle :tone="tone" @change="emit('update-tone', $event)" />
+      </div>
 
       <div class="content-type-panel__buttons">
         <button
@@ -92,26 +91,7 @@ const modes = [
   gap: var(--space-10);
 }
 
-@media (min-width: 768px) and (max-width: 1399px) {
-  .content-type-panel {
-    flex-direction: row;
-    align-items: flex-start;
-  }
-
-  .content-type-panel__buttons {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .panel-alt {
-    border-left: var(--ui-panel-border-soft);
-    border-right: var(--ui-panel-border-soft);
-    padding: 0 var(--space-20);
-  }
-}
-
 .content-type-panel__btn {
-  display: inline-flex;
   justify-content: stretch;
   padding: var(--space-10) var(--space-20);
 }
@@ -120,23 +100,32 @@ const modes = [
    COLORED CHECKBOX — NATIVE
    =============================== */
 
+.bg-toggle-section {
+  margin: var(--space-20) auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+}
+
 .colored-check {
   display: flex;
   flex-direction: row;
   justify-content: left;
+  align-items: center;
   gap: var(--space-10);
-  margin: var(--space-10) 0 var(--space-20) 0;
+  margin: 0;
 }
 
-.colored-check h6 {
-  margin: 0;
-  text-align: left;
+.colored-check span {
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  line-height: var(--lh-heading);
 }
 
 /* native checkbox, themed */
 .colored-check__input {
-  width: 18px;
-  height: 18px;
+  width: 2.4rem;
+  height: 2rem;
   cursor: pointer;
   accent-color: var(--ui-accent-hover);
 }

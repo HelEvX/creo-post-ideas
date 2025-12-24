@@ -81,25 +81,19 @@ MainPreview.vue structure (flattened)
          └─ <MockupRenderer :size>
             └─ <SocialPostMockup :size>
                └─ <PostWrapper :size>
-                  └─ .post-wrapper
-                     └─ .social-post.size--{size}
-                        ├─ .post-bg.{backgroundClass}
-                        │  ├─ .post-bg__color
-                        │  ├─ .post-bg__pattern.{patternClass}.{patternToneClass}
-                        │  ├─ .post-bg__logo        (conditional)
-                        │  ├─ .post-bg__image       (conditional)
-                        │  └─ .post-bg__overlay
-                        │
-                        ├─ <SafeZoneOverlay />      (conditional)
-                        │
-                        ├─ .post-content.post-content--{backgroundTone}
-                        │  └─ .post-canvas
-                        │     ├─ [attr] post-type="{postType | null}"
-                        │     ├─ .info-autolayout-wrapper   (only if postType === "info")
-                        │     └─ <slot />                   (InfoPost, QuotePost, etc.)
-                        │
-                        └─ .post-watermark           (conditional)
-                           └─ <BrandWatermark />
-
+                  ├─ background layers
+                  │  ├─ plain color
+                  │  ├─ pattern
+                  │  ├─ large logo        (conditional)
+                  │  ├─ blurry photo      (conditional)
+                  │  └─ photo overlay     (only with image)
+                  ├─ SafeZoneOverlay
+                  ├─ post content
+                  │  └─ post canvas
+                  │     ├─ safe           (Important information)
+                  │     │  └─ <slot />    (InfoPost, IntroPost, etc.)
+                  │     └─ free           (Decorative elements)
+                  │        └─ <slot />    (InfoPost, IntroPost, etc.)
+                  └─ watermark
 
 ```

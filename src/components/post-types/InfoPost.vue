@@ -1,45 +1,47 @@
 <template>
   <div class="info-post" postType="info">
-    <PostTextBlock :headlineText="headline" :bodyText="body" textAlign="left" />
+    <PostTextBlock v-if="zone === 'safe'" :headlineText="headline" :bodyText="body" />
 
-    <div class="overview-block">
-      <div class="overview-cards">
-        <!-- LEFT CARD (section surface) -->
-        <div class="overview-card overview-card--section">
-          <div class="overview-row overview-row--caption">
-            <i class="fa-solid fa-heart icon-preview"></i>
-            <span>Kies je opmaak</span>
+    <div v-if="zone === 'safe'" class="info-block-flex">
+      <div class="info-block">
+        <div class="info-cards">
+          <!-- LEFT CARD (alt-panel surface) -->
+          <div class="info-card info-card--alt-panel">
+            <div class="info-row info-row--caption">
+              <i class="fa-solid fa-heart post-icon"></i>
+              <span>inhoud</span>
+            </div>
+
+            <div class="info-row info-row--title">
+              <div>Dit is 'info'</div>
+            </div>
+
+            <div class="info-row info-row--text">
+              <div>Kies formaten om layouts te testen.</div>
+            </div>
           </div>
 
-          <div class="overview-row overview-row--title">
-            <div>Dit is 'info'</div>
-          </div>
+          <!-- RIGHT CARD (panel surface) -->
+          <div class="info-card info-card--panel">
+            <div class="info-row info-row--caption">
+              <i class="fa-solid fa-link post-icon"></i>
+              <span>kleur</span>
+            </div>
 
-          <div class="overview-row overview-row--text">
-            <div>Kies een ander formaat om te testen.</div>
+            <div class="info-row info-row--title">
+              <div>Gekleurd...</div>
+            </div>
+
+            <div class="info-row info-row--text">
+              <div>of niet, en allerlei achtergronden.</div>
+            </div>
           </div>
         </div>
 
-        <!-- RIGHT CARD (panel surface) -->
-        <div class="overview-card overview-card--panel">
-          <div class="overview-row overview-row--caption">
-            <i class="fa-solid fa-link icon-preview"></i>
-            <span>Kies je achtergrond</span>
-          </div>
-
-          <div class="overview-row overview-row--title">
-            <div>Zet 'kleurrijk' aan of uit</div>
-          </div>
-
-          <div class="overview-row overview-row--text">
-            <div>Kies daarna een achtergrond uit de lijst.</div>
-          </div>
+        <!-- ACCENT -->
+        <div class="info-accent">
+          <div>Je vindt een stijloverzicht rechts of onderaan. Kopieer met één klik!</div>
         </div>
-      </div>
-
-      <!-- ACCENT -->
-      <div class="overview-accent">
-        <p>Je vindt de verzameling stijlkenmerken in het rechterpaneel. Deze kan je met een klik kopiëren.</p>
       </div>
     </div>
   </div>
@@ -51,6 +53,7 @@ import PostTextBlock from "../mockup/PostTextBlock.vue";
 const { headline, body } = defineProps({
   headline: String,
   body: String,
+  zone: { type: String, required: true },
 });
 </script>
 
@@ -60,100 +63,117 @@ const { headline, body } = defineProps({
    ======================================================= */
 
 .info-post {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  height: 100%;
 }
 
-.overview-block {
+.info-block-flex {
+  flex: 1;
+  margin-bottom: 90px;
+}
+
+.info-block {
   display: flex;
   flex-direction: row;
-  gap: var(--space-20);
   flex-wrap: wrap;
+  height: 100%;
+  flex: 1;
+  gap: var(--space-10);
+  padding: var(--space-10);
 }
 
 /* =========================================================
    CARD SURFACES
    ======================================================= */
 
-.overview-cards {
+.info-cards {
   display: flex;
-  flex: 60%;
-  gap: var(--space-25);
-}
-
-.overview-card {
+  justify-content: space-between;
   flex: 1;
-  padding: var(--space-10) var(--space-25);
-  border-radius: var(--radius-card); /* client input */
-  box-shadow: var(--shadow-card); /* client input */
 }
 
-.overview-card--section {
-  background: var(--ui-section-bg);
-  color: var(--text-on-section);
+.info-card {
+  flex: 0 1 48%;
+  padding: var(--space-5) var(--space-10);
+  border-radius: var(--border-radius); /* client input */
+  border: var(--border-card); /* client input: border width only */
+  box-shadow: var(--shadow-card); /* client input: XY distance,  blur */
 }
 
-.overview-card--panel {
+.info-card--alt-panel {
+  background: var(--ui-alt-panel-bg);
+  color: var(--text-on-alt-panel); /* = dynamic text */
+  opacity: var(--opacity-alt-panel);
+}
+
+.info-card--panel {
   background: var(--ui-panel-bg);
   color: var(--text-on-panel);
+  opacity: var(--opacity-panel);
 }
 
 /* titles override body text */
-.overview-card--section .overview-row--title {
-  color: var(--title-on-section);
+.info-card--alt-panel .info-row--title {
+  color: var(--title-on-alt-panel);
 }
 
-.overview-card--panel .overview-row--title {
+.info-card--panel .info-row--title {
   color: var(--title-on-panel);
 }
 
 /* captions are shared */
-.overview-row--caption {
-  color: var(--ui-caption);
+.info-row--caption {
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-title);
+}
+
+.info-card--panel .info-row--caption {
+  color: var(--dynamic-caption);
+}
+.info-card--alt-panel .info-row--caption {
+  color: var(--dynamic-alt-caption);
 }
 
 /* =========================================================
    ACCENT SURFACE
    ======================================================= */
 
-.overview-accent {
-  padding: var(--space-20) var(--space-30);
-  border-radius: var(--radius-md);
+.info-accent {
+  flex: 0 1 100%;
+  padding: var(--space-10);
+  border-radius: var(--border-radius); /* client input */
+  border: var(--border-card); /* client input: border width only */
+  box-shadow: var(--shadow-card); /* client input: XY distance,  blur */
   background: var(--dynamic-accent);
   color: var(--dynamic-text-accent);
-  font-size: var(--fs-body-lg);
-  font-weight: var(--fw-title);
-  flex: 40%;
-}
-.overview-accent p {
-  margin-bottom: 0;
+  font-size: var(--fs-body-sm);
 }
 
 /* =========================================================
    ROW STRUCTURE
    ======================================================= */
 
-.overview-row {
+.info-row {
   display: flex;
   gap: var(--space-10);
-  padding: var(--space-5) 0;
+  padding-bottom: var(--space-5);
 }
 
 /* typography */
-.overview-row--title {
+.info-row--title {
   font-size: var(--fs-h5);
   line-height: var(--lh-heading);
 }
 
-.overview-row--text {
-  font-size: var(--fs-body);
+.info-row--text {
+  font-size: var(--fs-body-xs);
   line-height: var(--lh-body);
 }
 
 /* icon */
-.icon-preview {
-  font-size: 1.8rem;
+.post-icon {
+  font-size: var(--fs-body-sm);
   padding: var(--space-5) 0;
 }
 </style>

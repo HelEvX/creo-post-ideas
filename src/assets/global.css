@@ -37,6 +37,12 @@
   --secondary-300: #006c7a;
 
   /* --------------------------------------------
+   Secondary range
+--------------------------------------------- */
+
+  /* none present in the default brand */
+
+  /* --------------------------------------------
    Neutral / grayscale
 --------------------------------------------- */
   --neutral-900: #001214;
@@ -58,6 +64,11 @@
   --white-65: rgba(255, 255, 255, 0.65);
   --white-50: rgba(255, 255, 255, 0.5);
   --white-15: rgba(255, 255, 255, 0.15);
+
+  --black-75: rgba(0, 0, 0, 0.85);
+  --black-50: rgba(0, 0, 0, 0.5);
+  --black-25: rgba(0, 0, 0, 0.25);
+  --black-8: rgba(0, 0, 0, 0.08);
 
   /* ------------
    Greens
@@ -104,45 +115,48 @@
   --color-secondary-light: var(--secondary-400);
   --color-secondary-lighter: var(--secondary-300);
 
+  /* if not present, repeat a primary or secondary color */
+  --color-tertiary: var(--secondary-400);
+
   /* ==== BACKGROUNDS & SURFACES ==== */
   --color-background: var(--white);
   --color-surface: var(--neutral-50);
   --color-panel: var(--neutral-200);
   --color-panel-alt: var(--neutral-700);
-  --color-overlay: var(--white-50);
-  --color-overlay-soft: var(--white-15);
-  --color-overlay-accent: rgba(6, 214, 160, 0.5); /* primary 50% */
+
+  /* ==== TRANSPARENT OVERLAYS ==== */
+
+  --color-overlay: var(--white-50); /* NOT DYNAMIC */
+  --color-overlay-soft: var(--white-15); /* NOT DYNAMIC */
+  --color-overlay-accent: rgba(6, 214, 160, 0.5); /* not used */
 
   /* ==== TEXT COLORS ==== */
 
   --color-title: var(--neutral-900);
-  --color-title-alt: var(--secondary-600);
-  --color-subtitle: var(--secondary-400);
+  --color-title-alt: var(--color-tertiary);
+  --color-caption: var(--color-primary-dark);
+  --color-caption-alt: var(--color-tertiary);
 
   /* light bg series */
   --color-text: var(--neutral-800);
   --color-text-soft: var(--neutral-600);
-  --color-disabled-text: var(--neutral-500);
+  --color-disabled: var(--neutral-500);
 
   /* dark bg series */
   --color-text-inverse: var(--white);
   --color-text-soft-inverse: var(--white-85);
-  --color-disabled-text-inverse: var(--white-65);
+  --color-disabled-inverse: var(--white-65);
+  --color-caption-inverse: var(--color-primary-lighter);
 
   /* ==== STRUCTURAL / DARK SECTIONS ==== */
-  --color-header-bg: var(--secondary-500);
+  --color-nav-bg: var(--secondary-500);
   --color-footer-bg: var(--secondary-500);
-  --color-section-dark: var(--secondary-600);
-  --color-section-dark-alt: var(--primary-600);
 
-  /* ==== BORDERS & DIVIDERS ==== */
-  --color-border-light: var(--neutral-100);
-  --color-border-medium: var(--neutral-400);
-  --color-border-dark: var(--neutral-800);
-
-  /* ==== PATTERNS ==== */
-  --pattern-base: var(--ui-primary-bg);
-  --pattern-alt: var(--color-logo-bg);
+  /* ==== BORDERS & SHADOWS ==== */
+  --color-border-light: var(--black-25);
+  --color-border-medium: var(--black-50);
+  --color-border-dark: var(--black-75);
+  --color-shadow: var(--black-25);
 
   /* ==== STATUS / FEEDBACK ==== */
   --color-info: var(--blue-500);
@@ -150,12 +164,6 @@
   --color-danger: var(--red-500);
   --color-success: var(--green-400);
   --color-success-dark: var(--green-500);
-
-  /* ==== UTILITY TONES ==== */
-  --color-shadow: rgba(0, 0, 0, 0.25);
-  --color-logo-bg: rgba(0, 0, 0, 0.08);
-  --color-disabled-bg: var(--neutral-500);
-  --color-disabled-bg-inverse: var(--white-50);
 
   /* ------------------------------------------------------
    OTHER ASSIGNMENTS
@@ -181,6 +189,7 @@
   --fs-body-sm: 1.5rem;
   --fs-body-xs: 1.3rem;
   --fs-body-xxs: 1.1rem;
+  --fs-body-tiny: 0.9rem;
 
   /* Line heights */
   --lh-display: 1.3; /* hero, h1, h2 */
@@ -268,7 +277,7 @@
 
 :root {
   /* Navigation + footer */
-  --ui-nav-bg: var(--color-header-bg);
+  --ui-nav-bg: var(--color-nav-bg);
   --ui-footer-bg: var(--color-footer-bg);
 
   /* Section backgrounds */
@@ -283,7 +292,8 @@
   --ui-alt-panel-bg: var(--color-panel-alt);
   --ui-alt-panel-border: var(--border-width) solid var(--color-border-dark);
 
-  --ui-color-border: 0.25rem solid var(--color-overlay);
+  --opacity-panel: 1;
+  --opacity-alt-panel: 1;
 
   /* Accents */
   --ui-accent: var(--color-primary);
@@ -299,28 +309,19 @@
   /* Heading colors */
   --ui-heading: var(--color-title);
   --ui-heading-alt: var(--color-title-alt);
-  --ui-caption: var(--color-subtitle);
 
   /* MOCKUP BG */
   --ui-primary-bg: var(--color-primary);
   --ui-secondary-bg: var(--color-secondary);
 
   /* ------------------------------------------------------
-   border radius, stroke, shadow (defaults)
+   shadow (defaults)
    ------------------------------------------------------ */
-  --border-color-card: var(--color-border-dark);
-  --border-width-card: var(--border-width);
-  --border-radius-card: var(--radius-md);
-
-  --border-solid-card: var(--border-width-card) solid var(--border-color-card);
 
   /* <offset-x> | <offset-y> | <blur-radius> | <spread-radius> | <color> */
-  --shadow-color-card: var(--color-shadow);
-  --shadow-x-card: 0;
-  --shadow-y-card: 0.1rem;
-  --shadow-blur-card: 0.6rem;
-
-  --shadow-card: var(--shadow-x-card) var(--shadow-y-card) var(--shadow-blur-card) var(--color-shadow);
+  --shadow-x: 0;
+  --shadow-y: 0.1rem;
+  --shadow-blur: 0.6rem;
 
   /* ------------------------------------------------------
    DYNAMIC TEXT SWITCH SETUP
@@ -336,8 +337,8 @@
   --ui-soft-on-light: var(--color-text-soft);
   --ui-soft-on-dark: var(--color-text-soft-inverse);
 
-  --ui-disabled-on-light: var(--color-disabled-text);
-  --ui-disabled-on-dark: var(--color-disabled-text-inverse);
+  --ui-disabled-on-light: var(--color-disabled);
+  --ui-disabled-on-dark: var(--color-disabled-inverse);
 
   --ui-accent-on-primary: var(--color-secondary);
   --ui-accent-on-secondary: var(--color-primary);
@@ -360,6 +361,15 @@
   /* default: dark bg */
   --dynamic-link: var(--ui-link-on-dark);
   --dynamic-hover: var(--ui-hover-on-dark);
+
+  /* patterns */
+  --pattern-base: var(--ui-primary-bg);
+  --pattern-alt: var(--ui-secondary-bg);
+
+  /* border & shadows */
+  --border-radius: var(--radius-md);
+  --border-card: none;
+  --shadow-card: none;
 
   /* ------------------------------------------------------
    UTILITY ASSIGNMENTS
@@ -458,21 +468,18 @@ h5 {
 h1 {
   font-weight: var(--fw-title);
   font-size: var(--fs-h1);
-  /* font-size: clamp(3.6rem, 2.4rem + 2vw, 4.95rem); */
   line-height: var(--lh-display);
   margin: 0 0 var(--space-20);
 }
 h2 {
   font-weight: var(--fw-title);
   font-size: var(--fs-h2);
-  /* font-size: clamp(2.8rem, 2rem + 1.2vw, 3.6rem); */
   line-height: var(--lh-display);
   margin: 0 0 var(--space-30);
 }
 h3 {
   font-weight: var(--fw-title);
   font-size: var(--fs-h3);
-  /* font-size: clamp(2.4rem, 1.8rem + 1vw, 3.15rem); */
   line-height: var(--lh-heading);
 }
 h4 {
@@ -491,7 +498,7 @@ h6 {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--ui-text-on-light);
+  color: var(--dynamic-title);
 }
 
 p,
@@ -511,10 +518,11 @@ button,
   color: inherit;
   font-weight: var(--fw-title);
   font-family: var(--font-body);
-  font-size: 0.75em;
+  font-size: 0.75em; /* smaller */
   padding: var(--space-5) var(--space-20);
   border-radius: var(--radius-sm);
-  border-width: 1px;
+  border-width: var(--border-width);
+  border-style: solid;
   cursor: pointer;
   transition: var(--transition-default);
   display: inline-flex;
@@ -526,7 +534,7 @@ button,
 
 .btn-inactive {
   background-color: transparent;
-  border: var(--ui-panel-border);
+  border-color: var(--color-border-light);
 }
 
 /* ======================================================
@@ -588,14 +596,11 @@ button,
 .btn-neutral {
   background-color: transparent;
   color: var(--dynamic-text);
-  border: var(--ui-panel-border-soft);
-  padding: var(--space-5) var(--space-10);
+  border-color: var(--color-border-light);
   border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: var(--transition-default);
   font-size: inherit;
 
-  /* CRITICAL: prevent parent influence */
+  /* prevent parent influence */
   opacity: 1;
   mix-blend-mode: normal;
 }
@@ -603,7 +608,7 @@ button,
 /* Hover */
 .btn-neutral:hover:not(:disabled) {
   color: var(--dynamic-title);
-  border: var(--ui-panel-border);
+  border-color: var(--color-border-medium);
 }
 
 /* Active */
@@ -657,12 +662,12 @@ textarea {
 
 .pattern--primary {
   --pattern-base: var(--ui-primary-bg);
-  --pattern-alt: var(--color-logo-bg);
+  --pattern-alt: color-mix(in srgb, var(--ui-primary-bg), var(--dynamic-logo) 15%);
 }
 
 .pattern--secondary {
   --pattern-base: var(--ui-secondary-bg);
-  --pattern-alt: var(--white-15);
+  --pattern-alt: color-mix(in srgb, var(--ui-secondary-bg), var(--dynamic-logo) 15%);
 }
 
 /* ======================================================

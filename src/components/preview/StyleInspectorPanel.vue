@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div class="main-preview__styles__other">
+    <!-- <div class="main-preview__styles__other">
       <div>
         <h6>Randen & hoeken</h6>
         <div class="main-preview__styles__corners"></div>
@@ -33,7 +33,7 @@
         <h6>Shaduw</h6>
         <div class="main-preview__styles__shadows"></div>
       </div>
-    </div>
+    </div> -->
   </aside>
 </template>
 
@@ -113,7 +113,7 @@ p.styles__hint {
   font-size: var(--fs-body-xs);
   opacity: 0.8;
   border-bottom: var(--ui-panel-border);
-  margin: 0 0 var(--space-5);
+  margin: 0 0 var(--space-10);
 }
 
 .title-font {
@@ -138,7 +138,7 @@ p.styles__hint {
   flex-direction: column;
 
   width: 100%;
-  gap: var(--space-20);
+  gap: var(--space-10);
 }
 
 .main-preview__styles__swatches {
@@ -171,10 +171,10 @@ p.styles__hint {
   position: absolute;
   right: 0.6rem;
   bottom: 0.45rem;
-  background: rgba(0, 0, 0, 0.7);
+  background: var(--black-75);
   color: var(--white);
   font-size: var(--fs-body-xs);
-  padding: 0.5rem 1rem;
+  padding: var(--space-5) var(--space-10);
   border-radius: var(--radius-sm);
 }
 @media (max-width: 1199px) {

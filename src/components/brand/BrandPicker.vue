@@ -45,7 +45,9 @@ export default {
         root.style.setProperty("--font-body", brand["font-body"]);
       }
 
-      // 5. Inject @import if specified
+      // 5. add corners and shadows!
+
+      // 6. Inject @import if specified
       if (brand.fonts && Array.isArray(brand.fonts.import)) {
         brand.fonts.import.forEach((url) => {
           if (!document.querySelector(`link[href="${url}"]`)) {
@@ -87,8 +89,9 @@ export default {
       <div class="color-swatch primary"></div>
       <div class="color-swatch primary-light"></div>
       <div class="color-swatch secondary"></div>
-      <div class="color-swatch secondary-light"></div>
-      <div class="color-swatch accent-color"></div>
+      <div class="color-swatch accent"></div>
+      <!-- tertiary or secondary-dark -->
+      <div class="color-swatch title"></div>
     </div>
   </div>
 </template>
@@ -144,11 +147,11 @@ select {
   background-color: var(--color-secondary);
 }
 
-.color-swatch.secondary-light {
-  background-color: var(--color-secondary-light);
+.color-swatch.title {
+  background-color: var(--color-title);
 }
 
-.color-swatch.accent-color {
-  background-color: var(--color-title);
+.color-swatch.accent {
+  background-color: var(--color-title-alt);
 }
 </style>

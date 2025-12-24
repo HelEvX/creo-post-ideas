@@ -298,25 +298,24 @@ export function applyTokensToCSS(tokenMap) {
 
 export function evaluateContrastVisual(fgHex, bgHex, minAA = 4.5) {
   if (!fgHex || !bgHex) {
-    return { ratio: 0, level: "fail" };
+    return { ratio: 0, level: "fail", perceptual: false };
   }
 
   const ratio = getContrastRatio(fgHex, bgHex);
 
-  // 1) Pure WCAG ladder first
+  // --- WCAG ladder ---
   if (ratio >= 7) {
-    return { ratio, level: "AAA" }; // prima
+    return { ratio, level: "AAA", perceptual: false };
   }
   if (ratio >= minAA) {
-    return { ratio, level: "AA" }; // goed
+    return { ratio, level: "AA", perceptual: false };
   }
   if (ratio >= 3) {
-    return { ratio, level: "AA Large" }; // beperkt
+    return { ratio, level: "AA Large", perceptual: false };
   }
 
-  // 2) Perceptual override on near-miss mid-tone backgrounds
+  // --- Perceptual override check ---
   const [, s, l] = rgbToHsl(anyToRgb(bgHex));
-
   const isRichMidTone = s >= 0.45 && l >= 0.35 && l <= 0.72;
 
   const white = "#ffffff";
@@ -327,12 +326,13 @@ export function evaluateContrastVisual(fgHex, bgHex, minAA = 4.5) {
 
   const best = Math.max(contrastWhite, contrastBlack);
 
-  // If background is a rich mid-toned color and best text is near acceptable
-  // treat it as a perceptual pass
   if (isRichMidTone && best >= 3.2) {
-    return { ratio, level: "perceptual-pass" };
+    return {
+      ratio,
+      level: "AA Large", // stays beperkt
+      perceptual: true, // THIS IS THE KEY
+    };
   }
 
-  // 3) Real fail
-  return { ratio, level: "fail" };
+  return { ratio, level: "fail", perceptual: false };
 }

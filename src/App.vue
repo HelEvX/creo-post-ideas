@@ -135,10 +135,10 @@
       <div class="container">
         <div class="row">
           <div class="col-12 col-md-6">
-            <p>_webpage by <span>Creo Websolutions</span></p>
+            <a href="#">Privacy</a>
           </div>
           <div class="col-12 col-md-6 right">
-            <a href="#">Privacy</a>
+            <p>_webpage by <span>Creo Websolutions</span></p>
           </div>
         </div>
       </div>
@@ -224,10 +224,15 @@ export default {
       const softDark = cs.getPropertyValue("--color-text-soft").trim();
       const softLight = cs.getPropertyValue("--color-text-soft-inverse").trim();
 
-      const disabledDark = cs.getPropertyValue("--color-disabled-text").trim();
-      const disabledLight = cs.getPropertyValue("--color-disabled-text-inverse").trim();
+      const disabledDark = cs.getPropertyValue("--color-disabled").trim();
+      const disabledLight = cs.getPropertyValue("--color-disabled-inverse").trim();
 
-      const titleDark = cs.getPropertyValue("--ui-heading").trim();
+      const titleDark = cs.getPropertyValue("--color-title").trim();
+
+      const captionDark = cs.getPropertyValue("--color-caption").trim();
+      const captionLight = cs.getPropertyValue("--color-caption-inverse").trim();
+
+      const captionAltDark = cs.getPropertyValue("--color-caption-alt").trim();
 
       function apply(surfaceKey, bgVarName) {
         const bg = cs.getPropertyValue(bgVarName).trim();
@@ -239,16 +244,20 @@ export default {
         if (mode === "dark") {
           root.style.setProperty(`--text-on-${surfaceKey}`, dark);
           root.style.setProperty(`--title-on-${surfaceKey}`, titleDark);
+          root.style.setProperty(`--caption-on-${surfaceKey}`, captionDark);
+          root.style.setProperty(`--alt-caption-on-${surfaceKey}`, captionAltDark);
           root.style.setProperty(`--text-soft-on-${surfaceKey}`, softDark);
-          root.style.setProperty(`--text-disabled-on-${surfaceKey}`, disabledDark);
+          root.style.setProperty(`--disabled-on-${surfaceKey}`, disabledDark);
           root.style.setProperty(`--link-on-${surfaceKey}`, softDark);
           root.style.setProperty(`--hover-on-${surfaceKey}`, titleDark);
           root.style.setProperty(`--logo-on-${surfaceKey}`, titleDark);
         } else {
           root.style.setProperty(`--text-on-${surfaceKey}`, light);
           root.style.setProperty(`--title-on-${surfaceKey}`, light);
+          root.style.setProperty(`--caption-on-${surfaceKey}`, captionLight);
+          root.style.setProperty(`--alt-caption-on-${surfaceKey}`, light);
           root.style.setProperty(`--text-soft-on-${surfaceKey}`, softLight);
-          root.style.setProperty(`--text-disabled-on-${surfaceKey}`, disabledLight);
+          root.style.setProperty(`--disabled-on-${surfaceKey}`, disabledLight);
           root.style.setProperty(`--link-on-${surfaceKey}`, softLight);
           root.style.setProperty(`--hover-on-${surfaceKey}`, light);
           root.style.setProperty(`--logo-on-${surfaceKey}`, light);
@@ -256,12 +265,12 @@ export default {
       }
 
       const surfaces = [
-        ["nav", "--ui-nav-bg"],
-        ["footer", "--ui-footer-bg"],
-        ["section", "--ui-section-bg"],
+        ["nav", "--ui-nav-bg"], // used
+        ["footer", "--ui-footer-bg"], // used
+        ["section", "--ui-section-bg"], // used
         ["alt-section", "--ui-alt-section-bg"],
-        ["panel", "--ui-panel-bg"],
-        ["alt-panel", "--ui-alt-panel-bg"],
+        ["panel", "--ui-panel-bg"], // used
+        ["alt-panel", "--ui-alt-panel-bg"], // used
         ["primary", "--ui-primary-bg"], // changed
         ["secondary", "--ui-secondary-bg"], // changed
       ];
@@ -270,14 +279,18 @@ export default {
 
       const textOnSection = cs.getPropertyValue("--text-on-section").trim();
       const titleOnSection = cs.getPropertyValue("--title-on-section").trim();
+      const captionOnPanel = cs.getPropertyValue("--caption-on-panel").trim();
+      const captionOnAltPanel = cs.getPropertyValue("--alt-caption-on-alt-panel").trim();
       const softOnSection = cs.getPropertyValue("--text-soft-on-section").trim();
-      const disabledOnSection = cs.getPropertyValue("--text-disabled-on-section").trim();
+      const disabledOnSection = cs.getPropertyValue("--disabled-on-section").trim();
       const linkOnFooter = cs.getPropertyValue("--link-on-footer").trim();
       const hoverOnFooter = cs.getPropertyValue("--hover-on-footer").trim();
       const logoOnNav = cs.getPropertyValue("--logo-on-nav").trim();
 
       if (textOnSection) root.style.setProperty("--dynamic-text", textOnSection);
       if (titleOnSection) root.style.setProperty("--dynamic-title", titleOnSection);
+      if (captionOnPanel) root.style.setProperty("--dynamic-caption", captionOnPanel);
+      if (captionOnAltPanel) root.style.setProperty("--dynamic-alt-caption", captionOnAltPanel);
       if (softOnSection) root.style.setProperty("--dynamic-soft", softOnSection);
       if (disabledOnSection) root.style.setProperty("--dynamic-disabled", disabledOnSection);
       if (linkOnFooter) root.style.setProperty("--dynamic-link", linkOnFooter);
@@ -316,9 +329,6 @@ export default {
           root.style.setProperty(cssVar, v);
         }
       }
-
-      root.style.setProperty("--ig-tile-bg", (data["color-primary"] || "#888") + "15");
-      root.style.setProperty("--ig-tile-fg", data["color-text-soft"] || "#444");
 
       await this.$nextTick();
       this.brandTokens = { ...data, slug };
@@ -382,13 +392,15 @@ Stylings for components specific to the app shell
   padding: var(--space-10) 0;
 }
 
-.site-footer p {
+.site-footer p,
+.site-footer a {
   color: var(--dynamic-link);
   margin-bottom: 0;
+  font-size: var(--fs-body-sm);
 }
 
 .site-footer p span {
-  color: var(--dynamic-accent);
+  color: var(--dynamic-caption);
 }
 
 /* ----------------------------------------------------
@@ -401,12 +413,12 @@ Stylings for components specific to the app shell
 }
 h1.hero-title {
   font-size: var(--fs-hero);
-  color: var(--ui-heading);
+  color: var(--dynamic-title);
 }
 p.hero-subtitle {
   font-size: var(--fs-body-lg);
   font-weight: var(--fw-title);
-  color: var(--text-soft-on-hero);
+  color: var(--ui-heading-alt);
   margin-bottom: 0;
 }
 
@@ -423,11 +435,11 @@ p.hero-subtitle {
 
 /* Section title colors */
 .section h2 {
-  color: var(--ui-heading-alt);
+  color: var(--ui-heading);
 }
 
 .section h3 {
-  color: var(--ui-caption);
+  color: var(--ui-heading-alt);
 }
 
 .section h4 {
@@ -477,7 +489,6 @@ p.hero-subtitle {
 .app__canvas {
   background: var(--ui-section-bg);
   border-radius: var(--radius-lg);
-  /* border: var(--ui-panel-border-soft); */
   padding: var(--space-25);
 }
 
@@ -494,7 +505,7 @@ p.hero-subtitle {
 
 .app__sidebar {
   border-radius: var(--radius-lg);
-  background: var(--ui-nav-bg);
+  background: var(--ui-panel-bg);
   margin-left: var(--space-25);
   margin-right: var(--space-25);
 }

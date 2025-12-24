@@ -124,7 +124,7 @@ const photoSrc = ref(stockImage);
 const postContent = {
   info: {
     headline: "Welkom",
-    body: "Kies een kleurrecept uit en controleer het contrast. ",
+    body: "Blader door de stijlengalerij en controleer het contrast. ",
   },
   headline: {
     headline: "Win tijd door je processen te automatiseren.",
@@ -136,8 +136,11 @@ const postContent = {
     body: "We bouwen digitale ervaringen die merken versterken en teams efficiënter maken.",
   },
   quote: {
-    quote: "De beste software is diegene die je nooit in de weg zit.",
-    author: "Sarah De Smet, Project Manager",
+    quote: "We zijn super tevreden met de samenwerking en het resultaat was fantastisch!",
+    author: "Sarah De Smet",
+    authorName: "Sarah De Smet",
+    authorRole: "Project Manager",
+    avatar: "/avatars/sarah.webp",
   },
   product: {
     name: "Creo Dashboard Suite",

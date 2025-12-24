@@ -94,6 +94,7 @@ function select(id) {
   justify-content: flex-end;
   gap: var(--space-10);
   text-align: center;
+  color: var(--dynamic-soft);
   padding: var(--space-10);
   font-size: var(--fs-body-xxs);
   line-height: 1;
@@ -101,6 +102,9 @@ function select(id) {
 }
 
 .safezone-toggle input {
-  height: 1.5rem;
+  cursor: pointer;
+  height: 2rem;
+  width: auto;
+  accent-color: var(--ui-accent-hover);
 }
 </style>

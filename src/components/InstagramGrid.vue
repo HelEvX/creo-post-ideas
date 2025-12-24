@@ -167,18 +167,11 @@ function highlightIconStyle(file, i) {
     backgroundColor: `var(${highlightPairs[i].fg})`,
   };
 }
-
-console.log(props.ig.highlights);
 </script>
 
 <style>
 @import url("https://use.typekit.net/xls1ldz.css");
 @import "@/assets/patterns.css";
-
-:root {
-  --ig-tile-bg: #ffffff;
-  --ig-tile-fg: #333333;
-}
 
 /* FONTS & COLORS like Instagram */
 #instagram-preview {

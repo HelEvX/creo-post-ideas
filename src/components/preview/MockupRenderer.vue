@@ -8,8 +8,15 @@
     :usePhoto="designProps.usePhoto"
     :photoSrc="designProps.photoSrc"
     :showSafeZone="showSafeZone"
+    :postType="postType"
     @resolved-visuals="onResolvedVisuals">
-    <component :is="currentPostComponent" v-bind="postData" />
+    <template #safe>
+      <component :is="currentPostComponent" v-bind="postData" zone="safe" />
+    </template>
+
+    <template #free>
+      <component :is="currentPostComponent" v-bind="postData" zone="free" />
+    </template>
   </SocialPostMockup>
 </template>
 

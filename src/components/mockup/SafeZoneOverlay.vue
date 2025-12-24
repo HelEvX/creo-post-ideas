@@ -26,7 +26,7 @@ defineProps({
 
 .unsafe {
   position: absolute;
-  background: var(--color-shadow);
+  background: var(--white-50);
 }
 
 /* top */

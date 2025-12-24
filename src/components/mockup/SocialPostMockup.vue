@@ -23,26 +23,24 @@
 
       <SafeZoneOverlay v-if="showSafeZone" />
 
-      <div class="post-content" :class="`post-content--${backgroundTone}`" :style="mockupTextVars">
-        <div
-          class="post-canvas"
-          :post-type="$attrs.postType || null"
-          :class="{
-            'info-autolayout-wrapper': $attrs.postType === 'info',
-          }">
-          <slot />
+      <div
+        class="post-content"
+        :class="`post-content--${backgroundTone}`"
+        :style="mockupTextVars"
+        :post-type="postType || null">
+        <div class="post-free">
+          <slot name="free" />
         </div>
-      </div>
-
-      <div class="post-watermark" v-if="showBrand">
-        <BrandWatermark />
+        <div class="post-safe">
+          <slot name="safe" />
+        </div>
+        <div class="post-watermark"></div>
       </div>
     </div>
   </PostWrapper>
 </template>
 
 <script setup>
-import BrandWatermark from "@/components/brand/BrandWatermark.vue";
 import PostWrapper from "@/components/mockup/PostWrapper.vue";
 import { ref, watch, computed } from "vue";
 import { getTextModeForBackground } from "@/utils/colorLogic.js";
@@ -66,11 +64,11 @@ const props = defineProps({
   brandLogo: String,
   usePhoto: Boolean,
   photoSrc: String,
-  showBrand: Boolean,
   showSafeZone: {
     type: Boolean,
     default: false,
   },
+  postType: String,
 });
 
 /* ----------------------------------------------
@@ -199,7 +197,8 @@ const resolvedVisualContext = computed(() => ({
   },
 
   surfaces: {
-    section: resolveHex("--ui-section-bg"),
+    altSection: resolveHex("--ui-alt-section-bg"), // neutral bg
+    altPanel: resolveHex("--ui-alt-panel-bg"),
     panel: resolveHex("--ui-panel-bg"),
   },
 
@@ -208,11 +207,18 @@ const resolvedVisualContext = computed(() => ({
   },
 
   textStatic: {
-    titleOnSection: resolveHex("--title-on-section"),
+    titleOnSection: resolveHex("--dynamic-title"),
+    bodyOnSection: resolveHex("--dynamic-text"),
+
     titleOnPanel: resolveHex("--title-on-panel"),
-    bodyOnSection: resolveHex("--text-on-section"),
     bodyOnPanel: resolveHex("--text-on-panel"),
-    caption: resolveHex("--ui-caption"),
+    captionOnPanel: resolveHex("--dynamic-caption"),
+
+    titleOnAltPanel: resolveHex("--title-on-alt-panel"),
+    bodyOnAltPanel: resolveHex("--text-on-alt-panel"),
+    captionOnAltPanel: resolveHex("--dynamic-alt-caption"),
+
+    accentText: resolveHex("--dynamic-text"),
   },
 
   overlay: {
@@ -290,6 +296,11 @@ watch(
 
 /* fallback */
 .social-post {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+
+  /* fallback */
   --safe-left: 2.5rem;
   --safe-right: 2.5rem;
   --safe-top: 2.5rem;
@@ -303,78 +314,40 @@ watch(
    ========================================= */
 
 .post-content {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  max-width: none;
   color: inherit;
-}
-
-.post-title {
-  font-family: var(--font-title);
-  font-size: var(--fs-h2);
-  line-height: var(--lh-heading);
-  margin-bottom: var(--space-20);
-}
-
-.post-subtitle {
-  font-size: var(--fs-body-lg);
-  line-height: var(--lh-body);
-}
-
-.post-watermark {
   position: absolute;
-  right: var(--safe-right);
-  bottom: var(--safe-bottom);
-  width: 4rem;
-  height: 4rem;
-  opacity: 0.6;
-}
-
-.post-canvas {
-  height: 100%;
-  padding: var(--space-20);
-}
-
-/* InfoPost auto-layout only activates when needed */
-.info-autolayout-wrapper {
-  display: flex;
-  flex-direction: column;
   width: 100%;
   height: 100%;
 }
 
-/* =========================================
-   LABELS
-   ========================================= */
-
-.post-label {
-  display: flex;
-  gap: var(--space-10);
-  align-items: center;
-  margin-bottom: var(--space-30);
+.post-safe {
+  position: absolute;
+  top: var(--safe-top);
+  right: var(--safe-right);
+  bottom: var(--safe-bottom);
+  left: var(--safe-left);
 }
 
-.post-label__icon {
-  width: 4rem;
-  height: 4rem;
+.post-free {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  inset: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.post-label__icon i {
-  font-size: 40px;
-}
-
-.post-label-icon__img {
-  object-fit: contain;
-}
-
-.label--large {
-  font-size: var(--fs-body-lg);
-}
-.label--small {
-  font-size: var(--fs-body-sm);
+.post-watermark {
+  margin: var(--space-20);
+  width: var(--space-50);
+  height: var(--space-50);
+  opacity: 0.6;
+  background: var(--red-500);
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 
 /* =========================================
@@ -398,7 +371,10 @@ watch(
   pointer-events: none;
 }
 
-/* plain backgrounds - DYNAMIC */
+/* ===============================================
+   PLAIN BACKGROUND: primary | secondary | neutral
+   =============================================== */
+
 .bg--plain-primary .post-bg__color {
   background: var(--ui-primary-bg);
 }
@@ -412,7 +388,7 @@ watch(
 }
 
 /* =========================================
-   LOGO
+   LOGO BACKGROUND
    ========================================= */
 
 .post-bg__logo {
@@ -432,7 +408,7 @@ watch(
 }
 
 /* =========================================
-   IMAGE
+   IMAGE BACKGROUND
    ========================================= */
 
 .post-bg__image {
@@ -465,27 +441,5 @@ watch(
 .bg--image.bg--plain-secondary .post-bg__overlay {
   background: var(--ui-secondary-bg);
   opacity: 0.6;
-}
-
-/* ============================================
-   BASE AUTO-LAYOUT (applies to all ratios)
-=============================================== */
-
-.info-autolayout {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-20);
-  padding: var(--space-40);
-  width: 100%;
-  height: 100%;
-  overflow: hidden; /* never scroll, like a Figma frame */
-}
-
-/* TITLE + BODY should handle shrinkage */
-.info-autolayout .post-text-block__headline {
-  flex-shrink: 0;
-}
-.info-autolayout .post-text-block__body {
-  flex-shrink: 1;
 }
 </style>
