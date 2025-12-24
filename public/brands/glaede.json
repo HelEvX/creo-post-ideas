@@ -9,6 +9,8 @@
     ]
   },
 
+  "_comment-1": "COLOR PALETTE",
+
   "color-primary": "#fff3a5",
   "color-primary-dark": "#ffe53d",
   "color-primary-darker": "#f5d400",
@@ -21,38 +23,35 @@
   "color-secondary-light": "#7d7c7b",
   "color-secondary-lighter": "#949392",
 
+  "_comment-1a": "TERTIARY/accent color - if not present, repeat secondary-dark",
+
+  "color-tertiary": "#656362",
+
+  "_comment-2": "BACKGROUND COLORS",
+
   "color-surface": "#ffffff",
   "color-panel": "#fffbe0",
   "color-panel-alt": "#f3f3f3",
-  "color-overlay-accent": "rgba(255, 255, 255, 0.75)",
+  "color-nav-bg": "#ffffff",
+  "color-footer-bg": "#f3f3f3",
+
+  "_comment-3": "TEXT COLORS (only dark colors, not 'reversed')",
 
   "color-title": "#12100e",
-  "color-title-alt": "#f5d400",
-  "color-subtitle": "#12100e",
   "color-text": "#12100e",
-  "color-text-soft": "rgba(18, 16, 14, 0.65)",
+  "color-text-soft": "#4d4c4a",
 
-  "color-header-bg": "#ffffff",
-  "color-footer-bg": "#f3f3f3",
-  "color-section-dark": "#f5d400",
-  "color-section-dark-alt": "#fff3a5",
+  "_comment-4": "DISABLED COLOR (mid-gray)",
 
-  "color-border-dark": "#333231",
-  "color-border-medium": "#f3f3f3",
-  "color-border-light": "#dadada",
+  "color-disabled": "#acacab",
+
+  "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
 
   "color-info": "#3c6e71",
   "color-warning": "#ffbb31",
   "color-danger": "#db3a34",
   "color-success": "#5c946e",
   "color-success-dark": "#3f654b",
-
-  "color-disabled-bg": "#acacab",
-  "color-disabled-text": "#acacab",
-
-  "color-text-inverse": "#ffffff",
-  "color-text-soft-inverse": "rgba(255,255,255,0.85)",
-  "color-disabled-text-inverse": "rgba(255,255,255,0.65)",
 
   "ig": {
     "avatar": "glaede.webp",

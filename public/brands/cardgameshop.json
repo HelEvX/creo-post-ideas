@@ -7,42 +7,49 @@
     "import": ["https://use.typekit.net/xls1ldz.css"]
   },
 
+  "_comment-1": "COLOR PALETTE",
+
   "color-primary": "#cb9e01",
   "color-primary-dark": "#a17f00",
   "color-primary-darker": "#7f6301",
   "color-primary-light": "#d8a801",
   "color-primary-lighter": "#fec601",
+
   "color-secondary": "#375fa8",
   "color-secondary-dark": "#2e4f8b",
   "color-secondary-darker": "#2b4978",
   "color-secondary-light": "#7798cb",
   "color-secondary-lighter": "#9cb4d9",
+
+  "_comment-1a": "TERTIARY/accent color - if not present, repeat secondary-dark",
+
+  "color-tertiary": "#2e4f8b",
+
+  "_comment-2": "BACKGROUND COLORS",
+
   "color-surface": "#ffffff",
   "color-panel": "#e1e9f4",
   "color-panel-alt": "#96b2d9",
-  "color-overlay-accent": "rgba(225, 233, 244, 0.25)",
+  "color-nav-bg": "#3b5ea8",
+  "color-footer-bg": "#3b5ea8",
+
+  "_comment-3": "TEXT COLORS (only dark colors, not 'reversed')",
+
   "color-title": "#5b86c4",
-  "color-title-alt": "#302b27",
-  "color-subtitle": "#fec601",
   "color-text": "#302b27",
   "color-text-soft": "#787572",
-  "color-header-bg": "#3b5ea8",
-  "color-footer-bg": "#3b5ea8",
-  "color-section-dark": "#302b27",
-  "color-section-dark-alt": "#2e4f8b",
-  "color-border-dark": "#2a4982",
-  "color-border-medium": "#809fce",
-  "color-border-light": "#b9c9e9",
+
+  "_comment-4": "DISABLED COLOR (mid-gray)",
+
+  "color-disabled": "#cbcac9",
+
+  "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
+
   "color-info": "#4271b9",
   "color-warning": "#d8a801",
   "color-danger": "#ec0b43",
   "color-success": "#4baa74",
   "color-success-dark": "#3f8f62",
-  "color-disabled-bg": "#cbcac9",
-  "color-disabled-text": "#cbcac9",
-  "color-text-inverse": "#ffffff",
-  "color-text-soft-inverse": "rgba(255,255,255,0.85)",
-  "color-disabled-text-inverse": "rgba(255,255,255,0.65)",
 
   "ig": {
     "avatar": "cardgameshop.webp",

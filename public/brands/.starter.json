@@ -7,6 +7,8 @@
     "import": [""]
   },
 
+  "_comment-1": "COLOR PALETTE",
+
   "color-primary": "",
   "color-primary-dark": "",
   "color-primary-darker": "",
@@ -19,38 +21,35 @@
   "color-secondary-light": "",
   "color-secondary-lighter": "",
 
+  "_comment-1a": "TERTIARY/accent color - if not present, repeat secondary-dark",
+
+  "color-tertiary": "#",
+
+  "_comment-2": "BACKGROUND COLORS",
+
   "color-surface": "",
   "color-panel": "",
   "color-panel-alt": "",
-  "color-overlay-accent": "",
+  "color-nav-bg": "",
+  "color-footer-bg": "",
+
+  "_comment-3": "TEXT COLORS (dark only!)",
 
   "color-title": "",
-  "color-title-alt": "",
-  "color-subtitle": "",
   "color-text": "",
   "color-text-soft": "",
 
-  "color-header-bg": "",
-  "color-footer-bg": "",
-  "color-section-dark": "",
-  "color-section-dark-alt": "",
+  "_comment-4": "DISABLED COLOR (mid-gray)",
 
-  "color-border-dark": "",
-  "color-border-medium": "",
-  "color-border-light": "",
+  "color-disabled": "808080",
+
+  "_comment-5": "UTILITY COLORS",
 
   "color-info": "",
   "color-warning": "",
   "color-danger": "",
   "color-success": "",
   "color-success-dark": "",
-
-  "color-disabled-bg": "",
-  "color-disabled-text": "",
-
-  "color-text-inverse": "#ffffff",
-  "color-text-soft-inverse": "rgba(255,255,255,0.85)",
-  "color-disabled-text-inverse": "rgba(255,255,255,0.65)",
 
   "ig": {
     "avatar": "client.webp",

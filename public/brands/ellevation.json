@@ -10,6 +10,8 @@
     ]
   },
 
+  "_comment-1": "COLOR PALETTE",
+
   "color-primary": "#E4002B",
   "color-primary-dark": "#C30025",
   "color-primary-darker": "#9F001D",
@@ -22,38 +24,35 @@
   "color-secondary-light": "#FCD34D",
   "color-secondary-lighter": "#FEF6F2",
 
+  "_comment-1a": "TERTIARY/accent color - if not present, repeat secondary-dark",
+
+  "color-tertiary": "#FEAE12",
+
+  "_comment-2": "BACKGROUND COLORS",
+
   "color-surface": "#FFFFFF",
   "color-panel": "#FAFAF9",
   "color-panel-alt": "#FCD34D",
-  "color-overlay-accent": "rgba(252, 211, 77, 0.5)",
+  "color-nav-bg": "#FFFFFF",
+  "color-footer-bg": "#2E2D2A",
+
+  "_comment-3": "TEXT COLORS (only dark colors, not 'reversed')",
 
   "color-title": "#1D1D1B",
-  "color-title-alt": "#E4002B",
-  "color-subtitle": "#2E2D2A",
   "color-text": "#45443F",
   "color-text-soft": "#7C7B76",
 
-  "color-header-bg": "#FFFFFF",
-  "color-footer-bg": "#2E2D2A",
-  "color-section-dark": "#F5F5F4",
-  "color-section-dark-alt": "#FEF6F2",
+  "_comment-4": "DISABLED COLOR (mid-gray)",
 
-  "color-border-dark": "#2E2D2A",
-  "color-border-medium": "#5E5D59",
-  "color-border-light": "#D1D0CC",
+  "color-disabled": "#7C7B76",
+
+  "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
 
   "color-info": "#009DE4",
   "color-warning": "#FF9812",
   "color-danger": "#E4002B",
   "color-success": "#00E447",
   "color-success-dark": "#00CC41",
-
-  "color-disabled-bg": "#7C7B76",
-  "color-disabled-text": "#7C7B76",
-
-  "color-text-inverse": "#ffffff",
-  "color-text-soft-inverse": "rgba(255,255,255,0.85)",
-  "color-disabled-text-inverse": "rgba(255,255,255,0.65)",
 
   "ig": {
     "avatar": "ellevation.webp",

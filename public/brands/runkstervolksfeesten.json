@@ -7,42 +7,49 @@
     "import": ["https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"]
   },
 
+  "_comment-1": "COLOR PALETTE",
+
   "color-primary": "#1b1464",
   "color-primary-dark": "#0d004c",
   "color-primary-darker": "#040019",
   "color-primary-light": "#2D22AA",
   "color-primary-lighter": "#3628CC",
+
   "color-secondary": "#fae82e",
   "color-secondary-dark": "#efdb06",
   "color-secondary-darker": "#d6c405",
   "color-secondary-light": "#f6eb76",
   "color-secondary-lighter": "#f9f2a6",
+
+  "_comment-1a": "TERTIARY/accent color - if not present, repeat secondary-dark",
+
+  "color-tertiary": "#c3392a",
+
+  "_comment-2": "BACKGROUND COLORS",
+
   "color-surface": "#f9f2a6",
   "color-panel": "#fae82e",
   "color-panel-alt": "#fcf8d1",
-  "color-overlay-accent": "rgba(252, 248, 209, 0.65)",
-  "color-title": "#1b1464",
-  "color-title-alt": "#0d004c",
-  "color-subtitle": "#c3392a",
-  "color-text": "#0d004c",
-  "color-text-soft": "#fcf077",
-  "color-header-bg": "#fae82e",
+  "color-nav-bg": "#fae82e",
   "color-footer-bg": "#1b1464",
-  "color-section-dark": "#fae82e",
-  "color-section-dark-alt": "#f9f2a6",
-  "color-border-dark": "#1b1464",
-  "color-border-medium": "#fae82e",
-  "color-border-light": "#fcf8d1",
+
+  "_comment-3": "TEXT COLORS (only dark colors, not 'reversed')",
+
+  "color-title": "#1b1464",
+  "color-text": "#0d004c",
+  "color-text-soft": "#9a9a9c",
+
+  "_comment-4": "DISABLED COLOR (mid-gray)",
+
+  "color-disabled": "#c7c7c8",
+
+  "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
+
   "color-info": "#1b1464",
   "color-warning": "#efdb06",
   "color-danger": "#c3392a",
   "color-success": "#2ecc71",
   "color-success-dark": "#27ad60",
-  "color-disabled-bg": "#c7c7c8",
-  "color-disabled-text": "#c7c7c8",
-  "color-text-inverse": "#ffffff",
-  "color-text-soft-inverse": "rgba(255,255,255,0.85)",
-  "color-disabled-text-inverse": "rgba(255,255,255,0.65)",
 
   "ig": {
     "avatar": "runkstervolksfeesten.webp",

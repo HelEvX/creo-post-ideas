@@ -9,42 +9,49 @@
     ]
   },
 
+  "_comment-1": "COLOR PALETTE",
+
   "color-primary": "#ad836c",
   "color-primary-dark": "#946952",
   "color-primary-darker": "#795c4c",
   "color-primary-light": "#ddbea9",
   "color-primary-lighter": "#eddace",
+
   "color-secondary": "#6b705c",
   "color-secondary-dark": "#575b4b",
   "color-secondary-darker": "#505445",
   "color-secondary-light": "#a5a58d",
   "color-secondary-lighter": "#b7b7a4",
+
+  "_comment-1a": "TERTIARY/accent color - if not present, repeat secondary-dark",
+
+  "color-tertiary": "#575b4b",
+
+  "_comment-2": "BACKGROUND COLORS",
+
   "color-surface": "#f0f0ee",
-  "color-panel": "#6b705c",
+  "color-panel": "#e0d5cd",
   "color-panel-alt": "#6b705c",
-  "color-overlay-accent": "rgba(173, 131, 108, 0.25)",
+  "color-nav-bg": "#ffffff",
+  "color-footer-bg": "#ffffff",
+
+  "_comment-3": "TEXT COLORS (only dark colors, not 'reversed')",
+
   "color-title": "#3f3f3f",
-  "color-title-alt": "#ad836c",
-  "color-subtitle": "#b7b7a4",
   "color-text": "#828282",
   "color-text-soft": "#ad836c",
-  "color-header-bg": "#ffffff",
-  "color-footer-bg": "#ffffff",
-  "color-section-dark": "#6b705c",
-  "color-section-dark-alt": "#eddace",
-  "color-border-dark": "#565656",
-  "color-border-medium": "#e0d5cd",
-  "color-border-light": "#dcdcdc",
+
+  "_comment-4": "DISABLED COLOR (mid-gray)",
+
+  "color-disabled": "#a8a8a8",
+
+  "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
+
   "color-info": "#78c4e5",
   "color-warning": "#ffbb31",
   "color-danger": "#db504a",
   "color-success": "#b3e27c",
   "color-success-dark": "#88d232",
-  "color-disabled-bg": "#a8a8a8",
-  "color-disabled-text": "#a8a8a8",
-  "color-text-inverse": "#ffffff",
-  "color-text-soft-inverse": "rgba(255,255,255,0.85)",
-  "color-disabled-text-inverse": "rgba(255,255,255,0.65)",
 
   "ig": {
     "avatar": "kenis.webp",

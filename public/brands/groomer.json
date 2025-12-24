@@ -7,42 +7,49 @@
     "import": ["https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap"]
   },
 
+  "_comment-1": "COLOR PALETTE",
+
   "color-primary": "#385f3b",
   "color-primary-dark": "#426744",
   "color-primary-darker": "#557656",
   "color-primary-light": "#5e7e5f",
   "color-primary-lighter": "#d7dfd7",
+
   "color-secondary": "#ced574",
   "color-secondary-dark": "#b0b664",
   "color-secondary-darker": "#8f9552",
   "color-secondary-light": "#D9DE91",
   "color-secondary-lighter": "#E4E8B0",
+
+  "_comment-1a": "TERTIARY/accent color - if not present, repeat secondary-dark",
+
+  "color-tertiary": "#a76340",
+
+  "_comment-2": "BACKGROUND COLORS",
+
   "color-surface": "#f7f9ef",
   "color-panel": "#eff2d6",
   "color-panel-alt": "#d7dfd7",
-  "color-overlay-accent": "rgba(56, 95, 59, 0.75)",
+  "color-nav-bg": "#f7f9ef",
+  "color-footer-bg": "#5e7e5f",
+
+  "_comment-3": "TEXT COLORS (only dark colors, not 'reversed')",
+
   "color-title": "#3f3f3f",
-  "color-title-alt": "#a76340",
-  "color-subtitle": "#3f3f3f",
   "color-text": "#3f3f3f",
   "color-text-soft": "#828282",
-  "color-header-bg": "#f7f9ef",
-  "color-footer-bg": "#5e7e5f",
-  "color-section-dark": "#557656",
-  "color-section-dark-alt": "#426744",
-  "color-border-dark": "#3f3f3f",
-  "color-border-medium": "#cfcfcf",
-  "color-border-light": "#e2e2e2",
+
+  "_comment-4": "DISABLED COLOR (mid-gray)",
+
+  "color-disabled": "#969696",
+
+  "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
+
   "color-info": "#22aed1",
   "color-warning": "#f3b61f",
   "color-danger": "#e54b4b",
   "color-success": "#9baf9d",
   "color-success-dark": "#385f3b",
-  "color-disabled-bg": "#969696",
-  "color-disabled-text": "#969696",
-  "color-text-inverse": "#ffffff",
-  "color-text-soft-inverse": "rgba(255,255,255,0.85)",
-  "color-disabled-text-inverse": "rgba(255,255,255,0.65)",
 
   "ig": {
     "avatar": "groomer.webp",
@@ -58,13 +65,13 @@
     "url": "https://www.groomer.be",
     "highlightIcon": "groomer-small.svg",
     "highlights": [
-      { "label": "TEAM", "bg": "#385f3b" },
-      { "label": "PROMOS", "bg": "#ced574" },
-      { "label": "SHOP", "bg": "#426744" },
-      { "label": "SERVICES", "bg": "#b0b664" },
-      { "label": "BLOG", "bg": "#557656" },
-      { "label": "FAQ", "bg": "#8f9552" },
-      { "label": "REVIEWS", "bg": "#5e7e5f" }
+      { "label": "TEAM" },
+      { "label": "PROMOS" },
+      { "label": "SHOP" },
+      { "label": "SERVICES" },
+      { "label": "BLOG" },
+      { "label": "FAQ" },
+      { "label": "REVIEWS" }
     ]
   }
 }

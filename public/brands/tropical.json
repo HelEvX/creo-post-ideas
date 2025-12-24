@@ -9,50 +9,57 @@
     ]
   },
 
+  "_comment-1": "COLOR PALETTE",
+
   "color-primary": "#ef476f",
   "color-primary-dark": "#eb1e4e",
   "color-primary-darker": "#c5113b",
   "color-primary-light": "#f8aabc",
   "color-primary-lighter": "#fcd9e1",
+
   "color-secondary": "#f8e191",
-  "color-secondary-dark": "#dccb8d",
-  "color-secondary-darker": "#e8ddb4",
+  "color-secondary-dark": "#e8ddb4",
+  "color-secondary-darker": "#dccb8d",
   "color-secondary-light": "#fbeec1",
   "color-secondary-lighter": "#fdf5d9",
-  "color-surface": "#ffffff",
+
+  "_comment-1a": "TERTIARY/accent color - if not present, repeat secondary-dark",
+
+  "color-tertiary": "#06d6a0",
+
+  "_comment-2": "BACKGROUND COLORS",
+
+  "color-surface": "#f8f8f8",
   "color-panel": "#fbeec1",
-  "color-panel-alt": "#06d6a0",
-  "color-overlay-accent": "rgba(177, 251, 231, 0.6)",
+  "color-panel-alt": "#fcd9e1",
+  "color-nav-bg": "#ef476f",
+  "color-footer-bg": "#fbeec1",
+
+  "_comment-3": "TEXT COLORS (only dark colors, not 'reversed')",
+
   "color-title": "#1d1d1d",
-  "color-title-alt": "#ef476f",
-  "color-subtitle": "#06d6a0",
   "color-text": "#1d1d1d",
   "color-text-soft": "#3f3f3f",
-  "color-header-bg": "#ef476f",
-  "color-footer-bg": "#fbeec1",
-  "color-section-dark": "#ef476f",
-  "color-section-dark-alt": "#ef476f",
-  "color-border-dark": "#3d3d3d",
-  "color-border-medium": "#dfdfdf",
-  "color-border-light": "#f8f8f8",
+
+  "_comment-4": "DISABLED COLOR (mid-gray)",
+
+  "color-disabled": "#999999",
+
+  "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
+
   "color-info": "#00a7e1",
   "color-warning": "#ffd166",
   "color-danger": "#ff2e2e",
   "color-success": "#06d6a0",
   "color-success-dark": "#05bb8b",
-  "color-disabled-bg": "#999999",
-  "color-disabled-text": "#999999",
-  "color-text-inverse": "#ffffff",
-  "color-text-soft-inverse": "rgba(255,255,255,0.85)",
-  "color-disabled-text-inverse": "rgba(255,255,255,0.65)",
 
   "ig": {
-    "avatar": "tropicana.webp",
+    "avatar": "tropical.webp",
     "username": "client.be",
     "posts": 0,
     "followers": 0,
     "following": 0,
-    "title": "www.client.be",
+    "title": "www.ijssalon-tropical.be",
     "threads": "@tropical.be",
     "businessType": "business type",
     "description": "Description part 1.\nDescription part 2\nDescription part 3\nDescription part 4",
