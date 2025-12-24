@@ -36,45 +36,34 @@ export const recipes = [
     title: "Balanced",
     description: "Professional and reliable default.",
     roles: {
-      "--ui-nav-bg": ["primary", 7],
-      "--ui-footer-bg": ["primary", 7],
+      "--color-background": ["neutral", 0], // default: white
 
-      "--ui-section-bg": ["neutral", 0],
-      "--ui-alt-section-bg": ["neutral", 1],
+      "--color-surface": ["neutral", 1], // default: neutral-50
+      "--color-panel": ["neutral", 1], // default: neutral-200
+      "--color-panel-alt": ["neutral", 2], // default: neutral-700
 
-      "--ui-panel-bg": ["neutral", 0],
-      "--ui-panel-border": ["neutral", 3],
-      "--ui-panel-border-soft": ["neutral", 1],
+      "--color-title": ["neutral", 8], // default: branded
+      "--color-text": ["neutral", 7], // default: branded
+      "--color-text-soft": ["neutral", 5], // default: branded
 
-      "--ui-alt-panel-bg": ["primary", 8],
-      "--ui-alt-panel-border": ["primary", 7],
+      "--color-title-alt": ["tertiary", 5], // default: color-tertiary
+      "--color-caption": ["primary", 6], // default: color-primary-dark
+      "--color-caption-inverse": ["primary", 4], // default: color-primary-lighter
+      "--color-caption-alt": ["tertiary", 6], // default: color-tertiary
 
-      "--ui-color-border": ["neutral", 4],
+      "--ui-primary-bg": ["primary", 2], // default: color-primary
+      "--ui-secondary-bg": ["secondary", 2], // default: color-secondary
+      "--ui-accent-on-primary": ["primary", 8], // default: color-secondary
+      "--ui-accent-on-secondary": ["secondary", 8], // default: color-primary
 
-      "--ui-accent": ["primary", 6],
-      "--ui-accent-hover": ["primary", 7],
-      "--ui-accent-active": ["primary", 8],
+      // schadows -- only change alpha value?
+      "--black-25": "rgba(0,0,0,0.05)",
+      "--black-50": "rgba(0,0,0,0.15)",
+      "--black-75": "rgba(0,0,0,0.30)",
 
-      "--ui-link": ["secondary", 6],
-      "--ui-link-hover": ["secondary", 7],
-      "--ui-link-on-dark": ["secondary", 3],
-      "--ui-link-on-dark-hover": ["secondary", 2],
-
-      "--ui-heading": ["primary", 7],
-      "--ui-heading-alt": ["secondary", 7],
-      "--ui-caption": ["neutral", 7],
-
-      "--ui-shadow": "rgba(0,0,0,0.10)",
-
-      // IG GRID
-
-      "--ig-tile-bg": ["primary", 1],
-      "--ig-tile-fg": ["primary", 7],
-
-      // MOCKUP
-
-      "--ui-primary-bg": ["primary", 1],
-      "--ui-secondary-bg": ["secondary", 1],
+      // opacity
+      "--opacity-panel": ["0.6"], // default: 1
+      "--opacity-alt-panel": ["0.6"], // default: 1
     },
   },
   // ======================================================
@@ -97,8 +86,6 @@ export const recipes = [
 
       "--ui-alt-panel-bg": ["primaryDark", 8],
       "--ui-alt-panel-border": ["primaryDark", 7],
-
-      "--ui-color-border": ["primary", 5],
 
       "--ui-accent": ["secondaryDark", 8],
       "--ui-accent-hover": ["secondaryDark", 9],
@@ -140,8 +127,6 @@ export const recipes = [
       "--ui-alt-panel-bg": ["primaryLight", 1],
       "--ui-alt-panel-border": ["primaryLight", 2],
 
-      "--ui-color-border": ["neutral", 3],
-
       "--ui-accent": ["secondaryLight", 3],
       "--ui-accent-hover": ["secondaryLight", 4],
       "--ui-accent-active": ["secondaryLight", 5],
@@ -181,8 +166,6 @@ export const recipes = [
 
       "--ui-alt-panel-bg": ["secondary", 6],
       "--ui-alt-panel-border": ["secondary", 5],
-
-      "--ui-color-border": ["secondary", 4],
 
       "--ui-accent": ["primary", 6],
       "--ui-accent-hover": ["primary", 7],
@@ -224,8 +207,6 @@ export const recipes = [
       "--ui-alt-panel-bg": ["neutral", 8],
       "--ui-alt-panel-border": ["neutral", 7],
 
-      "--ui-color-border": ["neutral", 6],
-
       "--ui-accent": ["primaryLight", 3],
       "--ui-accent-hover": ["primaryLight", 4],
       "--ui-accent-active": ["primaryLight", 5],
@@ -265,8 +246,6 @@ export const recipes = [
 
       "--ui-alt-panel-bg": ["neutral", 1],
       "--ui-alt-panel-border": ["neutral", 2],
-
-      "--ui-color-border": ["neutral", 3],
 
       "--ui-accent": ["primary", 5],
       "--ui-accent-hover": ["primary", 6],
