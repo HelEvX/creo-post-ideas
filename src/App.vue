@@ -22,8 +22,8 @@
           </div>
         </div>
       </div>
-      <!-- For master version (clients only see their own brands) -->
-      <div class="container">
+      <!-- Shown in master version (clients only see their own brands) -->
+      <div class="container" v-if="showBrandPicker">
         <div class="row align-center">
           <div class="col-12">
             <BrandPicker @picked="onBrandPicked" />
@@ -178,6 +178,12 @@ export default {
       backgroundMode: "color", // "color" | "pattern" | "image"
 
       galleryImages: demoImages,
+
+      //  DYNAMIC TEXT SUSPENSION (for contrast fixing)
+      suspendDynamicText: false,
+
+      // MASTER version
+      showBrandPicker: true,
     };
   },
 
@@ -243,6 +249,9 @@ export default {
        DYNAMIC TEXT + OVERLAY RESOLUTION
     ---------------------------------------------- */
     updateDynamicTextRoles() {
+      // GUARD
+      if (this.suspendDynamicText) return;
+
       const root = document.documentElement;
       const cs = getComputedStyle(root);
 
@@ -306,23 +315,34 @@ export default {
       const titleOnSection = cs.getPropertyValue("--title-on-section").trim();
       const softOnSection = cs.getPropertyValue("--text-soft-on-section").trim();
       const disabledOnSection = cs.getPropertyValue("--disabled-on-section").trim();
+      const textOnFooter = cs.getPropertyValue("--text-soft-on-footer").trim();
+      const textOnNav = cs.getPropertyValue("--text-on-nav").trim();
 
       if (textOnSection) root.style.setProperty("--dynamic-text", textOnSection);
       if (titleOnSection) root.style.setProperty("--dynamic-title", titleOnSection);
       if (softOnSection) root.style.setProperty("--dynamic-soft", softOnSection);
       if (disabledOnSection) root.style.setProperty("--dynamic-disabled", disabledOnSection);
+      if (textOnFooter) root.style.setProperty("--dynamic-footer", textOnFooter);
+      if (textOnNav) root.style.setProperty("--dynamic-nav", textOnNav);
 
       /* ----------------------------------------------
-         DYNAMIC OVERLAY (MOCKUP ONLY)
-         Uses EXACT mockup background, not UI sections
+        DYNAMIC OVERLAY (MOCKUP ONLY)
+        Uses EXACT mockup background, not UI sections
       ---------------------------------------------- */
-      const overlayBgVar = this.mockupBgContext?.bgVars?.[0];
-      if (overlayBgVar) {
-        const bg = cs.getPropertyValue(overlayBgVar).trim();
-        if (bg) {
-          const mode = getTextModeForBackground(bg, dark, light);
-          root.style.setProperty("--dynamic-overlay", mode === "dark" ? overlayDark : overlayLight);
+      const bgVars = this.mockupBgContext?.bgVars || [];
+      let resolvedBg = null;
+
+      for (const v of bgVars) {
+        const val = cs.getPropertyValue(v).trim();
+        if (val) {
+          resolvedBg = val;
+          break;
         }
+      }
+
+      if (resolvedBg) {
+        const mode = getTextModeForBackground(resolvedBg, dark, light);
+        root.style.setProperty("--dynamic-overlay", mode === "dark" ? overlayDark : overlayLight);
       }
     },
 
@@ -374,7 +394,14 @@ export default {
   mounted() {
     const params = new URLSearchParams(window.location.search);
     const brand = params.get("brand");
-    if (brand) this.onBrandPicked(brand);
+
+    if (brand) {
+      this.showBrandPicker = false;
+      this.onBrandPicked(brand);
+    } else {
+      this.showBrandPicker = true;
+      this.onBrandPicked(null);
+    }
 
     window.addEventListener("brand-reset", (e) => {
       const { slug } = e.detail || {};
@@ -382,11 +409,9 @@ export default {
     });
 
     window.addEventListener("palette-updated", this.scheduleDynamicTextUpdate);
-    this.scheduleDynamicTextUpdate();
-  },
+    window.addEventListener("accent-updated", this.scheduleDynamicTextUpdate);
 
-  beforeUnmount() {
-    window.removeEventListener("palette-updated", this.scheduleDynamicTextUpdate);
+    this.scheduleDynamicTextUpdate();
   },
 };
 </script>
