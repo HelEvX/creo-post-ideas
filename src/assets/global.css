@@ -126,7 +126,6 @@
   --color-background: var(--white);
   --color-surface: var(--neutral-50);
   --color-panel: var(--neutral-200);
-  --color-panel-alt: var(--neutral-700);
 
   /* ==== TRANSPARENT OVERLAYS ==== */
 
@@ -153,7 +152,7 @@
   --color-border-light: var(--black-25);
   --color-border-medium: var(--black-50);
   --color-border-dark: var(--black-75);
-  --color-shadow: var(--black-25);
+  --color-shadow: rgba(0, 0, 0, 0); /* default: invisible */
 
   /* ==== STATUS / FEEDBACK ==== */
   --color-info: var(--blue-500);
@@ -215,11 +214,6 @@
   --shadow-x: 0;
   --shadow-y: 0.1rem;
   --shadow-blur: 0.6rem;
-
-  /* Opacity */
-
-  --opacity-panel: 1;
-  --opacity-alt-panel: 1;
 
   /* Transitions */
   --transition-default: all 0.3s ease;
@@ -305,9 +299,8 @@
   --ui-section-bg: var(--color-background); /* white */
   --ui-alt-section-bg: var(--color-surface); /* neutral-50 */
 
-  /* Panel or card backgrounds */
+  /* Panel or card background */
   --ui-panel-bg: var(--color-panel); /* neutral-200 */
-  --ui-alt-panel-bg: var(--color-panel-alt); /* neutral-700 */
 
   /* mockup color-mode backgrounds */
   --ui-primary-bg: var(--color-primary);
@@ -323,7 +316,8 @@
 
   /* <offset-x> | <offset-y> | <blur-radius> | <spread-radius> | <color> */
   --ui-shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--color-shadow);
-  --ui-shadow-sm: 0 1px 2px var(--color-shadow);
+  --ui-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.2); /* STATIC: mockup wrapper only */
+  --ui-shadow-xs: 0 0.5px 1px rgba(0, 0, 0, 0.1); /* STATIC: neutral btn only */
 
   /* ------------------------------------------------------
    DYNAMIC TEXT SWITCH SETUP
@@ -595,6 +589,7 @@ button,
   color: var(--dynamic-text);
   border-color: var(--color-border-light);
   border-radius: var(--radius-sm);
+  box-shadow: var(--ui-shadow-xs);
   font-size: inherit;
 
   /* prevent parent influence */
@@ -611,12 +606,14 @@ button,
 /* Active */
 .btn-neutral:active:not(:disabled) {
   transform: translateY(1px);
+  box-shadow: none;
 }
 
 /* Disabled */
 .btn-neutral:disabled {
   color: var(--dynamic-disabled);
   border: none;
+  box-shadow: none;
   cursor: default;
 }
 
