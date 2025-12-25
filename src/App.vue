@@ -373,6 +373,23 @@ export default {
       const res = await fetch(`/brands/${slug}.json`);
       const data = await res.json();
 
+      // Inject font imports (needed for URL-based brand loading)
+      if (data.fonts && Array.isArray(data.fonts.import)) {
+        data.fonts.import.forEach((url) => {
+          if (!document.querySelector(`link[href="${url}"]`)) {
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = url;
+            document.head.appendChild(link);
+          }
+        });
+      }
+
+      // Let the browser register the new @font-face rules before applying vars
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready;
+      }
+
       root.removeAttribute("style");
 
       for (const [k, v] of Object.entries(data)) {
@@ -469,6 +486,8 @@ Stylings for components specific to the app shell
 }
 h1.hero-title {
   font-size: var(--fs-hero);
+  font-weight: var(--fw-title);
+  letter-spacing: -0.01em;
   color: var(--dynamic-title);
 }
 p.hero-subtitle {
