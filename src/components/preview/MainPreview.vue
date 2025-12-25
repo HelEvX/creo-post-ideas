@@ -215,7 +215,7 @@ const mockupBgContext = computed(() => ({
 const brandLogo = computed(() => {
   if (backgroundMode.value !== "logo") return null;
   if (!brandTokens?.slug) return null;
-  return `/src/assets/highlights/${brandTokens.slug}.svg`;
+  return `/highlights/${brandTokens.slug}.svg`;
 });
 
 /* --------------------------------------------
