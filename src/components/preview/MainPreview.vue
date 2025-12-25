@@ -7,14 +7,32 @@
       @update:safeZones="showSafeZones = $event" />
 
     <div class="row main-preview-row">
-      <!-- SIDEBAR -->
-      <div class="col-12 col-xxl-2 main-preview__sidebar">
+      <!-- SIDEBAR / MOBILE CONTROLS -->
+      <div class="col-12 col-lg-10 col-xxl-2 main-preview__sidebar">
         <ContentTypePanel
+          v-if="!isMobile"
           :selected="selectedPostType"
           :tone="backgroundTone"
           :colored="useColoredBackground"
           :selectedMode="backgroundMode"
           :mockupBgContext="mockupBgContext"
+          @select="onContentTypeSelect"
+          @update-tone="
+            backgroundTone = $event;
+            emit('update-tone', $event);
+          "
+          @update-mode="
+            backgroundMode = $event;
+            emit('update-mode', $event);
+          "
+          @update-colored="useColoredBackground = $event" />
+
+        <MobileSettingsAccordion
+          v-else
+          :selectedPostType="selectedPostType"
+          :backgroundTone="backgroundTone"
+          :backgroundMode="backgroundMode"
+          :colored="useColoredBackground"
           @select="onContentTypeSelect"
           @update-tone="
             backgroundTone = $event;
@@ -66,6 +84,8 @@
 import { ref, computed, watch } from "vue";
 
 import ContentTypePanel from "../controls/ContentTypePanel.vue";
+import MobileSettingsAccordion from "../controls/MobileSettingsAccordion.vue";
+
 import FormatSelector from "../controls/FormatSelector.vue";
 import MockupWrapper from "../preview/MockupWrapper.vue";
 import MockupRenderer from "../preview/MockupRenderer.vue";
@@ -82,6 +102,15 @@ const { brandTokens } = defineProps({
 });
 
 const resolvedStyles = ref(null);
+
+const isMobile = ref(false);
+
+function updateViewport() {
+  isMobile.value = window.innerWidth < 1400;
+}
+
+updateViewport();
+window.addEventListener("resize", updateViewport);
 
 /* --------------------------------------------
    POST TYPE STATE
@@ -224,7 +253,7 @@ function onContentTypeSelect(type) {
 
 @media (max-width: 1399px) {
   .main-preview__sidebar {
-    display: none;
+    margin-bottom: var(--space-25);
   }
 }
 </style>

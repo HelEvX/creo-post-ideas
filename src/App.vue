@@ -58,49 +58,58 @@
     </section>
     <!-- === END: Preview Zone === -->
 
-    <!-- INSTAGRAM GRID VIEW -->
-    <section class="section section-gallery">
+    <!-- ABOUT (purpose of tool) -->
+    <section class="section section-about alt">
       <div class="container">
-        <div class="row">
+        <div class="row text-block-900 center">
           <div class="col-12">
-            <h2>Instagram Grid Preview</h2>
-          </div>
-
-          <div class="col-12 section-gallery__grid">
-            <InstagramGrid v-if="brandTokens && brandTokens.ig" :ig="brandTokens.ig" :images="galleryImages" />
+            <h4>Wat doet deze tool?</h4>
+            <h2>Een Instagram<span>*</span> design spieker</h2>
+            <p>Je klanten moeten je merk direct herkennen wanneer ze door hun 'feed' scrollen.</p>
+            <p>
+              Je hebt een logo en je website is klaar. Toch is ontwerpen voor Instagram niet zo eenvoudig. Hoe komt dat?
+            </p>
+            <p>
+              Je twijfelt misschien over het lettertype, of je vindt geen geschikte combinatie voor achtergrond- en
+              tekstkleuren.
+            </p>
+            <p>
+              Met <strong>Voorbeeld-ig</strong> geven we eenvoudige voorbeelden van Instagram posts in jouw huisstijl.
+              Je kan verschillende soorten inhouden en formaten bekijken, als startpunt voor je eigen creaties.
+            </p>
+            <p>
+              Maar er is meer! De ingebouwde kleurcombinaties van deze tool geven jouw huisstijl een unieke toets. Maak
+              je palet eens extra levendig of net sober. Probeer eens een 'donkere' versie uit of hou het minimaal. Bij
+              elke nieuwe mix kan je bovendien het contrast tussen tekst en achtergrond controleren en verbeteren. Een
+              leesbare boodschap is gegarandeerd!
+            </p>
+            <p>
+              Kopieer je kleuren met één klik en ga meteen aan de slag in jouw favoriete design-app. Veel
+              ontwerpplezier!
+            </p>
+            <p class="starred-text">(*) en andere sociale media</p>
+            <!-- This tool helps ensure visual consistency between your website and social channels by applying your
+                theme across interface elements and mockups. -->
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ABOUT (purpose of tool) -->
-    <section class="section section-about alt">
+    <!-- INSTAGRAM GRID VIEW -->
+    <section class="section section-gallery">
       <div class="container">
-        <div class="row">
+        <div class="row text-block-900 center">
           <div class="col-12">
-            <div class="text-block-900">
-              <h2>Jouw missie: betere Instagram posts!</h2>
-              <p>
-                Je weet welke kleur je logo heeft en hoe je website eruit ziet, dat spreekt. Maar zelf een post voor
-                Instagram of andere sociale mediakanalen ontwerpen is daarom niet altijd eenvoudig. Want het blijft
-                belangrijk dat jouw klanten je merk direct herkennen wanneer ze door hun 'feed' scrollen.
-              </p>
-              <p>
-                Misschien twijfel je wel eens over het lettertype? Of vraag je jezelf af welke kleur het beste gaat
-                werken als achtergrond voor je tekst? Via enkele eenvoudige <strong>voorbeeld</strong>en van instagram
-                (<strong>ig</strong>) posts, geeft deze tool je een goed startpunt. Een leesbare kleurcombinatie kiezen
-                doe je hier in een oogopslag!
-              </p>
-              <p>
-                Heb je een boodschap in gedachten waar gerust een straffe kleurenmix bij past, of ben je net op zoek
-                naar iets eenvoudig en strak? Maak je graag indruk met een evenwichtig, uitgekiend grid maar ben je toch
-                benieuwd naar opties om eens af te wisselen?
-              </p>
-              <p>...</p>
-              <!-- This tool helps ensure visual consistency between your website and social channels by applying your
-                theme across interface elements and mockups. -->
-            </div>
+            <h2>Instagram Grid</h2>
           </div>
+        </div>
+        <div class="row">
+          <div class="col-12 section-gallery__grid">
+            <InstagramGrid v-if="brandTokens && brandTokens.ig" :ig="brandTokens.ig" :images="galleryImages" />
+          </div>
+        </div>
+        <div class="row text-block-900 center">
+          <p>— einde van de mockup —</p>
         </div>
       </div>
     </section>
@@ -108,13 +117,13 @@
     <!-- REVIEW FORM -->
     <section class="section section-review">
       <div class="container">
-        <div class="row center">
+        <div class="row text-block-900 center">
           <div class="col-12">
             <h2>Geef ons feedback</h2>
           </div>
           <!-- blog text width (900px max) -->
           <div class="col-12">
-            <form class="review-form text-block-900" @submit.prevent="submitReview">
+            <form class="review-form" @submit.prevent="submitReview">
               <div class="form-row">
                 <label for="name">Jouw (bedrijfs-) naam</label>
                 <input id="name" type="text" required />
@@ -134,10 +143,10 @@
     <footer class="site-footer">
       <div class="container">
         <div class="row">
-          <div class="col-12 col-md-6">
+          <div class="col-3">
             <a href="#">Privacy</a>
           </div>
-          <div class="col-12 col-md-6 right">
+          <div class="col-9 right">
             <p>_webpage by <span>Creo Websolutions</span></p>
           </div>
         </div>
@@ -300,7 +309,7 @@ export default {
         ["section", "--ui-section-bg"],
         ["alt-section", "--ui-alt-section-bg"],
         ["panel", "--ui-panel-bg"],
-        ["alt-panel", "--ui-alt-panel-bg"],
+        ["alt-panel", "--ui-alt-panel-bg-derived"],
         ["primary", "--ui-primary-bg"],
         ["secondary", "--ui-secondary-bg"],
       ];
@@ -473,7 +482,7 @@ Stylings for components specific to the app shell
 }
 
 .site-footer p span {
-  color: var(--color-primary);
+  color: var(--color-primary); /* change this! */
 }
 
 /* ----------------------------------------------------
@@ -522,8 +531,26 @@ p.hero-subtitle {
 }
 
 .section-gallery h2 {
-  text-align: center;
+  /* text-align: center; */
   padding-top: var(--space-30);
+}
+
+.section-gallery p {
+  font-size: var(--fs-body-sm);
+  color: var(--dynamic-disabled);
+}
+
+.section-about .starred-text {
+  font-size: var(--fs-body-sm);
+  color: var(--ui-primary-bg);
+}
+
+.section-about h4 {
+  margin: 0 0 var(--space-10);
+}
+
+.section-about span {
+  color: var(--ui-primary-bg);
 }
 
 /* ----------------------------------------------------
@@ -571,6 +598,24 @@ p.hero-subtitle {
 .app__main,
 .app__sidebar {
   margin: var(--space-25) 0;
+}
+
+.app__main {
+  order: 2;
+}
+
+.app__sidebar {
+  order: 1;
+}
+
+@media (max-width: 1399px) {
+  .app__main {
+    order: 1;
+  }
+
+  .app__sidebar {
+    order: 2;
+  }
 }
 
 .app__sidebar,
