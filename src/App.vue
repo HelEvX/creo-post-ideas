@@ -33,7 +33,7 @@
     </section>
 
     <!-- === START: Preview Zone === -->
-    <section class="app__layout">
+    <section class="app__layout" :class="{ 'is-ready': brandReady }">
       <div class="container-full">
         <div class="row between">
           <ControlsPanel
@@ -181,6 +181,7 @@ export default {
     return {
       brandTokens: null,
       scales: null,
+      brandReady: false,
 
       // shared background state
       backgroundTone: "primary", // "primary" | "secondary"
@@ -360,6 +361,7 @@ export default {
     ---------------------------------------------- */
     async onBrandPicked(payload) {
       const root = document.documentElement;
+      this.brandReady = false;
 
       if (!payload) {
         root.removeAttribute("style");
@@ -369,6 +371,8 @@ export default {
 
         this.scheduleDynamicTextUpdate();
         window.dispatchEvent(new Event("brand-updated"));
+
+        this.brandReady = true;
         return;
       }
 
@@ -414,6 +418,7 @@ export default {
 
       this.scheduleDynamicTextUpdate();
       window.dispatchEvent(new Event("brand-updated"));
+      this.brandReady = true;
     },
   },
 
@@ -455,6 +460,12 @@ Stylings for components specific to the app shell
   padding: var(--space-25) 0;
   background-color: var(--ui-alt-section-bg);
   height: auto;
+  opacity: 0;
+  transition: var(--transition-default);
+}
+
+.app__layout.is-ready {
+  opacity: 1;
 }
 
 @media (min-width: 992px) {
