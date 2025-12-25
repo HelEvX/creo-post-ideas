@@ -106,6 +106,7 @@ const activeRecipe = computed(() => {
 });
 
 const noFixMap = ref(Object.create(null));
+const contrastResults = ref([]);
 
 /* --------------------------------------------------
    LIFECYCLE
@@ -154,14 +155,12 @@ function resolveCssColor(value, depth = 0) {
   if (v.startsWith("var(")) {
     const inner = v.slice(4, -1).trim();
 
-    // split on first comma only: " --foo, #fff " -> ["--foo", "#fff"]
+    // split on first comma only
     const commaIdx = inner.indexOf(",");
     const name = (commaIdx === -1 ? inner : inner.slice(0, commaIdx)).trim();
     const fallback = (commaIdx === -1 ? "" : inner.slice(commaIdx + 1)).trim();
 
     const resolved = resolveCssColor(name, depth + 1);
-
-    // if var is missing/empty, try fallback (can be a color or another var(...))
     if (!resolved || resolved.trim() === "") {
       return fallback ? resolveCssColor(fallback, depth + 1) : null;
     }
@@ -198,6 +197,36 @@ async function scheduleContrastUpdate() {
   await raf();
   await raf();
   updateContrastChecks();
+}
+
+/* --------------------------------------------------
+   FIX TARGET RESOLUTION
+   - Never write to --dynamic-* (derived, overwritten by App.vue)
+   - Choose a SOURCE token to adjust based on pair intent
+-------------------------------------------------- */
+function getFixableSourceVar(item) {
+  const fg = item.cssVarFg;
+
+  // --- surface-specific text roles ---
+  if (fg === "--alt-caption-on-alt-panel") return "--color-caption-alt";
+  if (fg === "--caption-on-panel") return "--color-caption";
+  if (fg === "--text-on-alt-panel") return "--color-text";
+  if (fg === "--text-on-panel") return "--color-text";
+  if (fg === "--title-on-alt-panel") return "--color-title";
+  if (fg === "--title-on-panel") return "--color-title";
+
+  // --- mockup background text ---
+  if (item.fix === "neutral-text") {
+    return fg === "--dynamic-title" ? "--color-title" : "--color-text";
+  }
+
+  // --- brand-colored text on neutral backgrounds ---
+  if (item.fix === "brand-text") {
+    const tone = props.bgContext?.tone || "primary";
+    return tone === "secondary" ? "--color-secondary" : "--color-primary";
+  }
+
+  return null;
 }
 
 /* --------------------------------------------------
@@ -262,31 +291,34 @@ watch(
 
 watch(index, scheduleContrastUpdate);
 
+/*
+  ADDED:
+  bgContext watcher ensures contrast recalculates when the mockup
+  background actually resolves (pattern/image/tone changes).
+*/
 watch(() => props.bgContext, scheduleContrastUpdate, { deep: true });
 
 /* --------------------------------------------------
    CONTRAST PAIRS
+   Each pair declares:
+   - fg: rendered variable used in UI
+   - bg: rendered background
+   - fix: which SOURCE token family may be adjusted
 -------------------------------------------------- */
 const contrastPairs = ref([
-  // main bg (primary/secondary via CONTEXT)
-  { id: "main-title", fg: "--dynamic-title", bg: "CONTEXT" }, // check large title against main post background
-  { id: "main-paragraph", fg: "--dynamic-text", bg: "CONTEXT" }, // check large paragraph against main post background
+  { id: "main-title", fg: "--dynamic-title", bg: "CONTEXT", fix: "neutral-text" },
+  { id: "main-paragraph", fg: "--dynamic-text", bg: "CONTEXT", fix: "neutral-text" },
 
-  // card 1 bg (left) = ui-alt-panel-bg
-  { id: "card1-caption", fg: "--dynamic-alt-caption", bg: "--ui-alt-panel-bg" }, // check card icon+caption against card background for card 1
-  { id: "card1-title", fg: "--title-on-alt-panel", bg: "--ui-alt-panel-bg" }, // check card title against card background for card 1
-  { id: "card1-paragraph", fg: "--text-on-alt-panel", bg: "--ui-alt-panel-bg" }, // check card paragraph against card background for card 1
+  { id: "card1-caption", fg: "--alt-caption-on-alt-panel", bg: "--ui-alt-panel-bg", fix: "brand-text" },
+  { id: "card1-title", fg: "--dynamic-title", bg: "--ui-alt-panel-bg", fix: "brand-text" },
+  { id: "card1-paragraph", fg: "--dynamic-text", bg: "--ui-alt-panel-bg", fix: "brand-text" },
 
-  // card 2 bg (right) = ui-panel-bg
-  { id: "card2-caption", fg: "--dynamic-caption", bg: "--ui-panel-bg" }, // check card icon+caption against card background for card 2
-  { id: "card2-title", fg: "--title-on-panel", bg: "--ui-panel-bg" }, // check card title against card background for card 2
-  { id: "card2-paragraph", fg: "--text-on-panel", bg: "--ui-panel-bg" }, // check card paragraph against card background for card 2
+  { id: "card2-caption", fg: "--caption-on-panel", bg: "--ui-panel-bg", fix: "brand-text" },
+  { id: "card2-title", fg: "--dynamic-title", bg: "--ui-panel-bg", fix: "brand-text" },
+  { id: "card2-paragraph", fg: "--dynamic-text", bg: "--ui-panel-bg", fix: "brand-text" },
 
-  // accent bg + inverse text
-  { id: "accent-text", fg: "--dynamic-text", bg: "--dynamic-accent" }, // check text against accent bg for the decorative element
+  { id: "accent-text", fg: "--dynamic-text", bg: "--dynamic-accent", fix: "neutral-text" },
 ]);
-
-const contrastResults = ref([]);
 
 /* --------------------------------------------------
    CONTRAST CHECK (SCORING)
@@ -320,21 +352,24 @@ function updateContrastChecks() {
     const bgList = p.bg === "CONTEXT" ? contextBgs : [resolveCssColor(p.bg)].filter(Boolean);
 
     if (bgList.length === 0) {
+      const pillBg = resolveCssColor("--color-danger");
+      const pillFg = pickReadablePillText(pillBg);
       return {
         id: p.id,
         ratio: 0,
         level: "fail",
         label: "slecht",
-        bg: "var(--ui-danger-bg)",
-        fg: "var(--ui-dynamic-text)",
+        bg: pillBg,
+        fg: pillFg,
         swatchText: null,
         swatchBg: null,
         cssVarFg: p.fg,
         cssVarBg: p.bg,
+        fix: p.fix,
+        _noFixPossible: !!noFixMap.value[p.id],
       };
     }
 
-    // compute worst-case ratio across all backgrounds
     const ratios = bgList.map((bg) => {
       const fg = fgForBgPair(p.fg, bg);
       if (!fg) return 0;
@@ -346,25 +381,7 @@ function updateContrastChecks() {
     const worstBg = bgList[ratios.indexOf(worstRatio)];
     const worstFg = fgForBgPair(p.fg, worstBg);
 
-    if (!worstFg) {
-      return {
-        id: p.id,
-        ratio: 0,
-        level: "fail",
-        label: "slecht",
-        bg: "var(--ui-danger-bg)",
-        fg: "var(--ui-dynamic-text)",
-        swatchText: null,
-        swatchBg: worstBg,
-        cssVarFg: p.fg,
-        cssVarBg: p.bg,
-        _noFixPossible: !!noFixMap.value[p.id],
-      };
-    }
-
     const result = evaluateContrastVisual(worstFg, worstBg);
-
-    // map result
 
     let statusVar;
     let label;
@@ -392,106 +409,67 @@ function updateContrastChecks() {
       level: result.level,
       perceptual: result.perceptual,
       label,
-
       bg: pillBg,
       fg: pillFg,
-
       cssVarFg: p.fg,
       cssVarBg: p.bg,
-
+      fix: p.fix,
       swatchText: worstFg,
       swatchBg: worstBg,
-
       _noFixPossible: !!noFixMap.value[p.id],
     };
   });
 }
 
 /* --------------------------------------------------
-   FIX CONTRAST (FINAL BEHAVIOR)
+   FIX CONTRAST
+   - One step per click
+   - Never write to --dynamic-* (derived)
 -------------------------------------------------- */
 async function fixContrast(item) {
   if (!item || !props.scales) return;
-
-  // only allow fixes where it makes sense
   if (item.label === "prima" || item.label === "goed") return;
 
-  // clear previous hint
+  if (item.cssVarBg === "CONTEXT") {
+    noFixMap.value[item.id] = true;
+    updateContrastChecks();
+    return;
+  }
+
   noFixMap.value[item.id] = false;
 
-  const fgVar = item.cssVarFg;
-  const bgVar = item.cssVarBg;
+  const bg = resolveCssColor(item.cssVarBg);
+  const effectiveFg = item.swatchText;
+  const sourceVar = getFixableSourceVar(item);
+  if (!bg || !effectiveFg || !sourceVar) return;
 
-  // cannot edit context backgrounds
-  if (bgVar === "CONTEXT") {
-    noFixMap.value[item.id] = true;
-    updateContrastChecks();
-    return;
-  }
+  const sourceColor = resolveCssColor(sourceVar);
+  if (!sourceColor) return;
 
-  let fg = resolveCssColor(fgVar);
-  let bg = resolveCssColor(bgVar);
-  if (!fg || !bg) return;
-
-  const currentRatio = getContrastRatio(fg, bg);
-  if (!Number.isFinite(currentRatio)) return;
-
-  const white = resolveCssColor("--color-text-inverse");
-  const isWhiteText = fg.toLowerCase() === white.toLowerCase();
-
+  const EPS = 0.0001;
   const step = 0.04;
 
-  let nextFg = fg;
-  let nextBg = bg;
+  const currentRatio = evaluateContrastVisual(effectiveFg, bg).ratio;
 
-  // ---------------------------------------------
-  // STEP DECISION LOGIC
-  // ---------------------------------------------
+  const darker = shade(sourceColor, step);
+  const lighter = tint(sourceColor, step);
 
-  if (!isWhiteText) {
-    // prefer adjusting text first
-    const darkerText = shade(fg, step);
-    const lighterText = tint(fg, step);
+  const rD = getContrastRatio(darker, bg);
+  const rL = getContrastRatio(lighter, bg);
 
-    const rD = getContrastRatio(darkerText, bg);
-    const rL = getContrastRatio(lighterText, bg);
-
-    // pick the better of the two
-    if (Number.isFinite(rD) && rD > currentRatio && rD >= rL) {
-      nextFg = darkerText;
-    } else if (Number.isFinite(rL) && rL > currentRatio) {
-      nextFg = lighterText;
-    } else {
-      // text ceiling reached, nudge background instead
-      nextBg = shade(bg, step);
-    }
+  if (Number.isFinite(rD) && rD > currentRatio + EPS && rD >= rL) {
+    applyCssVar(sourceVar, darker);
+  } else if (Number.isFinite(rL) && rL > currentRatio + EPS) {
+    applyCssVar(sourceVar, lighter);
   } else {
-    // text is white → only background can move
-    nextBg = shade(bg, step);
-  }
-
-  const nextRatio = getContrastRatio(nextFg, nextBg);
-
-  // ---------------------------------------------
-  // NO IMPROVEMENT → FEEDBACK
-  // ---------------------------------------------
-
-  if (!Number.isFinite(nextRatio) || nextRatio <= currentRatio) {
     noFixMap.value[item.id] = true;
     updateContrastChecks();
     return;
   }
 
-  // ---------------------------------------------
-  // APPLY ONE STEP ONLY
-  // ---------------------------------------------
-
-  applyCssVar(fgVar, nextFg);
-  applyCssVar(bgVar, nextBg);
-
-  // re-evaluate after DOM update
   await nextTick();
-  updateContrastChecks();
+  window.dispatchEvent(new Event("palette-updated"));
+  scheduleContrastUpdate();
 }
 
 defineExpose({ nextRecipe, prevRecipe });

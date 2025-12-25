@@ -152,6 +152,6 @@ select {
 }
 
 .color-swatch.accent {
-  background-color: var(--color-title-alt);
+  background-color: var(--color-tertiary);
 }
 </style>

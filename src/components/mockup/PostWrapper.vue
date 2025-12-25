@@ -23,7 +23,7 @@ const aspectMap = {
   width: 100%;
   max-width: 100%;
   border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--ui-shadow-sm);
   overflow: hidden;
 }
 

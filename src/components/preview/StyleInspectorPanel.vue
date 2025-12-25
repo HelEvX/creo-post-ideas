@@ -206,6 +206,6 @@ p.styles__hint {
 
 .main-preview__styles__shadows {
   padding: var(--space-25);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-card);
 }
 </style>

@@ -100,6 +100,10 @@
 
   /* ------------------------------------------------------
    CORE ASSIGNMENTS (UI-level tokens)
+
+   These are the 'contract' with the brand JSON files
+   They CAN be overridden by brand JSON
+   They NEVER depend on UI context
    ------------------------------------------------------ */
 
   /* ==== BRAND COLORS ==== */
@@ -126,18 +130,12 @@
 
   /* ==== TRANSPARENT OVERLAYS ==== */
 
-  --color-overlay: var(--white-50); /* NOT DYNAMIC */
   --color-overlay-soft: var(--white-15); /* NOT DYNAMIC */
-  --color-overlay-accent: rgba(6, 214, 160, 0.5); /* not used */
 
   /* ==== TEXT COLORS ==== */
 
-  --color-title: var(--neutral-900);
-  --color-title-alt: var(--color-tertiary);
-  --color-caption: var(--color-primary-dark);
-  --color-caption-alt: var(--color-tertiary);
-
   /* light bg series */
+  --color-title: var(--neutral-900);
   --color-text: var(--neutral-800);
   --color-text-soft: var(--neutral-600);
   --color-disabled: var(--neutral-500);
@@ -146,13 +144,12 @@
   --color-text-inverse: var(--white);
   --color-text-soft-inverse: var(--white-85);
   --color-disabled-inverse: var(--white-65);
-  --color-caption-inverse: var(--color-primary-lighter);
 
   /* ==== STRUCTURAL / DARK SECTIONS ==== */
   --color-nav-bg: var(--secondary-500);
   --color-footer-bg: var(--secondary-500);
 
-  /* ==== BORDERS & SHADOWS ==== */
+  /* ==== BORDER & SHADOW COLORS ==== */
   --color-border-light: var(--black-25);
   --color-border-medium: var(--black-50);
   --color-border-dark: var(--black-75);
@@ -207,14 +204,22 @@
   --space-75: 7.5rem;
   --space-100: 10rem;
 
-  /* Shadows, borders, radius */
+  /* Borders, radius */
   --radius-sm: 0.4rem;
   --radius-md: 0.6rem;
   --radius-lg: 1rem;
   --border-width: 0.15rem;
   --border-width-lg: 0.35rem;
-  --shadow: 0 0.1rem 0.6rem var(--color-shadow);
-  --shadow-sm: 0 1px 2px var(--color-shadow);
+
+  /* Shadows */
+  --shadow-x: 0;
+  --shadow-y: 0.1rem;
+  --shadow-blur: 0.6rem;
+
+  /* Opacity */
+
+  --opacity-panel: 1;
+  --opacity-alt-panel: 1;
 
   /* Transitions */
   --transition-default: all 0.3s ease;
@@ -273,27 +278,13 @@
 
 /* ------------------------------------------------------
    UI ROLE ASSIGNMENTS — connected to Creo semantic colors
+   What do elements mean in the UI
    ------------------------------------------------------ */
 
 :root {
   /* Navigation + footer */
   --ui-nav-bg: var(--color-nav-bg);
   --ui-footer-bg: var(--color-footer-bg);
-
-  /* Section backgrounds */
-  --ui-section-bg: var(--color-background);
-  --ui-alt-section-bg: var(--color-surface);
-
-  /* Panels backgrounds + borders */
-  --ui-panel-bg: var(--color-panel);
-  --ui-panel-border: var(--border-width) solid var(--color-border-medium);
-  --ui-panel-border-soft: var(--border-width) solid var(--color-border-light);
-
-  --ui-alt-panel-bg: var(--color-panel-alt);
-  --ui-alt-panel-border: var(--border-width) solid var(--color-border-dark);
-
-  --opacity-panel: 1;
-  --opacity-alt-panel: 1;
 
   /* Accents */
   --ui-accent: var(--color-primary);
@@ -306,25 +297,37 @@
   --ui-link-on-dark: var(--color-primary-lighter);
   --ui-link-on-dark-hover: var(--color-primary-light);
 
-  /* Heading colors */
-  --ui-heading: var(--color-title);
-  --ui-heading-alt: var(--color-title-alt);
+  /* ------------------ */
+  /* MOCKUP BACKGROUNDS */
+  /* ------------------ */
 
-  /* MOCKUP BG */
+  /* UI section backgrounds + mockup neutral-mode backgrounds */
+  --ui-section-bg: var(--color-background); /* white */
+  --ui-alt-section-bg: var(--color-surface); /* neutral-50 */
+
+  /* Panel or card backgrounds */
+  --ui-panel-bg: var(--color-panel); /* neutral-200 */
+  --ui-alt-panel-bg: var(--color-panel-alt); /* neutral-700 */
+
+  /* mockup color-mode backgrounds */
   --ui-primary-bg: var(--color-primary);
   --ui-secondary-bg: var(--color-secondary);
 
   /* ------------------------------------------------------
-   shadow (defaults)
+   Borders & shadows
    ------------------------------------------------------ */
 
+  --ui-panel-border: var(--border-width) solid var(--color-border-medium);
+  --ui-panel-border-soft: var(--border-width) solid var(--color-border-light);
+  --ui-alt-panel-border: var(--border-width) solid var(--color-border-dark);
+
   /* <offset-x> | <offset-y> | <blur-radius> | <spread-radius> | <color> */
-  --shadow-x: 0;
-  --shadow-y: 0.1rem;
-  --shadow-blur: 0.6rem;
+  --ui-shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--color-shadow);
+  --ui-shadow-sm: 0 1px 2px var(--color-shadow);
 
   /* ------------------------------------------------------
    DYNAMIC TEXT SWITCH SETUP
+   “Given a background, which readable color should I use?”
    ------------------------------------------------------ */
 
   /* Behaviours */
@@ -334,39 +337,31 @@
   --ui-title-on-light: var(--color-title); /* neutral-900 */
   --ui-title-on-dark: var(--color-text-inverse); /* white */
 
-  --ui-soft-on-light: var(--color-text-soft);
-  --ui-soft-on-dark: var(--color-text-soft-inverse);
+  --ui-soft-on-light: var(--color-text-soft); /* neutral-600 */
+  --ui-soft-on-dark: var(--color-text-soft-inverse); /* white 85% */
 
-  --ui-disabled-on-light: var(--color-disabled);
-  --ui-disabled-on-dark: var(--color-disabled-inverse);
+  --ui-disabled-on-light: var(--color-disabled); /* neutral-500 */
+  --ui-disabled-on-dark: var(--color-disabled-inverse); /* white 65% */
 
-  --ui-accent-on-primary: var(--color-secondary);
-  --ui-accent-on-secondary: var(--color-primary);
+  --ui-overlay-on-light: var(--black-50); /* black 50% */
+  --ui-overlay-on-dark: var(--white-50); /* white 50% */
 
-  --ui-link-on-light: var(--color-primary-dark);
-  --ui-link-on-dark: var(--color-primary-lighter);
-
-  --ui-hover-on-light: var(--color-primary-darker);
-  --ui-hover-on-dark: var(--color-primary-light);
-
-  /* default: light bg */
+  /* default: light bg (first-paint guarantee) */
   --dynamic-text: var(--ui-text-on-light);
   --dynamic-title: var(--ui-title-on-light);
   --dynamic-soft: var(--ui-soft-on-light);
   --dynamic-disabled: var(--ui-disabled-on-light);
+  --dynamic-overlay: var(--ui-overlay-on-light);
 
-  /* default: primary bg */
-  --dynamic-accent: var(--ui-accent-on-primary);
+  /* ------------------------------------------------------
+   OTHER MOCKUP ASSIGNMENTS
+   ------------------------------------------------------ */
 
-  /* default: dark bg */
-  --dynamic-link: var(--ui-link-on-dark);
-  --dynamic-hover: var(--ui-hover-on-dark);
-
-  /* patterns */
+  /* PATTERNS */
   --pattern-base: var(--ui-primary-bg);
   --pattern-alt: var(--ui-secondary-bg);
 
-  /* border & shadows */
+  /* BRAND-SPECIFIC border & shadows */
   --border-radius: var(--radius-md);
   --border-card: none;
   --shadow-card: none;
@@ -374,13 +369,15 @@
   /* ------------------------------------------------------
    UTILITY ASSIGNMENTS
    Alerts / Statuses
+   NOT really dynamic currently
    ------------------------------------------------------ */
 
   --ui-info-bg: var(--color-info);
   --ui-warning-bg: var(--color-warning);
   --ui-danger-bg: var(--color-danger);
   --ui-success-bg: var(--color-success);
-  --ui-alert-text-on-color: var(--color-text-inverse);
+
+  /* Not functional currently */
 
   --ui-info-text-on-light: var(--color-blue-600);
   --ui-warning-text-on-light: var(--color-yellow-600);
@@ -662,12 +659,12 @@ textarea {
 
 .pattern--primary {
   --pattern-base: var(--ui-primary-bg);
-  --pattern-alt: color-mix(in srgb, var(--ui-primary-bg), var(--dynamic-logo) 15%);
+  --pattern-alt: color-mix(in srgb, var(--ui-primary-bg), var(--ui-primary-bg) 15%);
 }
 
 .pattern--secondary {
   --pattern-base: var(--ui-secondary-bg);
-  --pattern-alt: color-mix(in srgb, var(--ui-secondary-bg), var(--dynamic-logo) 15%);
+  --pattern-alt: color-mix(in srgb, var(--ui-secondary-bg), var(--ui-secondary-bg) 15%);
 }
 
 /* ======================================================

@@ -188,10 +188,7 @@ export default {
         return {
           type: "pattern",
           tone: this.backgroundTone,
-          bgVars:
-            this.backgroundTone === "secondary"
-              ? ["--ui-secondary-bg", "--ui-secondary-bg"]
-              : ["--ui-primary-bg", "--ui-primary-bg"],
+          bgVars: this.backgroundTone === "secondary" ? ["--ui-secondary-bg"] : ["--ui-primary-bg"],
         };
       }
 
@@ -213,7 +210,38 @@ export default {
     },
   },
 
+  watch: {
+    // react to mockup controls immediately
+    backgroundTone() {
+      this.scheduleDynamicTextUpdate();
+    },
+    backgroundMode() {
+      this.scheduleDynamicTextUpdate();
+    },
+    mockupBgContext: {
+      handler() {
+        this.scheduleDynamicTextUpdate();
+      },
+      deep: true,
+    },
+  },
+
   methods: {
+    /* ----------------------------------------------
+       SCHEDULE UPDATE
+       Avoid timing issues on brand load / toggle
+    ---------------------------------------------- */
+    scheduleDynamicTextUpdate() {
+      this.$nextTick(() => {
+        requestAnimationFrame(() => {
+          this.updateDynamicTextRoles();
+        });
+      });
+    },
+
+    /* ----------------------------------------------
+       DYNAMIC TEXT + OVERLAY RESOLUTION
+    ---------------------------------------------- */
     updateDynamicTextRoles() {
       const root = document.documentElement;
       const cs = getComputedStyle(root);
@@ -229,11 +257,12 @@ export default {
 
       const titleDark = cs.getPropertyValue("--color-title").trim();
 
-      const captionDark = cs.getPropertyValue("--color-caption").trim();
-      const captionLight = cs.getPropertyValue("--color-caption-inverse").trim();
+      const overlayDark = cs.getPropertyValue("--black-50").trim();
+      const overlayLight = cs.getPropertyValue("--white-50").trim();
 
-      const captionAltDark = cs.getPropertyValue("--color-caption-alt").trim();
-
+      /* ----------------------------------------------
+         PER-SURFACE ROLE ASSIGNMENT
+      ---------------------------------------------- */
       function apply(surfaceKey, bgVarName) {
         const bg = cs.getPropertyValue(bgVarName).trim();
         if (!bg) return;
@@ -244,59 +273,62 @@ export default {
         if (mode === "dark") {
           root.style.setProperty(`--text-on-${surfaceKey}`, dark);
           root.style.setProperty(`--title-on-${surfaceKey}`, titleDark);
-          root.style.setProperty(`--caption-on-${surfaceKey}`, captionDark);
-          root.style.setProperty(`--alt-caption-on-${surfaceKey}`, captionAltDark);
           root.style.setProperty(`--text-soft-on-${surfaceKey}`, softDark);
           root.style.setProperty(`--disabled-on-${surfaceKey}`, disabledDark);
-          root.style.setProperty(`--link-on-${surfaceKey}`, softDark);
-          root.style.setProperty(`--hover-on-${surfaceKey}`, titleDark);
-          root.style.setProperty(`--logo-on-${surfaceKey}`, titleDark);
+          root.style.setProperty(`--overlay-on-${surfaceKey}`, overlayDark);
         } else {
           root.style.setProperty(`--text-on-${surfaceKey}`, light);
           root.style.setProperty(`--title-on-${surfaceKey}`, light);
-          root.style.setProperty(`--caption-on-${surfaceKey}`, captionLight);
-          root.style.setProperty(`--alt-caption-on-${surfaceKey}`, light);
           root.style.setProperty(`--text-soft-on-${surfaceKey}`, softLight);
           root.style.setProperty(`--disabled-on-${surfaceKey}`, disabledLight);
-          root.style.setProperty(`--link-on-${surfaceKey}`, softLight);
-          root.style.setProperty(`--hover-on-${surfaceKey}`, light);
-          root.style.setProperty(`--logo-on-${surfaceKey}`, light);
+          root.style.setProperty(`--overlay-on-${surfaceKey}`, overlayLight);
         }
       }
 
       const surfaces = [
-        ["nav", "--ui-nav-bg"], // used
-        ["footer", "--ui-footer-bg"], // used
-        ["section", "--ui-section-bg"], // used
+        ["nav", "--ui-nav-bg"],
+        ["footer", "--ui-footer-bg"],
+        ["section", "--ui-section-bg"],
         ["alt-section", "--ui-alt-section-bg"],
-        ["panel", "--ui-panel-bg"], // used
-        ["alt-panel", "--ui-alt-panel-bg"], // used
-        ["primary", "--ui-primary-bg"], // changed
-        ["secondary", "--ui-secondary-bg"], // changed
+        ["panel", "--ui-panel-bg"],
+        ["alt-panel", "--ui-alt-panel-bg"],
+        ["primary", "--ui-primary-bg"],
+        ["secondary", "--ui-secondary-bg"],
       ];
 
       surfaces.forEach(([key, bgVar]) => apply(key, bgVar));
 
+      /* ----------------------------------------------
+         DYNAMIC TEXT (CONTENT LAYER)
+         Always based on SECTION surface
+      ---------------------------------------------- */
       const textOnSection = cs.getPropertyValue("--text-on-section").trim();
       const titleOnSection = cs.getPropertyValue("--title-on-section").trim();
-      const captionOnPanel = cs.getPropertyValue("--caption-on-panel").trim();
-      const captionOnAltPanel = cs.getPropertyValue("--alt-caption-on-alt-panel").trim();
       const softOnSection = cs.getPropertyValue("--text-soft-on-section").trim();
       const disabledOnSection = cs.getPropertyValue("--disabled-on-section").trim();
-      const linkOnFooter = cs.getPropertyValue("--link-on-footer").trim();
-      const hoverOnFooter = cs.getPropertyValue("--hover-on-footer").trim();
-      const logoOnNav = cs.getPropertyValue("--logo-on-nav").trim();
 
       if (textOnSection) root.style.setProperty("--dynamic-text", textOnSection);
       if (titleOnSection) root.style.setProperty("--dynamic-title", titleOnSection);
-      if (captionOnPanel) root.style.setProperty("--dynamic-caption", captionOnPanel);
-      if (captionOnAltPanel) root.style.setProperty("--dynamic-alt-caption", captionOnAltPanel);
       if (softOnSection) root.style.setProperty("--dynamic-soft", softOnSection);
       if (disabledOnSection) root.style.setProperty("--dynamic-disabled", disabledOnSection);
-      if (linkOnFooter) root.style.setProperty("--dynamic-link", linkOnFooter);
-      if (hoverOnFooter) root.style.setProperty("--dynamic-hover", hoverOnFooter);
-      if (logoOnNav) root.style.setProperty("--dynamic-logo", logoOnNav);
+
+      /* ----------------------------------------------
+         DYNAMIC OVERLAY (MOCKUP ONLY)
+         Uses EXACT mockup background, not UI sections
+      ---------------------------------------------- */
+      const overlayBgVar = this.mockupBgContext?.bgVars?.[0];
+      if (overlayBgVar) {
+        const bg = cs.getPropertyValue(overlayBgVar).trim();
+        if (bg) {
+          const mode = getTextModeForBackground(bg, dark, light);
+          root.style.setProperty("--dynamic-overlay", mode === "dark" ? overlayDark : overlayLight);
+        }
+      }
     },
+
+    /* ----------------------------------------------
+       BRAND LOADING
+    ---------------------------------------------- */
     async onBrandPicked(payload) {
       const root = document.documentElement;
 
@@ -306,7 +338,7 @@ export default {
         this.brandTokens = { slug: "creo" };
         this.scales = null;
 
-        this.updateDynamicTextRoles();
+        this.scheduleDynamicTextUpdate();
         window.dispatchEvent(new Event("brand-updated"));
         return;
       }
@@ -334,7 +366,7 @@ export default {
       this.brandTokens = { ...data, slug };
       this.scales = buildBrandScales(this.brandTokens);
 
-      this.updateDynamicTextRoles();
+      this.scheduleDynamicTextUpdate();
       window.dispatchEvent(new Event("brand-updated"));
     },
   },
@@ -349,12 +381,12 @@ export default {
       if (slug) this.onBrandPicked(slug);
     });
 
-    window.addEventListener("palette-updated", this.updateDynamicTextRoles);
-    this.updateDynamicTextRoles();
+    window.addEventListener("palette-updated", this.scheduleDynamicTextUpdate);
+    this.scheduleDynamicTextUpdate();
   },
 
   beforeUnmount() {
-    window.removeEventListener("palette-updated", this.updateDynamicTextRoles);
+    window.removeEventListener("palette-updated", this.scheduleDynamicTextUpdate);
   },
 };
 </script>
@@ -394,13 +426,12 @@ Stylings for components specific to the app shell
 
 .site-footer p,
 .site-footer a {
-  color: var(--dynamic-link);
   margin-bottom: 0;
   font-size: var(--fs-body-sm);
 }
 
 .site-footer p span {
-  color: var(--dynamic-caption);
+  color: var(--color-primary);
 }
 
 /* ----------------------------------------------------
@@ -418,7 +449,7 @@ h1.hero-title {
 p.hero-subtitle {
   font-size: var(--fs-body-lg);
   font-weight: var(--fw-title);
-  color: var(--ui-heading-alt);
+  color: var(--color-title);
   margin-bottom: 0;
 }
 
@@ -435,11 +466,11 @@ p.hero-subtitle {
 
 /* Section title colors */
 .section h2 {
-  color: var(--ui-heading);
+  color: var(--color-title);
 }
 
 .section h3 {
-  color: var(--ui-heading-alt);
+  color: var(--color-title);
 }
 
 .section h4 {
@@ -458,16 +489,17 @@ p.hero-subtitle {
 /* Links appearing on dark backgrounds (footer, hero, nav, etc.) */
 .section.alt a,
 .site-footer a,
+.site-footer p,
 .hero a,
 .site-nav a {
-  color: var(--dynamic-link);
+  color: var(--dynamic-footer);
 }
 
 .section.alt a:hover,
 .site-footer a:hover,
 .hero a:hover,
 .site-nav a:hover {
-  color: var(--dynamic-hover);
+  color: var(--dynamic-footer);
 }
 
 /* ======================================================

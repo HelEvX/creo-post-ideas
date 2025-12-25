@@ -8,7 +8,7 @@
       version="1.1"
       viewBox="0 0 400 120"
       class="brandlogo-svg">
-      <rect x="14.9" y="15.9" width="89.2" height="89.2" fill="var(--dynamic-logo)" />
+      <rect x="14.9" y="15.9" width="89.2" height="89.2" fill="var(--dynamic-nav)" />
 
       <g id="squares">
         <!-- <rect
@@ -78,22 +78,22 @@
 
       <path
         d="M335.1,82.8c-1.7,2.1-6.3,6.5-14.3,6.5-13.1,0-24.7-11-24.7-26.6s11.5-26.6,24.7-26.6,15.3,7.9,15.3,7.9v-6.6h11.9v51.1c0,17.6-13,25.4-27.3,25.4s-24-9.6-24-9.6l7.3-9.8s7.1,7.5,16.8,7.5,14.4-5.5,14.4-13v-6.1ZM335.1,70.3v-15.2s-3.6-7.1-12.1-7.1-13.9,6.3-13.9,14.6,5.2,14.6,13.9,14.6,12.1-7.1,12.1-7.1Z"
-        fill="var(--dynamic-logo)" />
-      <path d="M285.1,88h-12.8v-42.7l12.8-6.1v48.8Z" fill="var(--dynamic-logo)" />
+        fill="var(--dynamic-nav)" />
+      <path d="M285.1,88h-12.8v-42.7l12.8-6.1v48.8Z" fill="var(--dynamic-nav)" />
       <path
         d="M248.8,85c0-2.4,1.9-4.3,4.3-4.3s4.3,1.9,4.3,4.3-1.9,4.3-4.3,4.3-4.3-1.9-4.3-4.3Z"
-        fill="var(--dynamic-logo)" />
+        fill="var(--dynamic-nav)" />
       <path
         d="M196.1,88h-5V7.2h5.5v39.8c1.3-1.9,6.5-9,17.6-9s24.3,10.5,24.3,25.6-10.7,25.6-24.3,25.6-18.1-9.5-18.1-9.5v8.2ZM196.6,53.8v19.7s4.9,10.4,17.5,10.4,18.5-8.9,18.5-20.2-7.6-20.2-18.5-20.2-17.5,10.4-17.5,10.4Z"
-        fill="var(--dynamic-logo)" />
-      <path d="M132.6,39.3h6l18.5,39.2,18.5-39.2h5.8l-24.4,50.9-24.4-50.9Z" fill="var(--dynamic-logo)" />
+        fill="var(--dynamic-nav)" />
+      <path d="M132.6,39.3h6l18.5,39.2,18.5-39.2h5.8l-24.4,50.9-24.4-50.9Z" fill="var(--dynamic-nav)" />
       <rect
         x="266.3"
         y="9.4"
         width="22.8"
         height="22.8"
         transform="translate(18.3 122.1) rotate(-25.6)"
-        fill="var(--dynamic-logo)" />
+        fill="var(--dynamic-nav)" />
     </svg>
 
     <!-- INVERSE LOGO (unchanged except for variable fills) -->
@@ -104,7 +104,7 @@
       version="1.1"
       viewBox="0 0 400 120"
       class="brandlogo-svg">
-      <rect x="14.9" y="15.9" width="89.2" height="89.2" fill="var(--dynamic-logo)" />
+      <rect x="14.9" y="15.9" width="89.2" height="89.2" fill="var(--dynamic-nav)" />
 
       <g id="squares">
         <!-- <rect
@@ -174,22 +174,22 @@
 
       <path
         d="M335.1,82.8c-1.7,2.1-6.3,6.5-14.3,6.5-13.1,0-24.7-11-24.7-26.6s11.5-26.6,24.7-26.6,15.3,7.9,15.3,7.9v-6.6h11.9v51.1c0,17.6-13,25.4-27.3,25.4s-24-9.6-24-9.6l7.3-9.8s7.1,7.5,16.8,7.5,14.4-5.5,14.4-13v-6.1ZM335.1,70.3v-15.2s-3.6-7.1-12.1-7.1-13.9,6.3-13.9,14.6,5.2,14.6,13.9,14.6,12.1-7.1,12.1-7.1Z"
-        fill="var(--dynamic-logo)" />
-      <path d="M285.1,88h-12.8v-42.7l12.8-6.1v48.8Z" fill="var(--dynamic-logo)" />
+        fill="var(--dynamic-nav)" />
+      <path d="M285.1,88h-12.8v-42.7l12.8-6.1v48.8Z" fill="var(--dynamic-nav)" />
       <path
         d="M248.8,85c0-2.4,1.9-4.3,4.3-4.3s4.3,1.9,4.3,4.3-1.9,4.3-4.3,4.3-4.3-1.9-4.3-4.3Z"
-        fill="var(--dynamic-logo)" />
+        fill="var(--dynamic-nav)" />
       <path
         d="M196.1,88h-5V7.2h5.5v39.8c1.3-1.9,6.5-9,17.6-9s24.3,10.5,24.3,25.6-10.7,25.6-24.3,25.6-18.1-9.5-18.1-9.5v8.2ZM196.6,53.8v19.7s4.9,10.4,17.5,10.4,18.5-8.9,18.5-20.2-7.6-20.2-18.5-20.2-17.5,10.4-17.5,10.4Z"
-        fill="var(--dynamic-logo)" />
-      <path d="M132.6,39.3h6l18.5,39.2,18.5-39.2h5.8l-24.4,50.9-24.4-50.9Z" fill="var(--dynamic-logo)" />
+        fill="var(--dynamic-nav)" />
+      <path d="M132.6,39.3h6l18.5,39.2,18.5-39.2h5.8l-24.4,50.9-24.4-50.9Z" fill="var(--dynamic-nav)" />
       <rect
         x="266.3"
         y="9.4"
         width="22.8"
         height="22.8"
         transform="translate(18.3 122.1) rotate(-25.6)"
-        fill="var(--dynamic-logo)" />
+        fill="var(--dynamic-nav)" />
     </svg>
   </a>
 </template>

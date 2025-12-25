@@ -26,7 +26,7 @@ defineProps({
 
 .unsafe {
   position: absolute;
-  background: var(--white-50);
+  background: var(--dynamic-overlay);
 }
 
 /* top */

@@ -163,11 +163,11 @@ defineProps({
 }
 .brand-gallery__swatch--light-4 {
   background: var(--ui-section-bg);
-  color: var(--ui-heading);
+  color: var(--color-title);
 }
 .brand-gallery__swatch--light-5 {
   background: var(--ui-alt-section-bg);
-  color: var(--ui-heading);
+  color: var(--color-title);
 }
 
 .brand-gallery__swatch--dark-1 {
