@@ -1,3 +1,32 @@
+<template>
+  <div class="brand-switcher-container">
+    <label for="brand-select">Kies een merk:</label>
+    <select id="brand-select" @change="onChange">
+      <option value="">Creo (default)</option>
+      <option value="groomer">Groomer</option>
+      <option value="runkstervolksfeesten">Runkster Volksfeesten</option>
+      <option value="ocrunkst">OCRunkst</option>
+      <option value="wijkraadrunkst">Wijkraad Runkst</option>
+      <option value="steviala">Steviala</option>
+      <option value="kenis">Bakkerij Kenis</option>
+      <option value="tropical">Ijssalon Tropical</option>
+      <option value="cardgameshop">Card Game Shop</option>
+      <option value="blooloc">Blooloc</option>
+      <option value="glaede">Glaede</option>
+      <option value="ellevation">Ellevation</option>
+    </select>
+
+    <div class="brand-preview">
+      <div class="color-swatch primary"></div>
+      <div class="color-swatch primary-light"></div>
+      <div class="color-swatch secondary"></div>
+      <div class="color-swatch accent"></div>
+      <!-- tertiary or secondary-dark -->
+      <div class="color-swatch title"></div>
+    </div>
+  </div>
+</template>
+
 <script>
 export default {
   name: "BrandPicker",
@@ -66,35 +95,6 @@ export default {
   },
 };
 </script>
-
-<template>
-  <div class="brand-switcher-container">
-    <label for="brand-select">Kies een merk:</label>
-    <select id="brand-select" @change="onChange">
-      <option value="">Creo (default)</option>
-      <option value="groomer">Groomer</option>
-      <option value="runkstervolksfeesten">Runkster Volksfeesten</option>
-      <option value="ocrunkst">OCRunkst</option>
-      <option value="wijkraadrunkst">Wijkraad Runkst</option>
-      <option value="steviala">Steviala</option>
-      <option value="kenis">Bakkerij Kenis</option>
-      <option value="tropical">Ijssalon Tropical</option>
-      <option value="cardgameshop">Card Game Shop</option>
-      <option value="blooloc">Blooloc</option>
-      <option value="glaede">Glaede</option>
-      <option value="ellevation">Ellevation</option>
-    </select>
-
-    <div class="brand-preview">
-      <div class="color-swatch primary"></div>
-      <div class="color-swatch primary-light"></div>
-      <div class="color-swatch secondary"></div>
-      <div class="color-swatch accent"></div>
-      <!-- tertiary or secondary-dark -->
-      <div class="color-swatch title"></div>
-    </div>
-  </div>
-</template>
 
 <style scoped>
 .brand-switcher-container {

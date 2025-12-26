@@ -10,6 +10,9 @@ CREO-POST-IDEAS/
 │   │   ├── .starter.json # Template for new brands
 │   │   ├── groomer.json  # Brand tokens for "Groomer"
 │   │   └── ...           # Other brand JSON files
+│   ├── highlights/
+│   │   ├── groomer.svg   # Logo SVG for "Groomer"
+│   │   └── ...           # Other brand SVGs
 │   └── favicon.svg       # Application favicon
 │
 ├── src/
@@ -24,17 +27,20 @@ CREO-POST-IDEAS/
 │   │   │   ├── ContentTypePanel.vue
 │   │   │   ├── ControlsPanel.vue
 │   │   │   ├── FormatSelector.vue
+│   │   │   ├── MobileSettingsAccordion.vue
 │   │   │   └── RecipeShuffle.vue
 │   │   │
 │   │   ├── preview/
 │   │   │   ├── MainPreview.vue
 │   │   │   ├── MockupWrapper.vue
-│   │   │   └── MockupRenderer.vue
+│   │   │   ├── MockupRenderer.vue
+│   │   │   └── StyleInspectorPanel.vue
 │   │   │
 │   │   ├── mockup/
 │   │   │   ├── PostTextBlock.vue
-│   │   │   ├── SocialPostMockup.vue
-│   │   │   └── PostWrapper.vue
+│   │   │   ├── PostWrapper.vue
+│   │   │   ├── SafeZoneOverlay.vue
+│   │   │   └── SocialPostMockup.vue
 │   │   │
 │   │   ├── post-types/
 │   │   │   ├── FallbackPost.vue
