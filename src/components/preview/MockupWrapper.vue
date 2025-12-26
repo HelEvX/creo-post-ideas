@@ -13,7 +13,11 @@ defineProps({
 </script>
 
 <style scoped>
+/* =====================================================
+   MOCKUP VISUAL SCALING (TYPOGRAPHY + SPACING)
+   ===================================================== */
+
 .mockup-slot {
-  justify-items: center;
+  transform-origin: top center;
 }
 </style>

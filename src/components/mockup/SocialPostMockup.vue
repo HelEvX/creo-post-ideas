@@ -44,6 +44,7 @@
 import PostWrapper from "@/components/mockup/PostWrapper.vue";
 import { ref, watch, computed } from "vue";
 import { getTextModeForBackground } from "@/utils/colorLogic.js";
+import { tint, shade } from "@/utils/colorBlender.js";
 import SafeZoneOverlay from "@/components/mockup/SafeZoneOverlay.vue";
 
 /* ----------------------------------------------
@@ -127,16 +128,47 @@ function readVar(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
 
+/* ----------------------------------------------
+   DERIVED ALT PANEL BACKGROUND
+   - Uses resolved mockup background
+   - Light bg  -> darker panel
+   - Dark bg   -> lighter panel
+   - Hue preserved
+---------------------------------------------- */
+function recomputeAltPanelBg() {
+  if (!props.bgColors || props.bgColors.length === 0) return;
+
+  const cs = getComputedStyle(document.documentElement);
+  const darkText = cs.getPropertyValue("--color-text").trim();
+  const lightText = cs.getPropertyValue("--color-text-inverse").trim();
+
+  let bgHex = null;
+  for (const v of props.bgColors) {
+    const val = readVar(v);
+    if (val) {
+      bgHex = val;
+      break;
+    }
+  }
+  if (!bgHex) return;
+
+  const mode = getTextModeForBackground(bgHex, darkText, lightText);
+  const STEP1 = 0.18;
+  const STEP2 = 0.06;
+
+  const derived = mode === "light" ? tint(bgHex, STEP1) : shade(bgHex, STEP2);
+
+  document.documentElement.style.setProperty("--ui-alt-panel-bg-derived", derived);
+}
+
 const mockupTextVars = ref({
   "--dynamic-text": "",
   "--dynamic-title": "",
-  "--dynamic-text-accent": "",
 });
 
 const resolvedText = computed(() => ({
   title: mockupTextVars.value["--dynamic-title"] || null,
   body: mockupTextVars.value["--dynamic-text"] || null,
-  accent: mockupTextVars.value["--dynamic-text-accent"] || null,
 }));
 
 function recomputeMockupTextVars() {
@@ -162,16 +194,9 @@ function recomputeMockupTextVars() {
   const mainText = needsLight ? light : bodyDark;
   const mainTitle = needsLight ? light : titleDark;
 
-  let accentText = bodyDark;
-  const accentBg = readVar("--dynamic-accent");
-  if (accentBg) {
-    accentText = getTextModeForBackground(accentBg, bodyDark, light) === "light" ? light : bodyDark;
-  }
-
   mockupTextVars.value = {
     "--dynamic-text": mainText,
     "--dynamic-title": mainTitle,
-    "--dynamic-text-accent": accentText,
   };
 }
 
@@ -180,7 +205,10 @@ function recomputeMockupTextVars() {
 ---------------------------------------------- */
 watch(
   () => [props.backgroundClass, props.backgroundTone, props.bgColors, props.useColoredBackground],
-  recomputeMockupTextVars,
+  () => {
+    recomputeMockupTextVars();
+    recomputeAltPanelBg();
+  },
   { immediate: true, deep: true }
 );
 
@@ -316,9 +344,35 @@ watch(
 .post-content {
   color: inherit;
   position: absolute;
-  width: 100%;
-  height: 100%;
+  inset: 0;
 }
+
+/* baseline */
+.size--landscape .post-content {
+  --scale: 1;
+}
+
+/* perceptual corrections */
+.size--square .post-content {
+  --scale: 1.08;
+}
+
+.size--portrait .post-content,
+.size--story .post-content {
+  --scale: 1.16;
+}
+
+/* apply */
+.post-content {
+  transform: scale(var(--scale));
+  width: calc(100% / var(--scale));
+  height: calc(100% / var(--scale));
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(var(--scale));
+}
+
+/* %%%%%%%%%%%%%%%%%%%%% */
 
 .post-safe {
   position: absolute;
@@ -326,6 +380,7 @@ watch(
   right: var(--safe-right);
   bottom: var(--safe-bottom);
   left: var(--safe-left);
+  scale: 0.95; /* create 'padding'*/
 }
 
 .post-free {
@@ -359,6 +414,7 @@ watch(
 .post-bg {
   position: absolute;
   inset: 0;
+  overflow: hidden;
 }
 
 .post-bg__color,

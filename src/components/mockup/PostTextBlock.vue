@@ -34,31 +34,30 @@ defineProps({
 =============================================== */
 
 .post-text-block {
-  padding: var(--space-25);
+  padding-bottom: clamp(0.4em, 1.5cqw, 2.5em);
   text-align: center;
-  align-content: center;
 }
 
 .post-text-block__headline {
-  font-size: var(--fs-h2);
+  font-size: var(--fs-h1);
   line-height: var(--lh-display);
   color: var(--dynamic-title);
 }
 
 .post-text-block__body {
-  font-size: var(--fs-body-lg);
+  font-size: var(--fs-body);
   line-height: var(--lh-body);
   color: var(--dynamic-text);
 }
 
 .post-text-block__quote {
-  font-size: var(--fs-h4);
+  font-size: var(--fs-h1);
   line-height: var(--lh-display);
   color: var(--dynamic-text);
 }
 
 .post-text-block__author {
-  font-size: var(--fs-body-xs);
+  font-size: var(--fs-h3);
   line-height: var(--lh-heading);
   color: var(--dynamic-title);
 }

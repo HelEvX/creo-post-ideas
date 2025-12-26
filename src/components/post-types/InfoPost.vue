@@ -2,7 +2,7 @@
   <div class="info-post" postType="info">
     <PostTextBlock v-if="zone === 'safe'" :headlineText="headline" :bodyText="body" />
 
-    <div v-if="zone === 'safe'" class="info-block-flex">
+    <div v-if="zone === 'safe'">
       <div class="info-block">
         <div class="info-cards">
           <!-- LEFT CARD (alt-panel surface) -->
@@ -63,14 +63,8 @@ const { headline, body } = defineProps({
    ======================================================= */
 
 .info-post {
-  height: 100%;
   display: flex;
   flex-direction: column;
-}
-
-.info-block-flex {
-  flex: 1;
-  margin-bottom: 90px;
 }
 
 .info-block {
@@ -79,8 +73,7 @@ const { headline, body } = defineProps({
   flex-wrap: wrap;
   height: 100%;
   flex: 1;
-  gap: var(--space-10);
-  padding: var(--space-10);
+  gap: clamp(0.4em, 1.6cqw, 1em);
 }
 
 /* =========================================================
@@ -95,27 +88,25 @@ const { headline, body } = defineProps({
 
 .info-card {
   flex: 0 1 48%;
-  padding: var(--space-5) var(--space-10);
+  padding: clamp(0.4em, 1.4cqw, 1em) clamp(0.6em, 1.8cqw, 1.6em);
   border-radius: var(--border-radius); /* client input */
   border: var(--border-card); /* client input: border width only */
   box-shadow: var(--shadow-card); /* client input: XY distance,  blur */
 }
 
 .info-card--alt-panel {
-  background: var(--ui-alt-panel-bg);
-  color: var(--text-on-alt-panel); /* = dynamic text */
-  opacity: var(--opacity-alt-panel);
+  background: var(--ui-alt-panel-bg-derived);
+  color: var(--dynamic-text);
 }
 
 .info-card--panel {
   background: var(--ui-panel-bg);
   color: var(--text-on-panel);
-  opacity: var(--opacity-panel);
 }
 
 /* titles override body text */
 .info-card--alt-panel .info-row--title {
-  color: var(--title-on-alt-panel);
+  color: var(--dynamic-title);
 }
 
 .info-card--panel .info-row--title {
@@ -124,15 +115,15 @@ const { headline, body } = defineProps({
 
 /* captions are shared */
 .info-row--caption {
-  font-size: var(--fs-body-sm);
+  font-size: var(--fs-body);
   font-weight: var(--fw-title);
 }
 
 .info-card--panel .info-row--caption {
-  color: var(--dynamic-caption);
+  color: var(--ui-primary-bg);
 }
 .info-card--alt-panel .info-row--caption {
-  color: var(--dynamic-alt-caption);
+  color: var(--ui-secondary-bg);
 }
 
 /* =========================================================
@@ -141,13 +132,21 @@ const { headline, body } = defineProps({
 
 .info-accent {
   flex: 0 1 100%;
-  padding: var(--space-10);
+  padding: clamp(0.4em, 1.4cqw, 1em) clamp(0.6em, 1.8cqw, 1.6em);
   border-radius: var(--border-radius); /* client input */
   border: var(--border-card); /* client input: border width only */
   box-shadow: var(--shadow-card); /* client input: XY distance,  blur */
-  background: var(--dynamic-accent);
-  color: var(--dynamic-text-accent);
-  font-size: var(--fs-body-sm);
+  font-size: var(--fs-body-xs);
+}
+
+.post-content--primary .info-accent {
+  background: var(--ui-secondary-bg);
+  color: var(--text-on-secondary);
+}
+
+.post-content--secondary .info-accent {
+  background: var(--ui-primary-bg);
+  color: var(--text-on-primary);
 }
 
 /* =========================================================
@@ -156,8 +155,8 @@ const { headline, body } = defineProps({
 
 .info-row {
   display: flex;
-  gap: var(--space-10);
-  padding-bottom: var(--space-5);
+  gap: clamp(0.4em, 1.6cqw, 1em);
+  padding-bottom: clamp(0.25em, 0.9cqw, 0.5em);
 }
 
 /* typography */
@@ -174,6 +173,6 @@ const { headline, body } = defineProps({
 /* icon */
 .post-icon {
   font-size: var(--fs-body-sm);
-  padding: var(--space-5) 0;
+  padding: clamp(0.25em, 0.9cqw, 0.5em) 0;
 }
 </style>

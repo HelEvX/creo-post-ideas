@@ -3,7 +3,7 @@
     <div class="safe-div">
       <label class="safezone-toggle">
         <input type="checkbox" :checked="showSafeZones" @change="emit('update:safeZones', $event.target.checked)" />
-        Safe zones
+        Marges
       </label>
     </div>
 
@@ -54,14 +54,21 @@ function select(id) {
 }
 .format-selector-bar__buttons {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: var(--space-10);
-  flex: 1 0 80%;
+  flex: 1 1 80%;
 }
 
 .safe-div,
 .empty-div {
   flex: 1 0 10%;
+}
+
+@media (max-width: 767px) {
+  .empty-div {
+    display: none;
+  }
 }
 
 .format-selector-bar__btn {

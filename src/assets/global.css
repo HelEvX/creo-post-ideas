@@ -432,7 +432,7 @@ body {
   color: var(--dynamic-text);
   background: var(--ui-section-bg);
   margin: 0;
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: auto;
 }
 
 .text-block-900 {
@@ -1004,11 +1004,28 @@ textarea {
 }
 
 /* Spacing helpers */
-.section {
+/* .section {
   padding: calc(2rem + 2vw) 0;
 }
 @media (min-width: 1200px) {
   .section {
     padding: 7.5rem 0;
   }
+} */
+
+/* ======================================================
+   MOCKUP TYPOGRAPHY — container-scaled
+   ====================================================== */
+
+.post-wrapper {
+  --fs-h1: calc(clamp(2.5cqw, 5cqw, 5rem) * var(--mockup-font-compensation));
+  --fs-h2: calc(clamp(2.2cqw, 4cqw, 4rem) * var(--mockup-font-compensation));
+  --fs-h3: calc(clamp(1.8cqw, 3cqw, 3rem) * var(--mockup-font-compensation));
+  --fs-h4: calc(clamp(1.4cqw, 2.4cqw, 2.4rem) * var(--mockup-font-compensation));
+  --fs-h5: calc(clamp(1.2cqw, 2cqw, 2rem) * var(--mockup-font-compensation));
+
+  --fs-body-lg: calc(clamp(1.2cqw, 1.8cqw, 1.8rem) * var(--mockup-font-compensation));
+  --fs-body: calc(clamp(1.1cqw, 1.6cqw, 1.6rem) * var(--mockup-font-compensation));
+  --fs-body-sm: calc(clamp(1cqw, 1.5cqw, 1.5rem) * var(--mockup-font-compensation));
+  --fs-body-xs: calc(clamp(0.9cqw, 1.3cqw, 1.3rem) * var(--mockup-font-compensation));
 }
