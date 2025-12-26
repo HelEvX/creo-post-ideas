@@ -16,6 +16,12 @@ CREO-POST-IDEAS/
 │   └── favicon.svg       # Application favicon
 │
 ├── src/
+│   ├── assets/
+│   │   ├── avatars/      # .webp logos
+│   │   ├── img/
+│   │   ├── global.css    # global styles
+│   │   └── patterns.css  # pattern designs
+│   │
 │   ├── components/
 │   │   ├── brand/
 │   │   │   ├── BrandLogo.vue
