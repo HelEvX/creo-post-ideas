@@ -31,7 +31,6 @@
 
   "color-surface": "#f0f0ee",
   "color-panel": "#e0d5cd",
-  "color-panel-alt": "#6b705c",
   "color-nav-bg": "#ffffff",
   "color-footer-bg": "#ffffff",
 
@@ -52,6 +51,17 @@
   "color-danger": "#db504a",
   "color-success": "#b3e27c",
   "color-success-dark": "#88d232",
+
+  "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
+
+  "border-enabled": "true",
+  "border-width": "0",
+  "border-radius": "0",
+
+  "shadow-enabled": "false",
+  "shadow-x": "0",
+  "shadow-y": "0",
+  "shadow-blur": "0",
 
   "ig": {
     "avatar": "kenis.webp",

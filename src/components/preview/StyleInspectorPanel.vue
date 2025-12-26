@@ -2,6 +2,7 @@
   <aside class="main-preview__styles">
     <div class="styles__fonts">
       <h6>Lettertypes</h6>
+      <!-- IF font_source === 'google' THEN render_as_link ELSE render_as_text -->
       <p class="styles__hint">Grote tekst</p>
       <div class="title-font">{{ titleFont }}</div>
       <p class="styles__hint">Gewone tekst</p>

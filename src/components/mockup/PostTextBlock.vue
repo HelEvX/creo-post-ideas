@@ -51,13 +51,13 @@ defineProps({
 }
 
 .post-text-block__quote {
-  font-size: var(--fs-h1);
+  font-size: var(--fs-h3);
   line-height: var(--lh-display);
   color: var(--dynamic-text);
 }
 
 .post-text-block__author {
-  font-size: var(--fs-h3);
+  font-size: var(--fs-body);
   line-height: var(--lh-heading);
   color: var(--dynamic-title);
 }

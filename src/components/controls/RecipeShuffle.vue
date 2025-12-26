@@ -34,7 +34,7 @@
             <div class="swatch-single" :style="{ background: item.swatchBg }">
               <i class="fa-solid fa-square swatch-icon" :style="{ color: item.swatchText }"></i>
               <span class="swatch-text-label" :style="{ color: item.swatchText }"
-                >A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+                >A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9
               </span>
             </div>
           </div>
@@ -180,7 +180,10 @@ function pickReadablePillText(bgHex) {
   if (!bgHex || !dark || !light) return dark;
 
   const mode = getTextModeForBackground(bgHex, dark, light);
-  return mode === "dark" ? dark : light;
+  // match App.vue mapping:
+  // mode === "light"  -> use light text
+  // mode === "dark"   -> use dark text
+  return mode === "light" ? light : dark;
 }
 
 function applyCssVar(cssVarName, hexValue) {
@@ -193,10 +196,13 @@ function raf() {
 }
 
 async function scheduleContrastUpdate() {
+  if (scheduleContrastUpdate._pending) return;
+  scheduleContrastUpdate._pending = true;
   await nextTick();
   await raf();
   await raf();
   updateContrastChecks();
+  scheduleContrastUpdate._pending = false;
 }
 
 /* --------------------------------------------------
@@ -205,25 +211,17 @@ async function scheduleContrastUpdate() {
    - Choose a SOURCE token to adjust based on pair intent
 -------------------------------------------------- */
 function getFixableSourceVar(item) {
-  const fg = item.cssVarFg;
+  // 1. Dynamic text → underlying neutral tokens
+  if (item.cssVarFg === "--dynamic-title") return "--color-title";
+  if (item.cssVarFg === "--dynamic-text") return "--color-text";
 
-  // --- surface-specific text roles ---
-  if (fg === "--alt-caption-on-alt-panel") return "--color-caption-alt";
-  if (fg === "--caption-on-panel") return "--color-caption";
-  if (fg === "--text-on-alt-panel") return "--color-text";
-  if (fg === "--text-on-panel") return "--color-text";
-  if (fg === "--title-on-alt-panel") return "--color-title";
-  if (fg === "--title-on-panel") return "--color-title";
+  // 2. Panel text
+  if (item.cssVarFg === "--title-on-panel") return "--color-title";
+  if (item.cssVarFg === "--text-on-panel") return "--color-text";
 
-  // --- mockup background text ---
-  if (item.fix === "neutral-text") {
-    return fg === "--dynamic-title" ? "--color-title" : "--color-text";
-  }
-
-  // --- brand-colored text on neutral backgrounds ---
+  // 3. Brand-colored text
   if (item.fix === "brand-text") {
-    const tone = props.bgContext?.tone || "primary";
-    return tone === "secondary" ? "--color-secondary" : "--color-primary";
+    return props.bgContext?.tone === "secondary" ? "--color-secondary" : "--color-primary";
   }
 
   return null;
@@ -232,6 +230,8 @@ function getFixableSourceVar(item) {
 /* --------------------------------------------------
    APPLY RECIPE
 -------------------------------------------------- */
+// RecipeShuffle.vue
+
 function applyActiveRecipe() {
   if (!props.scales || !activeRecipe.value) return;
 
@@ -239,7 +239,34 @@ function applyActiveRecipe() {
   const roles = activeRecipe.value.roles;
   const scalesCopy = JSON.parse(JSON.stringify(props.scales));
 
+  // --- STEP 1 ADD: shadow participation + recipe-driven shadow alpha ---
+  const cs = getComputedStyle(root);
+  const shadowCardRaw = cs.getPropertyValue("--shadow-card").trim();
+  const brandUsesShadows = shadowCardRaw !== "" && shadowCardRaw.toLowerCase() !== "none";
+
+  // Recipe role key: "--ui-shadow-alpha" expects ["neutral", idx] where idx is 0..10
+  function idxToAlpha(idx) {
+    const i = Math.max(0, Math.min(10, Number(idx)));
+    const min = 0.06; // lightest usable
+    const max = 0.3; // strongest usable
+    return min + (i / 10) * (max - min);
+  }
+
   for (const [cssVar, spec] of Object.entries(roles)) {
+    // --- STEP 1 ADD: intercept shadow alpha role ---
+    if (cssVar === "--ui-shadow-alpha") {
+      // Only apply if brand enables shadows
+      if (!brandUsesShadows) continue;
+
+      if (Array.isArray(spec) && spec.length === 2) {
+        const idx = spec[1];
+        const alpha = idxToAlpha(idx); // e.g. 0.05 → 0.35
+
+        root.style.setProperty("--color-shadow", `rgba(0, 0, 0, ${alpha})`, "important");
+      }
+      continue;
+    }
+
     const hex = Array.isArray(spec)
       ? scalesCopy?.[spec[0]]?.[spec[1]]
       : spec?.startsWith("var(")
@@ -309,13 +336,13 @@ const contrastPairs = ref([
   { id: "main-title", fg: "--dynamic-title", bg: "CONTEXT", fix: "neutral-text" },
   { id: "main-paragraph", fg: "--dynamic-text", bg: "CONTEXT", fix: "neutral-text" },
 
-  { id: "card1-caption", fg: "--alt-caption-on-alt-panel", bg: "--ui-alt-panel-bg", fix: "brand-text" },
-  { id: "card1-title", fg: "--dynamic-title", bg: "--ui-alt-panel-bg", fix: "brand-text" },
-  { id: "card1-paragraph", fg: "--dynamic-text", bg: "--ui-alt-panel-bg", fix: "brand-text" },
+  { id: "card1-caption", fg: "--dynamic-text", bg: "--ui-alt-panel-bg-derived", fix: "brand-text" },
+  { id: "card1-title", fg: "--dynamic-title", bg: "--ui-alt-panel-bg-derived", fix: "neutral-text" },
+  { id: "card1-paragraph", fg: "--dynamic-text", bg: "--ui-alt-panel-bg-derived", fix: "neutral-text" },
 
-  { id: "card2-caption", fg: "--caption-on-panel", bg: "--ui-panel-bg", fix: "brand-text" },
-  { id: "card2-title", fg: "--dynamic-title", bg: "--ui-panel-bg", fix: "brand-text" },
-  { id: "card2-paragraph", fg: "--dynamic-text", bg: "--ui-panel-bg", fix: "brand-text" },
+  { id: "card2-caption", fg: "--dynamic-text", bg: "--ui-panel-bg", fix: "brand-text" },
+  { id: "card2-title", fg: "--dynamic-title", bg: "--ui-panel-bg", fix: "neutral-text" },
+  { id: "card2-paragraph", fg: "--dynamic-text", bg: "--ui-panel-bg", fix: "neutral-text" },
 
   { id: "accent-text", fg: "--dynamic-text", bg: "--dynamic-accent", fix: "neutral-text" },
 ]);
@@ -323,25 +350,22 @@ const contrastPairs = ref([
 /* --------------------------------------------------
    CONTRAST CHECK (SCORING)
 -------------------------------------------------- */
-function dynamicTitleForBg(bgHex) {
-  const dark = resolveCssColor("--color-title");
-  const light = resolveCssColor("--color-text-inverse");
-  if (!bgHex || !dark || !light) return dark;
-  const mode = getTextModeForBackground(bgHex, dark, light);
-  return mode === "dark" ? dark : light;
-}
-
-function dynamicBodyForBg(bgHex) {
-  const dark = resolveCssColor("--color-text");
-  const light = resolveCssColor("--color-text-inverse");
-  if (!bgHex || !dark || !light) return dark;
-  const mode = getTextModeForBackground(bgHex, dark, light);
-  return mode === "dark" ? dark : light;
-}
 
 function fgForBgPair(fgVar, bgHex) {
-  if (fgVar === "--dynamic-title") return dynamicTitleForBg(bgHex);
-  if (fgVar === "--dynamic-text") return dynamicBodyForBg(bgHex);
+  if (fgVar === "--dynamic-title") {
+    const dark = resolveCssColor("--color-title");
+    const light = resolveCssColor("--color-text-inverse");
+    if (!bgHex || !dark || !light) return dark;
+    return getTextModeForBackground(bgHex, dark, light) === "light" ? light : dark;
+  }
+
+  if (fgVar === "--dynamic-text") {
+    const dark = resolveCssColor("--color-text");
+    const light = resolveCssColor("--color-text-inverse");
+    if (!bgHex || !dark || !light) return dark;
+    return getTextModeForBackground(bgHex, dark, light) === "light" ? light : dark;
+  }
+
   return resolveCssColor(fgVar);
 }
 
@@ -372,7 +396,7 @@ function updateContrastChecks() {
 
     const ratios = bgList.map((bg) => {
       const fg = fgForBgPair(p.fg, bg);
-      if (!fg) return 0;
+      if (!fg || !bg) return 0;
       const r = getContrastRatio(fg, bg);
       return Number.isFinite(r) ? r : 0;
     });
@@ -430,42 +454,61 @@ async function fixContrast(item) {
   if (!item || !props.scales) return;
   if (item.label === "prima" || item.label === "goed") return;
 
-  if (item.cssVarBg === "CONTEXT") {
+  if (item.cssVarFg?.startsWith("--dynamic-")) {
+    // dynamic vars are derived, never fix directly
     noFixMap.value[item.id] = true;
     updateContrastChecks();
     return;
+  }
+
+  if (item.cssVarBg === "--ui-alt-panel-bg-derived") {
+    // background is derived, we never change it
+    // continue, but ONLY text fixes are allowed
   }
 
   noFixMap.value[item.id] = false;
 
+  // IMPORTANT:
+  // - For CONTEXT rows, cssVarBg is "CONTEXT" and must NOT be resolved as a CSS var.
+  // - Always use the already computed worst-case values.
   const bg = resolveCssColor(item.cssVarBg);
   const effectiveFg = item.swatchText;
   const sourceVar = getFixableSourceVar(item);
-  if (!bg || !effectiveFg || !sourceVar) return;
 
-  const sourceColor = resolveCssColor(sourceVar);
-  if (!sourceColor) return;
-
-  const EPS = 0.0001;
-  const step = 0.04;
-
-  const currentRatio = evaluateContrastVisual(effectiveFg, bg).ratio;
-
-  const darker = shade(sourceColor, step);
-  const lighter = tint(sourceColor, step);
-
-  const rD = getContrastRatio(darker, bg);
-  const rL = getContrastRatio(lighter, bg);
-
-  if (Number.isFinite(rD) && rD > currentRatio + EPS && rD >= rL) {
-    applyCssVar(sourceVar, darker);
-  } else if (Number.isFinite(rL) && rL > currentRatio + EPS) {
-    applyCssVar(sourceVar, lighter);
-  } else {
+  if (!bg || !effectiveFg || !sourceVar) {
     noFixMap.value[item.id] = true;
     updateContrastChecks();
     return;
   }
+
+  const sourceColor = resolveCssColor(sourceVar);
+  if (!sourceColor) {
+    noFixMap.value[item.id] = true;
+    updateContrastChecks();
+    return;
+  }
+
+  const step = 0.04;
+
+  const darker = shade(sourceColor, step);
+  const lighter = tint(sourceColor, step);
+
+  const rCurrent = getContrastRatio(effectiveFg, bg);
+  const rDarker = getContrastRatio(darker, bg);
+  const rLighter = getContrastRatio(lighter, bg);
+
+  let next = null;
+
+  if (rDarker > rCurrent && rDarker >= rLighter) next = darker;
+  if (rLighter > rCurrent && rLighter > rDarker) next = lighter;
+
+  if (!next) {
+    noFixMap.value[item.id] = true;
+    updateContrastChecks();
+    return;
+  }
+
+  applyCssVar(sourceVar, next);
 
   await nextTick();
   window.dispatchEvent(new Event("palette-updated"));
@@ -528,7 +571,7 @@ defineExpose({ nextRecipe, prevRecipe });
 
 .reset-btn {
   background: none;
-  border: var(--dynamic-text);
+  border: 1px solid var(--dynamic-text);
   color: var(--dynamic-text);
   border-radius: var(--radius-sm);
   padding: var(--space-5) var(--space-20);
@@ -587,7 +630,7 @@ defineExpose({ nextRecipe, prevRecipe });
 .swatch-single {
   display: flex;
   align-items: center;
-  gap: var(--space-5);
+  gap: var(--space-10);
   padding: var(--space-5) var(--space-10);
   border-radius: var(--radius-sm);
   border: var(--ui-panel-border-soft);

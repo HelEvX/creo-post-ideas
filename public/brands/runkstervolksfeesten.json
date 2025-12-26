@@ -29,7 +29,6 @@
 
   "color-surface": "#f9f2a6",
   "color-panel": "#fae82e",
-  "color-panel-alt": "#fcf8d1",
   "color-nav-bg": "#fae82e",
   "color-footer-bg": "#1b1464",
 
@@ -50,6 +49,17 @@
   "color-danger": "#c3392a",
   "color-success": "#2ecc71",
   "color-success-dark": "#27ad60",
+
+  "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
+
+  "border-enabled": "true",
+  "border-width": "0",
+  "border-radius": "0",
+
+  "shadow-enabled": "false",
+  "shadow-x": "0",
+  "shadow-y": "0",
+  "shadow-blur": "0",
 
   "ig": {
     "avatar": "runkstervolksfeesten.webp",

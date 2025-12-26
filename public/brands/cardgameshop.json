@@ -29,7 +29,6 @@
 
   "color-surface": "#ffffff",
   "color-panel": "#e1e9f4",
-  "color-panel-alt": "#96b2d9",
   "color-nav-bg": "#3b5ea8",
   "color-footer-bg": "#3b5ea8",
 
@@ -50,6 +49,17 @@
   "color-danger": "#ec0b43",
   "color-success": "#4baa74",
   "color-success-dark": "#3f8f62",
+
+  "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
+
+  "border-enabled": "true",
+  "border-width": "0",
+  "border-radius": "0",
+
+  "shadow-enabled": "false",
+  "shadow-x": "0",
+  "shadow-y": "0",
+  "shadow-blur": "0",
 
   "ig": {
     "avatar": "cardgameshop.webp",

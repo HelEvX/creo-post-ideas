@@ -24,7 +24,7 @@ function toggle() {
   display: flex;
   align-items: center;
   justify-content: left;
-  gap: var(--space-10);
+  gap: var(--space-5);
 }
 
 /* labels left and right */

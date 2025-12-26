@@ -455,6 +455,7 @@ h5 {
   font-family: var(--font-title);
   margin-top: 0;
   font-weight: var(--fw-title);
+  color: var(--dynamic-title);
 }
 h1 {
   font-weight: var(--fw-title);
@@ -480,6 +481,7 @@ h4 {
 h5 {
   font-size: var(--fs-h5);
   line-height: var(--lh-heading);
+  color: var(--dynamic-soft);
 }
 h6 {
   margin-top: var(--space-10);

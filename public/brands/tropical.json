@@ -31,7 +31,6 @@
 
   "color-surface": "#f8f8f8",
   "color-panel": "#fbeec1",
-  "color-panel-alt": "#fcd9e1",
   "color-nav-bg": "#ef476f",
   "color-footer-bg": "#fbeec1",
 
@@ -52,6 +51,17 @@
   "color-danger": "#ff2e2e",
   "color-success": "#06d6a0",
   "color-success-dark": "#05bb8b",
+
+  "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
+
+  "border-enabled": "true",
+  "border-width": "0",
+  "border-radius": "0",
+
+  "shadow-enabled": "false",
+  "shadow-x": "0",
+  "shadow-y": "0",
+  "shadow-blur": "0",
 
   "ig": {
     "avatar": "tropical.webp",

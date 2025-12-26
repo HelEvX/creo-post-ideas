@@ -29,7 +29,6 @@
 
   "color-surface": "#ffffff",
   "color-panel": "#f1ebdf",
-  "color-panel-alt": "#16503a",
   "color-nav-bg": "#faf9f6",
   "color-footer-bg": "#1f6f50",
 
@@ -50,6 +49,17 @@
   "color-danger": "#c3423f",
   "color-success": "#2d9f73",
   "color-success-dark": "#25815d",
+
+  "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
+
+  "border-enabled": "true",
+  "border-width": "0",
+  "border-radius": "0",
+
+  "shadow-enabled": "false",
+  "shadow-x": "0",
+  "shadow-y": "0",
+  "shadow-blur": "0",
 
   "ig": {
     "avatar": "ocrunkst.webp",

@@ -63,7 +63,7 @@
       <div class="container">
         <div class="row text-block-900 center">
           <div class="col-12">
-            <h4>Wat doet deze tool?</h4>
+            <h5>DOELSTELLING</h5>
             <h2>Een Instagram<span>*</span> design spieker</h2>
             <p>Je klanten moeten je merk direct herkennen wanneer ze door hun 'feed' scrollen.</p>
             <p>
@@ -264,19 +264,22 @@ export default {
       const root = document.documentElement;
       const cs = getComputedStyle(root);
 
-      const dark = cs.getPropertyValue("--color-text").trim();
-      const light = cs.getPropertyValue("--color-text-inverse").trim();
+      // HELPER
+      const getVar = (name) => cs.getPropertyValue(name).trim();
 
-      const softDark = cs.getPropertyValue("--color-text-soft").trim();
-      const softLight = cs.getPropertyValue("--color-text-soft-inverse").trim();
+      const dark = getVar("--color-text");
+      const light = getVar("--color-text-inverse");
 
-      const disabledDark = cs.getPropertyValue("--color-disabled").trim();
-      const disabledLight = cs.getPropertyValue("--color-disabled-inverse").trim();
+      const softDark = getVar("--color-text-soft");
+      const softLight = getVar("--color-text-soft-inverse");
 
-      const titleDark = cs.getPropertyValue("--color-title").trim();
+      const disabledDark = getVar("--color-disabled");
+      const disabledLight = getVar("--color-disabled-inverse");
 
-      const overlayDark = cs.getPropertyValue("--black-50").trim();
-      const overlayLight = cs.getPropertyValue("--white-50").trim();
+      const titleDark = getVar("--color-title");
+
+      const overlayDark = getVar("--black-50");
+      const overlayLight = getVar("--white-50");
 
       /* ----------------------------------------------
          PER-SURFACE ROLE ASSIGNMENT
@@ -320,12 +323,12 @@ export default {
          DYNAMIC TEXT (CONTENT LAYER)
          Always based on SECTION surface
       ---------------------------------------------- */
-      const textOnSection = cs.getPropertyValue("--text-on-section").trim();
-      const titleOnSection = cs.getPropertyValue("--title-on-section").trim();
-      const softOnSection = cs.getPropertyValue("--text-soft-on-section").trim();
-      const disabledOnSection = cs.getPropertyValue("--disabled-on-section").trim();
-      const textOnFooter = cs.getPropertyValue("--text-soft-on-footer").trim();
-      const textOnNav = cs.getPropertyValue("--text-on-nav").trim();
+      const textOnSection = getVar("--text-on-section");
+      const titleOnSection = getVar("--title-on-section");
+      const softOnSection = getVar("--text-soft-on-section");
+      const disabledOnSection = getVar("--disabled-on-section");
+      const textOnFooter = getVar("--text-soft-on-footer");
+      const textOnNav = getVar("--text-on-nav");
 
       if (textOnSection) root.style.setProperty("--dynamic-text", textOnSection);
       if (titleOnSection) root.style.setProperty("--dynamic-title", titleOnSection);
@@ -402,11 +405,52 @@ export default {
 
       root.removeAttribute("style");
 
+      // Keys applied (COLORS + FONTS ONLY)
       for (const [k, v] of Object.entries(data)) {
         if (k.startsWith("color-") || k.startsWith("--color-") || k.startsWith("font-")) {
           const cssVar = k.startsWith("--") ? k : `--${k}`;
           root.style.setProperty(cssVar, v);
         }
+      }
+
+      /* ----------------------------------------------
+          MOCKUP-ONLY: BORDER + SHADOW
+          (do NOT touch UI border / shadow variables)
+        ---------------------------------------------- */
+
+      // defensive helpers
+      const t = (val) => (typeof val === "string" ? val.trim() : "");
+      const isTrue = (val) => t(val).toLowerCase() === "true";
+
+      // flags from JSON
+      const borderEnabled = isTrue(data["border-enabled"]);
+      const shadowEnabled = isTrue(data["shadow-enabled"]);
+
+      // border radius (allowed to be global)
+      if (t(data["border-radius"])) {
+        root.style.setProperty("--border-radius", t(data["border-radius"]));
+      }
+
+      // mockup card border ONLY
+      if (borderEnabled) {
+        const w = t(data["border-width"]) || "0";
+        root.style.setProperty("--border-card", `${w} solid var(--color-border-medium)`);
+      } else {
+        root.style.setProperty("--border-card", "none");
+      }
+
+      // mockup card shadow ONLY
+      if (shadowEnabled) {
+        const x = t(data["shadow-x"]) || "0";
+        const y = t(data["shadow-y"]) || "0";
+        const blur = t(data["shadow-blur"]) || "0";
+
+        const cs = getComputedStyle(root);
+        const color = t(data["color-shadow"]) || cs.getPropertyValue("--color-shadow").trim() || "rgba(0,0,0,0.25)";
+
+        root.style.setProperty("--shadow-card", `${x} ${y} ${blur} ${color}`);
+      } else {
+        root.style.setProperty("--shadow-card", "none");
       }
 
       await this.$nextTick();
@@ -510,12 +554,11 @@ h1.hero-title {
   font-size: var(--fs-hero);
   font-weight: var(--fw-title);
   letter-spacing: -0.01em;
-  color: var(--dynamic-title);
 }
 p.hero-subtitle {
   font-size: var(--fs-body-lg);
   font-weight: var(--fw-title);
-  color: var(--color-title);
+  color: var(--dynamic-soft);
   margin-bottom: 0;
 }
 
@@ -530,19 +573,6 @@ p.hero-subtitle {
   background: var(--ui-alt-section-bg);
 }
 
-/* Section title colors */
-.section h2 {
-  color: var(--color-title);
-}
-
-.section h3 {
-  color: var(--color-title);
-}
-
-.section h4 {
-  color: var(--dynamic-soft);
-}
-
 .section-gallery h2 {
   /* text-align: center; */
   padding-top: var(--space-30);
@@ -555,13 +585,9 @@ p.hero-subtitle {
 
 .section-about .starred-text {
   font-size: var(--fs-body-sm);
-  color: var(--ui-primary-bg);
 }
 
-.section-about h4 {
-  margin: 0 0 var(--space-10);
-}
-
+.section-about .starred-text,
 .section-about span {
   color: var(--ui-primary-bg);
 }
@@ -614,20 +640,20 @@ p.hero-subtitle {
 }
 
 .app__main {
-  order: 2;
-}
-
-.app__sidebar {
   order: 1;
 }
 
-@media (max-width: 1399px) {
+.app__sidebar {
+  order: 2;
+}
+
+@media (min-width: 1400px) {
   .app__main {
-    order: 1;
+    order: 2;
   }
 
   .app__sidebar {
-    order: 2;
+    order: 1;
   }
 }
 

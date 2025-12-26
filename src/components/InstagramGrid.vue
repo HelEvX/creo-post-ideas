@@ -111,11 +111,11 @@ import { computed } from "vue";
 
 const highlightPairs = [
   { bg: "--ui-primary-bg", fg: "--text-on-primary" },
-  { bg: "--ui-secondary-bg", fg: "--text-on-secondary" },
-  { bg: "--ui-panel-bg", fg: "--text-on-panel" },
-  { bg: "--ui-alt-panel-bg", fg: "--text-on-alt-panel" },
-  { bg: "--ui-section-bg", fg: "--text-on-section" },
   { bg: "--ui-alt-section-bg", fg: "--text-on-alt-section" },
+  { bg: "--ui-secondary-bg", fg: "--text-on-secondary" },
+  { bg: "--ui-alt-panel-bg-derived", fg: "--text-on-alt-panel" },
+  { bg: "--ui-panel-bg", fg: "--text-on-panel" },
+  { bg: "--ui-footer-bg", fg: "--text-soft-on-footer" },
   { bg: "--ui-nav-bg", fg: "--text-on-nav" },
 ];
 

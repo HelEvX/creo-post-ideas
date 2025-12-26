@@ -25,11 +25,11 @@
 
   "color-tertiary": "#",
 
-  "_comment-2": "BACKGROUND COLORS",
+  "_comment-2": "BACKGROUND COLORS: sections, cards, header, footer",
 
   "color-surface": "",
   "color-panel": "",
-  "color-panel-alt": "",
+
   "color-nav-bg": "",
   "color-footer-bg": "",
 
@@ -50,6 +50,17 @@
   "color-danger": "",
   "color-success": "",
   "color-success-dark": "",
+
+  "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
+
+  "border-enabled": "true",
+  "border-width": "0",
+  "border-radius": "0",
+
+  "shadow-enabled": "false",
+  "shadow-x": "0",
+  "shadow-y": "0",
+  "shadow-blur": "0",
 
   "ig": {
     "avatar": "client.webp",

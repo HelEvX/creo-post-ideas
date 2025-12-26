@@ -50,6 +50,17 @@
   "color-success": "#9baf9d",
   "color-success-dark": "#385f3b",
 
+  "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
+
+  "border-enabled": "true",
+  "border-width": "0",
+  "border-radius": "0",
+
+  "shadow-enabled": "false",
+  "shadow-x": "0",
+  "shadow-y": "0",
+  "shadow-blur": "0",
+
   "ig": {
     "avatar": "groomer.webp",
     "username": "groomer.be",

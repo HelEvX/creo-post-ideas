@@ -7,10 +7,9 @@
 
 // | UI Role                     | Typical Index | Notes                               |
 // | --------------------------- | ------------- | ----------------------------------- |
-// | Section / panel backgrounds | 0–2           | Light end of neutral or brand color |
-// | Text, captions, headings    | 7–10          | Dark or mid-dark tones              |
-// | Accents / links             | 4–7           | Midrange brand colors               |
-// | Borders / dividers          | 3–5           | Mid neutrals                        |
+// | Card / panel backgrounds    | 0–2           | Light end of neutral or brand color |
+// | Titles & body text          | 7–10          | Dark or mid-dark tones              |
+// | Accents / captions          | 4–7           | Midrange brand colors               |
 
 // Pinning ratio guidelines
 // To create a pinned exact brand default for some role in a given recipe, write a --color-* CSS variable as used in global.css
@@ -29,50 +28,46 @@
 
 export const recipes = [
   // ======================================================
-  // 1. BALANCED — Professional, reliable default
+  // 1. BALANCED
   // ======================================================
   {
     id: "balanced",
-    title: "Balanced",
-    description: "Professional and reliable default.",
+    title: "Balans",
+    description: "Alle kleuren, matig contrast",
     roles: {
-      "--color-background": ["neutral", 0], // default: white
+      // base bg
+      "--color-background": ["neutral", 0],
+      "--color-surface": ["neutral", 1],
 
-      "--color-surface": ["neutral", 1], // default: neutral-50
-      "--color-panel": ["neutral", 1], // default: neutral-200
-      "--color-panel-alt": ["neutral", 2], // default: neutral-700
+      // nav & footer
+      "--ui-nav-bg": ["primary", 5],
+      "--ui-footer-bg": ["primary", 5],
 
-      "--color-title": ["neutral", 8], // default: branded
-      "--color-text": ["neutral", 7], // default: branded
-      "--color-text-soft": ["neutral", 5], // default: branded
+      // panels or cards
+      "--ui-panel-bg": ["neutral", 1],
 
-      "--color-title-alt": ["tertiary", 5], // default: color-tertiary
-      "--color-caption": ["primary", 6], // default: color-primary-dark
-      "--color-caption-inverse": ["primary", 4], // default: color-primary-lighter
-      "--color-caption-alt": ["tertiary", 6], // default: color-tertiary
+      // typography
+      "--color-title": ["neutral", 8],
+      "--color-text": ["neutral", 7],
 
-      "--ui-primary-bg": ["primary", 2], // default: color-primary
-      "--ui-secondary-bg": ["secondary", 2], // default: color-secondary
-      "--ui-accent-on-primary": ["primary", 8], // default: color-secondary
-      "--ui-accent-on-secondary": ["secondary", 8], // default: color-primary
+      // brand bg
+      "--ui-primary-bg": ["primary", 2],
+      "--ui-secondary-bg": ["secondary", 2],
 
-      // schadows -- only change alpha value?
-      "--black-25": "rgba(0,0,0,0.05)",
-      "--black-50": "rgba(0,0,0,0.15)",
-      "--black-75": "rgba(0,0,0,0.30)",
+      // accent source
+      "--dynamic-accent": ["primary", 6],
 
-      // opacity
-      "--opacity-panel": ["0.6"], // default: 1
-      "--opacity-alt-panel": ["0.6"], // default: 1
+      // shadow strength
+      "--ui-shadow-alpha": ["neutral", 5],
     },
   },
   // ======================================================
-  // 2. BOLD — High contrast, confident, energetic
+  // 2. BOLD
   // ======================================================
   {
     id: "bold",
-    title: "Bold",
-    description: "High contrast, confident, and energetic.",
+    title: "Hevig",
+    description: "Uitgesproken kleuren, meer contrast",
     roles: {
       "--ui-nav-bg": ["primaryDark", 9],
       "--ui-footer-bg": ["primaryDark", 9],
@@ -107,12 +102,12 @@ export const recipes = [
     },
   },
   // ======================================================
-  // 3. SUBTLE — Soft, calm, and approachable
+  // 3. SUBTLE
   // ======================================================
   {
     id: "subtle",
-    title: "Subtle",
-    description: "Soft, calm, and friendly.",
+    title: "Subtiel",
+    description: "Zachte kleuren, minder contrast",
     roles: {
       "--ui-nav-bg": ["primaryLight", 2],
       "--ui-footer-bg": ["primaryLight", 2],
@@ -147,12 +142,12 @@ export const recipes = [
     },
   },
   // ======================================================
-  // 4. VIBRANT — Colorful, optimistic, and engaging
+  // 4. VIBRANT
   // ======================================================
   {
     id: "vibrant",
-    title: "Vibrant",
-    description: "Colorful, optimistic, expressive.",
+    title: "Kleurrijk",
+    description: "Meer verschillende kleuren",
     roles: {
       "--ui-nav-bg": ["secondary", 7],
       "--ui-footer-bg": ["secondary", 7],
@@ -187,12 +182,12 @@ export const recipes = [
     },
   },
   // ======================================================
-  // 5. INVERTED — Modern, premium, and dramatic
+  // 5. INVERTED
   // ======================================================
   {
     id: "inverted",
-    title: "Inverted",
-    description: "Modern, dramatic, high-impact.",
+    title: "Licht uit",
+    description: "Donkere achtergrond, lichte kleuren",
     roles: {
       "--ui-nav-bg": ["neutral", 10],
       "--ui-footer-bg": ["neutral", 10],
@@ -227,12 +222,12 @@ export const recipes = [
     },
   },
   // ======================================================
-  // 6. MINIMALIST — Elegant, calm, and confident
+  // 6. MINIMALIST
   // ======================================================
   {
     id: "minimalist",
-    title: "Minimalist",
-    description: "Clean, airy, elegant, lots of space.",
+    title: "Minimaal",
+    description: "Zeer neutraal, weinig kleur",
     roles: {
       "--ui-nav-bg": ["neutral", 0],
       "--ui-footer-bg": ["neutral", 0],

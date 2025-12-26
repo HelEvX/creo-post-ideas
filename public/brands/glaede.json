@@ -25,13 +25,12 @@
 
   "_comment-1a": "TERTIARY/accent color - if not present, repeat secondary-dark",
 
-  "color-tertiary": "#656362",
+  "color-tertiary": "#f985ac",
 
   "_comment-2": "BACKGROUND COLORS",
 
   "color-surface": "#ffffff",
   "color-panel": "#fffbe0",
-  "color-panel-alt": "#f3f3f3",
   "color-nav-bg": "#ffffff",
   "color-footer-bg": "#f3f3f3",
 
@@ -52,6 +51,17 @@
   "color-danger": "#db3a34",
   "color-success": "#5c946e",
   "color-success-dark": "#3f654b",
+
+  "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
+
+  "border-enabled": "true",
+  "border-width": "0",
+  "border-radius": "0",
+
+  "shadow-enabled": "false",
+  "shadow-x": "0",
+  "shadow-y": "0",
+  "shadow-blur": "0",
 
   "ig": {
     "avatar": "glaede.webp",

@@ -23,17 +23,18 @@ const aspectMap = {
   margin: 0 auto;
   width: 100%;
   max-width: 100%;
-  border-radius: var(--radius-sm);
+  border-radius: 0.2em; /* hard-coded */
+  overflow: hidden;
   box-shadow: var(--ui-shadow-sm);
   container-type: inline-size;
 }
 
 /* perceptual correction per format */
 .size--landscape.post-wrapper {
-  --mockup-font-compensation: 1.2;
+  --mockup-font-compensation: 1.5;
 }
 .size--square.post-wrapper {
-  --mockup-font-compensation: 2;
+  --mockup-font-compensation: 2.4;
 }
 .size--portrait.post-wrapper {
   --mockup-font-compensation: 2.4;

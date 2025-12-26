@@ -29,7 +29,6 @@
 
   "color-surface": "#ffffff",
   "color-panel": "#f2f2f2",
-  "color-panel-alt": "#f26649",
   "color-nav-bg": "#ffffff",
   "color-footer-bg": "#000000",
 
@@ -51,12 +50,15 @@
   "color-success": "#44af69",
   "color-success-dark": "#399358",
 
-  "border-width": "6px",
-  "border-radius": "12px",
+  "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
 
-  "color-shadow": "rgba(0, 0, 0, 0.25)",
-  "shadow-x": "5px",
-  "shadow-y": "5px",
+  "border-enabled": "false",
+  "border-width": "0",
+  "border-radius": "0",
+
+  "shadow-enabled": "false",
+  "shadow-x": "0",
+  "shadow-y": "0",
   "shadow-blur": "0",
 
   "ig": {
