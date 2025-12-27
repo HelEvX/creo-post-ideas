@@ -40,7 +40,7 @@
             :brandTokens="brandTokens"
             :scales="scales"
             :mockupBgContext="mockupBgContext"
-            @picked="onBrandPicked" />
+            :colored="useColoredBackground" />
 
           <!-- MAIN COLUMN -->
           <main class="col-12 col-xxl-9 col-3xl-9 app__main">
@@ -50,7 +50,8 @@
                 :brandTokens="brandTokens"
                 :scales="scales"
                 @update-tone="backgroundTone = $event"
-                @update-mode="backgroundMode = $event" />
+                @update-mode="backgroundMode = $event"
+                @update-colored="useColoredBackground = $event" />
             </div>
           </main>
         </div>
@@ -185,6 +186,7 @@ export default {
       // shared background state
       backgroundTone: "primary", // "primary" | "secondary"
       backgroundMode: "color", // "color" | "pattern" | "image"
+      useColoredBackground: true,
 
       galleryImages: demoImages,
 
@@ -198,6 +200,14 @@ export default {
 
   computed: {
     mockupBgContext() {
+      if (this.useColoredBackground === false) {
+        return {
+          type: this.backgroundMode,
+          tone: this.backgroundTone,
+          bgVars: ["--ui-alt-section-bg"],
+        };
+      }
+
       // pattern bg
       if (this.backgroundMode === "pattern") {
         return {
@@ -345,7 +355,8 @@ export default {
         DYNAMIC OVERLAY (MOCKUP ONLY)
         Uses EXACT mockup background, not UI sections
       ---------------------------------------------- */
-      const bgVars = this.mockupBgContext?.bgVars || [];
+      const bgVars = this.useColoredBackground ? this.mockupBgContext?.bgVars || [] : ["--ui-alt-section-bg"];
+
       let resolvedBg = null;
 
       for (const v of bgVars) {

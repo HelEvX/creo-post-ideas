@@ -65,7 +65,7 @@
   --white-50: rgba(255, 255, 255, 0.5);
   --white-15: rgba(255, 255, 255, 0.15);
 
-  --black-75: rgba(0, 0, 0, 0.85);
+  --black-75: rgba(0, 0, 0, 0.75);
   --black-50: rgba(0, 0, 0, 0.5);
   --black-25: rgba(0, 0, 0, 0.25);
   --black-8: rgba(0, 0, 0, 0.08);
@@ -136,8 +136,8 @@
   /* light bg series */
   --color-title: var(--neutral-900);
   --color-text: var(--neutral-800);
-  --color-text-soft: var(--neutral-600);
-  --color-disabled: var(--neutral-500);
+  --color-text-soft: var(--black-75);
+  --color-disabled: var(--black-50);
 
   /* dark bg series */
   --color-text-inverse: var(--white);
@@ -331,7 +331,7 @@
   --ui-title-on-light: var(--color-title); /* neutral-900 */
   --ui-title-on-dark: var(--color-text-inverse); /* white */
 
-  --ui-soft-on-light: var(--color-text-soft); /* neutral-600 */
+  --ui-soft-on-light: var(--color-text-soft); /* black 75% */
   --ui-soft-on-dark: var(--color-text-soft-inverse); /* white 85% */
 
   --ui-disabled-on-light: var(--color-disabled); /* neutral-500 */

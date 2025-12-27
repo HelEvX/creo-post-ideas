@@ -13,7 +13,7 @@
           v-if="!isMobile"
           :selected="selectedPostType"
           :tone="backgroundTone"
-          :colored="useColoredBackground"
+          :colored="colored"
           :selectedMode="backgroundMode"
           :mockupBgContext="mockupBgContext"
           @select="onContentTypeSelect"
@@ -25,7 +25,10 @@
             backgroundMode = $event;
             emit('update-mode', $event);
           "
-          @update-colored="useColoredBackground = $event" />
+          @update-colored="
+            useColoredBackground = $event;
+            emit('update-colored', $event);
+          " />
 
         <MobileSettingsAccordion
           v-else
@@ -42,7 +45,10 @@
             backgroundMode = $event;
             emit('update-mode', $event);
           "
-          @update-colored="useColoredBackground = $event" />
+          @update-colored="
+            useColoredBackground = $event;
+            emit('update-colored', $event);
+          " />
       </div>
 
       <!-- PREVIEW -->
@@ -53,18 +59,14 @@
             :size="selectedSize"
             :postType="selectedPostType"
             :postData="activePostData"
-            :designProps="{
-              backgroundClass,
-              backgroundTone,
-              useColoredBackground,
-              brandLogo,
-              usePhoto: backgroundMode === 'image',
-              photoSrc,
-              showCornerShapes: backgroundMode !== 'logo',
-            }"
+            :backgroundClass="backgroundClass"
+            :backgroundTone="backgroundTone"
+            :useColoredBackground="useColoredBackground"
+            :brandLogo="brandLogo"
+            :usePhoto="backgroundMode === 'image'"
+            :photoSrc="photoSrc"
             :showSafeZone="showSafeZones"
             @bg-resolved="resolvedBgColors = $event"
-            @update-colored="useColoredBackground = $event"
             @resolved-styles="resolvedStyles = $event" />
         </MockupWrapper>
       </div>
@@ -94,12 +96,25 @@ import stockImage from "@/assets/img/stockphoto.webp";
 
 import StyleInspectorPanel from "../preview/StyleInspectorPanel.vue";
 
-const emit = defineEmits(["update-tone", "update-mode"]);
+const emit = defineEmits(["update-tone", "update-mode", "update-colored"]);
 const resolvedBgColors = ref([]);
 
-const { brandTokens } = defineProps({
+const props = defineProps({
   brandTokens: Object,
+  colored: {
+    type: Boolean,
+    default: true,
+  },
 });
+
+const useColoredBackground = ref(props.colored);
+
+watch(
+  () => props.colored,
+  (v) => {
+    useColoredBackground.value = v;
+  }
+);
 
 const resolvedStyles = ref(null);
 
@@ -122,7 +137,6 @@ const activePostData = ref({});
    BACKGROUND STATE (tone + mode)
 --------------------------------------------- */
 const backgroundTone = ref("primary"); // "primary" | "secondary"
-const useColoredBackground = ref(true); // color background ON
 const backgroundMode = ref("none"); // "none" | "logo" | "pattern" | "image"
 
 watch(
@@ -189,10 +203,10 @@ const postContent = {
 const backgroundClass = computed(() => {
   const classes = [];
 
-  if (useColoredBackground.value) {
-    classes.push(backgroundTone.value === "secondary" ? "bg--plain-secondary" : "bg--plain-primary");
-  } else {
+  if (!useColoredBackground.value) {
     classes.push("bg--plain-neutral");
+  } else {
+    classes.push(backgroundTone.value === "secondary" ? "bg--plain-secondary" : "bg--plain-primary");
   }
 
   if (backgroundMode.value === "pattern") return "bg--pattern pattern-distorted-mesh";
@@ -206,7 +220,11 @@ const backgroundClass = computed(() => {
    MOCKUP BACKGROUND CONTEXT
 --------------------------------------------- */
 const mockupBgContext = computed(() => ({
-  bgVars: resolvedBgColors.value.length ? resolvedBgColors.value : ["--ui-section-bg"],
+  bgVars: !useColoredBackground.value
+    ? ["--ui-alt-section-bg"]
+    : resolvedBgColors.value.length
+    ? resolvedBgColors.value
+    : ["--ui-section-bg"],
 }));
 
 /* --------------------------------------------
@@ -214,8 +232,8 @@ const mockupBgContext = computed(() => ({
 --------------------------------------------- */
 const brandLogo = computed(() => {
   if (backgroundMode.value !== "logo") return null;
-  if (!brandTokens?.slug) return null;
-  return `/highlights/${brandTokens.slug}.svg`;
+  if (!props.brandTokens?.slug) return null;
+  return `/highlights/${props.brandTokens.slug}.svg`;
 });
 
 /* --------------------------------------------

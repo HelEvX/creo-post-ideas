@@ -2,11 +2,11 @@
   <SocialPostMockup
     :bgColors="resolvedBgColors"
     :size="size"
-    :backgroundClass="designProps.backgroundClass"
-    :backgroundTone="designProps.backgroundTone"
-    :brandLogo="designProps.brandLogo"
-    :usePhoto="designProps.usePhoto"
-    :photoSrc="designProps.photoSrc"
+    :backgroundClass="backgroundClass"
+    :backgroundTone="backgroundTone"
+    :brandLogo="brandLogo"
+    :usePhoto="usePhoto"
+    :photoSrc="photoSrc"
     :showSafeZone="showSafeZone"
     :postType="postType"
     @resolved-visuals="onResolvedVisuals">
@@ -37,7 +37,12 @@ const props = defineProps({
   size: String,
   postType: String,
   postData: Object,
-  designProps: Object,
+  backgroundClass: String,
+  backgroundTone: String,
+  useColoredBackground: Boolean,
+  brandLogo: String,
+  usePhoto: Boolean,
+  photoSrc: String,
   showSafeZone: Boolean,
 });
 
@@ -82,19 +87,19 @@ const patternColorMap = {
 const NEUTRAL_BG_VAR = "--ui-alt-section-bg";
 
 function getMockupBgColors(backgroundClass) {
+  if (!props.useColoredBackground) {
+    return [NEUTRAL_BG_VAR];
+  }
+
   if (!backgroundClass) return [NEUTRAL_BG_VAR];
 
   const parts = backgroundClass.split(" ");
-  const tone = props.designProps.backgroundTone === "secondary" ? "secondary" : "primary";
+  const tone = props.backgroundTone === "secondary" ? "secondary" : "primary";
 
   for (const p of parts) {
     if (patternColorMap[p]) {
       return patternColorMap[p][tone];
     }
-  }
-
-  if (!props.designProps.useColoredBackground) {
-    return [NEUTRAL_BG_VAR];
   }
 
   if (parts.includes("bg--plain-primary")) return ["--ui-primary-bg"];
@@ -103,7 +108,7 @@ function getMockupBgColors(backgroundClass) {
   return [NEUTRAL_BG_VAR];
 }
 
-const resolvedBgColors = computed(() => getMockupBgColors(props.designProps.backgroundClass));
+const resolvedBgColors = computed(() => getMockupBgColors(props.backgroundClass));
 
 watch(
   resolvedBgColors,

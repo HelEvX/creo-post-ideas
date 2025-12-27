@@ -116,7 +116,11 @@ const props = defineProps({
   brandTokens: { type: Object, required: true },
   scales: { type: Object, required: false },
 
-  // background context from mockup (primary / secondary / neutral / pattern)
+  colored: {
+    type: Boolean,
+    default: true,
+  },
+
   bgContext: {
     type: Object,
     default: () => ({
@@ -210,6 +214,46 @@ function resolveCssColor(value, depth = 0) {
 }
 
 /* --------------------------------------------------
+   MOCKUP-SCOPED VARIABLE READING  ← ADD THIS LABEL
+-------------------------------------------------- */
+
+function getMockupScopeEl() {
+  return document.querySelector(".post-content") || document.documentElement;
+}
+
+function readVarFrom(el, name) {
+  return getComputedStyle(el).getPropertyValue(name).trim();
+}
+
+function resolveCssColorFrom(el, value, depth = 0) {
+  if (!value) return null;
+  if (depth > 10) return value;
+
+  const v = value.trim();
+
+  if (v.startsWith("--")) {
+    const next = readVarFrom(el, v);
+    if (!next || next.trim() === "" || next.trim() === v) return null;
+    return resolveCssColorFrom(el, next, depth + 1);
+  }
+
+  if (v.startsWith("var(")) {
+    const inner = v.slice(4, -1).trim();
+    const commaIdx = inner.indexOf(",");
+    const name = (commaIdx === -1 ? inner : inner.slice(0, commaIdx)).trim();
+    const fallback = (commaIdx === -1 ? "" : inner.slice(commaIdx + 1)).trim();
+
+    const resolved = resolveCssColorFrom(el, name, depth + 1);
+    if (!resolved || resolved.trim() === "") {
+      return fallback ? resolveCssColorFrom(el, fallback, depth + 1) : null;
+    }
+    return resolved;
+  }
+
+  return v;
+}
+
+/* --------------------------------------------------
    HELPERS
 -------------------------------------------------- */
 function pickReadablePillText(bgHex) {
@@ -241,30 +285,6 @@ async function scheduleContrastUpdate() {
   await raf();
   updateContrastChecks();
   scheduleContrastUpdate._pending = false;
-}
-
-/* --------------------------------------------------
-   FIX TARGET RESOLUTION
-   - Never write to --dynamic-* (derived, overwritten by App.vue)
-   - Choose a SOURCE token to adjust based on pair intent
--------------------------------------------------- */
-function getFixableSourceVar(item) {
-  // 1. Dynamic text → underlying neutral tokens
-  if (item.cssVarFg === "--dynamic-title") return "--color-title";
-  if (item.cssVarFg === "--dynamic-text") return "--color-text";
-  if (item.cssVarFg === "--dynamic-soft") return "--color-text-soft";
-
-  // 2. Panel text
-  if (item.cssVarFg === "--title-on-panel") return "--color-title";
-  if (item.cssVarFg === "--text-on-panel") return "--color-text";
-  if (item.cssVarFg === "--caption-on-panel") return "--color-primary";
-
-  // 3. Brand-colored text
-  if (item.fix === "brand-text") {
-    return props.bgContext?.tone === "secondary" ? "--color-secondary" : "--color-primary";
-  }
-
-  return null;
 }
 
 /* --------------------------------------------------
@@ -356,8 +376,9 @@ watch(
 
 watch(index, scheduleContrastUpdate);
 
-// ensure contrast recalculates when mockup bg actually resolves
 watch(() => props.bgContext, scheduleContrastUpdate, { deep: true });
+
+watch(() => props.colored, scheduleContrastUpdate);
 
 /* --------------------------------------------------
    CONTRAST PAIRS
@@ -367,18 +388,67 @@ watch(() => props.bgContext, scheduleContrastUpdate, { deep: true });
    - fix: which SOURCE token family may be adjusted
 -------------------------------------------------- */
 const contrastPairs = ref([
-  { id: "main-title", fg: "--dynamic-title", bg: "CONTEXT", fix: "neutral-text" },
-  { id: "main-paragraph", fg: "--dynamic-text", bg: "CONTEXT", fix: "neutral-text" },
+  // Mockup main text on the mockup background
+  {
+    id: "main-title",
+    fgVar: "--dynamic-title",
+    bg: "CONTEXT",
+    fixFgCandidates: ["--color-title", "--color-text-inverse"],
+  },
+  {
+    id: "main-paragraph",
+    fgVar: "--dynamic-text",
+    bg: "CONTEXT",
+    fixFgCandidates: ["--color-text", "--color-text-inverse"],
+  },
 
-  { id: "card1-caption", fg: "--dynamic-soft", bg: "--ui-alt-panel-bg-derived", fix: "neutral-text" },
-  { id: "card1-title", fg: "--dynamic-title", bg: "--ui-alt-panel-bg-derived", fix: "neutral-text" },
-  { id: "card1-paragraph", fg: "--dynamic-text", bg: "--ui-alt-panel-bg-derived", fix: "neutral-text" },
+  // Left card (alt panel)
+  {
+    id: "card1-caption",
+    fgVar: "--text-soft-on-alt-panel",
+    bg: "--ui-alt-panel-bg-derived",
+    fixFgCandidates: ["--color-text-soft", "--color-text-soft-inverse"],
+  },
+  {
+    id: "card1-title",
+    fgVar: "--dynamic-title",
+    bg: "--ui-alt-panel-bg-derived",
+    fixFgCandidates: ["--color-title", "--color-text-inverse"],
+  },
+  {
+    id: "card1-paragraph",
+    fgVar: "--dynamic-text",
+    bg: "--ui-alt-panel-bg-derived",
+    fixFgCandidates: ["--color-text", "--color-text-inverse"],
+  },
 
-  { id: "card2-caption", fg: "--caption-on-panel", bg: "--ui-panel-bg", fix: "brand-text" },
-  { id: "card2-title", fg: "--title-on-panel", bg: "--ui-panel-bg", fix: "neutral-text" },
-  { id: "card2-paragraph", fg: "--text-on-panel", bg: "--ui-panel-bg", fix: "neutral-text" },
+  // Right card (panel)
+  {
+    id: "card2-caption",
+    fgVar: "--caption-on-panel",
+    bg: "--ui-panel-bg",
+    fixFgCandidates: ["--color-primary-dark", "--color-primary-lighter"],
+  },
+  {
+    id: "card2-title",
+    fgVar: "--title-on-panel",
+    bg: "--ui-panel-bg",
+    fixFgCandidates: ["--color-title", "--color-text-inverse"],
+  },
+  {
+    id: "card2-paragraph",
+    fgVar: "--text-on-panel",
+    bg: "--ui-panel-bg",
+    fixFgCandidates: ["--color-text", "--color-text-inverse"],
+  },
 
-  { id: "accent-text", fg: "ACCENT_FG", bg: "ACCENT_BG", fix: "neutral-text" },
+  // Accent block (exactly matches InfoPost.vue)
+  {
+    id: "accent-text",
+    fgVar: "ACCENT_TEXT",
+    bg: "ACCENT_BG",
+    fixFgCandidates: ["--color-text", "--color-text-inverse"],
+  },
 ]);
 
 /* --------------------------------------------------
@@ -386,20 +456,37 @@ const contrastPairs = ref([
 -------------------------------------------------- */
 
 function updateContrastChecks() {
-  const contextBgs = props.bgContext?.bgVars?.map(resolveCssColor).filter(Boolean) || [];
+  const scopeEl = getMockupScopeEl();
+
+  const contextBgs = props.bgContext?.bgVars?.map((v) => resolveCssColorFrom(scopeEl, v)).filter(Boolean) || [];
 
   contrastResults.value = contrastPairs.value.map((p) => {
     const bgList =
       p.bg === "CONTEXT"
         ? contextBgs
         : p.bg === "ACCENT_BG"
-        ? [resolveCssColor(props.bgContext?.tone === "secondary" ? "--ui-primary-bg" : "--ui-secondary-bg")].filter(
-            Boolean
-          )
-        : [resolveCssColor(p.bg)].filter(Boolean);
+        ? [
+            resolveCssColorFrom(
+              scopeEl,
+              props.bgContext?.tone === "secondary" ? "--ui-primary-bg" : "--ui-secondary-bg"
+            ),
+          ].filter(Boolean)
+        : [resolveCssColorFrom(scopeEl, p.bg)].filter(Boolean);
 
-    if (bgList.length === 0) {
-      const pillBg = resolveCssColor("--color-danger");
+    // Determine the actual foreground var name for this row (accent is contextual)
+    const fgVarName =
+      p.fgVar === "ACCENT_TEXT"
+        ? props.bgContext?.tone === "secondary"
+          ? "--text-on-primary"
+          : "--text-on-secondary"
+        : p.fgVar;
+
+    // Read the actual foreground color that is currently applied in the mockup scope
+    const fgValue = resolveCssColorFrom(scopeEl, fgVarName);
+
+    // If we cannot read either side, keep the row but mark it as failing
+    if (!fgValue || bgList.length === 0) {
+      const pillBg = resolveCssColorFrom(scopeEl, "--color-danger");
       const pillFg = pickReadablePillText(pillBg);
       return {
         id: p.id,
@@ -408,74 +495,31 @@ function updateContrastChecks() {
         label: "slecht",
         bg: pillBg,
         fg: pillFg,
-        swatchText: null,
-        swatchBg: null,
-        cssVarFg: p.fg,
+        swatchText: fgValue || null,
+        swatchBg: bgList[0] || null,
+        cssVarFg: fgVarName,
         cssVarBg: p.bg,
-        fix: p.fix,
+        fixFgCandidates: p.fixFgCandidates || [],
         _noFixPossible: !!noFixMap.value[p.id],
       };
     }
 
+    // Worst-case background only (foreground is what is actually used on screen)
     let worstBg = null;
-    let worstFg = null;
-    let worstFgSourceVar = null;
     let worstRatio = Infinity;
 
     for (const bg of bgList) {
-      let fg;
-      let fgSourceVar = null;
-
-      if (p.fg === "--dynamic-title") {
-        const darkVar = "--color-title";
-        const lightVar = "--color-text-inverse";
-        const dark = resolveCssColor(darkVar);
-        const light = resolveCssColor(lightVar);
-        const useLight = getTextModeForBackground(bg, dark, light) === "light";
-        fg = useLight ? light : dark;
-        fgSourceVar = useLight ? lightVar : darkVar;
-      } else if (p.fg === "--dynamic-text") {
-        const darkVar = "--color-text";
-        const lightVar = "--color-text-inverse";
-        const dark = resolveCssColor(darkVar);
-        const light = resolveCssColor(lightVar);
-        const useLight = getTextModeForBackground(bg, dark, light) === "light";
-        fg = useLight ? light : dark;
-        fgSourceVar = useLight ? lightVar : darkVar;
-      } else if (p.fg === "--dynamic-soft") {
-        const darkVar = "--color-text-soft";
-        const lightVar = "--color-text-soft-inverse";
-        const dark = resolveCssColor(darkVar);
-        const light = resolveCssColor(lightVar);
-        const useLight = getTextModeForBackground(bg, dark, light) === "light";
-        fg = useLight ? light : dark;
-        fgSourceVar = useLight ? lightVar : darkVar;
-      } else if (p.fg === "ACCENT_FG") {
-        // Match InfoPost.vue behavior
-        const isSecondaryMode = props.bgContext?.tone === "secondary";
-        const varName = isSecondaryMode ? "--text-on-primary" : "--text-on-secondary";
-        fg = resolveCssColor(varName);
-        fgSourceVar = null; // derived role, do not write directly
-      } else {
-        fg = resolveCssColor(p.fg);
-        fgSourceVar = null;
-      }
-
-      if (!fg || !bg) continue;
-
-      const r = getContrastRatio(fg, bg);
+      if (!bg) continue;
+      const r = getContrastRatio(fgValue, bg);
       const rr = Number.isFinite(r) ? r : 0;
-
       if (rr < worstRatio) {
         worstRatio = rr;
         worstBg = bg;
-        worstFg = fg;
-        worstFgSourceVar = fgSourceVar;
       }
     }
 
-    if (!worstBg || !worstFg) {
-      const pillBg = resolveCssColor("--color-danger");
+    if (!worstBg) {
+      const pillBg = resolveCssColorFrom(scopeEl, "--color-danger");
       const pillFg = pickReadablePillText(pillBg);
       return {
         id: p.id,
@@ -484,16 +528,16 @@ function updateContrastChecks() {
         label: "slecht",
         bg: pillBg,
         fg: pillFg,
-        swatchText: null,
+        swatchText: fgValue,
         swatchBg: null,
-        cssVarFg: p.fg,
+        cssVarFg: fgVarName,
         cssVarBg: p.bg,
-        fix: p.fix,
+        fixFgCandidates: p.fixFgCandidates || [],
         _noFixPossible: !!noFixMap.value[p.id],
       };
     }
 
-    const result = evaluateContrastVisual(worstFg, worstBg);
+    const result = evaluateContrastVisual(fgValue, worstBg);
 
     let statusVar;
     let label;
@@ -512,7 +556,7 @@ function updateContrastChecks() {
       label = "slecht";
     }
 
-    const pillBg = resolveCssColor(statusVar);
+    const pillBg = resolveCssColorFrom(scopeEl, statusVar);
     const pillFg = pickReadablePillText(pillBg);
 
     return {
@@ -523,11 +567,10 @@ function updateContrastChecks() {
       label,
       bg: pillBg,
       fg: pillFg,
-      cssVarFg: p.fg,
+      cssVarFg: fgVarName,
       cssVarBg: p.bg,
-      fgSourceVar: worstFgSourceVar,
-      fix: p.fix,
-      swatchText: worstFg,
+      fixFgCandidates: p.fixFgCandidates || [],
+      swatchText: fgValue,
       swatchBg: worstBg,
       _noFixPossible: !!noFixMap.value[p.id],
     };
@@ -539,38 +582,44 @@ function updateContrastChecks() {
    - One step per click
    - Never write to --dynamic-* (derived)
 -------------------------------------------------- */
+function normalizeColor(v) {
+  return (v || "").trim().toLowerCase();
+}
+
+function pickFixSourceVar(scopeEl, candidates, currentFg) {
+  const cur = normalizeColor(currentFg);
+  for (const c of candidates || []) {
+    const val = resolveCssColorFrom(scopeEl, c);
+    if (normalizeColor(val) === cur) return c;
+  }
+  return (candidates && candidates[0]) || null;
+}
+
 async function fixContrast(item) {
   if (!item || !props.scales) return;
   if (item.label === "prima" || item.label === "goed") return;
 
-  if (item.cssVarBg === "CONTEXT") {
-    // cannot safely "fix" against a context background; it can change (pattern/image/tone)
-    noFixMap.value[item.id] = true;
-    updateContrastChecks();
-    return;
-  }
-
-  if (item.cssVarBg === "--ui-alt-panel-bg-derived") {
-    // background is derived, we never change it
-    // continue, but ONLY text fixes are allowed
-  }
+  const scopeEl = getMockupScopeEl();
 
   noFixMap.value[item.id] = false;
 
-  // IMPORTANT:
-  // - For CONTEXT rows, cssVarBg is "CONTEXT" and must NOT be resolved as a CSS var.
-  // - Always use the already computed worst-case values.
-  const bg = resolveCssColor(item.cssVarBg);
-  const effectiveFg = item.swatchText;
-  const sourceVar = item.fgSourceVar || getFixableSourceVar(item);
+  const bg = item.swatchBg;
+  const fg = item.swatchText;
 
-  if (!bg || !effectiveFg || !sourceVar) {
+  if (!bg || !fg) {
     noFixMap.value[item.id] = true;
     updateContrastChecks();
     return;
   }
 
-  const sourceColor = resolveCssColor(sourceVar);
+  const sourceVar = pickFixSourceVar(scopeEl, item.fixFgCandidates, fg);
+  if (!sourceVar) {
+    noFixMap.value[item.id] = true;
+    updateContrastChecks();
+    return;
+  }
+
+  const sourceColor = resolveCssColorFrom(scopeEl, sourceVar);
   if (!sourceColor) {
     noFixMap.value[item.id] = true;
     updateContrastChecks();
@@ -582,7 +631,7 @@ async function fixContrast(item) {
   const darker = shade(sourceColor, step);
   const lighter = tint(sourceColor, step);
 
-  const rCurrent = getContrastRatio(effectiveFg, bg);
+  const rCurrent = getContrastRatio(fg, bg);
   const rDarker = getContrastRatio(darker, bg);
   const rLighter = getContrastRatio(lighter, bg);
 

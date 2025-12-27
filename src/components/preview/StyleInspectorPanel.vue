@@ -173,7 +173,7 @@ p.styles__hint {
   right: 0.6rem;
   bottom: 0.45rem;
   background: var(--black-75);
-  color: var(--dynamic-text);
+  color: var(--white);
   font-size: var(--fs-body-xs);
   padding: var(--space-5) var(--space-10);
   border-radius: var(--radius-sm);

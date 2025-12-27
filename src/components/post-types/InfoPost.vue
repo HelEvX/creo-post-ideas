@@ -120,7 +120,7 @@ const { headline, body } = defineProps({
 }
 
 .info-card--alt-panel .info-row--caption {
-  color: var(--dynamic-soft);
+  color: var(--text-soft-on-alt-panel);
 }
 .info-card--panel .info-row--caption {
   color: var(--caption-on-panel);
