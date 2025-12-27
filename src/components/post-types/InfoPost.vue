@@ -119,11 +119,11 @@ const { headline, body } = defineProps({
   font-weight: var(--fw-title);
 }
 
-.info-card--panel .info-row--caption {
-  color: var(--ui-primary-bg);
-}
 .info-card--alt-panel .info-row--caption {
-  color: var(--ui-secondary-bg);
+  color: var(--dynamic-soft);
+}
+.info-card--panel .info-row--caption {
+  color: var(--caption-on-panel);
 }
 
 /* =========================================================

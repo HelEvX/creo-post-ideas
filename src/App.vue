@@ -98,11 +98,11 @@
     <!-- INSTAGRAM GRID VIEW -->
     <section class="section section-gallery">
       <div class="container">
-        <div class="row text-block-900 center">
+        <!-- <div class="row text-block-900 center">
           <div class="col-12">
             <h2>Instagram Grid</h2>
           </div>
-        </div>
+        </div> -->
         <div class="row">
           <div class="col-12 section-gallery__grid">
             <InstagramGrid v-if="brandTokens && brandTokens.ig" :ig="brandTokens.ig" :images="galleryImages" />
@@ -278,6 +278,9 @@ export default {
 
       const titleDark = getVar("--color-title");
 
+      const captionDark = getVar("--color-primary-dark");
+      const captionLight = getVar("--color-primary-lighter");
+
       const overlayDark = getVar("--black-50");
       const overlayLight = getVar("--white-50");
 
@@ -296,12 +299,14 @@ export default {
           root.style.setProperty(`--title-on-${surfaceKey}`, titleDark);
           root.style.setProperty(`--text-soft-on-${surfaceKey}`, softDark);
           root.style.setProperty(`--disabled-on-${surfaceKey}`, disabledDark);
+          root.style.setProperty(`--caption-on-${surfaceKey}`, captionDark);
           root.style.setProperty(`--overlay-on-${surfaceKey}`, overlayDark);
         } else {
           root.style.setProperty(`--text-on-${surfaceKey}`, light);
           root.style.setProperty(`--title-on-${surfaceKey}`, light);
           root.style.setProperty(`--text-soft-on-${surfaceKey}`, softLight);
           root.style.setProperty(`--disabled-on-${surfaceKey}`, disabledLight);
+          root.style.setProperty(`--caption-on-${surfaceKey}`, captionLight);
           root.style.setProperty(`--overlay-on-${surfaceKey}`, overlayLight);
         }
       }
@@ -321,7 +326,6 @@ export default {
 
       /* ----------------------------------------------
          DYNAMIC TEXT (CONTENT LAYER)
-         Always based on SECTION surface
       ---------------------------------------------- */
       const textOnSection = getVar("--text-on-section");
       const titleOnSection = getVar("--title-on-section");
@@ -356,6 +360,8 @@ export default {
         const mode = getTextModeForBackground(resolvedBg, dark, light);
         root.style.setProperty("--dynamic-overlay", mode === "dark" ? overlayDark : overlayLight);
       }
+
+      window.dispatchEvent(new Event("dynamic-text-updated"));
     },
 
     /* ----------------------------------------------
@@ -498,7 +504,7 @@ Stylings for components specific to the app shell
 .app__layout {
   margin: var(--space-75) 0 0;
   padding: var(--space-25) 0;
-  background-color: var(--ui-alt-section-bg);
+  background: var(--ui-alt-section-bg);
   height: auto;
   transform: translateY(6px) scale(0.99);
   transition: var(--transition-default);
@@ -514,9 +520,10 @@ Stylings for components specific to the app shell
     border-color var(--transition-default), fill var(--transition-default);
 }
 
-@media (min-width: 992px) {
-  .app__layout .row {
-    align-items: stretch;
+@media (max-width: 767px) {
+  .app__layout {
+    padding: 0;
+    background: transparent;
   }
 }
 
@@ -637,24 +644,6 @@ p.hero-subtitle {
 .app__main,
 .app__sidebar {
   margin: var(--space-25) 0;
-}
-
-.app__main {
-  order: 1;
-}
-
-.app__sidebar {
-  order: 2;
-}
-
-@media (min-width: 1400px) {
-  .app__main {
-    order: 2;
-  }
-
-  .app__sidebar {
-    order: 1;
-  }
 }
 
 .app__sidebar,

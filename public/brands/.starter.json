@@ -74,7 +74,7 @@
     "description": "Description part 1.\nDescription part 2\nDescription part 3\nDescription part 4",
     "address": "Straat, Stad, Belgium xxxx",
     "url": "https://www.client.be",
-    "highlightIcon": "src/assets/highlights/client.svg",
+    "highlightIcon": "client.svg",
     "highlights": [
       { "label": "TEAM", "bg": "#cecece" },
       { "label": "PROMOS", "bg": "#444" },

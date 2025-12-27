@@ -312,7 +312,7 @@
 
   --ui-panel-border: var(--border-width) solid var(--color-border-medium);
   --ui-panel-border-soft: var(--border-width) solid var(--color-border-light);
-  --ui-alt-panel-border: var(--border-width) solid var(--color-border-dark);
+  --ui-panel-border-strong: var(--border-width) solid var(--color-border-dark);
 
   /* <offset-x> | <offset-y> | <blur-radius> | <spread-radius> | <color> */
   --ui-shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--color-shadow);
@@ -528,6 +528,24 @@ button,
 .btn-inactive {
   background-color: transparent;
   border-color: var(--color-border-light);
+}
+
+/* Hover */
+.btn-inactive:hover:not(:disabled) {
+  color: var(--dynamic-title);
+  border-color: var(--color-border-medium);
+}
+
+/* Active */
+.btn-inactive:active:not(:disabled) {
+  background-color: var(--ui-alt-section-bg);
+}
+
+/* Disabled */
+.btn-inactive:disabled {
+  color: var(--dynamic-disabled);
+  border: none;
+  cursor: default;
 }
 
 /* ======================================================

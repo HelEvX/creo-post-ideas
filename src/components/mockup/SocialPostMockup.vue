@@ -164,11 +164,13 @@ function recomputeAltPanelBg() {
 const mockupTextVars = ref({
   "--dynamic-text": "",
   "--dynamic-title": "",
+  "--dynamic-soft": "",
 });
 
 const resolvedText = computed(() => ({
   title: mockupTextVars.value["--dynamic-title"] || null,
   body: mockupTextVars.value["--dynamic-text"] || null,
+  caption: mockupTextVars.value["--dynamic-soft"] || null,
 }));
 
 function recomputeMockupTextVars() {
@@ -178,7 +180,9 @@ function recomputeMockupTextVars() {
 
   const bodyDark = cs.getPropertyValue("--color-text").trim();
   const titleDark = cs.getPropertyValue("--color-title").trim();
+  const captionDark = cs.getPropertyValue("--color-text-soft").trim();
   const light = cs.getPropertyValue("--color-text-inverse").trim();
+  const softLight = cs.getPropertyValue("--color-text-soft-inverse").trim();
 
   let needsLight = false;
 
@@ -193,10 +197,12 @@ function recomputeMockupTextVars() {
 
   const mainText = needsLight ? light : bodyDark;
   const mainTitle = needsLight ? light : titleDark;
+  const mainCaption = needsLight ? softLight : captionDark;
 
   mockupTextVars.value = {
     "--dynamic-text": mainText,
     "--dynamic-title": mainTitle,
+    "--dynamic-soft": mainCaption,
   };
 }
 
@@ -226,25 +232,25 @@ const resolvedVisualContext = computed(() => ({
 
   surfaces: {
     altSection: resolveHex("--ui-alt-section-bg"), // neutral bg
-    altPanel: resolveHex("--ui-alt-panel-bg"),
+    altPanel: resolveHex("--ui-alt-panel-bg-derived"),
     panel: resolveHex("--ui-panel-bg"),
   },
 
   accents: {
     accent: resolveHex("--dynamic-accent"),
   },
-
+  // needs fix
   textStatic: {
     titleOnSection: resolveHex("--dynamic-title"),
     bodyOnSection: resolveHex("--dynamic-text"),
 
+    captionOnAltPanel: resolveHex("--dynamic-soft"),
+    titleOnAltPanel: resolveHex("--dynamic-title"),
+    bodyOnAltPanel: resolveHex("--dynamic-text"),
+
+    captionOnPanel: resolveHex("--caption-on-panel"),
     titleOnPanel: resolveHex("--title-on-panel"),
     bodyOnPanel: resolveHex("--text-on-panel"),
-    captionOnPanel: resolveHex("--dynamic-caption"),
-
-    titleOnAltPanel: resolveHex("--title-on-alt-panel"),
-    bodyOnAltPanel: resolveHex("--text-on-alt-panel"),
-    captionOnAltPanel: resolveHex("--dynamic-alt-caption"),
 
     accentText: resolveHex("--dynamic-text"),
   },

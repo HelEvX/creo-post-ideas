@@ -5,9 +5,9 @@
         <button type="button" class="btn-primary" @click="prevRecipe">
           <i class="fa-solid fa-chevron-left"></i>
         </button>
-        <h5 class="recipe-title">
+        <h4 class="recipe-title">
           {{ activeRecipe ? activeRecipe.title : "Basis" }}
-        </h5>
+        </h4>
         <button type="button" class="btn-primary" @click="nextRecipe">
           <i class="fa-solid fa-chevron-right"></i>
         </button>
@@ -19,14 +19,18 @@
 
       <!-- Reset button -->
       <div class="reset-wrap">
-        <button type="button" class="reset-btn" @click="resetBrand">
+        <button type="button" class="reset-btn btn-neutral" @click="resetBrand">
           <i class="fa-solid fa-rotate-left"></i> Reset
         </button>
       </div>
       <h4>Contrast Check</h4>
+
+      <button type="button" class="contrast-toggle btn-neutral" @click="toggleContrastVisibility">
+        {{ isContrastVisible ? "Verberg Details ▲" : "Toon Details ▼" }}
+      </button>
     </div>
 
-    <div class="contrast-check">
+    <div class="contrast-check" v-show="isContrastVisible">
       <div class="contrast-list">
         <div v-for="item in contrastResults" :key="item.id" class="contrast-row">
           <!-- LEFT: Color pair swatches -->
@@ -79,6 +83,33 @@ import { getContrastRatio, tint, shade, evaluateContrastVisual } from "../../uti
 import { getTextModeForBackground } from "../../utils/colorLogic.js";
 
 /* --------------------------------------------------
+   COLLAPSE ON MOBILE
+-------------------------------------------------- */
+
+const isContrastVisible = ref(false);
+const isDesktop = ref(true);
+
+function toggleContrastVisibility() {
+  isContrastVisible.value = !isContrastVisible.value;
+}
+
+function updateBreakpoint() {
+  isDesktop.value = window.innerWidth >= 1400;
+  if (isDesktop.value) {
+    isContrastVisible.value = true;
+  }
+}
+
+onMounted(() => {
+  updateBreakpoint();
+  window.addEventListener("resize", updateBreakpoint);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", updateBreakpoint);
+});
+
+/* --------------------------------------------------
    PROPS
 -------------------------------------------------- */
 const props = defineProps({
@@ -119,15 +150,22 @@ function onBrandUpdated() {
   scheduleContrastUpdate();
 }
 
+function onDynamicTextUpdated() {
+  scheduleContrastUpdate();
+}
+
 onMounted(() => {
   window.addEventListener("palette-updated", onPaletteUpdated);
   window.addEventListener("brand-updated", onBrandUpdated);
+  window.addEventListener("dynamic-text-updated", onDynamicTextUpdated);
+
   scheduleContrastUpdate();
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener("palette-updated", onPaletteUpdated);
   window.removeEventListener("brand-updated", onBrandUpdated);
+  window.removeEventListener("dynamic-text-updated", onDynamicTextUpdated);
 });
 
 /* --------------------------------------------------
@@ -214,10 +252,12 @@ function getFixableSourceVar(item) {
   // 1. Dynamic text → underlying neutral tokens
   if (item.cssVarFg === "--dynamic-title") return "--color-title";
   if (item.cssVarFg === "--dynamic-text") return "--color-text";
+  if (item.cssVarFg === "--dynamic-soft") return "--color-text-soft";
 
   // 2. Panel text
   if (item.cssVarFg === "--title-on-panel") return "--color-title";
   if (item.cssVarFg === "--text-on-panel") return "--color-text";
+  if (item.cssVarFg === "--caption-on-panel") return "--color-primary";
 
   // 3. Brand-colored text
   if (item.fix === "brand-text") {
@@ -280,8 +320,6 @@ function applyActiveRecipe() {
   window.dispatchEvent(new CustomEvent("palette-updated"));
 }
 
-// add opacity
-
 /* --------------------------------------------------
    NAVIGATION
 -------------------------------------------------- */
@@ -318,11 +356,7 @@ watch(
 
 watch(index, scheduleContrastUpdate);
 
-/*
-  ADDED:
-  bgContext watcher ensures contrast recalculates when the mockup
-  background actually resolves (pattern/image/tone changes).
-*/
+// ensure contrast recalculates when mockup bg actually resolves
 watch(() => props.bgContext, scheduleContrastUpdate, { deep: true });
 
 /* --------------------------------------------------
@@ -336,44 +370,33 @@ const contrastPairs = ref([
   { id: "main-title", fg: "--dynamic-title", bg: "CONTEXT", fix: "neutral-text" },
   { id: "main-paragraph", fg: "--dynamic-text", bg: "CONTEXT", fix: "neutral-text" },
 
-  { id: "card1-caption", fg: "--dynamic-text", bg: "--ui-alt-panel-bg-derived", fix: "brand-text" },
+  { id: "card1-caption", fg: "--dynamic-soft", bg: "--ui-alt-panel-bg-derived", fix: "neutral-text" },
   { id: "card1-title", fg: "--dynamic-title", bg: "--ui-alt-panel-bg-derived", fix: "neutral-text" },
   { id: "card1-paragraph", fg: "--dynamic-text", bg: "--ui-alt-panel-bg-derived", fix: "neutral-text" },
 
-  { id: "card2-caption", fg: "--dynamic-text", bg: "--ui-panel-bg", fix: "brand-text" },
-  { id: "card2-title", fg: "--dynamic-title", bg: "--ui-panel-bg", fix: "neutral-text" },
-  { id: "card2-paragraph", fg: "--dynamic-text", bg: "--ui-panel-bg", fix: "neutral-text" },
+  { id: "card2-caption", fg: "--caption-on-panel", bg: "--ui-panel-bg", fix: "brand-text" },
+  { id: "card2-title", fg: "--title-on-panel", bg: "--ui-panel-bg", fix: "neutral-text" },
+  { id: "card2-paragraph", fg: "--text-on-panel", bg: "--ui-panel-bg", fix: "neutral-text" },
 
-  { id: "accent-text", fg: "--dynamic-text", bg: "--dynamic-accent", fix: "neutral-text" },
+  { id: "accent-text", fg: "ACCENT_FG", bg: "ACCENT_BG", fix: "neutral-text" },
 ]);
 
 /* --------------------------------------------------
    CONTRAST CHECK (SCORING)
 -------------------------------------------------- */
 
-function fgForBgPair(fgVar, bgHex) {
-  if (fgVar === "--dynamic-title") {
-    const dark = resolveCssColor("--color-title");
-    const light = resolveCssColor("--color-text-inverse");
-    if (!bgHex || !dark || !light) return dark;
-    return getTextModeForBackground(bgHex, dark, light) === "light" ? light : dark;
-  }
-
-  if (fgVar === "--dynamic-text") {
-    const dark = resolveCssColor("--color-text");
-    const light = resolveCssColor("--color-text-inverse");
-    if (!bgHex || !dark || !light) return dark;
-    return getTextModeForBackground(bgHex, dark, light) === "light" ? light : dark;
-  }
-
-  return resolveCssColor(fgVar);
-}
-
 function updateContrastChecks() {
   const contextBgs = props.bgContext?.bgVars?.map(resolveCssColor).filter(Boolean) || [];
 
   contrastResults.value = contrastPairs.value.map((p) => {
-    const bgList = p.bg === "CONTEXT" ? contextBgs : [resolveCssColor(p.bg)].filter(Boolean);
+    const bgList =
+      p.bg === "CONTEXT"
+        ? contextBgs
+        : p.bg === "ACCENT_BG"
+        ? [resolveCssColor(props.bgContext?.tone === "secondary" ? "--ui-primary-bg" : "--ui-secondary-bg")].filter(
+            Boolean
+          )
+        : [resolveCssColor(p.bg)].filter(Boolean);
 
     if (bgList.length === 0) {
       const pillBg = resolveCssColor("--color-danger");
@@ -394,16 +417,81 @@ function updateContrastChecks() {
       };
     }
 
-    const ratios = bgList.map((bg) => {
-      const fg = fgForBgPair(p.fg, bg);
-      if (!fg || !bg) return 0;
-      const r = getContrastRatio(fg, bg);
-      return Number.isFinite(r) ? r : 0;
-    });
+    let worstBg = null;
+    let worstFg = null;
+    let worstFgSourceVar = null;
+    let worstRatio = Infinity;
 
-    const worstRatio = Math.min(...ratios);
-    const worstBg = bgList[ratios.indexOf(worstRatio)];
-    const worstFg = fgForBgPair(p.fg, worstBg);
+    for (const bg of bgList) {
+      let fg;
+      let fgSourceVar = null;
+
+      if (p.fg === "--dynamic-title") {
+        const darkVar = "--color-title";
+        const lightVar = "--color-text-inverse";
+        const dark = resolveCssColor(darkVar);
+        const light = resolveCssColor(lightVar);
+        const useLight = getTextModeForBackground(bg, dark, light) === "light";
+        fg = useLight ? light : dark;
+        fgSourceVar = useLight ? lightVar : darkVar;
+      } else if (p.fg === "--dynamic-text") {
+        const darkVar = "--color-text";
+        const lightVar = "--color-text-inverse";
+        const dark = resolveCssColor(darkVar);
+        const light = resolveCssColor(lightVar);
+        const useLight = getTextModeForBackground(bg, dark, light) === "light";
+        fg = useLight ? light : dark;
+        fgSourceVar = useLight ? lightVar : darkVar;
+      } else if (p.fg === "--dynamic-soft") {
+        const darkVar = "--color-text-soft";
+        const lightVar = "--color-text-soft-inverse";
+        const dark = resolveCssColor(darkVar);
+        const light = resolveCssColor(lightVar);
+        const useLight = getTextModeForBackground(bg, dark, light) === "light";
+        fg = useLight ? light : dark;
+        fgSourceVar = useLight ? lightVar : darkVar;
+      } else if (p.fg === "ACCENT_FG") {
+        // Match InfoPost.vue behavior
+        const isSecondaryMode = props.bgContext?.tone === "secondary";
+        const varName = isSecondaryMode ? "--text-on-primary" : "--text-on-secondary";
+        fg = resolveCssColor(varName);
+        fgSourceVar = null; // derived role, do not write directly
+      } else {
+        fg = resolveCssColor(p.fg);
+        fgSourceVar = null;
+      }
+
+      if (!fg || !bg) continue;
+
+      const r = getContrastRatio(fg, bg);
+      const rr = Number.isFinite(r) ? r : 0;
+
+      if (rr < worstRatio) {
+        worstRatio = rr;
+        worstBg = bg;
+        worstFg = fg;
+        worstFgSourceVar = fgSourceVar;
+      }
+    }
+
+    if (!worstBg || !worstFg) {
+      const pillBg = resolveCssColor("--color-danger");
+      const pillFg = pickReadablePillText(pillBg);
+      return {
+        id: p.id,
+        ratio: 0,
+        level: "fail",
+        label: "slecht",
+        bg: pillBg,
+        fg: pillFg,
+        swatchText: null,
+        swatchBg: null,
+        cssVarFg: p.fg,
+        cssVarBg: p.bg,
+        fix: p.fix,
+        _noFixPossible: !!noFixMap.value[p.id],
+      };
+    }
 
     const result = evaluateContrastVisual(worstFg, worstBg);
 
@@ -437,6 +525,7 @@ function updateContrastChecks() {
       fg: pillFg,
       cssVarFg: p.fg,
       cssVarBg: p.bg,
+      fgSourceVar: worstFgSourceVar,
       fix: p.fix,
       swatchText: worstFg,
       swatchBg: worstBg,
@@ -454,8 +543,8 @@ async function fixContrast(item) {
   if (!item || !props.scales) return;
   if (item.label === "prima" || item.label === "goed") return;
 
-  if (item.cssVarFg?.startsWith("--dynamic-")) {
-    // dynamic vars are derived, never fix directly
+  if (item.cssVarBg === "CONTEXT") {
+    // cannot safely "fix" against a context background; it can change (pattern/image/tone)
     noFixMap.value[item.id] = true;
     updateContrastChecks();
     return;
@@ -473,7 +562,7 @@ async function fixContrast(item) {
   // - Always use the already computed worst-case values.
   const bg = resolveCssColor(item.cssVarBg);
   const effectiveFg = item.swatchText;
-  const sourceVar = getFixableSourceVar(item);
+  const sourceVar = item.fgSourceVar || getFixableSourceVar(item);
 
   if (!bg || !effectiveFg || !sourceVar) {
     noFixMap.value[item.id] = true;
@@ -529,6 +618,7 @@ defineExpose({ nextRecipe, prevRecipe });
   align-items: center;
   justify-content: space-between;
 }
+
 .recipe-shuffle {
   border-radius: var(--radius-md);
   padding: var(--space-20);
@@ -570,20 +660,7 @@ defineExpose({ nextRecipe, prevRecipe });
 }
 
 .reset-btn {
-  background: none;
-  border: 1px solid var(--dynamic-text);
-  color: var(--dynamic-text);
-  border-radius: var(--radius-sm);
-  padding: var(--space-5) var(--space-20);
-  cursor: pointer;
-}
-
-.reset-btn:hover {
-  scale: 1.05;
-}
-
-.reset-btn:active {
-  scale: 0.95;
+  font-size: var(--fs-body-xs);
 }
 
 /* ---------------------------------------------
@@ -635,47 +712,6 @@ defineExpose({ nextRecipe, prevRecipe });
   border-radius: var(--radius-sm);
   border: var(--ui-panel-border-soft);
   overflow: hidden;
-}
-
-@media (max-width: 1399px) {
-  .controls {
-    width: 33.33%;
-  }
-  .contrast-list {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: var(--space-5) var(--space-50);
-  }
-  .contrast-row {
-    width: calc((100% - var(--space-100)) / 3);
-  }
-}
-@media (max-width: 991px) {
-  .controls {
-    width: 50%;
-    justify-content: space-between;
-  }
-  .contrast-row {
-    width: calc((100% - var(--space-50)) / 2);
-  }
-}
-@media (max-width: 767px) {
-  .controls {
-    width: 100%;
-    justify-content: space-evenly;
-  }
-  .contrast-row {
-    width: calc((100% - var(--space-50)) / 2);
-  }
-}
-@media (max-width: 575px) {
-  .controls {
-    width: 100%;
-    justify-content: space-around;
-  }
-  .contrast-row {
-    width: 100%;
-  }
 }
 
 .swatch-text-label {
@@ -731,5 +767,58 @@ defineExpose({ nextRecipe, prevRecipe });
   font-weight: var(--fw-title);
   font-size: var(--fs-body-xs);
   border-radius: var(--radius-md);
+}
+
+/* ------------------------------------------------------
+   RESPONSIVE COLLAPSE
+------------------------------------------------------ */
+
+.contrast-toggle {
+  display: none;
+  margin: var(--space-20) 0;
+}
+
+@media (max-width: 1399px) {
+  .controls {
+    width: 33.33%;
+  }
+  .contrast-toggle {
+    display: inline-block;
+  }
+
+  .contrast-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-5) var(--space-50);
+  }
+
+  .contrast-row {
+    width: calc((100% - var(--space-100)) / 3);
+  }
+}
+
+@media (max-width: 991px) {
+  .controls {
+    width: 50%;
+    justify-content: space-between;
+  }
+  .contrast-row {
+    width: calc((100% - var(--space-50)) / 2);
+  }
+}
+
+@media (max-width: 767px) {
+  .controls {
+    width: 80%;
+  }
+}
+
+@media (max-width: 575px) {
+  .controls {
+    width: 100%;
+  }
+  .contrast-row {
+    width: 100%;
+  }
 }
 </style>

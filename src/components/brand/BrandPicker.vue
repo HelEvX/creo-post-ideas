@@ -100,7 +100,7 @@ export default {
 .brand-switcher-container {
   padding: var(--space-20);
   margin-top: var(--space-75);
-  background-color: var(--ui-alt-section-bg);
+  background: var(--ui-alt-section-bg);
   border: var(--ui-panel-border-soft);
   border-radius: var(--radius-md);
   display: inline-block;
@@ -109,6 +109,7 @@ export default {
 
 label {
   font-weight: 500;
+  color: var(--dynamic-text);
 }
 
 select {

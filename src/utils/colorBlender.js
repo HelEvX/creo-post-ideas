@@ -329,7 +329,7 @@ export function evaluateContrastVisual(fgHex, bgHex, minAA = 4.5) {
   if (isRichMidTone && best >= 3.2) {
     return {
       ratio,
-      level: "AA Large", // stays beperkt
+      level: "AA Large", // stays 'beperkt'
       perceptual: true, // THIS IS THE KEY
     };
   }

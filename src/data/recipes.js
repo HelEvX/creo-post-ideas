@@ -35,13 +35,13 @@ export const recipes = [
     title: "Balans",
     description: "Alle kleuren, matig contrast",
     roles: {
-      // base bg
-      "--color-background": ["neutral", 0],
-      "--color-surface": ["neutral", 1],
-
       // nav & footer
-      "--ui-nav-bg": ["primary", 5],
-      "--ui-footer-bg": ["primary", 5],
+      "--ui-nav-bg": ["secondary", 3],
+      "--ui-footer-bg": ["primary", 3],
+
+      // base bg
+      "--ui-section-bg": ["neutral", 0],
+      "--ui-alt-section-bg": ["neutral", 1],
 
       // panels or cards
       "--ui-panel-bg": ["neutral", 1],
@@ -51,8 +51,8 @@ export const recipes = [
       "--color-text": ["neutral", 7],
 
       // brand bg
-      "--ui-primary-bg": ["primary", 2],
-      "--ui-secondary-bg": ["secondary", 2],
+      "--ui-primary-bg": ["primary", 4],
+      "--ui-secondary-bg": ["secondary", 4],
 
       // accent source
       "--dynamic-accent": ["primary", 6],
@@ -69,18 +69,17 @@ export const recipes = [
     title: "Hevig",
     description: "Uitgesproken kleuren, meer contrast",
     roles: {
+      // nav & footer
       "--ui-nav-bg": ["primaryDark", 9],
       "--ui-footer-bg": ["primaryDark", 9],
 
+      // base bg
       "--ui-section-bg": ["neutral", 2],
       "--ui-alt-section-bg": ["primaryLight", 3],
 
+      // panels or cards
       "--ui-panel-bg": ["neutral", 1],
-      "--ui-panel-border": ["primary", 6],
-      "--ui-panel-border-soft": ["neutral", 2],
-
       "--ui-alt-panel-bg": ["primaryDark", 8],
-      "--ui-alt-panel-border": ["primaryDark", 7],
 
       "--ui-accent": ["secondaryDark", 8],
       "--ui-accent-hover": ["secondaryDark", 9],
@@ -94,11 +93,6 @@ export const recipes = [
       "--ui-heading": ["primaryLight", 0],
       "--ui-heading-alt": ["secondary", 8],
       "--ui-caption": ["neutral", 7],
-
-      "--ui-shadow": "rgba(0,0,0,0.18)",
-
-      "--ig-tile-bg": ["primary", 1],
-      "--ig-tile-fg": ["primary", 7],
     },
   },
   // ======================================================
@@ -109,18 +103,17 @@ export const recipes = [
     title: "Subtiel",
     description: "Zachte kleuren, minder contrast",
     roles: {
+      // nav & footer
       "--ui-nav-bg": ["primaryLight", 2],
       "--ui-footer-bg": ["primaryLight", 2],
 
+      // base bg
       "--ui-section-bg": ["neutral", 0],
       "--ui-alt-section-bg": ["neutral", 1],
 
+      // panels or cards
       "--ui-panel-bg": ["neutral", 0],
-      "--ui-panel-border": ["neutral", 2],
-      "--ui-panel-border-soft": ["neutral", 1],
-
       "--ui-alt-panel-bg": ["primaryLight", 1],
-      "--ui-alt-panel-border": ["primaryLight", 2],
 
       "--ui-accent": ["secondaryLight", 3],
       "--ui-accent-hover": ["secondaryLight", 4],
@@ -134,11 +127,6 @@ export const recipes = [
       "--ui-heading": ["primary", 6],
       "--ui-heading-alt": ["primary", 7],
       "--ui-caption": ["neutral", 6],
-
-      "--ui-shadow": "rgba(0,0,0,0.05)",
-
-      "--ig-tile-bg": ["primary", 1],
-      "--ig-tile-fg": ["primary", 7],
     },
   },
   // ======================================================
@@ -149,18 +137,17 @@ export const recipes = [
     title: "Kleurrijk",
     description: "Meer verschillende kleuren",
     roles: {
+      // nav & footer
       "--ui-nav-bg": ["secondary", 7],
       "--ui-footer-bg": ["secondary", 7],
 
+      // base bg
       "--ui-section-bg": ["neutral", 0],
       "--ui-alt-section-bg": ["secondaryLight", 3],
 
+      // panels or cards
       "--ui-panel-bg": ["neutral", 0],
-      "--ui-panel-border": ["secondary", 5],
-      "--ui-panel-border-soft": ["secondaryLight", 2],
-
       "--ui-alt-panel-bg": ["secondary", 6],
-      "--ui-alt-panel-border": ["secondary", 5],
 
       "--ui-accent": ["primary", 6],
       "--ui-accent-hover": ["primary", 7],
@@ -174,11 +161,6 @@ export const recipes = [
       "--ui-heading": ["primary", 7],
       "--ui-heading-alt": ["secondary", 8],
       "--ui-caption": ["neutral", 7],
-
-      "--ui-shadow": "rgba(0,0,0,0.12)",
-
-      "--ig-tile-bg": ["primary", 1],
-      "--ig-tile-fg": ["primary", 7],
     },
   },
   // ======================================================
@@ -189,36 +171,30 @@ export const recipes = [
     title: "Licht uit",
     description: "Donkere achtergrond, lichte kleuren",
     roles: {
-      "--ui-nav-bg": ["neutral", 10],
-      "--ui-footer-bg": ["neutral", 10],
+      // nav & footer
+      "--ui-nav-bg": ["primary", 0],
+      "--ui-footer-bg": ["primary", 0],
 
+      // base bg
       "--ui-section-bg": ["neutral", 9],
       "--ui-alt-section-bg": ["neutral", 8],
 
+      // panels or cards
       "--ui-panel-bg": ["neutral", 9],
-      "--ui-panel-border": ["neutral", 7],
-      "--ui-panel-border-soft": ["neutral", 8],
 
-      "--ui-alt-panel-bg": ["neutral", 8],
-      "--ui-alt-panel-border": ["neutral", 7],
+      // brand bg
+      "--ui-primary-bg": ["primary", 0],
+      "--ui-secondary-bg": ["secondary", 0],
 
-      "--ui-accent": ["primaryLight", 3],
-      "--ui-accent-hover": ["primaryLight", 4],
-      "--ui-accent-active": ["primaryLight", 5],
+      // accent source
+      "--dynamic-accent": ["primary", 0],
 
-      "--ui-link": ["secondaryLight", 3],
-      "--ui-link-hover": ["secondaryLight", 2],
-      "--ui-link-on-dark": ["primaryLight", 3],
-      "--ui-link-on-dark-hover": ["primaryLight", 2],
+      // shadow strength
+      "--ui-shadow-alpha": ["neutral", 8],
 
-      "--ui-heading": ["primaryLight", 0],
-      "--ui-heading-alt": ["secondaryLight", 2],
-      "--ui-caption": ["neutral", 2],
-
-      "--ui-shadow": "rgba(0,0,0,0.30)",
-
-      "--ig-tile-bg": ["primary", 1],
-      "--ig-tile-fg": ["primary", 7],
+      // reverse borders
+      "--color-border-medium": ["neutral", 4],
+      "--color-border-light": ["neutral", 7],
     },
   },
   // ======================================================
@@ -229,18 +205,17 @@ export const recipes = [
     title: "Minimaal",
     description: "Zeer neutraal, weinig kleur",
     roles: {
+      // nav & footer
       "--ui-nav-bg": ["neutral", 0],
       "--ui-footer-bg": ["neutral", 0],
 
+      // base bg
       "--ui-section-bg": ["neutral", 0],
       "--ui-alt-section-bg": ["neutral", 1],
 
+      // panels or cards
       "--ui-panel-bg": ["neutral", 0],
-      "--ui-panel-border": ["neutral", 2],
-      "--ui-panel-border-soft": ["neutral", 1],
-
       "--ui-alt-panel-bg": ["neutral", 1],
-      "--ui-alt-panel-border": ["neutral", 2],
 
       "--ui-accent": ["primary", 5],
       "--ui-accent-hover": ["primary", 6],
@@ -254,11 +229,6 @@ export const recipes = [
       "--ui-heading": ["neutral", 9],
       "--ui-heading-alt": ["neutral", 8],
       "--ui-caption": ["neutral", 7],
-
-      "--ui-shadow": "rgba(0,0,0,0.04)",
-
-      "--ig-tile-bg": ["primary", 1],
-      "--ig-tile-fg": ["primary", 7],
     },
   },
 ];
