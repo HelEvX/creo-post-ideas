@@ -37,14 +37,18 @@
               <span class="num">{{ ig.following }}</span> following
             </li>
           </ul>
-
+        </div>
+        <div class="ig-bio-wrapper">
           <div class="ig-bio">
             <div class="ig-line ig-title">{{ ig.title }}</div>
             <div class="ig-line">
-              <span class="ig-pill">{{ ig.threads }}</span>
+              <span class="ig-pill"
+                ><i class="fa-brands fa-threads"></i> <span>{{ ig.threads }}</span></span
+              >
             </div>
             <div class="ig-line ig-grey">{{ ig.businessType }}</div>
             <div class="ig-line" v-html="ig.description.replace(/\n/g, '<br>')"></div>
+            <div class="ig-line ig-tag">{{ ig.tags }}</div>
             <div class="ig-line ig-grey">{{ ig.address }}</div>
             <div class="ig-line">
               <a :href="ig.url" class="ig-link" target="_blank" rel="noopener">
@@ -133,6 +137,7 @@ const props = defineProps({
       threads: "",
       businessType: "",
       description: "",
+      tags: "",
       address: "",
       url: "",
       highlights: [],
@@ -154,7 +159,7 @@ const avatarSrc = computed(() => {
 // mask-style SVG recoloring
 function highlightIconStyle(file, i) {
   if (!file) return {};
-  const url = new URL(`../assets/highlights/${file}`, import.meta.url).href;
+  const url = new URL(`../public/highlights/${file}`, import.meta.url).href;
   return {
     WebkitMaskImage: `url(${url})`,
     maskImage: `url(${url})`,
@@ -193,21 +198,25 @@ function highlightIconStyle(file, i) {
 /* HEADER */
 .ig-header {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  justify-content: right;
+  align-items: right;
+  margin-bottom: 40px;
 }
 
 /* LEFT COLUMN — 1/3 */
 .ig-avatar-col {
   flex: 0 0 33.333%;
+  height: 0;
+  overflow: visible;
   display: flex;
   justify-content: center;
-  margin-right: 28px;
 }
 
 /* Avatar */
 .ig-avatar {
-  width: 150px;
-  height: 150px;
+  width: 165px;
+  height: 165px;
   border-radius: 50%;
   background-color: rgb(245, 245, 245);
   border: 1px solid rgba(0, 0, 0, 0.15);
@@ -258,7 +267,7 @@ function highlightIconStyle(file, i) {
 
 .ig-btn.secondary {
   background: #efefef;
-  color: rgb(12, 16, 20);
+  color: #0c1014;
 }
 
 .ig-btn.icon-btn {
@@ -280,29 +289,62 @@ function highlightIconStyle(file, i) {
   gap: 4px;
   font-size: 16px;
   line-height: 20px;
+  color: #6a717a;
 }
 
 .ig-stats .num {
   font-weight: 600;
+  color: #0c1014;
 }
 
 /* BIO */
+.ig-bio-wrapper {
+  flex: 0 0 calc(66.666% - 28px);
+}
+
 .ig-bio {
   display: flex;
   flex-direction: column;
+  flex: 0 1 auto;
 }
 
 .ig-grey {
   color: #737373;
 }
 
+.ig-line {
+  display: flex;
+  flex-direction: row;
+}
+
 .ig-pill {
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
   background: #efefef;
   padding: 4px 10px;
-  font-weight: 600;
   border-radius: 99px;
   margin: 6px 0;
+}
+
+.ig-pill i {
+  font-size: 18px;
+}
+
+.ig-pill span {
+  font-size: 12px;
+  margin: 0;
+}
+
+.ig-title {
+  font-weight: 600;
+}
+
+.ig-tag {
+  color: #4150f7 !important;
+  font-weight: 300;
+  text-decoration: none;
 }
 
 .ig-link {
@@ -346,7 +388,7 @@ function highlightIconStyle(file, i) {
 }
 
 .ig-tab-inner.active {
-  color: #000;
+  color: #0c1014;
 }
 
 .ig-tab-inner.active::after {
@@ -356,7 +398,7 @@ function highlightIconStyle(file, i) {
   left: 0;
   right: 0;
   height: 2px;
-  background: #000;
+  background: #0c1014;
 }
 
 .ig-tab-inner i {
@@ -418,8 +460,7 @@ function highlightIconStyle(file, i) {
 /* LABEL */
 .ig-highlight-label {
   font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-weight: 600;
   white-space: nowrap;
 }
 
@@ -468,6 +509,41 @@ function highlightIconStyle(file, i) {
 @keyframes ig-loader-spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+/* ------------------------------------------------------------
+   RESPONSIVE
+------------------------------------------------------------ */
+
+@media (max-width: 767px) {
+  .ig-header {
+    justify-content: left;
+  }
+  .ig-head-col {
+    justify-content: center;
+  }
+  .ig-username-row {
+    flex-wrap: wrap;
+  }
+  .ig-username {
+    flex: 1 0 100%;
+  }
+  .ig-avatar-col {
+    height: auto;
+    flex: 0 0 auto;
+    padding: 0 20px;
+  }
+  .ig-avatar {
+    height: 92px;
+    width: 92px;
+  }
+  .ig-stats {
+    display: none;
+  }
+  .ig-bio-wrapper {
+    flex: 1;
+    padding: 40px 20px;
   }
 }
 </style>
