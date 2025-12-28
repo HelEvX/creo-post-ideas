@@ -22,6 +22,56 @@ This tool is a **strategic guidance system**, not a graphic editor. It empowers 
 
 ---
 
+## 🎨 Color Recipes System
+
+The application uses a **recipe-based color composition system** to reinterpret a client’s brand palette into different visual moods without redefining or duplicating brand tokens.
+
+Recipes do not introduce new colors. Instead, they remap existing brand and neutral color scales onto semantic UI roles.
+
+### Perceptual Color Scales
+
+Each brand color (primary, secondary, tertiary) and the neutral palette is expanded into an 11-step perceptual scale:
+
+- `0` = lightest usable tone
+- `5` = original brand anchor
+- `10` = darkest usable tone
+
+Scales are generated to preserve hue while carefully modulating lightness and saturation, preventing washed-out light colors and overly saturated dark tones.
+
+### Semantic Role Mapping
+
+Recipes assign colors exclusively through **semantic CSS roles** such as:
+
+- structural backgrounds (`--ui-section-bg`, `--ui-panel-bg`)
+- brand surfaces (`--ui-primary-bg`, `--ui-secondary-bg`)
+- typography (`--color-title`, `--color-text`)
+- accents and borders (`--color-tertiary`, border tokens)
+- depth cues (`--ui-shadow-alpha`)
+
+This ensures consistency, scalability, and safe extension of the UI.
+
+### Pinning vs Dynamic Behavior
+
+Most roles are assigned dynamically using `[scale, index]` pairs.  
+Exact brand defaults can be pinned using CSS variables (e.g. `var(--ui-nav-bg)`), typically for navigation, footers, or safety-critical cases such as dark mode.
+
+Pinning is intentionally limited to avoid freezing the system into static layouts.
+
+### Recipe Intent
+
+Each recipe expresses a different design intent:
+
+- **Balanced** – conservative, brand-faithful, moderate contrast
+- **Bold** – strong hierarchy and contrast, limited color expansion
+- **Subtle** – softer contrast, calm continuity
+- **Vibrant** – expressive use of brand colors
+- **Minimalist** – neutral-first, minimal color presence
+- **Inverted** – dark canvas with soft, light surfaces
+
+Accessibility is enforced at runtime through contrast evaluation and repair logic, keeping visual intent and WCAG compliance clearly separated.
+
+---
+
 ## 🧩 Architecture Overview (How the Preview System Fits Together)
 
 The preview pipeline is deliberately layered. Each component has a single responsibility, which keeps layout logic, rendering logic, and visual composition cleanly separated.
