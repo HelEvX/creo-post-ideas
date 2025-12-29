@@ -9,38 +9,33 @@
 
   "_comment-1": "COLOR PALETTE: color mix",
 
-  "color-primary": "#32b85f",
-  "color-primary-dark": "#2a9a4f",
-  "color-primary-darker": "#17542b",
-  "color-primary-light": "#32a4e6",
-  "color-primary-lighter": "#FF392E",
+  "color-primary": "#f6ca51",
+  "color-primary-dark": "#f4bf2d",
+  "color-primary-darker": "#d4a030",
+  "color-primary-light": "#fbdb99",
+  "color-primary-lighter": "#F3F1EB",
 
-  "color-secondary": "#f6ca51",
-  "color-secondary-dark": "#f3bb21",
-  "color-secondary-darker": "#ae6fc3",
-  "color-secondary-light": "#fcedc5",
-  "color-secondary-lighter": "#e0c7e8",
+  "color-secondary": "#1FA14C",
+  "color-secondary-dark": "#2388D6",
+  "color-secondary-darker": "#9d51b2",
+  "color-secondary-light": "#32B85F",
+  "color-secondary-lighter": "#9ED1F2",
 
-  "_comment-1a": "TERTIARY/accent color - if not present, repeat secondary-dark",
+  "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-dark",
 
   "color-tertiary": "#AE6FC3",
 
-  "_comment-2": "BACKGROUND COLORS",
+  "_comment-3": "BACKGROUND COLORS",
 
   "color-surface": "#f3f1eb",
   "color-panel": "#e0f5e7",
   "color-nav-bg": "#ffffff",
   "color-footer-bg": "#3a3a3a",
 
-  "_comment-3": "TEXT COLORS (only dark colors, not 'reversed')",
+  "_comment-4": "TEXT COLORS (only dark colors, not 'reversed')",
 
   "color-title": "#1a1a1a",
   "color-text": "#1a1a1a",
-  "color-text-soft": "#989898",
-
-  "_comment-4": "DISABLED COLOR (mid-gray)",
-
-  "color-disabled": "#c6c6c6",
 
   "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
 

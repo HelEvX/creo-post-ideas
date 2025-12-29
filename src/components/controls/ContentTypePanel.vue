@@ -103,7 +103,8 @@ const modes = [
 .bg-toggle-section {
   margin: var(--space-20) auto;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  /* flex-direction: column; */
   gap: var(--space-10);
 }
 

@@ -101,7 +101,8 @@ function select(id) {
   justify-content: flex-end;
   gap: var(--space-10);
   text-align: center;
-  color: var(--dynamic-soft);
+  color: inherit;
+  opacity: 0.8;
   padding: var(--space-10);
   font-size: var(--fs-body-xxs);
   line-height: 1;

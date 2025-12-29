@@ -21,26 +21,21 @@
   "color-secondary-light": "#F3EDE2",
   "color-secondary-lighter": "#faf9f6",
 
-  "_comment-1a": "TERTIARY/accent color - if not present, repeat secondary-dark",
+  "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-dark",
 
   "color-tertiary": "#1f6f50",
 
-  "_comment-2": "BACKGROUND COLORS",
+  "_comment-3": "BACKGROUND COLORS",
 
   "color-surface": "#ffffff",
   "color-panel": "#f1ebdf",
   "color-nav-bg": "#faf9f6",
   "color-footer-bg": "#1f6f50",
 
-  "_comment-3": "TEXT COLORS (only dark colors, not 'reversed')",
+  "_comment-4": "TEXT COLORS (only dark colors, not 'reversed')",
 
   "color-title": "#070e0b",
   "color-text": "#070e0b",
-  "color-text-soft": "#a8abaa",
-
-  "_comment-4": "DISABLED COLOR (mid-gray)",
-
-  "color-disabled": "#c1c3c2",
 
   "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
 
@@ -73,7 +68,7 @@
     "description": "Description part 1.\nDescription part 2\nDescription part 3\nDescription part 4",
     "address": "Straat, Stad, Belgium xxxx",
     "url": "https://www.client.be",
-    "highlightIcon": "ocrunkst-small.svg",
+    "highlightIcon": "ocr-small.svg",
     "highlights": [
       { "label": "TEAM", "bg": "#cecece" },
       { "label": "PROMOS", "bg": "#444" },

@@ -21,26 +21,21 @@
   "color-secondary-light": "#dfdfdf",
   "color-secondary-lighter": "#f2f2f2",
 
-  "_comment-1a": "TERTIARY/accent color - if not present, repeat secondary-dark",
+  "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-dark",
 
   "color-tertiary": "#3f3f3f",
 
-  "_comment-2": "BACKGROUND COLORS",
+  "_comment-3": "BACKGROUND COLORS",
 
   "color-surface": "#ffffff",
   "color-panel": "#f2f2f2",
   "color-nav-bg": "#ffffff",
   "color-footer-bg": "#000000",
 
-  "_comment-3": "TEXT COLORS (only dark colors, not 'reversed')",
+  "_comment-4": "TEXT COLORS (only dark colors, not 'reversed')",
 
   "color-title": "#000000",
   "color-text": "#000000",
-  "color-text-soft": "#8c8c8c",
-
-  "_comment-4": "DISABLED COLOR (mid-gray)",
-
-  "color-disabled": "#d9d9d9",
 
   "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
 

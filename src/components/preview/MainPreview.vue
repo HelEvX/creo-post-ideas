@@ -167,7 +167,7 @@ const photoSrc = ref(stockImage);
 const postContent = {
   info: {
     headline: "Welkom",
-    body: "Blader door de stijlengalerij en controleer het contrast. ",
+    body: "Blader door de stijlengalerij. ",
   },
   headline: {
     headline: "Win tijd door je processen te automatiseren.",

@@ -117,8 +117,8 @@ const highlightPairs = [
   { bg: "--ui-primary-bg", fg: "--text-on-primary" },
   { bg: "--ui-alt-section-bg", fg: "--text-on-alt-section" },
   { bg: "--ui-secondary-bg", fg: "--text-on-secondary" },
-  { bg: "--ui-alt-panel-bg-derived", fg: "--text-on-alt-panel" },
-  { bg: "--ui-panel-bg", fg: "--text-on-panel" },
+  { bg: "--ui-section-bg", fg: "--color-tertiary" },
+  { bg: "--ui-panel-bg", fg: "--caption-on-panel" },
   { bg: "--ui-footer-bg", fg: "--text-soft-on-footer" },
   { bg: "--ui-nav-bg", fg: "--text-on-nav" },
 ];
@@ -159,7 +159,7 @@ const avatarSrc = computed(() => {
 // mask-style SVG recoloring
 function highlightIconStyle(file, i) {
   if (!file) return {};
-  const url = new URL(`../public/highlights/${file}`, import.meta.url).href;
+  const url = new URL(`../../public/highlights/${file}`, import.meta.url).href;
   return {
     WebkitMaskImage: `url(${url})`,
     maskImage: `url(${url})`,
@@ -184,7 +184,7 @@ function highlightIconStyle(file, i) {
   font-size: 14px;
   line-height: 18px;
   color: #000;
-  background: var(--white);
+  background: var(--color-background);
 }
 
 /* WRAPPER */

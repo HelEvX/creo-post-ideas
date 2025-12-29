@@ -72,6 +72,220 @@ Accessibility is enforced at runtime through contrast evaluation and repair logi
 
 ---
 
+## 🌓 Dynamic Text, Surface Resolution, and Contrast Safety
+
+This project does **not** use static light or dark themes and does **not** assume anything about brand colors.
+All readable text colors are resolved **at runtime**, based on the actual background they appear on.
+
+This section documents the minimum you need to know to avoid breaking contrast, buttons, or recipes.
+
+### Core Rule
+
+**Text color is never chosen by brand color.
+Text color is always chosen by background polarity.**
+
+Primary or secondary brand colors can be light or dark. The system stays correct because contrast is computed, not assumed.
+
+### The Three Layers (Do Not Mix These)
+
+#### 1. Brand Tokens (JSON)
+
+Design-time only.
+
+- Define brand identity values (`color-primary`, `color-secondary`, neutrals, etc.)
+- May define `color-title` and `color-text` **for light backgrounds only**
+- No logic
+- No contrast decisions
+- Never define `text-on-*` or `dynamic-*`
+
+#### 2. Surface-Resolved Text Roles (Runtime)
+
+Handled in `App.vue → updateDynamicTextRoles()`.
+
+For each surface:
+
+```
+nav, footer, section, alt-section, panel, primary, secondary
+```
+
+The system:
+
+1. Reads the **computed background**
+2. Detects light or dark
+3. Writes surface-specific roles:
+
+```
+--text-on-*
+--title-on-*
+--text-soft-on-*
+--disabled-on-*
+--caption-on-*
+--overlay-on-*
+```
+
+These variables are **derived outputs**.
+They must never be hardcoded.
+
+#### 3. Dynamic Routing (Content Layer)
+
+Generic content variables point to the correct surface roles:
+
+```
+--dynamic-text
+--dynamic-title
+--dynamic-soft
+--dynamic-disabled
+--dynamic-overlay
+```
+
+Content never decides contrast.
+It only consumes resolved roles.
+
+### Buttons (Why They Always Work)
+
+- Backgrounds:
+
+  - Primary → `--ui-primary-bg`
+  - Secondary → `--ui-secondary-bg`
+
+- Text:
+
+  - Primary → `--text-on-primary`
+  - Secondary → `--text-on-secondary`
+
+Because `text-on-*` is surface-resolved, buttons stay readable across:
+
+- All brands
+- All recipes
+- Inverted mode
+
+No special cases.
+
+### Hover and Active States
+
+Hover behavior is based on **UI background polarity**, not brand color:
+
+- Light UI → darken on hover
+- Dark UI → lighten on hover
+
+Controlled via:
+
+```
+--btn-mix-hover
+--btn-mix-active
+```
+
+This guarantees subtle, readable hover states even in inverted recipes.
+
+### Contrast Checker
+
+The contrast checker validates **rendered reality**, not tokens.
+
+- Reads computed colors
+- Scores worst-case contrast
+- Never edits `dynamic-*`
+- Fixes only allowed source tokens
+- Applies fixes locally to the mockup
+
+UI and brand identity remain untouched.
+
+### Non-Negotiable Rules
+
+If any of these are broken, contrast bugs will appear:
+
+1. Never hardcode text colors on colored surfaces
+2. Never assume brand colors are light or dark
+3. Never bypass `updateDynamicTextRoles()`
+4. Never write directly to `dynamic-*`
+5. Never let recipes define text polarity
+
+### In One Sentence
+
+**Brands define identity, recipes define mood, surfaces decide readability, and contrast is enforced at runtime.**
+
+---
+
+## ⚠️ Event-Driven Recalculation (Important Implementation Note)
+
+The application relies on **global custom events** to trigger recomputation of derived visual state.  
+This is intentional and safe in the current scope, but it is important to understand the trade-offs.
+
+### Events in Use
+
+The following events are dispatched and listened to across components:
+
+- `brand-updated`
+- `palette-updated`
+- `accent-updated`
+- `dynamic-text-updated`
+
+They trigger recomputation of:
+
+- surface-resolved text roles
+- dynamic content roles
+- hover / active polarity
+- contrast checker evaluation
+
+### Why This Exists
+
+The system has **no single reactive store** for visual state.  
+Instead, all correctness is derived from **computed CSS values** after the browser has resolved styles.
+
+Using events allows:
+
+- safe recomputation after CSS variables change
+- decoupling between brand loading, recipes, contrast checking, and UI
+- idempotent recalculation without cached assumptions
+
+Functions like `updateDynamicTextRoles()` and `scheduleContrastUpdate()` are written to be safe when called multiple times.
+
+### Known Trade-Off
+
+Some events trigger overlapping recomputation paths.  
+In practice, the same derived state may be recalculated more than once during:
+
+- brand loading
+- recipe switching
+- contrast fixing
+
+This works because:
+
+- recomputation is idempotent
+- execution is deferred via `nextTick` + `requestAnimationFrame`
+- all logic reads **computed CSS**, not intermediate state
+
+### Why This Is Acceptable (For Now)
+
+- The system is deterministic once the browser has completed layout
+- No race conditions exist in the current feature set
+- Visual correctness is guaranteed even if recalculation happens twice
+
+### Caution for Future Changes
+
+This pattern **scales poorly** if significantly more async inputs are added (e.g. image loading, animations, persistence).
+
+If extending the system:
+
+- avoid adding new global events casually
+- avoid introducing logic that depends on event order
+- prefer recomputing derived state in one place where possible
+
+### Summary
+
+This is a **conscious architectural choice**, not an oversight.
+
+It prioritizes:
+
+- correctness
+- decoupling
+- safety under CSS-driven theming
+
+over minimal recomputation.
+
+Do not refactor this without a clear replacement model.
+
+---
+
 ## 🧩 Architecture Overview (How the Preview System Fits Together)
 
 The preview pipeline is deliberately layered. Each component has a single responsibility, which keeps layout logic, rendering logic, and visual composition cleanly separated.

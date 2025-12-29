@@ -3,14 +3,27 @@ import { anyToRgb, getContrastRatio } from "./colorBlender.js";
 
 /**
  * Decide whether "dark" text or "light" text should be used on a given background.
- * Uses WCAG contrast and the same perceptual tweak you liked in the mockups:
- * for mid-to-dark backgrounds, white can win even if ratios are similar.
+ *
+ * IMPORTANT SEMANTICS (DO NOT MISREAD):
+ * - return value refers to TEXT polarity, not background color
+ * - "dark"  => background is light → use dark text
+ * - "light" => background is dark → use light text
+ *
+ * This function does NOT answer:
+ *   "is the background dark?"
+ * It answers:
+ *   "which text color is more readable on this background?"
+ *
+ * Uses WCAG contrast and a perceptual heuristic:
+ * for mid-to-dark backgrounds, white may be preferred
+ * even when contrast ratios are close.
  *
  * @param {string} bgColor   background color (hex / rgb / rgba)
  * @param {string} darkText  main dark text color (e.g. --color-text)
  * @param {string} lightText main light text color (e.g. --color-text-inverse)
  * @returns {"dark"|"light"|null}
  */
+
 export function getTextModeForBackground(bgColor, darkText, lightText) {
   if (!bgColor || !darkText || !lightText) return null;
 

@@ -49,6 +49,10 @@ export const recipes = [
 
       // SHADOW
       "--ui-shadow-alpha": ["neutral", 2],
+
+      // borders
+      "--color-border-medium": ["neutral", 4],
+      "--color-border-light": ["neutral", 2],
     },
   },
   // ======================================================
@@ -84,6 +88,10 @@ export const recipes = [
 
       // SHADOW
       "--ui-shadow-alpha": ["neutral", 4],
+
+      // borders
+      "--color-border-medium": ["neutral", 6],
+      "--color-border-light": ["neutral", 4],
     },
   },
   // ======================================================
@@ -119,6 +127,10 @@ export const recipes = [
 
       // SHADOW
       "--ui-shadow-alpha": ["neutral", 2],
+
+      // borders
+      "--color-border-medium": ["neutral", 4],
+      "--color-border-light": ["neutral", 3],
     },
   },
   // ======================================================
@@ -194,6 +206,10 @@ export const recipes = [
 
       // SHADOW
       "--ui-shadow-alpha": ["neutral", 1],
+
+      // borders
+      "--color-border-medium": ["neutral", 2],
+      "--color-border-light": ["neutral", 1],
     },
   },
 

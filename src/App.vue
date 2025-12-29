@@ -295,6 +295,19 @@ export default {
       const overlayLight = getVar("--white-50");
 
       /* ----------------------------------------------
+     ACCENT BACKGROUND RESOLUTION (EXPLICIT)
+     ---------------------------------------------- */
+
+      const accentBg =
+        this.mockupBgContext?.tone === "secondary"
+          ? cs.getPropertyValue("--ui-primary-bg").trim()
+          : cs.getPropertyValue("--ui-secondary-bg").trim();
+
+      if (accentBg) {
+        root.style.setProperty("--ui-accent-bg", accentBg);
+      }
+
+      /* ----------------------------------------------
          PER-SURFACE ROLE ASSIGNMENT
       ---------------------------------------------- */
       function apply(surfaceKey, bgVarName) {
@@ -304,6 +317,7 @@ export default {
         const mode = getTextModeForBackground(bg, dark, light);
         if (!mode) return;
 
+        // mode === "dark" means: background is light → dark text is readable
         if (mode === "dark") {
           root.style.setProperty(`--text-on-${surfaceKey}`, dark);
           root.style.setProperty(`--title-on-${surfaceKey}`, titleDark);
@@ -327,9 +341,9 @@ export default {
         ["section", "--ui-section-bg"],
         ["alt-section", "--ui-alt-section-bg"],
         ["panel", "--ui-panel-bg"],
-        ["alt-panel", "--ui-alt-panel-bg-derived"],
         ["primary", "--ui-primary-bg"],
         ["secondary", "--ui-secondary-bg"],
+        ["accent", "--ui-accent-bg"],
       ];
 
       surfaces.forEach(([key, bgVar]) => apply(key, bgVar));
@@ -370,6 +384,21 @@ export default {
       if (resolvedBg) {
         const mode = getTextModeForBackground(resolvedBg, dark, light);
         root.style.setProperty("--dynamic-overlay", mode === "dark" ? overlayDark : overlayLight);
+      }
+
+      // ----------------------------------------------
+      // BUTTON HOVER / ACTIVE MIX
+      // follows actual UI section background polarity
+      // ----------------------------------------------
+      const sectionBg = cs.getPropertyValue("--ui-section-bg").trim();
+
+      if (sectionBg) {
+        const hoverMode = getTextModeForBackground(sectionBg, dark, light);
+
+        // dark surface -> lighten on hover
+        // light surface -> darken on hover
+        root.style.setProperty("--btn-mix-hover", hoverMode === "light" ? "white" : "black");
+        root.style.setProperty("--btn-mix-active", hoverMode === "light" ? "white" : "black");
       }
 
       window.dispatchEvent(new Event("dynamic-text-updated"));

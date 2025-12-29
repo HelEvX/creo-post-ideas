@@ -21,11 +21,11 @@
   "color-secondary-light": "",
   "color-secondary-lighter": "",
 
-  "_comment-1a": "TERTIARY/accent color - if not present, repeat secondary-dark",
+  "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-dark",
 
   "color-tertiary": "#",
 
-  "_comment-2": "BACKGROUND COLORS: sections, cards, header, footer",
+  "_comment-3": "BACKGROUND COLORS: sections, cards, header, footer",
 
   "color-surface": "",
   "color-panel": "",
@@ -33,15 +33,10 @@
   "color-nav-bg": "",
   "color-footer-bg": "",
 
-  "_comment-3": "TEXT COLORS (dark only!)",
+  "_comment-4": "TEXT COLORS (dark only!)",
 
   "color-title": "",
   "color-text": "",
-  "color-text-soft": "",
-
-  "_comment-4": "DISABLED COLOR (mid-gray)",
-
-  "color-disabled": "808080",
 
   "_comment-5": "UTILITY COLORS",
 
@@ -76,13 +71,13 @@
     "url": "https://www.client.be",
     "highlightIcon": "client.svg",
     "highlights": [
-      { "label": "TEAM", "bg": "#cecece" },
-      { "label": "PROMOS", "bg": "#444" },
-      { "label": "SHOP", "bg": "#cecece" },
-      { "label": "SERVICES", "bg": "#444" },
-      { "label": "BLOG", "bg": "#cecece" },
-      { "label": "FAQ", "bg": "#444" },
-      { "label": "REVIEWS", "bg": "#cecece" }
+      { "label": "TEAM" },
+      { "label": "PROMOS" },
+      { "label": "SHOP" },
+      { "label": "SERVICES" },
+      { "label": "BLOG" },
+      { "label": "FAQ" },
+      { "label": "REVIEWS" }
     ]
   }
 }

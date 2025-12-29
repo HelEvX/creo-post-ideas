@@ -7,7 +7,7 @@
    ----------------------------- */
 
 /* Google Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap");
 
 /* Adobe Fonts*/
 @import url("https://use.typekit.net/xls1ldz.css");
@@ -16,7 +16,7 @@
    ROOT VARIABLES
    ----------------------------- */
 :root {
-  /* ==== DARK MODE SETUP ==== */
+  /* ==== MODES fallback ==== */
 
   --btn-mix-hover: black;
   --btn-mix-active: black;
@@ -288,14 +288,12 @@
 
   /* Accents */
   --ui-accent: var(--color-primary);
-  --ui-accent-hover: var(--color-primary-dark);
-  --ui-accent-active: var(--color-primary-darker);
+  --ui-accent-hover: color-mix(in srgb, var(--ui-primary-bg) 88%, black);
+  --ui-accent-active: color-mix(in srgb, var(--ui-primary-bg) 78%, black);
 
   /* Links */
   --ui-link: var(--color-primary);
-  --ui-link-hover: var(--color-primary-dark);
-  --ui-link-on-dark: var(--color-primary-lighter);
-  --ui-link-on-dark-hover: var(--color-primary-light);
+  --ui-link-hover: color-mix(in srgb, var(--ui-primary-bg) 85%, black);
 
   /* ------------------ */
   /* MOCKUP BACKGROUNDS */
@@ -355,6 +353,25 @@
   --dynamic-overlay: var(--ui-overlay-on-light);
 
   /* ------------------------------------------------------
+     MOCKUP SURFACE TEXT ROLES (FIXABLE)
+     These are NOT dynamic-*.
+  ------------------------------------------------------ */
+
+  /* Panel surface text */
+  --title-on-panel: var(--color-title);
+  --text-on-panel: var(--color-text);
+  --caption-on-panel: var(--color-text-soft);
+
+  /* Alt-panel surface text (separate knobs) */
+  --title-on-alt-panel: var(--color-title);
+  --text-on-alt-panel: var(--color-text);
+  --caption-on-alt-panel: var(--color-text-soft);
+
+  /* Accent surface text (separate knobs) */
+  --caption-on-accent: var(--color-text-soft-inverse);
+  --text-on-accent: var(--color-text-inverse);
+
+  /* ------------------------------------------------------
    OTHER MOCKUP ASSIGNMENTS
    ------------------------------------------------------ */
 
@@ -366,29 +383,6 @@
   --border-radius: var(--radius-md);
   --border-card: none;
   --shadow-card: none;
-
-  /* ------------------------------------------------------
-   UTILITY ASSIGNMENTS
-   Alerts / Statuses
-   NOT really dynamic currently
-   ------------------------------------------------------ */
-
-  --ui-info-bg: var(--color-info);
-  --ui-warning-bg: var(--color-warning);
-  --ui-danger-bg: var(--color-danger);
-  --ui-success-bg: var(--color-success);
-
-  /* Not functional currently */
-
-  --ui-info-text-on-light: var(--color-blue-600);
-  --ui-warning-text-on-light: var(--color-yellow-600);
-  --ui-danger-text-on-light: var(--color-red-600);
-  --ui-success-text-on-light: var(--color-green-600);
-
-  --ui-info-text-on-dark: var(--color-blue-400);
-  --ui-warning-text-on-dark: var(--color-yellow-400);
-  --ui-danger-text-on-dark: var(--color-red-400);
-  --ui-success-text-on-dark: var(--color-green-400);
 }
 
 /* ------------------------------------------------------
@@ -405,13 +399,6 @@ html {
   font-size: 54%; /* mobile baseline */
   max-width: 100vw;
   overflow-x: hidden;
-}
-
-/* DARK MODE */
-
-.theme-dark {
-  --btn-mix-hover: white;
-  --btn-mix-active: white;
 }
 
 /* RESPONSIVE */

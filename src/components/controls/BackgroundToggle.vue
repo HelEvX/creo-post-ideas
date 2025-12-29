@@ -36,7 +36,7 @@ function toggle() {
 
 .tone-toggle__label.active {
   font-weight: 700;
-  color: var(--dynamic-text);
+  color: inherit;
 }
 
 /* TRACK */
