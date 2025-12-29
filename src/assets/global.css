@@ -576,6 +576,21 @@ button,
   box-shadow: 0 0 0 2px rgba(from var(--ui-primary-bg) r g b / 0.2);
 }
 
+/* Disabled PRIMARY buttons */
+.btn-primary:disabled,
+button.btn-primary:disabled {
+  background-color: var(--ui-alt-section-bg);
+  border-color: transparent;
+  color: var(--dynamic-disabled);
+  cursor: default;
+  box-shadow: none;
+}
+
+.btn-primary:disabled:hover,
+.btn-primary:disabled:active {
+  background-color: var(--ui-alt-section-bg);
+}
+
 /* ======================================================
    SECONDARY BUTTONS
    ====================================================== */

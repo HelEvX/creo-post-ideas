@@ -2,13 +2,15 @@
   <div class="recipe-shuffle">
     <div class="recipe-info-container">
       <div class="controls">
-        <button type="button" class="btn-primary" @click="prevRecipe">
+        <button type="button" class="btn-primary" @click="prevRecipe" :disabled="!canNavigateRecipes">
           <i class="fa-solid fa-chevron-left"></i>
         </button>
-        <h4 class="recipe-title">
+
+        <h4 class="recipe-title" :class="{ 'is-disabled': !canNavigateRecipes }">
           {{ activeRecipe ? activeRecipe.title : "Basis" }}
         </h4>
-        <button type="button" class="btn-primary" @click="nextRecipe">
+
+        <button type="button" class="btn-primary" @click="nextRecipe" :disabled="!canNavigateRecipes">
           <i class="fa-solid fa-chevron-right"></i>
         </button>
       </div>
@@ -87,6 +89,8 @@ import {
 
 import { getTextModeForBackground } from "../../utils/colorLogic.js";
 
+// DEBUG: logs evaluated contrast rows to console.
+// Intentionally left enabled for development and thesis validation.
 const DEBUG_CONTRAST = true;
 
 /* --------------------------------------------------
@@ -114,6 +118,14 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener("resize", updateBreakpoint);
+});
+
+/* --------------------------------------------------
+   DISABLE RECIPES ON DEFAULT
+-------------------------------------------------- */
+
+const canNavigateRecipes = computed(() => {
+  return !!props.scales && recipes.length > 0;
 });
 
 /* --------------------------------------------------
@@ -352,9 +364,9 @@ function applyActiveRecipe() {
 
   // Dark mode = inverted recipe
   if (activeRecipe.value?.id === "inverted") {
-    root.classList.add("theme-dark");
+    root.classList.add("recipe-inverted");
   } else {
-    root.classList.remove("theme-dark");
+    root.classList.remove("recipe-inverted");
   }
 
   // Shadow participation + recipe-driven shadow alpha
@@ -621,15 +633,15 @@ function updateContrastChecks() {
       };
     }
 
-    const result = evaluateContrastVisual(fgValue, worstBg, 3.0);
+    const BASE_CONTRAST_THRESHOLD = 3.0;
+    const result = evaluateContrastVisual(fgValue, worstBg, BASE_CONTRAST_THRESHOLD, !!p.largeText);
 
     const isFirstTwo = p.id === "main-title" || p.id === "main-paragraph";
 
     let statusVar;
     let label;
 
-    // helper: treat "perceptual-pass" as AA-equivalent for labeling
-    const lvl = result.level === "perceptual-pass" ? "AA" : result.level;
+    const lvl = result.level;
 
     if (isFirstTwo) {
       // Row 1-2 rules:
@@ -641,12 +653,9 @@ function updateContrastChecks() {
       if (lvl === "AAA" || lvl === "AA") {
         statusVar = "--color-success-dark";
         label = "prima";
-      } else if (lvl === "AA Large") {
+      } else if (lvl === "AA Large" || lvl === "perceptual-pass") {
         statusVar = "--color-success";
         label = "goed";
-      } else if (lvl === "A") {
-        statusVar = "--color-warning";
-        label = "beperkt";
       } else {
         statusVar = "--color-danger";
         label = "slecht";
@@ -664,7 +673,7 @@ function updateContrastChecks() {
       } else if (lvl === "AA") {
         statusVar = "--color-success";
         label = "goed";
-      } else if (lvl === "AA Large" || lvl === "A") {
+      } else if (lvl === "AA Large" || lvl === "perceptual-pass") {
         statusVar = "--color-warning";
         label = "beperkt";
       } else {
@@ -928,6 +937,10 @@ defineExpose({ nextRecipe, prevRecipe });
 
 .reset-btn {
   font-size: var(--fs-body-xs);
+}
+
+.recipe-title.is-disabled {
+  color: var(--dynamic-disabled);
 }
 
 /* ---------------------------------------------

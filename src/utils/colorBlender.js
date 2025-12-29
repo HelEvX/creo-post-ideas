@@ -211,7 +211,7 @@ export function buildBrandScales(brandTokens) {
   };
 }
 
-export function evaluateContrastVisual(fgHex, bgHex, targetAA = 4.5) {
+export function evaluateContrastVisual(fgHex, bgHex, targetAA = 4.5, allowPerceptual = false) {
   if (!fgHex || !bgHex) {
     return { ratio: 0, level: "fail", perceptual: false, score: 0 };
   }
@@ -226,7 +226,7 @@ export function evaluateContrastVisual(fgHex, bgHex, targetAA = 4.5) {
 
   let score = ratio;
 
-  if (isExtremeText && isBrandBg) {
+  if (allowPerceptual && isExtremeText && isBrandBg) {
     score = Math.max(score, 3.0);
   }
 
