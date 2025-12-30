@@ -4,9 +4,32 @@
       <h6>Lettertypes</h6>
       <!-- IF font_source === 'google' THEN render_as_link ELSE render_as_text -->
       <p class="styles__hint">Grote tekst</p>
-      <div class="title-font">{{ titleFont }}</div>
+      <a
+        v-if="titleFontData.link"
+        :href="titleFontData.link"
+        target="_blank"
+        rel="noopener"
+        class="title-font font-row is-link">
+        {{ titleFontData.name }}
+      </a>
+
+      <div v-else class="title-font font-row">
+        {{ titleFontData.name }}
+      </div>
+
       <p class="styles__hint">Gewone tekst</p>
-      <div class="body-font">{{ bodyFont }}</div>
+      <a
+        v-if="bodyFontData.link"
+        :href="bodyFontData.link"
+        target="_blank"
+        rel="noopener"
+        class="body-font font-row is-link">
+        {{ bodyFontData.name }}
+      </a>
+
+      <div v-else class="body-font font-row">
+        {{ bodyFontData.name }}
+      </div>
     </div>
 
     <div class="main-preview__styles__swatches">
@@ -49,6 +72,56 @@ const props = defineProps({
 });
 
 const copied = ref(null);
+
+/* ------------------------------------------------------------
+   FONTS: clean name + source from imports (not from name)
+------------------------------------------------------------ */
+
+function cleanFontName(font) {
+  if (!font) return null;
+  return font.split(",")[0].replace(/['"]/g, "").trim();
+}
+
+function detectFontSource(name) {
+  if (!name) return "unknown";
+
+  // Adobe fonts in your system are kebab-case
+  if (/^[a-z0-9-]+$/.test(name)) return "adobe";
+
+  // Everything else is Google Fonts
+  return "google";
+}
+
+function buildFontLink(name, source) {
+  if (!name) return null;
+
+  if (source === "google") {
+    return `https://fonts.google.com/specimen/${name.replace(/\s+/g, "+")}`;
+  }
+
+  if (source === "adobe") {
+    return `https://fonts.adobe.com/fonts/${name.toLowerCase()}`;
+  }
+
+  return null;
+}
+
+function fontData(fontFamilyString) {
+  const name = cleanFontName(fontFamilyString);
+  const source = detectFontSource(name);
+  return {
+    name,
+    source,
+    link: buildFontLink(name, source),
+  };
+}
+
+const titleFontData = computed(() => fontData(props.titleFont));
+const bodyFontData = computed(() => fontData(props.bodyFont));
+
+/* ------------------------------------------------------------
+   SWATCHES
+------------------------------------------------------------ */
 
 function readCss(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -117,6 +190,14 @@ p.styles__hint {
   margin: 0 0 var(--space-10);
 }
 
+.font-row {
+  display: block;
+  width: 100%;
+  padding: var(--space-5) 0;
+  margin-bottom: var(--space-20);
+  text-align: left;
+}
+
 .title-font {
   font-family: var(--font-title);
   font-weight: var(--fw-title);
@@ -124,8 +205,15 @@ p.styles__hint {
 
 .body-font,
 .title-font {
-  margin-bottom: var(--space-20);
   text-align: left;
+}
+
+.is-link {
+  cursor: pointer;
+  text-decoration: none;
+}
+.is-link:hover {
+  text-decoration: underline;
 }
 
 /* swatch styling */

@@ -1,15 +1,19 @@
 <template>
   <PostWrapper :size="size">
-    <div class="social-post" :class="`size--${size}`">
+    <div class="social-post" :class="[`size--${size}`, backgroundClass]">
       <div class="post-bg" :class="backgroundClass">
         <!-- plain color layer -->
         <div class="post-bg__color"></div>
 
-        <!-- pattern layer -->
-        <div class="post-bg__pattern" :class="[patternClass, patternToneClass]"></div>
+        <!-- pattern layer 'mesh'-->
+        <!-- <div class="post-bg__pattern" :class="[patternClass, patternToneClass]"></div> -->
 
-        <!-- logo layer -->
-        <div v-if="brandLogo" class="post-bg__logo" v-html="coloredLogo"></div>
+        <!-- logo pattern layer -->
+        <!-- pattern layer -->
+        <div v-if="backgroundClass?.includes('bg--pattern')" class="post-bg__pattern" :style="logoPatternStyle"></div>
+
+        <!-- large logo layer -->
+        <div v-if="brandLogo && backgroundClass?.includes('bg--logo')" class="post-bg__logo" v-html="rawSvg"></div>
 
         <!-- image layer -->
         <div v-if="usePhoto" class="post-bg__image" :style="{ backgroundImage: `url(${photoSrc})` }"></div>
@@ -17,9 +21,6 @@
         <!-- overlay (only active in image mode via CSS) -->
         <div class="post-bg__overlay"></div>
       </div>
-
-      <!-- <div v-if="showCornerShapes" class="corner-shape square corner-shape--bl"></div>
-      <div v-if="showCornerShapes" class="corner-shape rect corner-shape--br"></div> -->
 
       <SafeZoneOverlay v-if="showSafeZone" />
 
@@ -35,7 +36,7 @@
         <div class="post-safe">
           <slot name="safe" />
         </div>
-        <div class="post-watermark"></div>
+        <div class="post-watermark" v-if="brandLogoSmall" :style="watermarkStyle"></div>
       </div>
     </div>
   </PostWrapper>
@@ -79,6 +80,7 @@ const props = defineProps({
   brandLogo: String,
   usePhoto: Boolean,
   photoSrc: String,
+  brandLogoSmall: String,
   showSafeZone: {
     type: Boolean,
     default: false,
@@ -103,36 +105,44 @@ watch(
   { immediate: true }
 );
 
-const toneColor = computed(() =>
-  props.backgroundTone === "primary" ? "var(--color-primary-dark)" : "var(--color-secondary-light)"
-);
+// const toneColor = computed(() => "var(--mockup-decor)");
 
-const coloredLogo = computed(() => {
-  if (!rawSvg.value) return null;
-  const color = toneColor.value;
+// const coloredLogo = computed(() => {
+//   if (!rawSvg.value) return null;
+//   const color = toneColor.value;
 
-  return rawSvg.value
-    .replace(/stroke:\s*#[0-9A-Fa-f]{3,6}/g, `stroke: ${color}`)
-    .replace(/fill:\s*#[0-9A-Fa-f]{3,6}/g, `fill: ${color}`)
-    .replace(/stroke="[^"]*"/g, `stroke="${color}"`)
-    .replace(/fill="[^"]*"/g, `fill="${color}"`);
-});
+//   return rawSvg.value
+//     .replace(/stroke:\s*#[0-9A-Fa-f]{3,6}/g, `stroke: ${color}`)
+//     .replace(/fill:\s*#[0-9A-Fa-f]{3,6}/g, `fill: ${color}`)
+//     .replace(/stroke="[^"]*"/g, `stroke="${color}"`)
+//     .replace(/fill="[^"]*"/g, `fill="${color}"`);
+// });
 
 /* ----------------------------------------------
    PATTERN CLASSES
 ---------------------------------------------- */
 
-const patternClass = computed(() => {
-  if (!props.backgroundClass) return "";
-  return props.backgroundClass
-    .split(" ")
-    .filter((cls) => cls.startsWith("pattern-"))
-    .join(" ");
-});
+// const patternClass = computed(() => {
+//   if (!props.backgroundClass) return "";
+//   return props.backgroundClass
+//     .split(" ")
+//     .filter((cls) => cls.startsWith("pattern-"))
+//     .join(" ");
+// });
 
-const patternToneClass = computed(() => {
-  if (!props.backgroundClass?.includes("pattern-")) return "";
-  return props.backgroundTone === "secondary" ? "pattern--secondary" : "pattern--primary";
+// const patternToneClass = computed(() => {
+//   if (!props.backgroundClass?.includes("pattern-")) return "";
+//   return props.backgroundTone === "secondary" ? "pattern--secondary" : "pattern--primary";
+// });
+
+const logoPatternStyle = computed(() => {
+  if (!rawSvg.value) return null;
+
+  const encoded = encodeURIComponent(rawSvg.value).replace(/'/g, "%27").replace(/"/g, "%22");
+
+  return {
+    "--logo-pattern-svg": `url("data:image/svg+xml,${encoded}")`,
+  };
 });
 
 /* ----------------------------------------------
@@ -141,6 +151,28 @@ const patternToneClass = computed(() => {
 function readVar(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
+
+/* ----------------------------------------------
+   WATERMARK
+---------------------------------------------- */
+
+const watermarkStyle = computed(() => {
+  if (!props.brandLogoSmall) return null;
+
+  const url = new URL(props.brandLogoSmall, import.meta.url).href;
+
+  return {
+    WebkitMaskImage: `url(${url})`,
+    maskImage: `url(${url})`,
+    WebkitMaskRepeat: "no-repeat",
+    maskRepeat: "no-repeat",
+    WebkitMaskPosition: "center",
+    maskPosition: "center",
+    WebkitMaskSize: "contain",
+    maskSize: "contain",
+    backgroundColor: "var(--dynamic-title)",
+  };
+});
 
 /* ----------------------------------------------
    DERIVED ALT PANEL BACKGROUND
@@ -284,41 +316,47 @@ function resolveHex(varName) {
   return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
 }
 
-const resolvedVisualContext = computed(() => ({
-  background: {
-    hex: props.backgroundTone === "secondary" ? resolveHex("--ui-secondary-bg") : resolveHex("--ui-primary-bg"),
-  },
+const resolvedVisualContext = computed(() => {
+  const isSecondary = props.backgroundTone === "secondary";
+  const isColored = props.useColoredBackground !== false;
+  const isImage = props.backgroundClass?.includes("bg--image");
 
-  surfaces: {
-    altSection: resolveHex("--ui-alt-section-bg"), // neutral bg
-    altPanel: resolveHex("--ui-alt-panel-bg-derived"),
-    panel: resolveHex("--ui-panel-bg"),
-  },
+  const bgPrimary = resolveHex("--ui-primary-bg");
+  const bgSecondary = resolveHex("--ui-secondary-bg");
+  const bgNeutral = resolveHex("--ui-alt-section-bg");
 
-  accents: {
-    accent: resolveHex("--dynamic-accent"),
-  },
+  const backgroundHex = !isColored ? bgNeutral : isSecondary ? bgSecondary : bgPrimary;
 
-  textStatic: {
-    titleOnSection: resolveHex("--dynamic-title"),
-    bodyOnSection: resolveHex("--dynamic-text"),
+  const decorHex = resolveHex("--mockup-decor");
 
-    captionOnAltPanel: resolveHex("--text-soft-on-alt-panel"),
-    titleOnAltPanel: resolveHex("--dynamic-title"),
-    bodyOnAltPanel: resolveHex("--dynamic-text"),
+  return {
+    background: {
+      base: backgroundHex,
+      overlay: isImage ? backgroundHex : null,
+    },
 
-    captionOnPanel: resolveHex("--caption-on-panel"),
-    titleOnPanel: resolveHex("--title-on-panel"),
-    bodyOnPanel: resolveHex("--text-on-panel"),
+    text: {
+      title: resolveHex("--dynamic-title"),
+      body: resolveHex("--dynamic-text"),
+      soft: resolveHex("--dynamic-soft"),
+    },
 
-    accentText: resolveHex("--ACCENT_TEXT"),
-  },
+    decoration: {
+      decor: decorHex, // borders, icons, shapes, pattern, large logo
+      watermark: resolveHex("--dynamic-title"),
+    },
 
-  overlay: {
-    active: props.backgroundClass?.includes("bg--image"),
-    hex: props.backgroundTone === "secondary" ? resolveHex("--ui-secondary-bg") : resolveHex("--ui-primary-bg"),
-  },
-}));
+    surfaces: {
+      panel: resolveHex("--ui-panel-bg"),
+      altPanel: resolveHex("--ui-alt-panel-bg-derived"),
+      altSection: resolveHex("--ui-alt-section-bg"),
+    },
+
+    accents: {
+      accent: resolveHex("--dynamic-accent"),
+    },
+  };
+});
 
 const emit = defineEmits(["resolved-visuals"]);
 
@@ -470,7 +508,7 @@ onBeforeUnmount(() => {
   right: var(--safe-right);
   bottom: var(--safe-bottom);
   left: var(--safe-left);
-  scale: 0.95; /* create 'padding'*/
+  transform: scale(0.95); /* create 'padding'*/
 }
 
 .post-free {
@@ -482,17 +520,20 @@ onBeforeUnmount(() => {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  color: var(--mockup-decor);
 }
 
 .post-watermark {
-  margin: var(--space-20);
-  width: var(--space-50);
-  height: var(--space-50);
-  opacity: 0.6;
-  background: var(--red-500);
   position: absolute;
-  bottom: 0;
-  right: 0;
+  right: clamp(1rem, 3vw, 2.5rem);
+  bottom: clamp(1rem, 3vw, 2.5rem);
+
+  width: clamp(2.5rem, 6vw, 4.5rem);
+  height: clamp(2.5rem, 6vw, 4.5rem);
+
+  opacity: 0.5;
+
+  pointer-events: none;
 }
 
 /* =========================================
@@ -517,6 +558,33 @@ onBeforeUnmount(() => {
   pointer-events: none;
 }
 
+.post-bg__logo {
+  color: var(--mockup-decor);
+}
+
+.post-bg__logo :deep(svg),
+.post-bg__logo :deep(svg *) {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+/* ===============================================
+   DERIVED COLOR FOR LARGE LOGO & DECORATION
+   primary-dark | secondary-light | neutral
+   =============================================== */
+
+.bg--plain-primary {
+  --mockup-decor: var(--color-primary-dark);
+}
+
+.bg--plain-secondary {
+  --mockup-decor: var(--color-secondary-light);
+}
+
+.bg--plain-neutral {
+  --mockup-decor: var(--color-panel);
+}
+
 /* ===============================================
    PLAIN BACKGROUND: primary | secondary | neutral
    =============================================== */
@@ -534,7 +602,7 @@ onBeforeUnmount(() => {
 }
 
 /* =========================================
-   LOGO BACKGROUND
+   LARGE LOGO BACKGROUND
    ========================================= */
 
 .post-bg__logo {
@@ -547,10 +615,134 @@ onBeforeUnmount(() => {
   position: absolute;
   top: 0;
   left: 0;
-  scale: 100%;
-  opacity: 0.4;
-  transform: translate(-35%, 0);
+  opacity: var(--pattern-opacity);
+  transform: translate(-25%, 15%) scale(1.2);
   overflow: hidden;
+}
+
+/* =========================================
+   TILED SMALL LOGO BACKGROUND
+   ========================================= */
+
+/* tile size  >  logo visual bounds */
+.post-bg__pattern {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+.post-bg__pattern::before,
+.post-bg__pattern::after {
+  content: "";
+  position: absolute;
+
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+
+  background-color: var(--mockup-decor);
+  color: var(--mockup-decor);
+
+  mask-image: var(--logo-pattern-svg);
+  -webkit-mask-image: var(--logo-pattern-svg);
+
+  mask-repeat: repeat;
+  -webkit-mask-repeat: repeat;
+
+  mask-size: var(--tile-x) var(--tile-y);
+  -webkit-mask-size: var(--tile-x) var(--tile-y);
+
+  transform: rotate(var(--pattern-rotate));
+  transform-origin: center;
+
+  opacity: var(--pattern-opacity);
+}
+
+/* default: no offset */
+.post-bg__pattern::after {
+  mask-position: var(--pattern-offset-x) var(--pattern-offset-y);
+  -webkit-mask-position: var(--pattern-offset-x) var(--pattern-offset-y);
+}
+
+/* brand spacing adjustments::after
+*/
+
+.brand--groomer .post-bg__pattern {
+  --tile-x: 70px;
+  --tile-y: 150px;
+  --pattern-offset-x: calc(var(--tile-x) / 2);
+  --pattern-offset-y: calc(var(--tile-y) / 2);
+}
+
+.brand--runkstervolksfeesten .post-bg__pattern {
+  --tile-x: 70px;
+  --tile-y: 170px;
+  --pattern-offset-x: calc(var(--tile-x) / 2);
+  --pattern-offset-y: calc(var(--tile-y) / 2);
+  transform: rotate(-12deg);
+}
+
+.brand--ocrunkst .post-bg__pattern {
+  --tile-x: 155px;
+  --tile-y: 125px;
+  --pattern-offset-x: calc(var(--tile-x) / 2);
+  --pattern-offset-y: calc(var(--tile-y) / 2);
+}
+
+.brand--wijkraadrunkst .post-bg__pattern {
+  --tile-x: 230px;
+  --tile-y: 130px;
+  --pattern-offset-x: calc(var(--tile-x) / 2);
+  --pattern-offset-y: calc(var(--tile-y) / 2);
+}
+
+.brand--steviala .post-bg__pattern {
+  --tile-x: 190px;
+  --tile-y: 90px;
+  --pattern-offset-x: calc(var(--tile-x) / 2);
+  --pattern-offset-y: calc(var(--tile-y) / 2);
+}
+
+.brand--kenis .post-bg__pattern {
+  --tile-x: 170px;
+  --tile-y: 95px;
+  --pattern-offset-x: calc(var(--tile-x) / 2);
+  --pattern-offset-y: calc(var(--tile-y) / 2);
+}
+
+.brand--tropical .post-bg__pattern {
+  --tile-x: 150px;
+  --tile-y: 65px;
+  --pattern-offset-x: calc(var(--tile-x) / 2);
+  --pattern-offset-y: calc(var(--tile-y) / 2);
+  transform: rotate(-12deg);
+}
+
+.brand--cardgameshop .post-bg__pattern {
+  --tile-x: 190px;
+  --tile-y: 75px;
+  --pattern-offset-x: calc(var(--tile-x) / 2);
+  --pattern-offset-y: calc(var(--tile-y) / 2);
+}
+
+.brand--blooloc .post-bg__pattern {
+  --tile-x: 80px;
+  --tile-y: 85px;
+}
+
+.brand--glaede .post-bg__pattern {
+  --tile-x: 40px;
+  --tile-y: 85px;
+  --pattern-offset-x: calc(var(--tile-x) / 2);
+  --pattern-offset-y: calc(var(--tile-y) / 2);
+}
+
+.brand--ellevation .post-bg__pattern {
+  --tile-x: 40px;
+  --tile-y: 85px;
+  --pattern-offset-x: calc(var(--tile-x) * 0.33);
+  --pattern-offset-y: calc(var(--tile-y) / 2);
 }
 
 /* =========================================

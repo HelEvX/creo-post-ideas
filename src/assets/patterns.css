@@ -23,8 +23,8 @@
 
 .pattern-distorted-mesh {
   --s: 140px; /* control the size*/
-  --c1: var(--pattern-alt);
-  --c2: var(--pattern-base);
+  --c1: var(--color-primary-dark);
+  --c2: var(--color-primary);
 
   --_g: #0000 52%, var(--c1) 54% 57%, #0000 59%;
   background: radial-gradient(farthest-side at -33.33% 50%, var(--_g)) 0 calc(var(--s) / 2),
@@ -118,44 +118,4 @@
 .bg--pattern-noise .post-bg__pattern {
   background-image: url("data:image/svg+xml,%3Csvg ... %3E");
   opacity: 0.25;
-}
-
-/* CREO corner triangles */
-
-.corner-shape.square {
-  position: absolute;
-  height: 40%;
-  aspect-ratio: 1 / 1;
-  clip-path: polygon(0 0, 100% 100%, 0 100%, 0 0);
-  background: var(--color-primary);
-  opacity: 0.2;
-}
-
-.corner-shape.rect {
-  position: absolute;
-  height: 30%;
-  aspect-ratio: 2 / 1;
-  clip-path: polygon(0 0, 100% 100%, 0 100%, 0 0);
-  background: var(--color-primary);
-  opacity: 0.2;
-}
-
-.corner-shape--tl {
-  top: 0;
-  left: 0;
-  transform: scaleY(-1);
-}
-.corner-shape--tr {
-  top: 0;
-  right: 0;
-  transform: scale(-1, -1);
-}
-.corner-shape--bl {
-  bottom: 0;
-  left: 0;
-}
-.corner-shape--br {
-  bottom: 0;
-  right: 0;
-  transform: scaleX(-1);
 }

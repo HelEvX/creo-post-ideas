@@ -162,6 +162,8 @@ const activeRecipe = computed(() => {
 const noFixMap = ref(Object.create(null));
 const contrastResults = ref([]);
 
+const noFixTimers = Object.create(null);
+
 /* --------------------------------------------------
    LIFECYCLE
 -------------------------------------------------- */
@@ -349,6 +351,21 @@ async function scheduleContrastUpdate() {
   updateContrastChecks();
 
   scheduleContrastUpdate._pending = false;
+}
+
+function triggerNoFixHint(id, timeout = 1500) {
+  noFixMap.value[id] = true;
+
+  if (noFixTimers[id]) {
+    clearTimeout(noFixTimers[id]);
+  }
+
+  noFixTimers[id] = setTimeout(() => {
+    noFixMap.value[id] = false;
+    delete noFixTimers[id];
+
+    updateContrastChecks();
+  }, timeout);
 }
 
 /* --------------------------------------------------
@@ -738,7 +755,7 @@ async function fixContrast(item) {
   const fg = resolveFgValue(scopeEl, item.cssVarFg);
 
   if (!bg || !fg) {
-    noFixMap.value[item.id] = true;
+    triggerNoFixHint(item.id);
     updateContrastChecks();
     return;
   }
@@ -755,7 +772,7 @@ async function fixContrast(item) {
   const sourceVar = fixingBg ? bgCandidates[0] : item.fixFgCandidates && item.fixFgCandidates[0];
 
   if (!sourceVar) {
-    noFixMap.value[item.id] = true;
+    triggerNoFixHint(item.id);
     updateContrastChecks();
     return;
   }
@@ -763,7 +780,7 @@ async function fixContrast(item) {
   const startRaw = resolveCssColorFrom(scopeEl, sourceVar);
   const startComputed = resolveToComputedColor(startRaw, fixingBg ? "backgroundColor" : "color");
   if (!startComputed) {
-    noFixMap.value[item.id] = true;
+    triggerNoFixHint(item.id);
     updateContrastChecks();
     return;
   }
@@ -816,7 +833,7 @@ async function fixContrast(item) {
 
   const startRatio = fixingBg ? getContrastRatio(fg, startComputed) : getContrastRatio(startComputed, bg);
   if (bestRatio <= startRatio) {
-    noFixMap.value[item.id] = true;
+    triggerNoFixHint(item.id);
     updateContrastChecks();
     return;
   }

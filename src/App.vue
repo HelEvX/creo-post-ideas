@@ -410,6 +410,9 @@ export default {
     async onBrandPicked(payload) {
       const root = document.documentElement;
 
+      // ALWAYS reset brand-scoped classes first
+      root.classList.remove(...Array.from(root.classList).filter((c) => c.startsWith("brand--")));
+
       if (!payload) {
         root.removeAttribute("style");
 
@@ -428,6 +431,9 @@ export default {
       } else {
         slug = typeof payload === "string" ? payload : payload.slug;
       }
+
+      root.classList.remove(...Array.from(root.classList).filter((c) => c.startsWith("brand--")));
+      root.classList.add(`brand--${slug}`);
 
       const res = await fetch(`/brands/${slug}.json`);
       const data = await res.json();
@@ -679,6 +685,7 @@ p.hero-subtitle {
   background: var(--ui-section-bg);
   border-radius: var(--radius-lg);
   padding: var(--space-25);
+  height: 100%;
 }
 
 .app__main,

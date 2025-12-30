@@ -3,6 +3,7 @@
     <PostTextBlock v-if="zone === 'safe'" :quoteText="quote" :authorText="author" />
 
     <div v-else class="quote-post__decor">
+      <div class="quote-post__decor__border"></div>
       <!-- decorative only -->
       <span class="quote-post__mark quote-open"><i class="fa-solid fa-quote-left"></i></span>
       <span class="quote-post__mark quote-close"><i class="fa-solid fa-quote-right"></i></span>
@@ -27,13 +28,26 @@ defineProps({
   flex-direction: column;
   justify-content: center;
 }
+
 .quote-post__decor {
-  height: 100%;
+  height: 92%;
+  width: 92%;
+  margin: 0 auto;
 }
+
+.quote-post__decor__border {
+  height: 100%;
+  width: 100%;
+  border-radius: var(--border-radius);
+  border: 5px;
+  border-style: solid;
+  opacity: var(--pattern-opacity);
+}
+
+/* QUOTE MARKS */
 .quote-post__mark {
   position: absolute;
-  color: var(--pattern-primary);
-  opacity: 0.2;
+  opacity: var(--pattern-opacity);
   padding: var(--space-10);
 }
 .quote-post__mark i {

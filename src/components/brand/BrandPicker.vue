@@ -3,7 +3,6 @@
     <label for="brand-select">Kies een merk:</label>
     <select id="brand-select" @change="onChange">
       <option value="">(default)</option>
-      <option value="creo">Creo</option>
       <option value="groomer">Groomer</option>
       <option value="runkstervolksfeesten">Runkster Volksfeesten</option>
       <option value="ocrunkst">OCRunkst</option>

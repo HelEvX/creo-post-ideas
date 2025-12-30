@@ -311,6 +311,9 @@
   --ui-primary-bg: var(--color-primary);
   --ui-secondary-bg: var(--color-secondary);
 
+  /* mockup decorations */
+  --mockup-decor: var(--color-primary-dark);
+
   /* ------------------------------------------------------
    Borders & shadows
    ------------------------------------------------------ */
@@ -376,8 +379,14 @@
    ------------------------------------------------------ */
 
   /* PATTERNS */
-  --pattern-base: var(--ui-primary-bg);
-  --pattern-alt: color-mix(in srgb, var(--ui-primary-bg), var(--color-primary-dark) 40%);
+  /* --pattern-base: var(--ui-primary-bg);
+  --pattern-alt: color-mix(in srgb, var(--ui-primary-bg), var(--color-primary-dark) 40%); */
+  --pattern-opacity: 0.2;
+  --pattern-rotate: 0deg;
+  --tile-x: 70px; /* horizontal spacing */
+  --tile-y: 60px; /* vertical spacing */
+  --pattern-offset-x: 0px;
+  --pattern-offset-y: 0px;
 
   /* BRAND-SPECIFIC border & shadows */
   --border-radius: var(--radius-md);
@@ -685,20 +694,6 @@ textarea {
   border-radius: var(--radius-md);
   background: var(--ui-alt-section-bg);
   font-family: var(--font-body);
-}
-
-/* ======================================================
-   PATTERNS 
-   ====================================================== */
-
-.pattern--primary {
-  --pattern-base: var(--ui-primary-bg);
-  --pattern-alt: color-mix(in srgb, var(--ui-primary-bg), var(--color-primary-dark) 40%);
-}
-
-.pattern--secondary {
-  --pattern-base: var(--ui-secondary-bg);
-  --pattern-alt: color-mix(in srgb, var(--ui-secondary-bg), var(--color-secondary-light) 40%);
 }
 
 /* ======================================================

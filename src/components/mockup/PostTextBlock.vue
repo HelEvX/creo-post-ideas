@@ -23,7 +23,7 @@ defineProps({
   authorText: String,
   textAlign: {
     type: String,
-    default: "left",
+    default: "center",
   },
 });
 </script>
@@ -35,11 +35,10 @@ defineProps({
 
 .post-text-block {
   padding-bottom: clamp(0.4em, 1.5cqw, 2.5em);
-  text-align: center;
 }
 
 .post-text-block__headline {
-  font-size: var(--fs-h1);
+  font-size: var(--fs-h2);
   line-height: var(--lh-display);
   color: var(--dynamic-title);
 }
@@ -54,6 +53,7 @@ defineProps({
   font-size: var(--fs-h3);
   line-height: var(--lh-display);
   color: var(--dynamic-text);
+  padding: 0 clamp(0.4em, 1.6cqw, 1em);
 }
 
 .post-text-block__author {

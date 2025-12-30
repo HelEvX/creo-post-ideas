@@ -65,6 +65,7 @@
             :brandLogo="brandLogo"
             :usePhoto="backgroundMode === 'image'"
             :photoSrc="photoSrc"
+            :brandLogoSmall="brandLogoSmall"
             :showSafeZone="showSafeZones"
             @bg-resolved="resolvedBgColors = $event"
             @resolved-styles="resolvedStyles = $event" />
@@ -161,13 +162,20 @@ const selectedSize = ref("portrait");
 const showSafeZones = ref(false);
 const photoSrc = ref(stockImage);
 
+// WATERMARK
+
+const brandLogoSmall = computed(() => {
+  if (!props.brandTokens?.slug) return null;
+  return `/highlights/${props.brandTokens.slug}-small.svg`;
+});
+
 /* --------------------------------------------
    POST CONTENT
 --------------------------------------------- */
 const postContent = {
   info: {
-    headline: "Welkom",
-    body: "Blader door de stijlengalerij. ",
+    headline: "Welkom!",
+    body: "Blader door de stijlen en kies een formaat.",
   },
   headline: {
     headline: "Win tijd door je processen te automatiseren.",
@@ -209,7 +217,11 @@ const backgroundClass = computed(() => {
     classes.push(backgroundTone.value === "secondary" ? "bg--plain-secondary" : "bg--plain-primary");
   }
 
-  if (backgroundMode.value === "pattern") return "bg--pattern pattern-distorted-mesh";
+  // if (backgroundMode.value === "pattern") return "bg--pattern pattern-distorted-mesh";
+  if (backgroundMode.value === "pattern") {
+    classes.push("bg--pattern");
+  }
+
   if (backgroundMode.value === "logo") classes.push("bg--logo");
   if (backgroundMode.value === "image") classes.push("bg--image");
 
@@ -231,7 +243,6 @@ const mockupBgContext = computed(() => ({
    COMPUTED: Logo background URL
 --------------------------------------------- */
 const brandLogo = computed(() => {
-  if (backgroundMode.value !== "logo") return null;
   if (!props.brandTokens?.slug) return null;
   return `/highlights/${props.brandTokens.slug}.svg`;
 });

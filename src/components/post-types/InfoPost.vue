@@ -1,6 +1,6 @@
 <template>
   <div class="info-post" postType="info">
-    <PostTextBlock v-if="zone === 'safe'" :headlineText="headline" :bodyText="body" />
+    <PostTextBlock v-if="zone === 'safe'" :headlineText="headline" :bodyText="body" textAlign="center" />
 
     <div v-if="zone === 'safe'">
       <div class="info-block">
@@ -13,11 +13,11 @@
             </div>
 
             <div class="info-row info-row__title">
-              <div>Dit is 'info'</div>
+              <div>6 types</div>
             </div>
 
             <div class="info-row info-row__text">
-              <div>Kies formaten om layouts te testen.</div>
+              <div>Voorbeelden dienen als inspiratie.</div>
             </div>
           </div>
 
@@ -25,15 +25,15 @@
           <div class="info-card info-card__panel">
             <div class="info-row info-row__caption">
               <i class="fa-solid fa-link post-icon"></i>
-              <span>kleur</span>
+              <span>achtergrond</span>
             </div>
 
             <div class="info-row info-row__title">
-              <div>Gekleurd...</div>
+              <div>Kleuropties</div>
             </div>
 
             <div class="info-row info-row__text">
-              <div>of niet, en allerlei achtergronden.</div>
+              <div>Gebaseerd op je logo of een stockfoto.</div>
             </div>
           </div>
         </div>
