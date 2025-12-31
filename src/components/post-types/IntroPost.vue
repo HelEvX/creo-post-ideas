@@ -1,14 +1,14 @@
 <template>
   <div class="intro-post">
-    <PostTextBlock :headlineText="title" :bodyText="body" textAlign="left" />
+    <PostTextBlock :headlineText="headline" :bodyText="body" textAlign="left" />
   </div>
 </template>
 
 <script setup>
 import PostTextBlock from "../mockup/PostTextBlock.vue";
 
-const { title, body } = defineProps({
-  title: String,
+const { headline, body } = defineProps({
+  headline: String,
   body: String,
 });
 </script>

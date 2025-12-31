@@ -481,8 +481,8 @@ export default {
       const shadowEnabled = isTrue(data["shadow-enabled"]);
 
       // border radius (allowed to be global)
-      if (t(data["border-radius"])) {
-        root.style.setProperty("--border-radius", t(data["border-radius"]));
+      if (t(data["card-radius"])) {
+        root.style.setProperty("--card-radius", t(data["card-radius"]));
       }
 
       // mockup card border ONLY

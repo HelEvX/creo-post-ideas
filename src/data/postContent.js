@@ -1,6 +1,6 @@
 export const postContent = {
   info: {
-    headline: "Welkom!",
+    title: "Welkom!",
     body: "Blader door de stijlen en kies een formaat.",
   },
   headline: {
@@ -8,23 +8,23 @@ export const postContent = {
     subtitle: "Ontdek hoe we jouw bedrijf kunnen ondersteunen.",
   },
   intro: {
-    title: "Welkom bij Creo!",
-    body: "We bouwen digitale ervaringen die merken versterken en teams efficiënter maken.",
+    title: "Ken je ons al?",
+    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   },
   quote: {
     quote: "We zijn super tevreden met de samenwerking en het resultaat was fantastisch!",
     authorName: "Sarah De Smet",
     authorRole: "Project Manager",
-    avatar: "/src/assets/avatars/uifaces-sarah.webp",
+    avatar: "images/uifaces-sarah.webp",
   },
   product: {
-    name: "Creo Dashboard Suite",
-    description: "Een krachtige tool voor inzicht, automatisatie en workflowbeheer.",
-    image: "/src/assets/img/product-mockup.png",
-    price: "€49 / maand",
+    name: "Nieuw product!",
+    description: "Beschikbaar in verschillende formaten en kleuren vanaf januari 2026",
+    image: "images/product-mockup.png",
+    price: "€0.00",
   },
-  paragraph: {
-    title: "Over onze werkwijze",
-    body: "Ons team werkt nauw samen met klanten om digitale oplossingen te creëren die echt impact maken.",
-  },
+  // paragraph: {
+  //   title: "Even voorstellen",
+  //   body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  // },
 };

@@ -184,7 +184,7 @@ async function copyColor(hex) {
 
 p.styles__hint {
   text-align: left;
-  font-size: var(--fs-body-xs);
+  font-size: var(--fs-body-sm);
   opacity: 0.8;
   border-bottom: var(--ui-panel-border);
   margin: 0 0 var(--space-10);
@@ -289,8 +289,8 @@ p.styles__hint {
 
 .main-preview__styles__corners {
   padding: var(--space-25);
-  border: var(--border-solid-card);
-  border-radius: var(--border-radius-card);
+  border: var(--border-card);
+  border-radius: var(--card-radius);
 }
 
 .main-preview__styles__shadows {

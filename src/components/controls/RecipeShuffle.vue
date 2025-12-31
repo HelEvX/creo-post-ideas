@@ -934,7 +934,7 @@ defineExpose({ nextRecipe, prevRecipe });
 }
 
 .recipe-desc {
-  font-size: var(--fs-body-xs);
+  font-size: var(--fs-body);
   color: var(--dynamic-soft);
   opacity: 0.8;
   text-align: center;

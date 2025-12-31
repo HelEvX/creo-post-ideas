@@ -17,7 +17,7 @@ const aspectMap = {
 };
 </script>
 
-<style scoped>
+<style>
 .post-wrapper {
   position: relative;
   margin: 0 auto;
@@ -29,19 +29,47 @@ const aspectMap = {
   container-type: inline-size;
 }
 
-/* perceptual correction per format */
+/* ======================================================
+   MOCKUP TYPOGRAPHY — container-scaled
+   ====================================================== */
+
+.post-wrapper {
+  --fs-h1: calc(8rem * var(--mockup-font-compensation));
+  --fs-h2: calc(5rem * var(--mockup-font-compensation));
+  --fs-h3: calc(4.5rem * var(--mockup-font-compensation));
+  --fs-h4: calc(3.2rem * var(--mockup-font-compensation));
+  --fs-h5: calc(2.8rem * var(--mockup-font-compensation));
+  --fs-h6: calc(2rem * var(--mockup-font-compensation));
+
+  --fs-body-lg: calc(2.4rem * var(--mockup-font-compensation));
+  --fs-body: calc(2rem * var(--mockup-font-compensation));
+  --fs-body-sm: calc(1.8rem * var(--mockup-font-compensation));
+  --fs-body-xs: calc(1.6rem * var(--mockup-font-compensation));
+
+  --lh-body: 1.5;
+  --lh-heading: 1.2;
+}
+
+/* ======================================================
+   PER-FORMAT TYPO SCALE
+   ====================================================== */
+
 .size--landscape.post-wrapper {
-  --mockup-font-compensation: 1.5;
+  --mockup-font-compensation: 0.8;
 }
 .size--square.post-wrapper {
-  --mockup-font-compensation: 2.4;
+  --mockup-font-compensation: 1;
 }
 .size--portrait.post-wrapper {
-  --mockup-font-compensation: 2.4;
+  --mockup-font-compensation: 1.1;
 }
 .size--story.post-wrapper {
-  --mockup-font-compensation: 2.8;
+  --mockup-font-compensation: 1.2;
 }
+
+/* ======================================================
+   WIDTH RULES
+   ====================================================== */
 
 .size--landscape.post-wrapper {
   width: 100%;
@@ -52,9 +80,102 @@ const aspectMap = {
   width: min(100%, calc(100vh * (1080 / 1920)));
 }
 
-@media (max-width: 991px) {
-  .post-wrapper {
-    width: 100%;
-  }
+/* ======================================================
+   GENERAL STYLES
+   ====================================================== */
+
+/* --------------
+   CARD STRUCTURE
+   -------------- */
+
+.cards {
+  display: flex;
+  gap: 0.5em;
+  flex: 1;
+}
+
+.card {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--card-gap);
+  padding: var(--card-padding);
+
+  border-radius: var(--card-radius); /* client input */
+  border: var(--border-card); /* client input: border width only */
+  box-shadow: var(--shadow-card); /* client input: XY distance,  blur */
+}
+
+/* ------------
+   CARD SURFACES
+   ------------ */
+
+.panel {
+  background: var(--ui-panel-bg);
+}
+
+.alt-panel {
+  background: var(--ui-alt-panel-bg);
+}
+
+.accent {
+  background: var(--ui-accent-bg);
+}
+
+/* ---------------
+   CARD TEXT ROLES
+   --------------- */
+
+.card__caption {
+  display: flex;
+  gap: 0.25em;
+  align-items: baseline;
+
+  font-size: var(--fs-h6);
+  font-weight: var(--fw-title);
+}
+
+.card__title {
+  font-size: var(--fs-h5);
+  line-height: var(--lh-heading);
+}
+
+.card__text {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+/* ---------------
+   COLOR BINDINGS
+   --------------- */
+
+/* title */
+.panel .card__title {
+  color: var(--title-on-panel);
+}
+.alt-panel .card__title {
+  color: var(--title-on-alt-panel);
+}
+
+/* text */
+.panel .card__text {
+  color: var(--text-on-panel);
+}
+.alt-accent .card__text {
+  color: var(--text-on-alt-panel);
+}
+.accent .card__text {
+  color: var(--text-on-accent);
+}
+
+/* captions */
+.panel .card__caption {
+  color: var(--caption-on-panel);
+}
+.alt-panel .card__caption {
+  color: var(--caption-on-alt-panel);
+}
+.accent .card__caption {
+  color: var(--caption-on-accent);
 }
 </style>

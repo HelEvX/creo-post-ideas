@@ -47,13 +47,8 @@ const brandLogo = computed(() => props.config?.brandLogo ?? null);
   - tile is 3:4 (0.75)
   - scale = (4/3) / (5/4) = 16/15 ≈ 1.0667
 */
-.ig-mockup-tile :deep(.post-wrapper) {
+.ig-mockup-tile {
   transform: scale(1.067);
   transform-origin: center center;
-}
-
-.ig-mockup-tile--grid .post-bg__logo :deep(svg) {
-  transform: translate(0, 0) scale(1.1);
-  opacity: 0.25;
 }
 </style>

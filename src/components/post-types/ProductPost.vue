@@ -42,7 +42,7 @@ defineProps({
   flex-direction: column;
 
   background: var(--ui-panel-bg);
-  border-radius: var(--border-radius);
+  border-radius: var(--card-radius);
   border: var(--border-card);
   box-shadow: var(--shadow-card);
 
@@ -89,19 +89,21 @@ defineProps({
   padding: clamp(0.8em, 3.2cqw, 2em);
 }
 
-/* PRICE */
+/* PRICE TAG */
 .product-card__price {
   position: absolute;
-  top: clamp(0.6em, 2.5cqw, 1.2em);
-  right: clamp(0.6em, 2.5cqw, 1.2em);
+  top: clamp(0.2em, 1.5cqw, 0.8em);
+  right: clamp(0.2em, 1.5cqw, 0.8em);
 
-  padding: clamp(0.3em, 1.2cqw, 0.6em) clamp(0.6em, 2cqw, 1em);
+  padding: clamp(0.2em, 0.8cqw, 0.6em) clamp(0.4em, 1.5cqw, 1em);
 
   background: var(--ui-accent-bg);
   color: var(--text-on-accent);
 
-  font-size: var(--fs-body-sm);
-  font-weight: var(--fw-title);
+  font-size: var(--fs-body-xs);
+  line-height: 1;
+  font-weight: var(--fw-body);
+  letter-spacing: 0.1em;
   border-radius: 999px;
 }
 </style>

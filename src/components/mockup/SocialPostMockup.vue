@@ -498,7 +498,7 @@ onBeforeUnmount(() => {
   right: var(--safe-right);
   bottom: var(--safe-bottom);
   left: var(--safe-left);
-  padding: clamp(0.5em, 6cqw, 2em);
+  padding: clamp(0.5em, 3cqw, 1em);
 }
 
 .post-free {
@@ -603,11 +603,27 @@ onBeforeUnmount(() => {
 
 .post-bg__logo :deep(svg) {
   position: absolute;
-  top: 0;
-  left: 0;
   opacity: var(--pattern-opacity);
-  transform: translate(-25%, 15%) scale(1.2);
+  transform: translate(0, 0) scale(1);
   overflow: hidden;
+}
+
+/* logo positioning per format */
+
+.size--square .post-bg__logo :deep(svg) {
+  transform: translate(0, 0) scale(0.85);
+}
+
+.size--landscape .post-bg__logo :deep(svg) {
+  transform: translate(-5%, 8%) scale(0.65);
+}
+
+.size--portrait .post-bg__logo :deep(svg) {
+  transform: translate(-25%, 5%) scale(1.2);
+}
+
+.size--story .post-bg__logo :deep(svg) {
+  transform: translate(-20%, 0) scale(1.1);
 }
 
 /* =========================================

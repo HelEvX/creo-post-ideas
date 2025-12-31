@@ -53,7 +53,7 @@ defineProps({
   position: absolute;
   inset: 1em;
 
-  border-radius: var(--border-radius);
+  border-radius: var(--card-radius);
   border: clamp(0.6em, 2cqw, 0.65em) solid;
   opacity: var(--pattern-opacity);
   pointer-events: none;
@@ -65,7 +65,7 @@ defineProps({
   opacity: var(--pattern-opacity);
 }
 .quote-post__mark i {
-  font-size: clamp(4rem, 26cqw, 20rem);
+  font-size: clamp(6rem, 25cqw, 20rem);
   transform: translateY(-0.15em);
 
   line-height: 1;

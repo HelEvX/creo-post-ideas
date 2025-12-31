@@ -1,5 +1,9 @@
 <template>
   <div class="post-text-block" :class="`align--${align}`">
+    <div v-if="titleText" class="post-text-block__title">
+      {{ titleText }}
+    </div>
+
     <div v-if="headlineText" class="post-text-block__headline">
       {{ headlineText }}
     </div>
@@ -32,6 +36,7 @@
 
 <script setup>
 defineProps({
+  titleText: String,
   headlineText: String,
   bodyText: String,
   quoteText: String,
@@ -68,24 +73,42 @@ defineProps({
   text-align: right;
 }
 
-/* info post */
+/* BASE TEXT */
+
 .post-text-block__body {
-  font-size: var(--fs-body);
-  line-height: var(--lh-body);
+  font-size: var(--fs-body-lg);
+  line-height: var(--lh-heading);
   color: var(--dynamic-text);
+}
+
+.post-text-block__title {
+  font-size: var(--fs-h1);
+  line-height: var(--lh-display);
+  color: var(--dynamic-title);
 }
 
 .post-text-block__headline {
   font-size: var(--fs-h2);
-  line-height: var(--lh-display);
+  line-height: var(--lh-heading);
   color: var(--dynamic-title);
+}
+
+/* ============================================
+   POST TYPE STYLING
+=============================================== */
+
+/* per-format padding */
+
+.size--story .post-text-block .post-text-block__quote,
+.size--portrait .post-text-block .post-text-block__quote {
+  padding: 0 clamp(0.6em, 6.5cqw, 1em);
 }
 
 /* quote post */
 
 .post-text-block__quote {
   font-size: var(--fs-h3);
-  line-height: var(--lh-display);
+  line-height: var(--lh-heading);
   color: var(--dynamic-text);
   margin-bottom: clamp(0.8em, 3.2cqw, 2em);
 }
@@ -105,8 +128,8 @@ defineProps({
 }
 
 .post-text-block__avatar img {
-  width: 3em;
-  height: 3em;
+  width: clamp(3rem, 12cqw, 8rem);
+  height: auto;
   border-radius: 50%;
   object-fit: cover;
 }

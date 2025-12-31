@@ -49,7 +49,7 @@
 
   "border-enabled": "false",
   "border-width": "0",
-  "border-radius": "0",
+  "card-radius": "0",
 
   "shadow-enabled": "false",
   "shadow-x": "0",
