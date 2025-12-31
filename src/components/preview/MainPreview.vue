@@ -156,13 +156,16 @@ watch(
   { immediate: true }
 );
 
-// IMAGE
-
 const selectedSize = ref("portrait");
 const showSafeZones = ref(false);
+
+// IMAGE
+
 const photoSrc = ref(stockImage);
 
-// WATERMARK
+/* --------------------------------------------
+   WATERMARK
+--------------------------------------------- */
 
 const brandLogoSmall = computed(() => {
   if (!props.brandTokens?.slug) return null;
@@ -170,43 +173,12 @@ const brandLogoSmall = computed(() => {
 });
 
 /* --------------------------------------------
-   POST CONTENT
+   POST CONTENT IMPORT
 --------------------------------------------- */
-const postContent = {
-  info: {
-    headline: "Welkom!",
-    body: "Blader door de stijlen en kies een formaat.",
-  },
-  headline: {
-    headline: "Win tijd door je processen te automatiseren.",
-    subtitle: "Ontdek hoe we jouw bedrijf kunnen ondersteunen.",
-    icon: "/icons/chart-up.svg",
-  },
-  intro: {
-    title: "Welkom bij Creo!",
-    body: "We bouwen digitale ervaringen die merken versterken en teams efficiënter maken.",
-  },
-  quote: {
-    quote: "We zijn super tevreden met de samenwerking en het resultaat was fantastisch!",
-    author: "Sarah De Smet",
-    authorName: "Sarah De Smet",
-    authorRole: "Project Manager",
-    avatar: "/avatars/sarah.webp",
-  },
-  product: {
-    name: "Creo Dashboard Suite",
-    description: "Een krachtige tool voor inzicht, automatisatie en workflowbeheer.",
-    image: "/images/product-example.webp",
-    price: "€49 / maand",
-  },
-  paragraph: {
-    title: "Over onze werkwijze",
-    body: "Ons team werkt nauw samen met klanten om digitale oplossingen te creëren die echt impact maken.",
-  },
-};
+import { postContent } from "@/data/postContent";
 
 /* --------------------------------------------
-   COMPUTED: CSS background class
+   CSS background class
 --------------------------------------------- */
 const backgroundClass = computed(() => {
   const classes = [];
@@ -240,11 +212,11 @@ const mockupBgContext = computed(() => ({
 }));
 
 /* --------------------------------------------
-   COMPUTED: Logo background URL
+   LARGE LOGO BG
 --------------------------------------------- */
 const brandLogo = computed(() => {
   if (!props.brandTokens?.slug) return null;
-  return `/highlights/${props.brandTokens.slug}.svg`;
+  return `/logo-bg/${props.brandTokens.slug}.svg`;
 });
 
 /* --------------------------------------------

@@ -98,10 +98,17 @@
         </div>
       </div>
 
-      <!-- GRID -->
-      <section class="ig-grid">
+      <!-- GRID: old version with brand-color patterns -->
+      <!-- <section class="ig-grid">
         <div v-for="(img, i) in images" :key="i" class="ig-tile">
           <div class="ig-pattern" :class="img"></div>
+        </div>
+      </section> -->
+
+      <!-- GRID: using mockups -->
+      <section class="ig-grid">
+        <div v-for="(tile, i) in mockupTiles" :key="i" class="ig-tile">
+          <InstagramMockupTile :config="tile" :brandLogo="tile.brandLogo" />
         </div>
       </section>
 
@@ -112,6 +119,9 @@
 
 <script setup>
 import { computed } from "vue";
+
+import InstagramMockupTile from "@/components/InstagramMockupTile.vue";
+import stockImage from "@/assets/img/stockphoto.webp";
 
 const highlightPairs = [
   { bg: "--ui-primary-bg", fg: "--text-on-primary" },
@@ -124,6 +134,8 @@ const highlightPairs = [
 ];
 
 const props = defineProps({
+  brandTokens: Object,
+
   ig: {
     type: Object,
     default: () => ({
@@ -145,8 +157,13 @@ const props = defineProps({
   },
 
   images: { type: Array, default: () => [] },
+});
 
-  highlightFg: { type: String, default: "#d3d3d3" },
+// bg logo
+
+const clientLogoUrl = computed(() => {
+  const slug = props.brandTokens?.slug;
+  return slug ? `/logo-bg/${slug}.svg` : null;
 });
 
 // avatar
@@ -159,7 +176,7 @@ const avatarSrc = computed(() => {
 // mask-style SVG recoloring
 function highlightIconStyle(file, i) {
   if (!file) return {};
-  const url = new URL(`../../public/highlights/${file}`, import.meta.url).href;
+  const url = `/highlights/${file}`;
   return {
     WebkitMaskImage: `url(${url})`,
     maskImage: `url(${url})`,
@@ -172,6 +189,51 @@ function highlightIconStyle(file, i) {
     backgroundColor: `var(${highlightPairs[i].fg})`,
   };
 }
+
+// MOCKUP GRID
+
+const mockupTiles = computed(() => [
+  {
+    postType: "info",
+    backgroundClass: "bg--plain-neutral",
+    backgroundTone: "neutral",
+    useColoredBackground: true,
+  },
+  {
+    postType: "headline",
+    backgroundClass: "bg--image bg--plain-secondary",
+    backgroundTone: "secondary",
+    useColoredBackground: true,
+    usePhoto: true,
+    photoSrc: stockImage,
+  },
+  {
+    postType: "intro",
+    backgroundClass: "bg--logo bg--plain-primary",
+    backgroundTone: "primary",
+    useColoredBackground: true,
+    brandLogo: clientLogoUrl.value,
+  },
+  {
+    postType: "quote",
+    backgroundClass: "bg--plain-secondary",
+    backgroundTone: "secondary",
+    useColoredBackground: true,
+  },
+  {
+    postType: "product",
+    backgroundClass: "bg--pattern pattern-distorted-mesh",
+    backgroundTone: "primary",
+    useColoredBackground: false,
+  },
+  {
+    postType: "paragraph",
+    backgroundClass: "bg--logo bg--plain-neutral",
+    backgroundTone: "neutral",
+    useColoredBackground: false,
+    brandLogo: clientLogoUrl.value,
+  },
+]);
 </script>
 
 <style>
@@ -478,19 +540,6 @@ function highlightIconStyle(file, i) {
   aspect-ratio: 3 / 4;
   position: relative;
   overflow: hidden;
-}
-
-.ig-tile img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.ig-pattern {
-  width: 100%;
-  height: 100%;
 }
 
 /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */

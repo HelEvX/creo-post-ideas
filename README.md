@@ -251,7 +251,7 @@ In practice, the same derived state may be recalculated more than once during:
 This works because:
 
 - recomputation is idempotent
-- execution is deferred via `nextTick` + `requestAnimationFrame`
+- execution is deferred via `nextTick`
 - all logic reads **computed CSS**, not intermediate state
 
 ### Why This Is Acceptable (For Now)

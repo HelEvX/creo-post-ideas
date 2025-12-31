@@ -1,12 +1,18 @@
 <template>
   <div class="quote-post">
-    <PostTextBlock v-if="zone === 'safe'" :quoteText="quote" :authorText="author" />
-
+    <PostTextBlock
+      v-if="zone === 'safe'"
+      :quoteText="quote"
+      :authorName="authorName"
+      :authorRole="authorRole"
+      :avatar="avatar"
+      align="center"
+      bodyAlign="left" />
     <div v-else class="quote-post__decor">
       <div class="quote-post__decor__border"></div>
       <!-- decorative only -->
       <span class="quote-post__mark quote-open"><i class="fa-solid fa-quote-left"></i></span>
-      <span class="quote-post__mark quote-close"><i class="fa-solid fa-quote-right"></i></span>
+      <span class="quote-post__mark quote-close"><i class="fa-solid fa-quote-left"></i></span>
     </div>
   </div>
 </template>
@@ -16,7 +22,9 @@ import PostTextBlock from "../mockup/PostTextBlock.vue";
 
 defineProps({
   quote: String,
-  author: String,
+  authorName: String,
+  authorRole: String,
+  avatar: String,
   zone: { type: String, required: true },
 });
 </script>
@@ -29,37 +37,50 @@ defineProps({
   justify-content: center;
 }
 
-.quote-post__decor {
-  height: 92%;
-  width: 92%;
-  margin: 0 auto;
-}
+/* Scaling */
 
-.quote-post__decor__border {
+.quote-post__decor {
+  position: relative;
   height: 100%;
   width: 100%;
+  padding: clamp(0.8em, 4cqw, 2.5em);
+}
+
+/* Border */
+
+.quote-post__decor__border {
+  content: "";
+  position: absolute;
+  inset: 1em;
+
   border-radius: var(--border-radius);
-  border: 5px;
-  border-style: solid;
+  border: clamp(0.6em, 2cqw, 0.65em) solid;
   opacity: var(--pattern-opacity);
+  pointer-events: none;
 }
 
 /* QUOTE MARKS */
 .quote-post__mark {
   position: absolute;
   opacity: var(--pattern-opacity);
-  padding: var(--space-10);
 }
 .quote-post__mark i {
-  font-size: 15rem;
+  font-size: clamp(4rem, 26cqw, 20rem);
+  transform: translateY(-0.15em);
+
+  line-height: 1;
+  display: block;
+
+  overflow: hidden;
 }
 
 .quote-post__mark.quote-open {
-  top: 8%;
-  left: 8%;
+  top: 2em;
+  left: 2em;
 }
 .quote-post__mark.quote-close {
-  bottom: 8%;
-  right: 8%;
+  bottom: 2em;
+  right: 2em;
+  transform: rotate(180deg);
 }
 </style>

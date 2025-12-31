@@ -336,18 +336,11 @@ function resolveScopedThenRoot(scopeEl, value) {
   return resolveCssColor(value);
 }
 
-function raf() {
-  return new Promise((resolve) => requestAnimationFrame(resolve));
-}
-
 async function scheduleContrastUpdate() {
   if (scheduleContrastUpdate._pending) return;
   scheduleContrastUpdate._pending = true;
 
   await nextTick();
-  await raf();
-  await raf();
-
   updateContrastChecks();
 
   scheduleContrastUpdate._pending = false;

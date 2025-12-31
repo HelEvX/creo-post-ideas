@@ -1,6 +1,6 @@
 <template>
   <div class="info-post" postType="info">
-    <PostTextBlock v-if="zone === 'safe'" :headlineText="headline" :bodyText="body" textAlign="center" />
+    <PostTextBlock v-if="zone === 'safe'" :headlineText="headline" :bodyText="body" align="center" bodyAlign="left" />
 
     <div v-if="zone === 'safe'">
       <div class="info-block">
@@ -70,8 +70,10 @@ const { headline, body } = defineProps({
    ======================================================= */
 
 .info-post {
+  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
 }
 
 .info-block {
@@ -89,20 +91,18 @@ const { headline, body } = defineProps({
 
 .info-cards {
   display: flex;
-  justify-content: space-between;
-  flex: 1;
+  gap: clamp(0.4em, 1.6cqw, 1em);
 }
 
 .info-card {
-  flex: 0 1 48%;
-  padding: clamp(0.4em, 1.4cqw, 1em) clamp(0.6em, 1.8cqw, 1.6em);
+  padding: clamp(0.4em, 1.4cqw, 1em);
   border-radius: var(--border-radius); /* client input */
   border: var(--border-card); /* client input: border width only */
   box-shadow: var(--shadow-card); /* client input: XY distance,  blur */
 }
 
 .info-row__caption {
-  font-size: var(--fs-body);
+  font-size: var(--fs-h6);
   font-weight: var(--fw-title);
   align-items: baseline;
 }
@@ -169,8 +169,8 @@ const { headline, body } = defineProps({
 
 .info-accent__caption {
   display: flex;
-  gap: clamp(0.4em, 1.6cqw, 1em);
-  font-size: var(--fs-body);
+  gap: clamp(0.2em, 0.8cqw, 0.5em);
+  font-size: var(--fs-h6);
   font-weight: var(--fw-title);
   align-items: baseline;
   color: var(--caption-on-accent);
@@ -182,8 +182,7 @@ const { headline, body } = defineProps({
 
 .info-row {
   display: flex;
-  gap: clamp(0.4em, 1.6cqw, 1em);
-  /* padding-bottom: clamp(0.25em, 0.9cqw, 0.5em); */
+  gap: clamp(0.2em, 0.8cqw, 0.5em);
 }
 
 /* typography */
@@ -199,7 +198,6 @@ const { headline, body } = defineProps({
 
 /* icon */
 .post-icon {
-  font-size: var(--fs-body-sm);
-  padding: clamp(0.25em, 0.9cqw, 0.5em) 0;
+  font-size: var(--fs-h6);
 }
 </style>

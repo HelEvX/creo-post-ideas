@@ -5,11 +5,7 @@
         <!-- plain color layer -->
         <div class="post-bg__color"></div>
 
-        <!-- pattern layer 'mesh'-->
-        <!-- <div class="post-bg__pattern" :class="[patternClass, patternToneClass]"></div> -->
-
         <!-- logo pattern layer -->
-        <!-- pattern layer -->
         <div v-if="backgroundClass?.includes('bg--pattern')" class="post-bg__pattern" :style="logoPatternStyle"></div>
 
         <!-- large logo layer -->
@@ -100,7 +96,16 @@ watch(
       rawSvg.value = null;
       return;
     }
-    rawSvg.value = await fetch(url).then((r) => r.text());
+
+    const resolved = new URL(url, window.location.origin).href;
+    const res = await fetch(resolved);
+
+    if (!res.ok) {
+      rawSvg.value = null;
+      return;
+    }
+
+    rawSvg.value = await res.text();
   },
   { immediate: true }
 );
@@ -118,23 +123,6 @@ watch(
 //     .replace(/fill="[^"]*"/g, `fill="${color}"`);
 // });
 
-/* ----------------------------------------------
-   PATTERN CLASSES
----------------------------------------------- */
-
-// const patternClass = computed(() => {
-//   if (!props.backgroundClass) return "";
-//   return props.backgroundClass
-//     .split(" ")
-//     .filter((cls) => cls.startsWith("pattern-"))
-//     .join(" ");
-// });
-
-// const patternToneClass = computed(() => {
-//   if (!props.backgroundClass?.includes("pattern-")) return "";
-//   return props.backgroundTone === "secondary" ? "pattern--secondary" : "pattern--primary";
-// });
-
 const logoPatternStyle = computed(() => {
   if (!rawSvg.value) return null;
 
@@ -144,6 +132,8 @@ const logoPatternStyle = computed(() => {
     "--logo-pattern-svg": `url("data:image/svg+xml,${encoded}")`,
   };
 });
+
+console.log("brandLogo:", props.brandLogo);
 
 /* ----------------------------------------------
    TEXT COLORS (LOCAL)
@@ -508,7 +498,7 @@ onBeforeUnmount(() => {
   right: var(--safe-right);
   bottom: var(--safe-bottom);
   left: var(--safe-left);
-  transform: scale(0.95); /* create 'padding'*/
+  padding: clamp(0.5em, 6cqw, 2em);
 }
 
 .post-free {
@@ -525,11 +515,11 @@ onBeforeUnmount(() => {
 
 .post-watermark {
   position: absolute;
-  right: clamp(1rem, 3vw, 2.5rem);
-  bottom: clamp(1rem, 3vw, 2.5rem);
+  right: clamp(1rem, 4cqw, 2.5rem);
+  bottom: clamp(0.5rem, 4cqw, 2.5rem);
 
-  width: clamp(2.5rem, 6vw, 4.5rem);
-  height: clamp(2.5rem, 6vw, 4.5rem);
+  width: clamp(2.5rem, 10cqw, 6rem);
+  height: clamp(2.5rem, 10cqw, 6rem);
 
   opacity: 0.5;
 
@@ -582,7 +572,7 @@ onBeforeUnmount(() => {
 }
 
 .bg--plain-neutral {
-  --mockup-decor: var(--color-panel);
+  --mockup-decor: var(--color-background);
 }
 
 /* ===============================================
@@ -629,6 +619,8 @@ onBeforeUnmount(() => {
   position: absolute;
   inset: 0;
   overflow: visible;
+
+  opacity: var(--pattern-opacity);
 }
 
 .post-bg__pattern::before,
@@ -653,10 +645,8 @@ onBeforeUnmount(() => {
   mask-size: var(--tile-x) var(--tile-y);
   -webkit-mask-size: var(--tile-x) var(--tile-y);
 
-  transform: rotate(var(--pattern-rotate));
-  transform-origin: center;
-
-  opacity: var(--pattern-opacity);
+  /* transform: rotate(var(--pattern-rotate));
+  transform-origin: center; */
 }
 
 /* default: no offset */
@@ -669,6 +659,7 @@ onBeforeUnmount(() => {
 */
 
 .brand--groomer .post-bg__pattern {
+  --pattern-opacity: 0.65;
   --tile-x: 70px;
   --tile-y: 150px;
   --pattern-offset-x: calc(var(--tile-x) / 2);
@@ -676,14 +667,15 @@ onBeforeUnmount(() => {
 }
 
 .brand--runkstervolksfeesten .post-bg__pattern {
+  --pattern-opacity: 0.55;
   --tile-x: 70px;
   --tile-y: 170px;
   --pattern-offset-x: calc(var(--tile-x) / 2);
   --pattern-offset-y: calc(var(--tile-y) / 2);
-  transform: rotate(-12deg);
 }
 
 .brand--ocrunkst .post-bg__pattern {
+  --pattern-opacity: 0.35;
   --tile-x: 155px;
   --tile-y: 125px;
   --pattern-offset-x: calc(var(--tile-x) / 2);
@@ -691,6 +683,7 @@ onBeforeUnmount(() => {
 }
 
 .brand--wijkraadrunkst .post-bg__pattern {
+  --pattern-opacity: 0.35;
   --tile-x: 230px;
   --tile-y: 130px;
   --pattern-offset-x: calc(var(--tile-x) / 2);
@@ -698,6 +691,7 @@ onBeforeUnmount(() => {
 }
 
 .brand--steviala .post-bg__pattern {
+  --pattern-opacity: 0.25;
   --tile-x: 190px;
   --tile-y: 90px;
   --pattern-offset-x: calc(var(--tile-x) / 2);
@@ -705,6 +699,7 @@ onBeforeUnmount(() => {
 }
 
 .brand--kenis .post-bg__pattern {
+  --pattern-opacity: 0.25;
   --tile-x: 170px;
   --tile-y: 95px;
   --pattern-offset-x: calc(var(--tile-x) / 2);
@@ -712,14 +707,15 @@ onBeforeUnmount(() => {
 }
 
 .brand--tropical .post-bg__pattern {
+  --pattern-opacity: 1;
   --tile-x: 150px;
   --tile-y: 65px;
   --pattern-offset-x: calc(var(--tile-x) / 2);
   --pattern-offset-y: calc(var(--tile-y) / 2);
-  transform: rotate(-12deg);
 }
 
 .brand--cardgameshop .post-bg__pattern {
+  --pattern-opacity: 0.2;
   --tile-x: 190px;
   --tile-y: 75px;
   --pattern-offset-x: calc(var(--tile-x) / 2);
@@ -727,11 +723,13 @@ onBeforeUnmount(() => {
 }
 
 .brand--blooloc .post-bg__pattern {
+  --pattern-opacity: 0.05;
   --tile-x: 80px;
   --tile-y: 85px;
 }
 
 .brand--glaede .post-bg__pattern {
+  --pattern-opacity: 0.3;
   --tile-x: 40px;
   --tile-y: 85px;
   --pattern-offset-x: calc(var(--tile-x) / 2);
@@ -739,9 +737,10 @@ onBeforeUnmount(() => {
 }
 
 .brand--ellevation .post-bg__pattern {
+  --pattern-opacity: 0.5;
   --tile-x: 40px;
   --tile-y: 85px;
-  --pattern-offset-x: calc(var(--tile-x) * 0.33);
+  --pattern-offset-x: calc(var(--tile-x) * 0.25);
   --pattern-offset-y: calc(var(--tile-y) / 2);
 }
 

@@ -4,7 +4,7 @@
       <img :src="icon" alt="" />
     </div>
 
-    <PostTextBlock v-if="zone === 'safe'" :headlineText="headline" :bodyText="subtitle" textAlign="left" />
+    <PostTextBlock v-if="zone === 'safe'" :headlineText="headline" :bodyText="subtitle" align="left" />
     <div v-else class="quote-post__decor">
       <div class="corner-shape square corner-shape--bl"></div>
       <div class="corner-shape rect corner-shape--br"></div>
@@ -34,7 +34,7 @@ defineProps({
 .corner-shape {
   position: absolute;
   background: currentColor;
-  opacity: 0.2;
+  opacity: var(--pattern-opacity);
 }
 
 .corner-shape.square {

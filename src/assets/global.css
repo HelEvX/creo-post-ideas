@@ -231,7 +231,7 @@
    - No pixel scaling
 ------------------------------------------------------ */
 
-  /* Square (1:1 → grid crops the sides to 4:5 then 4:3) */
+  /* Square (1:1 → grid crops the sides to 4:5 then 3:4) */
   --safe-square-left: 12.5%;
   --safe-square-right: 12.5%;
   --safe-square-top: 0;
@@ -242,7 +242,7 @@
   --safe-square-top-enabled: 0;
   --safe-square-bottom-enabled: 0;
 
-  /* Portrait (1080×1350 → grid crops to 4:5 then 4:3) */
+  /* Portrait (1080×1350 → grid crops to 4:5 then 3:4) */
   --safe-portrait-left: 3.148%;
   --safe-portrait-right: 3.148%;
   --safe-portrait-top: 0;
@@ -253,7 +253,7 @@
   --safe-portrait-top-enabled: 0;
   --safe-portrait-bottom-enabled: 0;
 
-  /* Landscape (1080 × 566 → cropped to 4:3 in grid) */
+  /* Landscape (1080 × 566 → cropped to 3:4 in grid) */
   --safe-landscape-left: 28.888%;
   --safe-landscape-right: 28.888%;
   --safe-landscape-top: 0;
@@ -264,7 +264,7 @@
   --safe-landscape-top-enabled: 0;
   --safe-landscape-bottom-enabled: 0;
 
-  /* Story → Reel (1080 x 1920 → cropped to 4:3 in grid) */
+  /* Story → Reel (1080 x 1920 → cropped to 3:4 in grid) */
   --safe-story-top: 12.5%;
   --safe-story-bottom: 12.5%;
   --safe-story-left: 0;
@@ -379,12 +379,15 @@
    ------------------------------------------------------ */
 
   /* PATTERNS */
-  /* --pattern-base: var(--ui-primary-bg);
-  --pattern-alt: color-mix(in srgb, var(--ui-primary-bg), var(--color-primary-dark) 40%); */
-  --pattern-opacity: 0.2;
+  /* OLD
+  --pattern-base: var(--ui-primary-bg);
+  --pattern-alt: color-mix(in srgb, var(--ui-primary-bg), var(--color-primary-dark) 40%); 
+  */
+
+  --pattern-opacity: 0.4;
   --pattern-rotate: 0deg;
-  --tile-x: 70px; /* horizontal spacing */
-  --tile-y: 60px; /* vertical spacing */
+  --tile-x: 65px; /* horizontal spacing */
+  --tile-y: 55px; /* vertical spacing */
   --pattern-offset-x: 0px;
   --pattern-offset-y: 0px;
 
@@ -1054,10 +1057,14 @@ textarea {
   --fs-h2: calc(clamp(2.2cqw, 4cqw, 4rem) * var(--mockup-font-compensation));
   --fs-h3: calc(clamp(1.8cqw, 3cqw, 3rem) * var(--mockup-font-compensation));
   --fs-h4: calc(clamp(1.4cqw, 2.4cqw, 2.4rem) * var(--mockup-font-compensation));
-  --fs-h5: calc(clamp(1.2cqw, 2cqw, 2rem) * var(--mockup-font-compensation));
+  --fs-h5: calc(clamp(1cqw, 1.8cqw, 1.8rem) * var(--mockup-font-compensation));
+  --fs-h6: calc(clamp(0.8cqw, 1.4cqw, 1.6rem) * var(--mockup-font-compensation));
 
   --fs-body-lg: calc(clamp(1.2cqw, 1.8cqw, 1.8rem) * var(--mockup-font-compensation));
   --fs-body: calc(clamp(1.1cqw, 1.6cqw, 1.6rem) * var(--mockup-font-compensation));
   --fs-body-sm: calc(clamp(1cqw, 1.5cqw, 1.5rem) * var(--mockup-font-compensation));
   --fs-body-xs: calc(clamp(0.9cqw, 1.3cqw, 1.3rem) * var(--mockup-font-compensation));
+
+  --lh-body: calc(clamp(1.2cqw, 2cqw, 2rem) * var(--mockup-font-compensation));
+  --lh-heading: calc(clamp(1.8cqw, 3.4cqw, 3.6rem) * var(--mockup-font-compensation));
 }

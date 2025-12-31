@@ -106,7 +106,11 @@
         </div> -->
         <div class="row">
           <div class="col-12 section-gallery__grid">
-            <InstagramGrid v-if="brandTokens && brandTokens.ig" :ig="brandTokens.ig" :images="galleryImages" />
+            <InstagramGrid
+              v-if="brandTokens && brandTokens.ig"
+              :brandTokens="brandTokens"
+              :ig="brandTokens.ig"
+              :images="galleryImages" />
           </div>
         </div>
         <div class="row text-block-900 center">
@@ -166,8 +170,8 @@ import { buildBrandScales } from "./utils/colorBlender.js";
 import { getTextModeForBackground } from "./utils/colorLogic.js";
 
 const demoImages = [
-  "pattern-geometric-flowers",
   "pattern-distorted-mesh",
+  "pattern-geometric-flowers",
   "pattern-rhombus-stripes",
   "pattern-nested-diamond",
   "pattern-wavy",
@@ -258,9 +262,7 @@ export default {
     ---------------------------------------------- */
     scheduleDynamicTextUpdate() {
       this.$nextTick(() => {
-        requestAnimationFrame(() => {
-          this.updateDynamicTextRoles();
-        });
+        this.updateDynamicTextRoles();
       });
     },
 

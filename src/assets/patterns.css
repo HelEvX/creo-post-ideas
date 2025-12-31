@@ -2,23 +2,7 @@
    CSSPATTERNS.COM PATTERNS
 ------------------------------------------------------------ */
 
-/* 1. GEOMETRIC FLOWERS
-   Source: https://css-pattern.com/geometric-flowers/ */
-
-.pattern-geometric-flowers {
-  --s: 64px; /* control the size*/
-  --c1: var(--color-primary);
-  --c2: var(--color-primary-dark);
-  --c3: var(--color-secondary);
-  --c4: var(--color-surface);
-
-  background: radial-gradient(var(--c1) 24%, #0000 25%),
-    radial-gradient(var(--c2) 30%, #0000 32%) calc(var(--s) / 2) calc(var(--s) / 2),
-    repeating-conic-gradient(from 30deg, var(--c3) 0 30deg, var(--c4) 0 25%);
-  background-size: var(--s) var(--s);
-}
-
-/* 2. DISTORTED MESH
+/* 1. DISTORTED MESH
    Source: https://css-pattern.com/distorted-mesh/ */
 
 .pattern-distorted-mesh {
@@ -34,12 +18,28 @@
   background-size: calc(var(--s) / 4.667) var(--s), var(--s) calc(var(--s) / 4.667);
 }
 
+/* 2. GEOMETRIC FLOWERS
+   Source: https://css-pattern.com/geometric-flowers/ */
+
+.pattern-geometric-flowers {
+  --s: 64px; /* control the size*/
+  --c1: var(--color-primary-darker);
+  --c2: var(--color-primary-dark);
+  --c3: var(--color-primary-light);
+  --c4: var(--color-primary);
+
+  background: radial-gradient(var(--c1) 24%, #0000 25%),
+    radial-gradient(var(--c2) 30%, #0000 32%) calc(var(--s) / 2) calc(var(--s) / 2),
+    repeating-conic-gradient(from 30deg, var(--c3) 0 30deg, var(--c4) 0 25%);
+  background-size: var(--s) var(--s);
+}
+
 /* 3. RHOMBUS & STRIPES
    Source: https://css-pattern.com/rhombus-stripes/*/
 .pattern-rhombus-stripes {
   --s: 64px; /* control the size*/
   --c1: var(--color-primary);
-  --c2: var(--color-secondary);
+  --c2: var(--color-primary-dark);
 
   background: conic-gradient(from -45deg, var(--c1) 90deg, #0000 0 180deg, var(--c2) 0 270deg, #0000 0) 0
       calc(var(--s) / 2) / var(--s) var(--s),
@@ -50,9 +50,9 @@
    Source: https://css-pattern.com/nested-diamond/ */
 .pattern-nested-diamond {
   --s: 100px; /* control the size*/
-  --c1: var(--color-primary);
-  --c2: var(--color-secondary);
-  --c3: var(--color-surface);
+  --c1: var(--color-primary-dark);
+  --c2: var(--color-primary-light);
+  --c3: var(--color-primary);
 
   --_g: #0000, var(--c1) 1deg 30deg, var(--c2) 31deg 89deg, var(--c1) 90deg 119deg, #0000 120deg;
   background: conic-gradient(from -60deg at 50% 28.86%, var(--_g)), conic-gradient(from 30deg at 71.14% 50%, var(--_g)),
@@ -78,8 +78,8 @@
    Source: https://css-pattern.com/folded-zig-zag/ */
 .pattern-folded-zigzag {
   --s: 84px; /* control the size*/
-  --c1: var(--color-surface);
-  --c2: var(--color-secondary-dark);
+  --c1: var(--color-primary);
+  --c2: var(--color-primary-lighter);
   --c3: var(--color-primary-dark);
 
   --a: from -30deg at;

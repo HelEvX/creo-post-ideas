@@ -1,16 +1,31 @@
 <template>
-  <div class="post-text-block">
-    <div class="post-text-block__headline">
+  <div class="post-text-block" :class="`align--${align}`">
+    <div v-if="headlineText" class="post-text-block__headline">
       {{ headlineText }}
     </div>
-    <div class="post-text-block__body">
+
+    <div v-if="bodyText" class="post-text-block__body" :class="bodyAlign && `align--${bodyAlign}`">
       {{ bodyText }}
     </div>
-    <div class="post-text-block__quote">
+
+    <div v-if="quoteText" class="post-text-block__quote">
       {{ quoteText }}
     </div>
-    <div class="post-text-block__author">
-      {{ authorText }}
+
+    <div v-if="authorName" class="post-text-block__author">
+      <div v-if="avatar" class="post-text-block__avatar">
+        <img :src="avatar" alt="" />
+      </div>
+
+      <div class="post-text-block__author-text" :class="bodyAlign && `align--${bodyAlign}`">
+        <div class="post-text-block__author-name">
+          {{ authorName }}
+        </div>
+
+        <div v-if="authorRole" class="post-text-block__author-role">
+          {{ authorRole }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -20,11 +35,17 @@ defineProps({
   headlineText: String,
   bodyText: String,
   quoteText: String,
-  authorText: String,
-  textAlign: {
+
+  authorName: String,
+  authorRole: String,
+  avatar: String,
+
+  align: {
     type: String,
     default: "center",
   },
+
+  bodyAlign: String,
 });
 </script>
 
@@ -33,8 +54,25 @@ defineProps({
    BASE AUTO-LAYOUT (applies to all ratios)
 =============================================== */
 
-.post-text-block {
-  padding-bottom: clamp(0.4em, 1.5cqw, 2.5em);
+/* alignments */
+
+.align--center {
+  text-align: center;
+}
+
+.align--left {
+  text-align: left;
+}
+
+.align--right {
+  text-align: right;
+}
+
+/* info post */
+.post-text-block__body {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--dynamic-text);
 }
 
 .post-text-block__headline {
@@ -43,22 +81,53 @@ defineProps({
   color: var(--dynamic-title);
 }
 
-.post-text-block__body {
-  font-size: var(--fs-body);
-  line-height: var(--lh-body);
-  color: var(--dynamic-text);
-}
+/* quote post */
 
 .post-text-block__quote {
   font-size: var(--fs-h3);
   line-height: var(--lh-display);
   color: var(--dynamic-text);
-  padding: 0 clamp(0.4em, 1.6cqw, 1em);
+  margin-bottom: clamp(0.8em, 3.2cqw, 2em);
 }
 
 .post-text-block__author {
+  margin-top: clamp(0.6em, 2.5cqw, 1.6em);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.4em, 1.5cqw, 0.8em);
+}
+
+.post-text-block__avatar {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.post-text-block__avatar img {
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.post-text-block__author-name {
   font-size: var(--fs-body);
-  line-height: var(--lh-heading);
+  line-height: 1;
   color: var(--dynamic-title);
 }
+
+.post-text-block__author-role {
+  font-size: var(--fs-body-xs);
+  line-height: var(--lh-body);
+  color: var(--dynamic-soft);
+}
+
+/* headline post */
+
+/* paragraph post */
+
+/* intro post */
+
+/* product post */
 </style>

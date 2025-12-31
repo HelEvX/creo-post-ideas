@@ -62,7 +62,7 @@ const currentPostComponent = computed(() => {
 const emit = defineEmits(["bg-resolved", "resolved-styles"]);
 
 /* -------------------------------------------------
-   PATTERN COLOR MAP
+   PATTERN COLOR MAP (old grid version)
 --------------------------------------------------- */
 
 const patternColorMap = {
@@ -71,18 +71,30 @@ const patternColorMap = {
     secondary: ["--color-secondary", "--color-secondary-dark"],
   },
   "pattern-geometric-flowers": {
-    primary: ["--color-primary", "--color-primary-light"],
-    secondary: ["--color-secondary", "--color-secondary-light"],
+    primary: ["--color-primary-darker", "--color-primary-dark", "--color-primary-light", "--color-primary"],
+    secondary: ["--color-secondary-darker", "--color-secondary-dark", "--color-secondary-light", "--color-secondary"],
   },
-  "pattern-nested-diamond": {
+  "pattern-rhombus-stripes": {
     primary: ["--color-primary", "--color-primary-dark"],
     secondary: ["--color-secondary", "--color-secondary-dark"],
   },
+  "pattern-nested-diamond": {
+    primary: ["--color-primary-dark", "--color-primary-light", "--color-primary"],
+    secondary: ["--color-secondary-dark", "--color-secondary-light", "--color-secondary"],
+  },
   "pattern-wavy": {
-    primary: ["--color-primary", "--color-primary-light"],
-    secondary: ["--color-secondary", "--color-secondary-light"],
+    primary: ["--color-primary-light", "--color-primary-dark"],
+    secondary: ["--color-secondary-light", "--color-secondary-dark"],
+  },
+  "pattern-folded-zigzag": {
+    primary: ["--color-primary", "--color-primary-lighter", "--color-primary-dark"],
+    secondary: ["--color-secondary", "--color-secondary-lighter", "--color-secondary-dark"],
   },
 };
+
+/* -------------------------------------------------
+   BACKGROUND COLOR
+--------------------------------------------------- */
 
 const NEUTRAL_BG_VAR = "--ui-alt-section-bg";
 
