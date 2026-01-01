@@ -397,8 +397,8 @@
   --shadow-card: none;
 
   /* Paddings & gaps */
-  --card-padding: clamp(1rem, 3cqw, 2rem);
-  --card-gap: 0.25em;
+  --card-padding: 2cqw;
+  --card-gap: 1cqw;
 }
 
 /* ------------------------------------------------------

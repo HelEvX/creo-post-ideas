@@ -160,7 +160,7 @@ const watermarkStyle = computed(() => {
     maskPosition: "center",
     WebkitMaskSize: "contain",
     maskSize: "contain",
-    backgroundColor: "var(--dynamic-title)",
+    backgroundColor: "var(--white)",
   };
 });
 
@@ -333,7 +333,6 @@ const resolvedVisualContext = computed(() => {
 
     decoration: {
       decor: decorHex, // borders, icons, shapes, pattern, large logo
-      watermark: resolveHex("--dynamic-title"),
     },
 
     surfaces: {
@@ -498,7 +497,15 @@ onBeforeUnmount(() => {
   right: var(--safe-right);
   bottom: var(--safe-bottom);
   left: var(--safe-left);
-  padding: clamp(0.5em, 3cqw, 1em);
+  padding: var(--card-padding);
+}
+
+.size--landscape .post-safe {
+  padding: 1cqw;
+}
+
+.size--square .post-safe {
+  padding: 1.5cqw;
 }
 
 .post-free {
@@ -515,13 +522,15 @@ onBeforeUnmount(() => {
 
 .post-watermark {
   position: absolute;
-  right: clamp(1rem, 4cqw, 2.5rem);
-  bottom: clamp(0.5rem, 4cqw, 2.5rem);
+  right: 4cqw;
+  bottom: 4cqw;
 
-  width: clamp(2.5rem, 10cqw, 6rem);
-  height: clamp(2.5rem, 10cqw, 6rem);
+  width: 10cqw;
+  height: 10cqw;
 
-  opacity: 0.5;
+  opacity: 0.6;
+
+  mix-blend-mode: difference;
 
   pointer-events: none;
 }

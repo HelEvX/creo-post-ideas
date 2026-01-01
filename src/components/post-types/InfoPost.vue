@@ -1,6 +1,6 @@
 <template>
   <div class="info-post" postType="info">
-    <PostTextBlock v-if="zone === 'safe'" :titleText="title" :bodyText="body" align="center" bodyAlign="left" />
+    <PostTextBlock v-if="zone === 'safe'" :titleText="title" :bodyText="body" textAlign="center" bodyAlign="left" />
 
     <div v-if="zone === 'safe'" class="info-block">
       <div class="cards">
@@ -12,11 +12,11 @@
           </div>
 
           <div class="card__title">
-            <div>6 types</div>
+            <div>6 soorten</div>
           </div>
 
           <div class="card__text">
-            <div>Voorbeelden dienen als inspiratie.</div>
+            <div>als inspiratie voor je posts.</div>
           </div>
         </div>
 
@@ -28,11 +28,11 @@
           </div>
 
           <div class="card__title">
-            <div>Kleuropties</div>
+            <div>je merkkleuren</div>
           </div>
 
           <div class="card__text">
-            <div>Gebaseerd op je logo of een stockfoto.</div>
+            <div>voeg logo, patroon of afbeelding toe.</div>
           </div>
         </div>
       </div>
@@ -41,11 +41,14 @@
       <div class="card accent">
         <div class="accent card__caption">
           <i class="fa-solid fa-link post-icon"></i>
-          <span>Check het contrast</span>
+          <span>Kies een kleurcombinatie</span>
         </div>
 
         <div class="accent card__text">
-          <div>Je vindt een stijloverzicht rechts of onderaan. Kopieer met één klik!</div>
+          <div>
+            Verbeter het contrast indien nodig, zodat alles leesbaar is. Kopieer de kleuren uit de selectie met één
+            klik!
+          </div>
         </div>
       </div>
     </div>
@@ -80,7 +83,13 @@ const { title, body } = defineProps({
   flex-wrap: wrap;
   height: 100%;
   flex: 1;
-  gap: 0.5em;
-  margin-top: clamp(0.6em, 2cqw, 0.8em);
+  gap: var(--card-gap);
+  margin-top: 2cqw;
+}
+
+/* format-specific adjustments */
+
+.size--landscape .info-block {
+  gap: 0.8cqw;
 }
 </style>

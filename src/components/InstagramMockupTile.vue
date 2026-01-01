@@ -39,16 +39,14 @@ const brandLogo = computed(() => props.config?.brandLogo ?? null);
   display: flex;
   align-items: center;
   justify-content: center;
-}
 
-/*
+  /*
   Instagram-style COVER crop:
   - mockup is 4:5 (0.8)
   - tile is 3:4 (0.75)
   - scale = (4/3) / (5/4) = 16/15 ≈ 1.0667
 */
-.ig-mockup-tile {
+
   transform: scale(1.067);
-  transform-origin: center center;
 }
 </style>

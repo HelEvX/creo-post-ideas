@@ -34,17 +34,17 @@ const aspectMap = {
    ====================================================== */
 
 .post-wrapper {
-  --fs-h1: calc(8rem * var(--mockup-font-compensation));
-  --fs-h2: calc(5rem * var(--mockup-font-compensation));
-  --fs-h3: calc(4.5rem * var(--mockup-font-compensation));
-  --fs-h4: calc(3.2rem * var(--mockup-font-compensation));
-  --fs-h5: calc(2.8rem * var(--mockup-font-compensation));
-  --fs-h6: calc(2rem * var(--mockup-font-compensation));
+  --fs-h1: calc(10cqw * var(--mockup-font-compensation));
+  --fs-h2: calc(7.5cqw * var(--mockup-font-compensation));
+  --fs-h3: calc(6.5cqw * var(--mockup-font-compensation));
+  --fs-h4: calc(5cqw * var(--mockup-font-compensation));
+  --fs-h5: calc(4cqw * var(--mockup-font-compensation));
+  --fs-h6: calc(3cqw * var(--mockup-font-compensation));
 
-  --fs-body-lg: calc(2.4rem * var(--mockup-font-compensation));
-  --fs-body: calc(2rem * var(--mockup-font-compensation));
-  --fs-body-sm: calc(1.8rem * var(--mockup-font-compensation));
-  --fs-body-xs: calc(1.6rem * var(--mockup-font-compensation));
+  --fs-body-lg: calc(4cqw * var(--mockup-font-compensation));
+  --fs-body: calc(3.5cqw * var(--mockup-font-compensation));
+  --fs-body-sm: calc(2.8cqw * var(--mockup-font-compensation));
+  --fs-body-xs: calc(2cqw * var(--mockup-font-compensation));
 
   --lh-body: 1.5;
   --lh-heading: 1.2;
@@ -55,7 +55,7 @@ const aspectMap = {
    ====================================================== */
 
 .size--landscape.post-wrapper {
-  --mockup-font-compensation: 0.8;
+  --mockup-font-compensation: 0.6;
 }
 .size--square.post-wrapper {
   --mockup-font-compensation: 1;
@@ -90,7 +90,7 @@ const aspectMap = {
 
 .cards {
   display: flex;
-  gap: 0.5em;
+  gap: var(--card-gap);
   flex: 1;
 }
 
@@ -104,6 +104,22 @@ const aspectMap = {
   border-radius: var(--card-radius); /* client input */
   border: var(--border-card); /* client input: border width only */
   box-shadow: var(--shadow-card); /* client input: XY distance,  blur */
+}
+
+/* padding adjustments */
+
+.size--landscape .cards {
+  gap: 0.8cqw;
+}
+
+.size--landscape .card {
+  padding: 1cqw;
+  gap: 0.5cqw;
+}
+
+.size--square .card {
+  padding: 1.5cqw;
+  gap: 0.5cqw;
 }
 
 /* ------------
@@ -137,6 +153,7 @@ const aspectMap = {
 
 .card__title {
   font-size: var(--fs-h5);
+  font-weight: var(--fw-title);
   line-height: var(--lh-heading);
 }
 

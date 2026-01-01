@@ -6,7 +6,7 @@
       :authorName="authorName"
       :authorRole="authorRole"
       :avatar="avatar"
-      align="center"
+      textAlign="center"
       bodyAlign="left" />
     <div v-else class="quote-post__decor">
       <div class="quote-post__decor__border"></div>
@@ -43,7 +43,7 @@ defineProps({
   position: relative;
   height: 100%;
   width: 100%;
-  padding: clamp(0.8em, 4cqw, 2.5em);
+  padding: 4cqw;
 }
 
 /* Border */
@@ -51,10 +51,10 @@ defineProps({
 .quote-post__decor__border {
   content: "";
   position: absolute;
-  inset: 1em;
+  inset: 3cqw;
 
   border-radius: var(--card-radius);
-  border: clamp(0.6em, 2cqw, 0.65em) solid;
+  border: 2cqw solid;
   opacity: var(--pattern-opacity);
   pointer-events: none;
 }
@@ -65,22 +65,21 @@ defineProps({
   opacity: var(--pattern-opacity);
 }
 .quote-post__mark i {
-  font-size: clamp(6rem, 25cqw, 20rem);
-  transform: translateY(-0.15em);
+  font-size: 25cqw;
+  transform: translateY(-5cqw);
 
   line-height: 1;
   display: block;
-
   overflow: hidden;
 }
 
 .quote-post__mark.quote-open {
-  top: 2em;
-  left: 2em;
+  top: 8cqw;
+  left: 8cqw;
 }
 .quote-post__mark.quote-close {
-  bottom: 2em;
-  right: 2em;
+  bottom: 8cqw;
+  right: 8cqw;
   transform: rotate(180deg);
 }
 </style>

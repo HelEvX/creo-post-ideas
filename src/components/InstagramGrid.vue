@@ -191,13 +191,14 @@ function highlightIconStyle(file, i) {
 }
 
 // MOCKUP GRID
+// turn useColoredBackground OFF when text is on a neutral colored card
 
 const mockupTiles = computed(() => [
   {
     postType: "info",
     backgroundClass: "bg--plain-neutral",
     backgroundTone: "neutral",
-    useColoredBackground: true,
+    useColoredBackground: false,
   },
   {
     postType: "headline",
@@ -223,12 +224,12 @@ const mockupTiles = computed(() => [
   {
     postType: "product",
     backgroundClass: "bg--pattern pattern-distorted-mesh",
-    backgroundTone: "primary",
+    backgroundTone: "neutral",
     useColoredBackground: false,
   },
   {
     postType: "paragraph",
-    backgroundClass: "bg--logo bg--plain-neutral",
+    backgroundClass: "bg--logo bg--plain-secondary",
     backgroundTone: "neutral",
     useColoredBackground: false,
     brandLogo: clientLogoUrl.value,

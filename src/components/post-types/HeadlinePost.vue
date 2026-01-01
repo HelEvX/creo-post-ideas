@@ -4,7 +4,7 @@
       <img :src="icon" alt="" />
     </div>
 
-    <PostTextBlock v-if="zone === 'safe'" :headlineText="headline" :bodyText="subtitle" align="left" />
+    <PostTextBlock v-if="zone === 'safe'" :headlineText="headline" :subtitleText="subtitle" textAlign="left" />
     <div v-else class="quote-post__decor">
       <div class="corner-shape square corner-shape--bl"></div>
       <div class="corner-shape rect corner-shape--br"></div>
