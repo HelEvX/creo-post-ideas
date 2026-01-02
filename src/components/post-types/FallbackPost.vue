@@ -10,9 +10,3 @@
 <script setup>
 import PostTextBlock from "../mockup/PostTextBlock.vue";
 </script>
-
-<style>
-.fallback-post {
-  color: inherit;
-}
-</style>

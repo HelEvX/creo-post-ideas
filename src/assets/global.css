@@ -365,13 +365,14 @@
   --text-on-panel: var(--color-text);
   --caption-on-panel: var(--color-text-soft);
 
-  /* Alt-panel surface text (separate knobs) */
+  /* Alt-panel surface text */
   --title-on-alt-panel: var(--color-title);
   --text-on-alt-panel: var(--color-text);
   --caption-on-alt-panel: var(--color-text-soft);
 
-  /* Accent surface text (separate knobs) */
+  /* Accent surface text */
   --caption-on-accent: var(--color-text-soft-inverse);
+  --title-on-accent: var(--color-title-inverse);
   --text-on-accent: var(--color-text-inverse);
 
   /* ------------------------------------------------------
@@ -513,12 +514,17 @@ h6 {
   color: var(--dynamic-title);
 }
 
-p,
-li {
+p {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   font-weight: var(--fw-body);
   margin-bottom: var(--space-20);
+}
+
+li {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: var(--fw-body);
 }
 
 /* ======================================================

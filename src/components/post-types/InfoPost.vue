@@ -1,6 +1,6 @@
 <template>
   <div class="info-post" postType="info">
-    <PostTextBlock v-if="zone === 'safe'" :titleText="title" :bodyText="body" textAlign="center" bodyAlign="left" />
+    <PostTextBlock v-if="zone === 'safe'" :titleText="title" :bodyText="body" bodyAlign="left" />
 
     <div v-if="zone === 'safe'" class="info-block">
       <div class="cards">

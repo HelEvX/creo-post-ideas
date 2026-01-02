@@ -103,10 +103,10 @@ function toggleAccordion() {
 const types = ref([
   { id: "info", label: "Info", icon: "fa-solid fa-circle-info" },
   { id: "headline", label: "Titel", icon: "fa-solid fa-heading" },
-  { id: "intro", label: "Intro", icon: "fa-solid fa-door-open" },
+  { id: "intro", label: "Lijst", icon: "fa-solid fa-list" },
   { id: "quote", label: "Quote", icon: "fa-solid fa-quote-right" },
-  { id: "product", label: "Product", icon: "fa-solid fa-box" },
-  { id: "paragraph", label: "Paragraaf", icon: "fa-solid fa-align-left" },
+  { id: "product", label: "Product", icon: "fa-solid fa-tag" },
+  { id: "paragraph", label: "Fotoblok", icon: "fa-solid fa-newspaper" },
 ]);
 
 const modes = ref([

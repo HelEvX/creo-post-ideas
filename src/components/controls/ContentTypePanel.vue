@@ -62,10 +62,10 @@ const { selected, tone, selectedMode } = defineProps({
 const types = [
   { id: "info", label: "Info" },
   { id: "headline", label: "Titel" },
-  { id: "intro", label: "Intro" },
+  { id: "intro", label: "Lijst" },
   { id: "quote", label: "Quote" },
   { id: "product", label: "Product" },
-  { id: "paragraph", label: "Paragraaf" },
+  { id: "paragraph", label: "Fotoblok" },
 ];
 
 const modes = [

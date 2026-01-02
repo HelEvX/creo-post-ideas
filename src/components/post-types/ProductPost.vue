@@ -57,7 +57,6 @@ defineProps({
 /* IMAGE CONTAINER */
 .product-card__image {
   position: relative;
-  background: var(--ui-primary-bg);
 
   display: flex;
   align-items: center;
@@ -66,13 +65,14 @@ defineProps({
   overflow: hidden;
 
   margin: 1.8cqw;
-  border: 1.5cqw solid var(--color-primary);
+  border: 1.5cqw solid var(--ui-primary-bg);
   border-radius: var(--card-radius);
 }
 
 .product-card__image img {
   width: 100%;
   object-fit: cover;
+  background: var(--ui-secondary-bg);
 }
 
 /* TEXT */

@@ -209,10 +209,10 @@ const mockupTiles = computed(() => [
     photoSrc: stockImage,
   },
   {
-    postType: "intro",
+    postType: "paragraph",
     backgroundClass: "bg--logo bg--plain-primary",
-    backgroundTone: "primary",
-    useColoredBackground: true,
+    backgroundTone: "neutral",
+    useColoredBackground: false,
     brandLogo: clientLogoUrl.value,
   },
   {
@@ -227,11 +227,12 @@ const mockupTiles = computed(() => [
     backgroundTone: "neutral",
     useColoredBackground: false,
   },
+
   {
-    postType: "paragraph",
+    postType: "intro",
     backgroundClass: "bg--logo bg--plain-secondary",
-    backgroundTone: "neutral",
-    useColoredBackground: false,
+    backgroundTone: "secondary",
+    useColoredBackground: true,
     brandLogo: clientLogoUrl.value,
   },
 ]);
@@ -588,9 +589,9 @@ const mockupTiles = computed(() => [
     height: 92px;
     width: 92px;
   }
-  .ig-stats {
+  /* .ig-stats {
     display: none;
-  }
+  } */
   .ig-bio-wrapper {
     flex: 1;
     padding: 40px 20px;
