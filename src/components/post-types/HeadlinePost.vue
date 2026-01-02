@@ -39,19 +39,20 @@ defineProps({
   height: 100%;
 }
 
-.headline-post .post-text-block__caption {
-  font-size: var(--fs-h5);
+.headline-post .post-text-block {
+  height: 100%;
+  justify-content: center;
 }
 
 /* arrow */
 .arrow-wrapper {
   position: relative;
-  height: 100%;
+  flex: 0 1 30%;
 }
 .arrow {
   position: absolute;
   left: 50%;
-  top: 25%;
+  top: 0;
   width: 80%;
   height: auto;
   transform: translateX(-50%);
@@ -78,6 +79,16 @@ defineProps({
   border-right: 0.67cqw solid var(--dynamic-text);
   border-bottom: 0.67cqw solid var(--dynamic-text);
   transform: rotate(-45deg);
+}
+
+.size--landscape .arrow::before {
+  height: 0.5cqw;
+}
+
+.size--landscape .arrow::after {
+  width: 2cqw;
+  height: 2cqw;
+  border-width: 0.5cqw;
 }
 
 /* FREE ZONE positioning */
