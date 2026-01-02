@@ -146,6 +146,7 @@
   --color-disabled: var(--black-50);
 
   /* dark bg series */
+  --color-title-inverse: var(--white);
   --color-text-inverse: var(--white);
   --color-text-soft-inverse: var(--white-85);
   --color-disabled-inverse: var(--white-65);
@@ -355,6 +356,9 @@
   --dynamic-disabled: var(--ui-disabled-on-light);
   --dynamic-overlay: var(--ui-overlay-on-light);
 
+  --dynamic-footer: var(--ui-soft-on-dark);
+  --dynamic-nav: var(--ui-text-on-dark);
+
   /* ------------------------------------------------------
      MOCKUP SURFACE TEXT ROLES (FIXABLE)
      These are NOT dynamic-*.
@@ -384,6 +388,8 @@
   --pattern-base: var(--ui-primary-bg);
   --pattern-alt: color-mix(in srgb, var(--ui-primary-bg), var(--color-primary-dark) 40%); 
   */
+
+  --image-opacity: 0.25;
 
   --pattern-opacity: 0.4;
   --pattern-rotate: 0deg;
@@ -682,14 +688,14 @@ button.btn-primary:disabled {
 
 /* Default link styling on light backgrounds */
 a {
-  color: var(--primary-dark);
+  color: var(--color-primary-dark);
   text-decoration: none;
   transition: var(--transition-default);
 }
 
 a:hover,
 a:focus {
-  color: var(--primary-darker);
+  color: var(--color-primary-darker);
 }
 
 /* Forms */

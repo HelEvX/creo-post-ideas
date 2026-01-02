@@ -228,9 +228,9 @@ function resolveCssColor(value, depth = 0) {
   return v;
 }
 
-/* --------------------------------------------------
-   MOCKUP-SCOPED VARIABLE READING  ← ADD THIS LABEL
--------------------------------------------------- */
+/* ------------------------------
+   MOCKUP-SCOPED VARIABLE READING
+--------------------------------- */
 
 function getMockupScopeEl() {
   return document.querySelector(".post-content") || document.documentElement;
@@ -315,16 +315,17 @@ function pickReadablePillText(bgHex) {
   return mode === "light" ? light : dark;
 }
 
+// BUG-FLAG: writing scoped vars that are not scoped
 function applyCssVar(scopeEl, cssVarName, value) {
   if (!scopeEl || !cssVarName || !value) return;
 
   // Never write to dynamic-* derived text
-  if (cssVarName.startsWith("--dynamic-") && cssVarName !== "--text-soft-on-alt-panel") {
+  if (cssVarName.startsWith("--dynamic-") && cssVarName !== "--caption-on-alt-panel") {
     return;
   }
 
   // Never write to derived background surfaces
-  if (cssVarName === "--ui-alt-panel-bg-derived") return;
+  if (cssVarName === "--ui-alt-panel-bg") return;
 
   // Write scoped (mockup only)
   scopeEl.style.setProperty(cssVarName, value, "important");
@@ -578,6 +579,7 @@ function updateContrastChecks() {
         : [resolveToComputedColor(resolveScopedThenRoot(scopeEl, p.bg), "backgroundColor")].filter(Boolean);
 
     // Determine the actual foreground var name for this row (accent is contextual)
+    // BUG-FLAG: ACCENT_TEXT is never used anywhere
     const fgVarName =
       p.fgVar === "ACCENT_TEXT"
         ? props.bgContext?.tone === "secondary"
@@ -734,8 +736,6 @@ function updateContrastChecks() {
 
 /* --------------------------------------------------
    FIX CONTRAST
-   - One step per click
-   - Never write to --dynamic-* (derived)
 -------------------------------------------------- */
 
 async function fixContrast(item) {
@@ -753,8 +753,12 @@ async function fixContrast(item) {
     return;
   }
 
-  // Map the CONTEXT_BGVAR placeholder to the active context bg var from props
-  const contextBgVar = props.backgroundTone === "secondary" ? "--ui-secondary-bg" : "--ui-primary-bg";
+  // [BUG-FLAG backgroundTone is not defined as a prop]
+  // Map the placeholder to the active context bg var from props
+  // const contextBgVar = props.backgroundTone === "secondary" ? "--ui-secondary-bg" : "--ui-primary-bg";
+
+  // [BUG-FIX derive tone from correct context -- remaining issue: the dynamic text doesn't immediately get applied]
+  const contextBgVar = props.bgContext?.tone === "secondary" ? "--ui-secondary-bg" : "--ui-primary-bg";
 
   const bgCandidates = (item.fixBgCandidates || [])
     .map((c) => (c === "CONTEXT_BGVAR" ? contextBgVar : c))
@@ -831,7 +835,7 @@ async function fixContrast(item) {
     return;
   }
 
-  if (item.cssVarFg === "--text-soft-on-alt-panel") {
+  if (item.cssVarFg === "--caption-on-alt-panel") {
     // Force a real, always-visible fix for the left caption.
     // Pick pure black/white based on the actual background this row is scored against.
     const forced = getTextModeForBackground(bg, "#000", "#fff") === "light" ? "#fff" : "#000";

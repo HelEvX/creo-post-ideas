@@ -65,14 +65,14 @@ defineProps({
   overflow: hidden;
 
   margin: 1.8cqw;
-  border: 1.5cqw solid var(--ui-primary-bg);
+  border: 1.5cqw solid var(--caption-on-panel);
   border-radius: var(--card-radius);
 }
 
 .product-card__image img {
   width: 100%;
   object-fit: cover;
-  background: var(--ui-secondary-bg);
+  background: var(--caption-on-alt-panel);
 }
 
 /* TEXT */
@@ -88,7 +88,7 @@ defineProps({
 
   padding: 1.5cqw 2cqw;
 
-  background: var(--ui-accent-bg);
+  background: var(--caption-on-panel);
   color: var(--text-on-accent);
 
   font-size: var(--fs-body-sm);

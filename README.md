@@ -77,14 +77,16 @@ Accessibility is enforced at runtime through contrast evaluation and repair logi
 This project does **not** use static light or dark themes and does **not** assume anything about brand colors.
 All readable text colors are resolved **at runtime**, based on the actual background they appear on.
 
-This section documents the minimum you need to know to avoid breaking contrast, buttons, or recipes.
+The goal is simple:
+designers can freely change brands, recipes, and tones, while the system guarantees readable contrast and predictable behaviour.
 
 ### Core Rule
 
-**Text color is never chosen by brand color.
+**Text color is never chosen by brand color.  
 Text color is always chosen by background polarity.**
 
-Primary or secondary brand colors can be light or dark. The system stays correct because contrast is computed, not assumed.
+Brand colors can be light or dark.
+Readability is determined by contrast, not intent.
 
 ### The Three Layers (Do Not Mix These)
 
@@ -92,54 +94,66 @@ Primary or secondary brand colors can be light or dark. The system stays correct
 
 Design-time only.
 
-- Define brand identity values (`color-primary`, `color-secondary`, neutrals, etc.)
+- Define brand identity (`color-primary`, `color-secondary`, neutrals, etc.)
 - May define `color-title` and `color-text` **for light backgrounds only**
 - No logic
 - No contrast decisions
 - Never define `text-on-*` or `dynamic-*`
 
+Brand tokens describe identity, not behaviour.
+
 #### 2. Surface-Resolved Text Roles (Runtime)
 
-Handled in `App.vue → updateDynamicTextRoles()`.
+Handled globally in `App.vue -> updateDynamicTextRoles()`.
 
-For each surface:
+For each UI surface:
 
-```
-nav, footer, section, alt-section, panel, primary, secondary
-```
+`nav, footer, section, alt-section, panel, primary, secondary`
 
 The system:
 
 1. Reads the **computed background**
-2. Detects light or dark
+2. Detects whether it is light or dark
 3. Writes surface-specific roles:
 
-```
---text-on-*
---title-on-*
---text-soft-on-*
---disabled-on-*
---caption-on-*
---overlay-on-*
-```
+`--text-on-*`  
+`--title-on-*`  
+`--text-soft-on-*`  
+`--caption-on-*`  
+`--disabled-on-*`  
+`--overlay-on-*`
 
 These variables are **derived outputs**.
-They must never be hardcoded.
+They must never be hardcoded or set by recipes.
 
-#### 3. Dynamic Routing (Content Layer)
+This layer guarantees that the UI remains readable across all brands and modes.
 
-Generic content variables point to the correct surface roles:
-
-```
---dynamic-text
---dynamic-title
---dynamic-soft
---dynamic-disabled
---dynamic-overlay
-```
+#### 3. Dynamic Routing and Mockup Resolution (Content Layer)
 
 Content never decides contrast.
 It only consumes resolved roles.
+
+Generic content variables route text to the correct surface:
+
+`--dynamic-text`  
+`--dynamic-title`  
+`--dynamic-soft`
+
+Inside the social post preview, `SocialPostMockup.vue` introduces a **local override layer**:
+
+- Dynamic text roles (`--dynamic-*`) respond **only** to the overall mockup background
+- Panel, alt-panel, and accent captions are resolved **locally**, based on:
+  - their own surface background
+  - the active tone toggle
+  - perceived contrast
+
+These overrides are:
+
+- scoped to the mockup (`.post-content`)
+- intentionally isolated from global UI logic
+- designed to expose a complete, stable visual context to the contrast checker
+
+This allows the contrast checker to evaluate and fix **exactly what is rendered**, without affecting the UI or brand tokens.
 
 ### Buttons (Why They Always Work)
 
@@ -181,13 +195,13 @@ This guarantees subtle, readable hover states even in inverted recipes.
 
 The contrast checker validates **rendered reality**, not tokens.
 
-- Reads computed colors
-- Scores worst-case contrast
-- Never edits `dynamic-*`
-- Fixes only allowed source tokens
-- Applies fixes locally to the mockup
+- Reads computed colors from the DOM
+- Includes mockup-scoped surfaces (panel, alt-panel, accent)
+- Scores worst-case contrast per surface
+- Never edits `dynamic-*` directly
+- Applies fixes locally inside the mockup only
 
-UI and brand identity remain untouched.
+UI tokens, brand identity, and global text roles remain untouched.
 
 ### Non-Negotiable Rules
 
@@ -319,12 +333,17 @@ Orchestration layer.
 - Passes state and props downward
 
 **`SocialPostMockup`**
-Visual composition of a post.
+Visual composition of a post mockup.
 
-- Background stack (color, pattern, image, overlay)
-- Safe zone overlay (feed + story)
-- Content stacking and watermark
+- Renders the full background stack (solid color, pattern, large logo, image)
+- Applies platform safe zones (feed and story)
+- Handles content stacking, scaling, and watermark placement
 - Applies safe-area CSS variables per format
+- Resolves **mockup-scoped text and caption roles** based on actual rendered backgrounds
+- Emits a consolidated snapshot of all active mockup colors for the style inspector and export panel
+
+This component has explicit awareness of mockup-only surfaces (panel, alt-panel, accent).
+Text and caption colors inside the mockup are resolved locally to guarantee correct contrast evaluation and fixability.
 
 **`PostWrapper`**
 Canvas contract.
@@ -353,6 +372,35 @@ If something looks wrong:
 - wrong content or styles → check `MockupRenderer`
 
 This structure is safe to extend with new formats, new platforms, or additional overlays without refactoring existing logic.
+
+---
+
+## 🖼️ SVG Logo Preparation (Important)
+
+All SVG logos used inside the mockup (large logo, pattern, watermark) must be prepared in a specific way.
+
+This is required for reliable recoloring, contrast evaluation, and export accuracy.
+
+### Requirements
+
+- Single `<svg>` with a valid `viewBox`
+- Paths only (all shapes expanded)
+- No inline `fill` or `stroke` values
+- No `<style>` blocks or embedded CSS
+- No gradients, filters, masks, or `<defs>`
+- No opacity on paths or groups
+
+SVGs must rely on `currentColor` for coloring.
+Actual color is injected via CSS using mockup variables such as `--mockup-decor`.
+
+### Why This Matters
+
+- Logos must adapt correctly to light and dark backgrounds
+- Inverted recipes and contrast fixes must remain accurate
+- Runtime SVG mutation is intentionally avoided
+
+All brand SVGs must be cleaned before being added.
+This requirement applies to all future brands after handoff.
 
 ---
 

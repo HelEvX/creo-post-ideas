@@ -97,8 +97,7 @@ MainPreview.vue structure (flattened)
             │  ├─ plain color
             │  ├─ pattern
             │  ├─ large logo
-            │  ├─ blurry photo
-            │  └─ photo overlay  # only with image
+            │  └─ blurry photo   # opacity
             ├─ SafeZoneOverlay   # keeps important content in grid crop-safe areas
             ├─ post content
             │  └─ post canvas

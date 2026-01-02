@@ -13,15 +13,11 @@
 
         <!-- image layer -->
         <div v-if="usePhoto" class="post-bg__image" :style="{ backgroundImage: `url(${photoSrc})` }"></div>
-
-        <!-- overlay (only active in image mode via CSS) -->
-        <div class="post-bg__overlay"></div>
       </div>
 
       <SafeZoneOverlay v-if="showSafeZone" />
 
       <div
-        ref="mockupScopeEl"
         class="post-content"
         :class="`post-content--${backgroundTone}`"
         :style="mockupVars"
@@ -43,20 +39,6 @@ import PostWrapper from "@/components/mockup/PostWrapper.vue";
 import { ref, watch, computed, onMounted, onBeforeUnmount } from "vue";
 import { getTextModeForBackground } from "@/utils/colorLogic.js";
 import SafeZoneOverlay from "@/components/mockup/SafeZoneOverlay.vue";
-
-/* ----------------------------------------------
-   OVERRIDE
----------------------------------------------- */
-
-const altPanelCaptionOverride = ref(null);
-
-function onAltPanelCaptionOverride(e) {
-  altPanelCaptionOverride.value = e.detail;
-
-  // Force an immediate recompute so mockupVars is rewritten with the override.
-  // This is the only place where the caption color is actually applied.
-  requestAnimationFrame(() => recomputeMockupVars());
-}
 
 /* ----------------------------------------------
    PROPS
@@ -85,7 +67,47 @@ const props = defineProps({
 });
 
 /* ----------------------------------------------
-   LOGO COLOR
+   HELPERS
+---------------------------------------------- */
+function getRootStyle() {
+  return getComputedStyle(document.documentElement);
+}
+
+function resolveFirstBg(vars) {
+  const root = getRootStyle();
+  for (const v of vars || []) {
+    const val = root.getPropertyValue(v).trim();
+    if (val) return val;
+  }
+  return null;
+}
+
+let rafId = 0;
+function scheduleRecompute() {
+  if (rafId) cancelAnimationFrame(rafId);
+  rafId = requestAnimationFrame(() => {
+    rafId = 0;
+    recomputeMockupVars();
+  });
+}
+
+function resolveAccentBg(root) {
+  const explicit = root.getPropertyValue("--ui-accent-bg").trim();
+  if (explicit) return explicit;
+
+  const primary = root.getPropertyValue("--ui-primary-bg").trim();
+  const secondary = root.getPropertyValue("--ui-secondary-bg").trim();
+  if (!primary || !secondary) return null;
+
+  return props.backgroundTone === "secondary" ? primary : secondary;
+}
+
+function readCssVar(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || null;
+}
+
+/* ----------------------------------------------
+   LOGO COLOR + LOGO PATTERN (SVG -> CSS mask)
 ---------------------------------------------- */
 const rawSvg = ref(null);
 
@@ -110,19 +132,6 @@ watch(
   { immediate: true }
 );
 
-// const toneColor = computed(() => "var(--mockup-decor)");
-
-// const coloredLogo = computed(() => {
-//   if (!rawSvg.value) return null;
-//   const color = toneColor.value;
-
-//   return rawSvg.value
-//     .replace(/stroke:\s*#[0-9A-Fa-f]{3,6}/g, `stroke: ${color}`)
-//     .replace(/fill:\s*#[0-9A-Fa-f]{3,6}/g, `fill: ${color}`)
-//     .replace(/stroke="[^"]*"/g, `stroke="${color}"`)
-//     .replace(/fill="[^"]*"/g, `fill="${color}"`);
-// });
-
 const logoPatternStyle = computed(() => {
   if (!rawSvg.value) return null;
 
@@ -132,15 +141,6 @@ const logoPatternStyle = computed(() => {
     "--logo-pattern-svg": `url("data:image/svg+xml,${encoded}")`,
   };
 });
-
-console.log("brandLogo:", props.brandLogo);
-
-/* ----------------------------------------------
-   TEXT COLORS (LOCAL)
----------------------------------------------- */
-function readVar(name) {
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-}
 
 /* ----------------------------------------------
    WATERMARK
@@ -165,225 +165,181 @@ const watermarkStyle = computed(() => {
 });
 
 /* ----------------------------------------------
-   DERIVED ALT PANEL BACKGROUND
-   - Uses resolved mockup background
-   - Light bg  -> darker panel
-   - Dark bg   -> lighter panel
-   - Hue preserved
+   MOCKUP-SCOPED ROLES
+   - dynamic-* (text on overall mockup background)
+   - surface captions (panel / alt-panel / accent)
 ---------------------------------------------- */
 
-const mockupScopeEl = ref(null);
+// function readVar(name) {
+//   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+// }
 
 const mockupVars = ref({
   "--dynamic-text": "",
   "--dynamic-title": "",
   "--dynamic-soft": "",
-  "--ui-alt-panel-bg-derived": "",
-  "--text-soft-on-alt-panel": "",
-});
 
-const resolvedText = computed(() => ({
-  title: mockupVars.value["--dynamic-title"] || null,
-  body: mockupVars.value["--dynamic-text"] || null,
-}));
+  "--caption-on-panel": "",
+  "--caption-on-alt-panel": "",
+  "--caption-on-accent": "",
+});
 
 function recomputeMockupVars() {
-  if (!props.bgColors || props.bgColors.length === 0) return;
+  const root = getRootStyle();
 
-  const cs = getComputedStyle(document.documentElement);
+  /* base text tokens from App.vue */
+  const textDark = root.getPropertyValue("--color-text").trim();
+  const titleDark = root.getPropertyValue("--color-title").trim();
+  const textLight = root.getPropertyValue("--color-text-inverse").trim();
 
-  const bodyDark = cs.getPropertyValue("--color-text").trim();
-  const titleDark = cs.getPropertyValue("--color-title").trim();
-  const captionDark = cs.getPropertyValue("--color-primary-dark").trim();
+  const softDark = root.getPropertyValue("--color-text-soft").trim();
+  const softLight = root.getPropertyValue("--color-text-soft-inverse").trim();
 
-  const light = cs.getPropertyValue("--color-text-inverse").trim();
-  const captionLight = cs.getPropertyValue("--color-primary-lighter").trim();
+  /* caption tones */
+  const primaryDark = root.getPropertyValue("--color-primary-dark").trim();
+  const secondaryDark = root.getPropertyValue("--color-secondary-dark").trim();
 
-  if (!light || (!bodyDark && !titleDark)) return;
+  if (!textDark || !textLight) return;
 
-  // Resolve first available mockup background from bgColors
-  let bgHex = null;
-  for (const v of props.bgColors) {
-    const val = readVar(v);
-    if (val) {
-      bgHex = val;
-      break;
-    }
-  }
-  if (!bgHex) return;
+  /* resolve actual mockup background */
 
-  // Decide text inversion by perceived mode
-  const needsLight = getTextModeForBackground(bgHex, bodyDark || "#000", light) === "light";
+  const mockupBg = resolveFirstBg(props.bgColors);
+  if (!mockupBg) return;
 
-  const mainText = needsLight ? light : bodyDark;
-  const mainTitle = needsLight ? light : titleDark;
-  const mainCaption = needsLight ? captionLight : captionDark;
+  const mockupMode = getTextModeForBackground(mockupBg, textDark, textLight);
+  if (!mockupMode) return;
 
-  /* --------------------------------------------------
-     DERIVED ALT-PANEL BACKGROUND (TOKEN-BASED)
-     Direction depends on whether PRIMARY / SECONDARY
-     base color is intrinsically light or dark
-  -------------------------------------------------- */
+  /* getTextModeForBackground: "light" => background is dark => needs light text */
+  const mockupNeedsLightText = mockupMode === "light";
 
-  const bgVars = Array.isArray(props.bgColors) ? props.bgColors : [];
-  const tone = props.backgroundTone === "secondary" ? "secondary" : "primary";
+  /* overall mockup background text */
+  const dynamicText = mockupNeedsLightText ? textLight : textDark;
+  const dynamicTitle = mockupNeedsLightText ? textLight || textDark : titleDark || textDark;
+  const dynamicSoft = mockupNeedsLightText ? softLight || textLight : softDark || textDark;
 
-  const usesAltSectionBg = bgVars.includes("--ui-alt-section-bg");
+  /* surface captions */
+  const panelCaption =
+    props.backgroundTone === "secondary"
+      ? secondaryDark || primaryDark || dynamicSoft
+      : primaryDark || secondaryDark || dynamicSoft;
 
-  let derivedAltPanel;
-  let altPanelIsLight = false;
+  const altPanelCaption =
+    props.backgroundTone === "secondary"
+      ? primaryDark || secondaryDark || dynamicSoft
+      : secondaryDark || primaryDark || dynamicSoft;
 
-  if (props.useColoredBackground === false || usesAltSectionBg) {
-    derivedAltPanel = "var(--ui-section-bg)";
-    altPanelIsLight = getTextModeForBackground(readVar("--ui-section-bg"), "#000", "#fff") === "dark";
-  } else {
-    const baseVar = tone === "secondary" ? "--ui-secondary-bg" : "--ui-primary-bg";
-    const baseHex = readVar(baseVar);
+  /* accent caption: based on resolved accent surface background */
+  const accentBg = resolveAccentBg(root);
 
-    if (!baseHex) {
-      derivedAltPanel = "var(--ui-section-bg)";
-      altPanelIsLight = getTextModeForBackground(readVar("--ui-section-bg"), "#000", "#fff") === "dark";
+  let accentCaption = softLight || textLight;
+
+  if (accentBg) {
+    const accentMode = getTextModeForBackground(accentBg, textDark, textLight);
+    if (accentMode === "light") {
+      accentCaption = softLight || textLight;
     } else {
-      const baseIsLight = getTextModeForBackground(baseHex, "#000", "#fff") === "dark";
-
-      if (tone === "secondary") {
-        derivedAltPanel = baseIsLight ? "var(--color-secondary-light)" : "var(--color-tertiary)";
-      } else {
-        derivedAltPanel = baseIsLight ? "var(--color-primary-light)" : "var(--color-tertiary)";
-      }
-
-      // derived panel lightness follows the chosen token
-      altPanelIsLight = baseIsLight;
+      accentCaption = softDark || textDark;
     }
   }
 
-  /* --------------------------------------------------
-     SOFT TEXT ON ALT-PANEL
-     MUST MOVE IN OPPOSITE DIRECTION OF PANEL
-     panel light  -> text darker
-     panel dark   -> text lighter
-  -------------------------------------------------- */
-
-  let softOnAltPanel;
-
-  if (altPanelCaptionOverride.value !== null) {
-    softOnAltPanel = altPanelCaptionOverride.value;
-  } else if (tone === "secondary") {
-    softOnAltPanel = altPanelIsLight ? "var(--color-secondary-darker)" : "var(--color-secondary-lighter)";
-  } else {
-    softOnAltPanel = altPanelIsLight ? "var(--color-primary-darker)" : "var(--color-primary-lighter)";
-  }
-
-  console.log("[mockupVars] altPanelIsLight:", altPanelIsLight);
-  console.log("[mockupVars] derivedAltPanel:", derivedAltPanel);
-  console.log("[mockupVars] softOnAltPanel:", softOnAltPanel);
+  /* ----------------------------------------------
+     APPLY LOCAL OVERRIDES (mockup only)
+  ---------------------------------------------- */
 
   mockupVars.value = {
-    "--dynamic-text": mainText,
-    "--dynamic-title": mainTitle,
-    "--dynamic-soft": mainCaption,
+    "--dynamic-text": dynamicText,
+    "--dynamic-title": dynamicTitle,
+    "--dynamic-soft": dynamicSoft,
 
-    "--ui-alt-panel-bg-derived": derivedAltPanel,
-    "--text-soft-on-alt-panel": softOnAltPanel,
+    "--caption-on-panel": panelCaption,
+    "--caption-on-alt-panel": altPanelCaption,
+    "--caption-on-accent": accentCaption,
   };
 }
 
 /* ----------------------------------------------
-   RECOMPUTE ON PROP CHANGE
+   RECOMPUTE TRIGGERS
 ---------------------------------------------- */
 watch(
-  () => [props.backgroundClass, props.backgroundTone, props.bgColors, props.useColoredBackground],
-  () => {
-    recomputeMockupVars();
-  },
-  { immediate: true, deep: true }
-);
-
-/* ----------------------------------------------
-   EXPORT TO STYLE INSPECTOR
----------------------------------------------- */
-function resolveHex(varName) {
-  return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
-}
-
-const resolvedVisualContext = computed(() => {
-  const isSecondary = props.backgroundTone === "secondary";
-  const isColored = props.useColoredBackground !== false;
-  const isImage = props.backgroundClass?.includes("bg--image");
-
-  const bgPrimary = resolveHex("--ui-primary-bg");
-  const bgSecondary = resolveHex("--ui-secondary-bg");
-  const bgNeutral = resolveHex("--ui-alt-section-bg");
-
-  const backgroundHex = !isColored ? bgNeutral : isSecondary ? bgSecondary : bgPrimary;
-
-  const decorHex = resolveHex("--mockup-decor");
-
-  return {
-    background: {
-      base: backgroundHex,
-      overlay: isImage ? backgroundHex : null,
-    },
-
-    text: {
-      title: resolveHex("--dynamic-title"),
-      body: resolveHex("--dynamic-text"),
-      soft: resolveHex("--dynamic-soft"),
-    },
-
-    decoration: {
-      decor: decorHex, // borders, icons, shapes, pattern, large logo
-    },
-
-    surfaces: {
-      panel: resolveHex("--ui-panel-bg"),
-      altPanel: resolveHex("--ui-alt-panel-bg-derived"),
-      altSection: resolveHex("--ui-alt-section-bg"),
-    },
-
-    accents: {
-      accent: resolveHex("--dynamic-accent"),
-    },
-  };
-});
-
-const emit = defineEmits(["resolved-visuals"]);
-
-watch(
-  () => [resolvedVisualContext.value, resolvedText.value],
-  () => {
-    emit("resolved-visuals", {
-      ...resolvedVisualContext.value,
-      text: resolvedText.value,
-    });
-  },
+  () => [props.backgroundClass, props.backgroundTone, props.useColoredBackground, props.bgColors],
+  () => scheduleRecompute(),
   { immediate: true, deep: true }
 );
 
 function onPaletteUpdated() {
-  // Do NOT clear overrides here. Palette updates include "fix" actions.
-  requestAnimationFrame(() => recomputeMockupVars());
+  scheduleRecompute();
 }
 
 function onBrandUpdated() {
-  // Brand switch / reset should drop manual overrides.
-  altPanelCaptionOverride.value = null;
-  requestAnimationFrame(() => recomputeMockupVars());
+  scheduleRecompute();
+}
+
+function onDynamicTextUpdated() {
+  scheduleRecompute();
 }
 
 onMounted(() => {
-  window.addEventListener("alt-panel-caption-override", onAltPanelCaptionOverride);
   window.addEventListener("palette-updated", onPaletteUpdated);
   window.addEventListener("brand-updated", onBrandUpdated);
-  window.addEventListener("brand-reset", onBrandUpdated);
+  window.addEventListener("dynamic-text-updated", onDynamicTextUpdated);
+
+  scheduleRecompute();
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener("alt-panel-caption-override", onAltPanelCaptionOverride);
   window.removeEventListener("palette-updated", onPaletteUpdated);
   window.removeEventListener("brand-updated", onBrandUpdated);
-  window.removeEventListener("brand-reset", onBrandUpdated);
+  window.removeEventListener("dynamic-text-updated", onDynamicTextUpdated);
+
+  if (rafId) cancelAnimationFrame(rafId);
 });
+
+/* ----------------------------------------------
+   EXPORT TO STYLE INSPECTOR (CONSOLIDATED)
+---------------------------------------------- */
+
+const resolvedVisualContext = computed(() => ({
+  background: {
+    mockup: readCssVar("--ui-primary-bg") || readCssVar("--ui-secondary-bg") || readCssVar("--ui-alt-section-bg"),
+    panel: readCssVar("--ui-panel-bg"),
+    altPanel: readCssVar("--ui-alt-panel-bg"),
+    accent: readCssVar("--ui-accent-bg"),
+  },
+
+  text: {
+    mockup: {
+      title: readCssVar("--dynamic-title"),
+      body: readCssVar("--dynamic-text"),
+      soft: readCssVar("--dynamic-soft"),
+    },
+
+    panel: {
+      title: readCssVar("--title-on-panel"),
+      body: readCssVar("--text-on-panel"),
+      caption: readCssVar("--caption-on-panel"),
+    },
+
+    altPanel: {
+      title: readCssVar("--title-on-alt-panel"),
+      body: readCssVar("--text-on-alt-panel"),
+      caption: readCssVar("--caption-on-alt-panel"),
+    },
+
+    accent: {
+      title: readCssVar("--title-on-accent"),
+      body: readCssVar("--text-on-accent"),
+      caption: readCssVar("--caption-on-accent"),
+    },
+  },
+
+  decoration: {
+    decor: readCssVar("--mockup-decor"),
+  },
+}));
+
+const emit = defineEmits(["resolved-visuals"]);
+
+watch(resolvedVisualContext, (val) => emit("resolved-visuals", val), { immediate: true, deep: true });
 </script>
 
 <style scoped>
@@ -462,6 +418,7 @@ onBeforeUnmount(() => {
   color: inherit;
   position: absolute;
   inset: 0;
+  transform: scale(var(--scale));
 }
 
 /* baseline */
@@ -481,7 +438,6 @@ onBeforeUnmount(() => {
 
 /* apply */
 .post-content {
-  transform: scale(var(--scale));
   width: calc(100% / var(--scale));
   height: calc(100% / var(--scale));
   left: 50%;
@@ -550,7 +506,6 @@ onBeforeUnmount(() => {
 .post-bg__color,
 .post-bg__pattern,
 .post-bg__image,
-.post-bg__overlay,
 .post-bg__logo {
   position: absolute;
   inset: 0;
@@ -785,23 +740,8 @@ onBeforeUnmount(() => {
   margin: -10px;
 }
 
-/* overlay is off by default; image mode turns it on */
-.post-bg__overlay {
-  opacity: 0;
-}
-
-/* image mode: show image and tone-dependent overlay */
+/* image mode: show image */
 .bg--image .post-bg__image {
-  opacity: 1;
-}
-
-.bg--image.bg--plain-primary .post-bg__overlay {
-  background: var(--ui-primary-bg);
-  opacity: 0.6;
-}
-
-.bg--image.bg--plain-secondary .post-bg__overlay {
-  background: var(--ui-secondary-bg);
-  opacity: 0.6;
+  opacity: var(--image-opacity);
 }
 </style>

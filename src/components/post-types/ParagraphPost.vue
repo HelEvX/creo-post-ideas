@@ -74,6 +74,6 @@ defineProps({
 .paragraph-post__image img {
   object-fit: cover;
   flex: 1;
-  background: var(--ui-primary-bg);
+  background: var(--caption-on-panel);
 }
 </style>
