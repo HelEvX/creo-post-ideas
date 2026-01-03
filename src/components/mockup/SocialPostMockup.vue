@@ -251,16 +251,23 @@ function recomputeMockupVars() {
 
   /* ----------------------------------------------
      APPLY LOCAL OVERRIDES (mockup only)
+     make sure value can be read before resolver overwrites it
   ---------------------------------------------- */
 
   mockupVars.value = {
-    "--dynamic-text": dynamicText,
-    "--dynamic-title": dynamicTitle,
-    "--dynamic-soft": dynamicSoft,
+    "--dynamic-text": `var(--fix-dynamic-text, ${dynamicText})`,
+    "--dynamic-title": `var(--fix-dynamic-title, ${dynamicTitle})`,
+    "--dynamic-soft": `var(--fix-dynamic-soft, ${dynamicSoft})`,
 
-    "--caption-on-panel": panelCaption,
-    "--caption-on-alt-panel": altPanelCaption,
-    "--caption-on-accent": accentCaption,
+    "--title-on-panel": `var(--fix-title-on-panel, ${readCssVar("--title-on-panel")})`,
+    "--text-on-panel": `var(--fix-text-on-panel, ${readCssVar("--text-on-panel")})`,
+
+    "--title-on-alt-panel": `var(--fix-title-on-alt-panel, ${readCssVar("--title-on-alt-panel")})`,
+    "--text-on-alt-panel": `var(--fix-text-on-alt-panel, ${readCssVar("--text-on-alt-panel")})`,
+
+    "--caption-on-panel": `var(--fix-caption-on-panel, ${panelCaption})`,
+    "--caption-on-alt-panel": `var(--fix-caption-on-alt-panel, ${altPanelCaption})`,
+    "--caption-on-accent": `var(--fix-caption-on-accent, ${accentCaption})`,
   };
 
   visualTick.value++;

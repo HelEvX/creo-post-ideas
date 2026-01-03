@@ -265,6 +265,29 @@ function resolveCssColorFrom(el, value, depth = 0) {
    HELPERS
 -------------------------------------------------- */
 
+function readVarPreferred(scopeEl, name) {
+  if (!name) return "";
+  const isMockupScope = scopeEl && scopeEl.classList && scopeEl.classList.contains("post-content");
+
+  // dynamic-* is mockup-scoped source of truth
+  if (name.startsWith("--dynamic-")) {
+    if (!isMockupScope) return "";
+    return getComputedStyle(scopeEl).getPropertyValue(name).trim();
+  }
+
+  // other vars may live on root; also allow override on scope if present
+  const scoped = scopeEl ? getComputedStyle(scopeEl).getPropertyValue(name).trim() : "";
+  if (scoped) return scoped;
+
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function resolveVarToComputed(scopeEl, varName, cssProp) {
+  const raw = readVarPreferred(scopeEl, varName);
+  if (!raw) return null;
+  return resolveToComputedColor(raw, cssProp);
+}
+
 function resolveToComputedColor(value, cssProp = "color") {
   if (!value) return null;
 
@@ -309,17 +332,20 @@ function pickReadablePillText(bgHex) {
 }
 
 function applyCssVar(scopeEl, cssVarName, value) {
-  if (!scopeEl || !cssVarName || !value) return;
+  if (!cssVarName || !value) return;
 
-  // Never write to derived background surfaces
-  if (cssVarName === "--ui-alt-panel-bg") return;
-
-  // Allow mockup-scoped overrides, including dynamic-* (only inside .post-content)
+  const root = document.documentElement;
   const isMockupScope = scopeEl && scopeEl.classList && scopeEl.classList.contains("post-content");
 
-  if (cssVarName.startsWith("--dynamic-") && !isMockupScope) return;
+  // dynamic-* may ONLY be written inside the mockup scope
+  if (cssVarName.startsWith("--dynamic-")) {
+    if (!isMockupScope) return;
+    scopeEl.style.setProperty(cssVarName, value, "important");
+    return;
+  }
 
-  scopeEl.style.setProperty(cssVarName, value, "important");
+  // everything else (tokens like --ui-*, --caption-*, --text-*) must be written to root
+  root.style.setProperty(cssVarName, value, "important");
 }
 
 function resolveScopedThenRoot(scopeEl, value) {
@@ -559,23 +585,30 @@ function updateContrastChecks() {
   }
 
   contrastResults.value = contrastPairs.value.map((p) => {
+    let bgVarSource = null;
+
     const bgList =
       p.bg === "CONTEXT"
         ? contextBgs
             .slice(0, 1)
-            .map((bg) => resolveToComputedColor(bg, "backgroundColor"))
+            .map((bg) => {
+              bgVarSource = props.bgContext?.bgVars?.[0] || null;
+              return resolveToComputedColor(bg, "backgroundColor");
+            })
             .filter(Boolean)
         : p.bg === "ACCENT_BG"
         ? [
-            resolveToComputedColor(
-              resolveScopedThenRoot(
-                scopeEl,
-                props.bgContext?.tone === "secondary" ? "--ui-primary-bg" : "--ui-secondary-bg"
-              ),
-              "backgroundColor"
-            ),
+            (() => {
+              bgVarSource = props.bgContext?.tone === "secondary" ? "--ui-primary-bg" : "--ui-secondary-bg";
+              return resolveToComputedColor(resolveScopedThenRoot(scopeEl, bgVarSource), "backgroundColor");
+            })(),
           ].filter(Boolean)
-        : [resolveToComputedColor(resolveScopedThenRoot(scopeEl, p.bg), "backgroundColor")].filter(Boolean);
+        : [
+            (() => {
+              bgVarSource = p.bg;
+              return resolveToComputedColor(resolveScopedThenRoot(scopeEl, p.bg), "backgroundColor");
+            })(),
+          ].filter(Boolean);
 
     const fgVarName = p.fgVar;
 
@@ -597,6 +630,7 @@ function updateContrastChecks() {
         swatchBg: bgList[0] || null,
         cssVarFg: fgVarName,
         cssVarBg: p.bg,
+        bgVarSource,
         fixFgCandidates: p.fixFgCandidates || [],
         fixBgCandidates: p.fixBgCandidates || [],
         _noFixPossible: !!noFixMap.value[p.id],
@@ -698,6 +732,7 @@ function updateContrastChecks() {
       fg: pillFg,
       cssVarFg: fgVarName,
       cssVarBg: p.bg,
+      bgVarSource,
       fixFgCandidates: p.fixFgCandidates || [],
       fixBgCandidates: p.fixBgCandidates || [],
       swatchText: fgValue,
@@ -734,86 +769,102 @@ async function fixContrast(item) {
   noFixMap.value[item.id] = false;
 
   const bg = item.swatchBg;
-  const fg = resolveFgValue(scopeEl, item.cssVarFg);
-
-  if (!bg || !fg) {
+  if (!bg) {
     triggerNoFixHint(item.id);
     updateContrastChecks();
     return;
   }
 
   const sourceVar = item.fixFgCandidates && item.fixFgCandidates[0];
-
   if (!sourceVar) {
     triggerNoFixHint(item.id);
     updateContrastChecks();
     return;
   }
-  const startRaw = resolveCssColorFrom(scopeEl, sourceVar);
-  const startComputed = resolveToComputedColor(startRaw, "color");
-  if (!startComputed) {
+
+  const startFg = resolveVarToComputed(scopeEl, sourceVar, "color");
+  if (!startFg) {
     triggerNoFixHint(item.id);
     updateContrastChecks();
     return;
   }
 
-  const isLargeText = item.id === "main-title" || item.id === "main-paragraph";
-  const targetAA = isLargeText ? 3.0 : 4.5;
+  // One-step nudge only (visible feedback), do not chase AA in one click
+  const STEP_SIZE = 0.02;
 
-  const MAX_STEPS = 14;
-  const STEP_SIZE = 0.06;
+  const r0 = getContrastRatio(startFg, bg);
 
-  let bestColor = startComputed;
-  let bestRatio = getContrastRatio(bestColor, bg);
+  // Decide which direction improves contrast more, but apply only ONE step
+  const darker = toneShift(startFg, -1, STEP_SIZE);
+  const lighter = toneShift(startFg, +1, STEP_SIZE);
 
-  for (let i = 0; i < MAX_STEPS; i++) {
-    const darker = toneShift(bestColor, -1, STEP_SIZE);
-    const lighter = toneShift(bestColor, +1, STEP_SIZE);
+  const rDark = getContrastRatio(darker, bg);
+  const rLight = getContrastRatio(lighter, bg);
 
-    const rDark = getContrastRatio(darker, bg);
-    const rLight = getContrastRatio(lighter, bg);
+  let nextFg = null;
+  if (rDark > r0 || rLight > r0) {
+    nextFg = rDark >= rLight ? darker : lighter;
+  }
 
-    let next = null;
-    let nextRatio = bestRatio;
+  if (nextFg) {
+    applyCssVar(scopeEl, sourceVar, nextFg);
+    await nextTick();
+    window.dispatchEvent(new Event("dynamic-text-updated"));
+    scheduleContrastUpdate();
+    return;
+  }
 
-    // If background is light, push darker text; if background is dark, push lighter text
-    const bgIsLight = getTextModeForBackground(bg, "#000", "#fff") === "dark";
+  // Background fallback: ONE tiny nudge (choose direction by contrast improvement)
+  if (item.bgVarSource) {
+    const bgVar = item.bgVarSource;
 
-    if (bgIsLight && rDark > nextRatio) {
-      next = darker;
-      nextRatio = rDark;
-    } else if (!bgIsLight && rLight > nextRatio) {
-      next = lighter;
-      nextRatio = rLight;
-    } else if (rDark > nextRatio) {
-      next = darker;
-      nextRatio = rDark;
-    } else if (rLight > nextRatio) {
-      next = lighter;
-      nextRatio = rLight;
+    const currentBg = resolveVarToComputed(scopeEl, bgVar, "backgroundColor");
+    if (!currentBg) {
+      triggerNoFixHint(item.id);
+      updateContrastChecks();
+      return;
     }
 
-    if (!next) break;
-    if (isNearLimit(next)) break;
+    const STEP_BG = 0.02;
 
-    bestColor = next;
-    bestRatio = nextRatio;
+    const rBase = getContrastRatio(startFg, currentBg);
 
-    if (bestRatio >= targetAA) break;
-  }
+    const darkerBg = toneShift(currentBg, -1, STEP_BG);
+    const lighterBg = toneShift(currentBg, +1, STEP_BG);
 
-  const startRatio = getContrastRatio(startComputed, bg);
-  if (bestRatio <= startRatio) {
-    triggerNoFixHint(item.id);
-    updateContrastChecks();
+    const rDark = getContrastRatio(startFg, darkerBg);
+    const rLight = getContrastRatio(startFg, lighterBg);
+
+    let nextBg = null;
+
+    // apply ONLY if it improves contrast; pick best improvement
+    if (rDark > rBase || rLight > rBase) {
+      nextBg = rDark >= rLight ? darkerBg : lighterBg;
+    }
+
+    // optional safety clamp (prevents extremes)
+    if (!nextBg) {
+      triggerNoFixHint(item.id);
+      updateContrastChecks();
+      return;
+    }
+
+    if (isNearLimit(nextBg)) {
+      triggerNoFixHint(item.id);
+      updateContrastChecks();
+      return;
+    }
+
+    applyCssVar(scopeEl, bgVar, nextBg);
+
+    await nextTick();
+    window.dispatchEvent(new Event("palette-updated"));
+    scheduleContrastUpdate();
     return;
   }
 
-  applyCssVar(scopeEl, sourceVar, bestColor);
-
-  await nextTick();
-  window.dispatchEvent(new Event("dynamic-text-updated"));
-  scheduleContrastUpdate();
+  triggerNoFixHint(item.id);
+  updateContrastChecks();
 }
 
 /* --------------------------------------------------
@@ -821,13 +872,7 @@ async function fixContrast(item) {
 -------------------------------------------------- */
 
 function resolveFgValue(scopeEl, fgVarName) {
-  if (!scopeEl || !fgVarName) return null;
-
-  // Source of truth: mockup-scoped CSS variables on .post-content
-  const raw = getComputedStyle(scopeEl).getPropertyValue(fgVarName).trim();
-  if (!raw) return null;
-
-  return resolveToComputedColor(raw, "color");
+  return resolveVarToComputed(scopeEl, fgVarName, "color");
 }
 
 function toneShift(hex, dir, amount) {
