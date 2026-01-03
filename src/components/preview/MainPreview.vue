@@ -74,7 +74,16 @@
 
       <div class="col-12 col-lg-2 main-preview__styles">
         <StyleInspectorPanel
-          :key="brandTokens?.slug || 'default'"
+          :key="
+            [
+              brandTokens?.slug || 'default',
+              selectedSize,
+              selectedPostType,
+              backgroundTone,
+              backgroundMode,
+              useColoredBackground,
+            ].join('|')
+          "
           :titleFont="resolvedStyles?.fonts?.title"
           :bodyFont="resolvedStyles?.fonts?.body"
           :styles="resolvedStyles" />

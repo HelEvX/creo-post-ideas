@@ -688,7 +688,7 @@ button.btn-primary:disabled {
 
 /* Default link styling on light backgrounds */
 a {
-  color: var(--color-primary-dark);
+  color: var(--dynamic-title);
   text-decoration: none;
   transition: var(--transition-default);
 }

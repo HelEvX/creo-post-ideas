@@ -1,5 +1,6 @@
 <template>
   <SocialPostMockup
+    ref="mockupRef"
     :bgColors="resolvedBgColors"
     :size="size"
     :backgroundClass="backgroundClass"
@@ -21,7 +22,7 @@
 </template>
 
 <script setup>
-import { computed, watch, ref } from "vue";
+import { computed, watch, ref, nextTick, onMounted, onBeforeUnmount } from "vue";
 
 import SocialPostMockup from "../mockup/SocialPostMockup.vue";
 
@@ -131,35 +132,136 @@ watch(
 );
 
 /* -------------------------------------------------
-   RESOLVED VISUALS
+   RESOLVED VISUALS + ACTIVE MOCKUP VARS
 --------------------------------------------------- */
 
+const mockupRef = ref(null);
 const resolvedVisuals = ref(null);
+const isMounted = ref(false);
 
-function onResolvedVisuals(payload) {
-  resolvedVisuals.value = payload;
+function getPostContentEl() {
+  const rootEl = mockupRef.value && mockupRef.value.$el ? mockupRef.value.$el : null;
+  if (!rootEl) return null;
+  return rootEl.querySelector(".post-content");
 }
 
-const resolvedStyles = computed(() => {
+function readVarFromEl(el, name) {
+  if (!el) return "";
+  return getComputedStyle(el).getPropertyValue(name).trim();
+}
+
+function buildResolvedStyles() {
   if (!resolvedVisuals.value) return null;
 
-  const cs = getComputedStyle(document.documentElement);
+  const root = getComputedStyle(document.documentElement);
+
+  const titleFont = root.getPropertyValue("--font-title").trim();
+  const bodyFont = root.getPropertyValue("--font-body").trim();
+
+  const postEl = getPostContentEl();
+
+  const mockupTitle = readVarFromEl(postEl, "--dynamic-title");
+  const mockupBody = readVarFromEl(postEl, "--dynamic-text");
+  const mockupSoft = readVarFromEl(postEl, "--dynamic-soft");
+
+  const titleOnPanel = readVarFromEl(postEl, "--title-on-panel");
+  const textOnPanel = readVarFromEl(postEl, "--text-on-panel");
+  const captionOnPanel = readVarFromEl(postEl, "--caption-on-panel");
+
+  const titleOnAltPanel = readVarFromEl(postEl, "--title-on-alt-panel");
+  const textOnAltPanel = readVarFromEl(postEl, "--text-on-alt-panel");
+  const captionOnAltPanel = readVarFromEl(postEl, "--caption-on-alt-panel");
+
+  const titleOnAccent = readVarFromEl(postEl, "--title-on-accent");
+  const textOnAccent = readVarFromEl(postEl, "--text-on-accent");
+  const captionOnAccent = readVarFromEl(postEl, "--caption-on-accent");
 
   return {
     ...resolvedVisuals.value,
     fonts: {
-      title: cs.getPropertyValue("--font-title").trim().split(",")[0],
-      body: cs.getPropertyValue("--font-body").trim().split(",")[0],
+      title: titleFont.split(",")[0],
+      body: bodyFont.split(",")[0],
+    },
+    text: {
+      mockup: {
+        title: mockupTitle,
+        body: mockupBody,
+        soft: mockupSoft,
+      },
+      panel: {
+        title: titleOnPanel,
+        body: textOnPanel,
+        caption: captionOnPanel,
+      },
+      altPanel: {
+        title: titleOnAltPanel,
+        body: textOnAltPanel,
+        caption: captionOnAltPanel,
+      },
+      accent: {
+        title: titleOnAccent,
+        body: textOnAccent,
+        caption: captionOnAccent,
+      },
     },
   };
-});
+}
+
+function onResolvedVisuals(payload) {
+  resolvedVisuals.value = payload;
+  scheduleEmitResolvedStyles();
+}
+
+async function scheduleEmitResolvedStyles() {
+  if (!isMounted.value) return;
+
+  // wait for Vue to flush + browser to paint so .post-content exists and CSS vars are applied
+  await nextTick();
+  await new Promise((r) => requestAnimationFrame(r));
+
+  const postEl = getPostContentEl();
+  if (!postEl) return;
+
+  const val = buildResolvedStyles();
+  if (!val) return;
+
+  emit("resolved-styles", val);
+}
 
 watch(
-  resolvedStyles,
-  (val) => {
-    if (!val) return;
-    emit("resolved-styles", val);
+  () => [
+    props.size,
+    props.postType,
+    props.postData,
+    props.backgroundClass,
+    props.backgroundTone,
+    props.useColoredBackground,
+    props.usePhoto,
+    props.photoSrc,
+    props.showSafeZone,
+  ],
+  () => {
+    scheduleEmitResolvedStyles();
   },
-  { immediate: true }
+  { deep: true, immediate: false }
 );
+
+function onDynamicVarsUpdated() {
+  scheduleEmitResolvedStyles();
+}
+
+onMounted(() => {
+  isMounted.value = true;
+  scheduleEmitResolvedStyles();
+
+  window.addEventListener("dynamic-text-updated", onDynamicVarsUpdated);
+  window.addEventListener("accent-updated", onDynamicVarsUpdated);
+  window.addEventListener("palette-updated", onDynamicVarsUpdated);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("dynamic-text-updated", onDynamicVarsUpdated);
+  window.removeEventListener("accent-updated", onDynamicVarsUpdated);
+  window.removeEventListener("palette-updated", onDynamicVarsUpdated);
+});
 </script>

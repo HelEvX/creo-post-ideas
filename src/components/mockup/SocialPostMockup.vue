@@ -106,6 +106,17 @@ function readCssVar(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || null;
 }
 
+function readCssVarFromEl(el, name) {
+  if (!el) return null;
+  return getComputedStyle(el).getPropertyValue(name).trim() || null;
+}
+
+function getPostContentEl() {
+  return document.querySelector(".post-content");
+}
+
+const visualTick = ref(0);
+
 /* ----------------------------------------------
    LOGO COLOR + LOGO PATTERN (SVG -> CSS mask)
 ---------------------------------------------- */
@@ -255,6 +266,8 @@ function recomputeMockupVars() {
     "--caption-on-alt-panel": altPanelCaption,
     "--caption-on-accent": accentCaption,
   };
+
+  visualTick.value++;
 }
 
 /* ----------------------------------------------
@@ -298,44 +311,55 @@ onBeforeUnmount(() => {
    EXPORT TO STYLE INSPECTOR (CONSOLIDATED)
 ---------------------------------------------- */
 
-const resolvedVisualContext = computed(() => ({
-  background: {
-    mockup: readCssVar("--ui-primary-bg") || readCssVar("--ui-secondary-bg") || readCssVar("--ui-alt-section-bg"),
-    panel: readCssVar("--ui-panel-bg"),
-    altPanel: readCssVar("--ui-alt-panel-bg"),
-    accent: readCssVar("--ui-accent-bg"),
-  },
+const resolvedVisualContext = computed(() => {
+  // reactive trigger so this recomputes whenever mockupVars are recalculated
+  visualTick.value;
 
-  text: {
-    mockup: {
-      title: readCssVar("--dynamic-title"),
-      body: readCssVar("--dynamic-text"),
-      soft: readCssVar("--dynamic-soft"),
+  const postEl = getPostContentEl();
+
+  // prefer the actual bg used for the mockup (derived from bgColors)
+  const mockupBg = resolveFirstBg(props.bgColors) || readCssVar("--ui-alt-section-bg");
+
+  return {
+    background: {
+      mockup: mockupBg,
+      panel: readCssVar("--ui-panel-bg"),
+      altPanel: readCssVar("--ui-alt-panel-bg"),
+      accent: readCssVar("--ui-accent-bg"),
     },
 
-    panel: {
-      title: readCssVar("--title-on-panel"),
-      body: readCssVar("--text-on-panel"),
-      caption: readCssVar("--caption-on-panel"),
+    text: {
+      // these live on .post-content (inline vars), not on :root
+      mockup: {
+        title: readCssVarFromEl(postEl, "--dynamic-title"),
+        body: readCssVarFromEl(postEl, "--dynamic-text"),
+        soft: readCssVarFromEl(postEl, "--dynamic-soft"),
+      },
+
+      panel: {
+        title: readCssVar("--title-on-panel"),
+        body: readCssVar("--text-on-panel"),
+        caption: readCssVarFromEl(postEl, "--caption-on-panel") || readCssVar("--caption-on-panel"),
+      },
+
+      altPanel: {
+        title: readCssVar("--title-on-alt-panel"),
+        body: readCssVar("--text-on-alt-panel"),
+        caption: readCssVarFromEl(postEl, "--caption-on-alt-panel") || readCssVar("--caption-on-alt-panel"),
+      },
+
+      accent: {
+        title: readCssVar("--title-on-accent"),
+        body: readCssVar("--text-on-accent"),
+        caption: readCssVarFromEl(postEl, "--caption-on-accent") || readCssVar("--caption-on-accent"),
+      },
     },
 
-    altPanel: {
-      title: readCssVar("--title-on-alt-panel"),
-      body: readCssVar("--text-on-alt-panel"),
-      caption: readCssVar("--caption-on-alt-panel"),
+    decoration: {
+      decor: readCssVarFromEl(postEl, "--mockup-decor") || readCssVar("--mockup-decor"),
     },
-
-    accent: {
-      title: readCssVar("--title-on-accent"),
-      body: readCssVar("--text-on-accent"),
-      caption: readCssVar("--caption-on-accent"),
-    },
-  },
-
-  decoration: {
-    decor: readCssVar("--mockup-decor"),
-  },
-}));
+  };
+});
 
 const emit = defineEmits(["resolved-visuals"]);
 

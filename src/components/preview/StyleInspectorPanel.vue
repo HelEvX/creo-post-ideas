@@ -38,12 +38,15 @@
       <div class="main-preview__styles__swatch-container">
         <button
           v-for="color in swatches"
-          :key="color"
+          :key="`${color.hex}-${color.alpha}`"
           class="main-preview__styles__swatch"
-          :style="{ background: color, color: swatchTextColor(color) }"
+          :style="{
+            background: swatchBackground(color),
+            color: swatchTextColor(color.hex),
+          }"
           @click="copyColor(color)">
-          <span class="swatch__label">{{ color }}</span>
-          <span v-if="copied === color" class="swatch__toast">Gekopieerd</span>
+          <span class="swatch__label">{{ swatchLabel(color) }}</span>
+          <span v-if="copied === swatchLabel(color)" class="swatch__toast">Gekopieerd</span>
         </button>
       </div>
     </div>
@@ -120,45 +123,178 @@ const titleFontData = computed(() => fontData(props.titleFont));
 const bodyFontData = computed(() => fontData(props.bodyFont));
 
 /* ------------------------------------------------------------
-   SWATCHES
+   SWATCHES (normalized, unique, visible colors only)
 ------------------------------------------------------------ */
 
-function readCss(name) {
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+/* one reusable probe to resolve var() / color-mix() / named colors into computed rgb/rgba */
+let _probeEl = null;
+function resolveToComputedRgb(value) {
+  if (!value) return null;
+
+  if (!_probeEl) {
+    _probeEl = document.createElement("span");
+    _probeEl.setAttribute("data-color-probe", "true");
+    _probeEl.style.position = "absolute";
+    _probeEl.style.left = "-9999px";
+    _probeEl.style.top = "-9999px";
+    _probeEl.style.opacity = "0";
+    _probeEl.style.pointerEvents = "none";
+    document.body.appendChild(_probeEl);
+  }
+
+  _probeEl.style.color = "";
+  _probeEl.style.color = value;
+
+  const computed = getComputedStyle(_probeEl).color;
+  if (!computed) return null;
+
+  // If browser couldn't parse, computed can be empty or unchanged; guard on obvious failures.
+  if (computed === "rgba(0, 0, 0, 0)") return null;
+
+  return computed;
 }
 
-const swatchInk = computed(() => {
-  const dark = readCss("--color-text") || "var(--ui-text)";
-  const light = readCss("--color-text-inverse") || "var(--white)";
-  return { dark, light };
-});
-
 function swatchTextColor(bgHex) {
-  const { dark, light } = swatchInk.value;
+  const root = getComputedStyle(document.documentElement);
+
+  const dark = root.getPropertyValue("--color-text").trim() || "#000000";
+  const light = root.getPropertyValue("--color-text-inverse").trim() || "#ffffff";
+
   return getTextModeForBackground(bgHex, dark, light) === "light" ? light : dark;
 }
 
-function isColor(value) {
-  return typeof value === "string" && (value.startsWith("#") || value.startsWith("rgb") || value.startsWith("hsl"));
+function normalizeColor(value) {
+  if (!value) return null;
+
+  const raw = String(value).trim();
+  if (!raw) return null;
+
+  // Hex (3/4/6/8)
+  if (raw.startsWith("#")) {
+    const hex = raw.toLowerCase();
+
+    if (hex.length === 4) {
+      const r = hex[1],
+        g = hex[2],
+        b = hex[3];
+      return { hex: `#${r}${r}${g}${g}${b}${b}`, alpha: 100 };
+    }
+
+    if (hex.length === 5) {
+      const r = hex[1],
+        g = hex[2],
+        b = hex[3],
+        a = hex[4];
+      const alpha = Math.round((parseInt(a + a, 16) / 255) * 100);
+      return { hex: `#${r}${r}${g}${g}${b}${b}`, alpha };
+    }
+
+    if (hex.length === 7) return { hex, alpha: 100 };
+
+    if (hex.length === 9) {
+      const rgb = hex.slice(0, 7);
+      const a = hex.slice(7, 9);
+      const alpha = Math.round((parseInt(a, 16) / 255) * 100);
+      return { hex: rgb, alpha };
+    }
+
+    return null;
+  }
+
+  // If not rgb/rgba already, resolve to computed rgb/rgba (handles var(--x), color-mix, named)
+  const resolved = raw.startsWith("rgb") ? raw : resolveToComputedRgb(raw);
+  if (!resolved) return null;
+
+  const m = resolved.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([\d.]+))?\s*\)/);
+  if (!m) return null;
+
+  const r = Number(m[1]).toString(16).padStart(2, "0");
+  const g = Number(m[2]).toString(16).padStart(2, "0");
+  const b = Number(m[3]).toString(16).padStart(2, "0");
+  const a = m[4] !== undefined ? Math.round(Number(m[4]) * 100) : 100;
+
+  return { hex: `#${r}${g}${b}`, alpha: a };
 }
 
-function collectColors(obj, out) {
-  if (!obj) return;
-  for (const v of Object.values(obj)) {
-    if (isColor(v)) out.push(v);
-    else if (typeof v === "object") collectColors(v, out);
-  }
+function collectActiveColors(ctx) {
+  if (!ctx) return [];
+
+  const root = getComputedStyle(document.documentElement);
+
+  return [
+    // backgrounds
+    ctx.background?.mockup,
+    ctx.background?.panel,
+    ctx.background?.altPanel,
+    ctx.background?.accent || root.getPropertyValue("--ui-accent-bg").trim(),
+
+    // decoration
+    ctx.decoration?.decor,
+
+    // mockup text
+    ctx.text?.mockup?.title,
+    ctx.text?.mockup?.body,
+    ctx.text?.mockup?.soft,
+
+    // panel text
+    ctx.text?.panel?.title,
+    ctx.text?.panel?.body,
+    ctx.text?.panel?.caption,
+
+    // alt panel text
+    ctx.text?.altPanel?.title,
+    ctx.text?.altPanel?.body,
+    ctx.text?.altPanel?.caption,
+
+    // accent text
+    ctx.text?.accent?.title,
+    ctx.text?.accent?.body,
+    ctx.text?.accent?.caption,
+  ].filter(Boolean);
 }
 
 const swatches = computed(() => {
-  const colors = [];
-  collectColors(props.styles, colors);
-  return Array.from(new Set(colors));
+  const raw = collectActiveColors(props.styles);
+
+  const normalized = raw.map(normalizeColor).filter(Boolean);
+
+  const unique = new Map();
+  for (const c of normalized) {
+    const key = `${c.hex}-${c.alpha}`;
+    if (!unique.has(key)) unique.set(key, c);
+  }
+
+  return Array.from(unique.values());
 });
 
-async function copyColor(hex) {
-  await navigator.clipboard.writeText(hex);
-  copied.value = hex;
+// Exports
+
+function swatchLabel({ hex, alpha }) {
+  return alpha < 100 ? `${hex} (${alpha}%)` : hex;
+}
+
+function swatchBackground({ hex, alpha }) {
+  if (alpha === 100) return hex;
+  return `${hex}${Math.round((alpha / 100) * 255)
+    .toString(16)
+    .padStart(2, "0")}`;
+}
+
+// Copy
+
+function toRgba({ hex, alpha }) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+
+  if (alpha === 100) return hex;
+
+  return `rgba(${r}, ${g}, ${b}, ${(alpha / 100).toFixed(2)})`;
+}
+
+async function copyColor(color) {
+  await navigator.clipboard.writeText(toRgba(color));
+  copied.value = swatchLabel(color);
   setTimeout(() => (copied.value = null), 1000);
 }
 </script>
@@ -206,14 +342,6 @@ p.styles__hint {
 .body-font,
 .title-font {
   text-align: left;
-}
-
-.is-link {
-  cursor: pointer;
-  text-decoration: none;
-}
-.is-link:hover {
-  text-decoration: underline;
 }
 
 /* swatch styling */
