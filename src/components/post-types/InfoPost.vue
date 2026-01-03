@@ -5,7 +5,7 @@
     <div v-if="zone === 'safe'" class="info-block">
       <div class="cards">
         <!-- LEFT CARD (alt-panel surface) -->
-        <div class="card alt-panel">
+        <div class="card info-card alt-panel">
           <div class="card__caption">
             <i class="fa-solid fa-heart post-icon"></i>
             <span>inhoud</span>
@@ -21,7 +21,7 @@
         </div>
 
         <!-- RIGHT CARD (panel surface) -->
-        <div class="card panel">
+        <div class="card info-card panel">
           <div class="card__caption">
             <i class="fa-solid fa-link post-icon"></i>
             <span>achtergrond</span>
@@ -38,7 +38,7 @@
       </div>
 
       <!-- ACCENT -->
-      <div class="card accent">
+      <div class="card info-card accent">
         <div class="accent card__caption">
           <i class="fa-solid fa-link post-icon"></i>
           <span>Kies een kleurcombinatie</span>

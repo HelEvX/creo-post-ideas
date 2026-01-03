@@ -488,9 +488,9 @@ export default {
       // mockup card border ONLY
       if (borderEnabled) {
         const w = t(data["border-width"]) || "0";
-        root.style.setProperty("--border-card", `${w} solid var(--color-border-medium)`);
+        root.style.setProperty("--card-border", `${w} solid var(--color-border-card)`);
       } else {
-        root.style.setProperty("--border-card", "none");
+        root.style.setProperty("--card-border", "none");
       }
 
       // mockup card shadow ONLY
@@ -499,12 +499,15 @@ export default {
         const y = t(data["shadow-y"]) || "0";
         const blur = t(data["shadow-blur"]) || "0";
 
-        const cs = getComputedStyle(root);
-        const color = t(data["color-shadow"]) || cs.getPropertyValue("--color-shadow").trim() || "rgba(0,0,0,0.25)";
+        // BRAND DEFAULT alpha
+        const alpha = t(data["ui-shadow-alpha"]);
+        if (alpha) {
+          root.style.setProperty("--ui-shadow-alpha", alpha);
+        }
 
-        root.style.setProperty("--shadow-card", `${x} ${y} ${blur} ${color}`);
+        root.style.setProperty("--card-shadow", `${x} ${y} ${blur} var(--color-shadow)`);
       } else {
-        root.style.setProperty("--shadow-card", "none");
+        root.style.setProperty("--card-shadow", "none");
       }
 
       await this.$nextTick();

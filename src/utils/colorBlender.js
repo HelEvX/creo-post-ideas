@@ -168,15 +168,17 @@ function buildAnchorScale(hex, steps = 11, whiteCapL = 0.97, blackCapL = 0.03) {
     if (i < 5) {
       // lighter side: preserve saturation for light anchors
       const l = l0 + (whiteCapL - l0) * t;
-      const satLoss = l0 > 0.55 ? 0.05 * t : 0.15 * t;
-      const s = Math.max(0, Math.min(1, s0 * (1 - satLoss)));
+      const satGain = l0 > 0.55 ? 0.05 * t : 0.15 * t;
+      const s = Math.max(0, Math.min(1, s0 * (1 + satGain)));
+
       return rgbToHex(hslToRgb([h, s, l]));
     }
 
     // darker side: limit oversaturation for dark anchors
     const l = l0 - (l0 - blackCapL) * t;
-    const satGain = l0 < 0.45 ? 0.05 * t : 0.2 * t;
-    const s = Math.max(0, Math.min(1, s0 * (1 + satGain)));
+    const satLoss = l0 < 0.45 ? 0.05 * t : 0.2 * t;
+    const s = Math.max(0, Math.min(1, s0 * (1 - satLoss)));
+
     return rgbToHex(hslToRgb([h, s, l]));
   });
 }

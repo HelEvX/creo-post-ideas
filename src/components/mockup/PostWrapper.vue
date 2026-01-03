@@ -85,6 +85,14 @@ const aspectMap = {
    GENERAL STYLES
    ====================================================== */
 
+/* border and shadow: from JSON */
+
+.card {
+  border-radius: var(--card-radius); /* client input */
+  border: var(--card-border); /* client input: border width only */
+  box-shadow: var(--card-shadow); /* client input: XY distance,  blur, black alpha value */
+}
+
 /* --------------
    CARD STRUCTURE
    -------------- */
@@ -95,16 +103,12 @@ const aspectMap = {
   flex: 1;
 }
 
-.card {
+.info-card {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
   gap: var(--card-gap);
   padding: var(--card-padding);
-
-  border-radius: var(--card-radius); /* client input */
-  border: var(--border-card); /* client input: border width only */
-  box-shadow: var(--shadow-card); /* client input: XY distance,  blur */
 }
 
 /* padding adjustments */

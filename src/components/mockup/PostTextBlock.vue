@@ -47,7 +47,7 @@
     </div>
 
     <!-- Opening hours -->
-    <ul v-if="hours" class="opening-hours alt-panel">
+    <ul v-if="hours" class="opening-hours card alt-panel">
       <li v-for="(row, i) in hours" :key="i" bodyAlign="left">
         <span class="opening-hours__label">{{ row.label }}</span>
         <span class="opening-hours__value">{{ row.value }}</span>

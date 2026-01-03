@@ -9,11 +9,11 @@
 
   "_comment-1": "COLOR PALETTE",
 
-  "color-primary": "#ef3e19",
-  "color-primary-dark": "#c23518",
-  "color-primary-darker": "#a02c14",
-  "color-primary-light": "#f26649",
-  "color-primary-lighter": "#ff886f",
+  "color-primary": "#f26649",
+  "color-primary-dark": "#ef4825",
+  "color-primary-darker": "#f26649",
+  "color-primary-light": "#ff886f",
+  "color-primary-lighter": "#FFAA99",
 
   "color-secondary": "#000000",
   "color-secondary-dark": "#3f3f3f",
@@ -29,6 +29,7 @@
 
   "color-surface": "#ffffff",
   "color-panel": "#f2f2f2",
+  "color-card": "#ffffff",
   "color-nav-bg": "#ffffff",
   "color-footer-bg": "#000000",
 
@@ -37,9 +38,8 @@
   "color-title": "#000000",
   "color-text": "#000000",
 
-  "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
+  "_comment-5": "LABEL COLORS",
 
-  "color-info": "#1c487b",
   "color-warning": "#c7871c",
   "color-danger": "#c23518",
   "color-success": "#44af69",
@@ -48,35 +48,37 @@
   "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
 
   "border-enabled": "false",
+  "color-border-card": "#",
   "border-width": "0",
   "card-radius": "0",
 
-  "shadow-enabled": "false",
+  "shadow-enabled": "true",
   "shadow-x": "0",
-  "shadow-y": "0",
-  "shadow-blur": "0",
+  "shadow-y": "1rem",
+  "shadow-blur": "2rem",
+  "ui-shadow-alpha": "0.15",
 
   "ig": {
     "avatar": "blooloc.webp",
-    "username": "blooloc.com",
+    "username": "BlooLoc",
     "posts": 0,
     "followers": 0,
     "following": 0,
-    "title": "www.blooloc.com",
-    "threads": "@blooloc.com",
-    "businessType": "logistics",
-    "description": "Description part 1.\nDescription part 2\nDescription part 3\nDescription part 4",
-    "address": "Straat, Stad, Belgium xxxx",
+    "title": "BlooLoc",
+    "threads": "",
+    "businessType": "Information Technology & Services",
+    "description": "Unlocking Warehouse Efficiency and Safety with Real-Time Location Mapping.",
+    "address": "Hasselt, Vlaanderen",
     "url": "https://www.blooloc.com",
     "highlightIcon": "blooloc-small.svg",
     "highlights": [
-      { "label": "TEAM", "bg": "#cecece" },
-      { "label": "PROMOS", "bg": "#444" },
-      { "label": "SHOP", "bg": "#cecece" },
-      { "label": "SERVICES", "bg": "#444" },
-      { "label": "BLOG", "bg": "#cecece" },
-      { "label": "FAQ", "bg": "#444" },
-      { "label": "REVIEWS", "bg": "#cecece" }
+      { "label": "TEAM" },
+      { "label": "PROMOS" },
+      { "label": "SHOP" },
+      { "label": "SERVICES" },
+      { "label": "BLOG" },
+      { "label": "FAQ" },
+      { "label": "REVIEWS" }
     ]
   }
 }

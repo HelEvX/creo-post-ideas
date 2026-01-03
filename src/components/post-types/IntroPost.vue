@@ -52,7 +52,6 @@ const { caption, headline, subtitle, hours } = defineProps({
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-radius: var(--card-radius);
 }
 
 .opening-hours li {

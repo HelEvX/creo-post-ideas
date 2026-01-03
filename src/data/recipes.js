@@ -41,7 +41,6 @@ export const recipes = [
       // PANELS
       "--ui-panel-bg": ["neutral", 2],
       "--ui-alt-panel-bg": ["primaryDark", 5],
-      "--color-tertiary": ["primary", 4],
 
       // TEXT
       "--color-title": ["neutral", 10],
@@ -51,8 +50,7 @@ export const recipes = [
       "--ui-shadow-alpha": ["neutral", 2],
 
       // borders
-      "--color-border-medium": ["neutral", 4],
-      "--color-border-light": ["neutral", 2],
+      "--color-border-card": ["neutral", 4],
     },
   },
   // ======================================================

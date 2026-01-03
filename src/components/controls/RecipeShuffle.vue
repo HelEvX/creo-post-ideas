@@ -187,7 +187,9 @@ function readCSSVar(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
 
-// Resolves chained vars:
+// GLOBAL resolver.
+// Use ONLY for root-level UI tokens and brand variables
+// that are not expected to be overridden per-mockup.
 function resolveCssColor(value, depth = 0) {
   if (!value) return null;
   if (depth > 10) return value;
@@ -233,6 +235,9 @@ function readVarFrom(el, name) {
   return getComputedStyle(el).getPropertyValue(name).trim();
 }
 
+// SCOPED resolver.
+// Use ONLY when a variable may be overridden inside the mockup
+// (dynamic text, per-mockup experiments, future scoped overrides).
 function resolveCssColorFrom(el, value, depth = 0) {
   if (!value) return null;
   if (depth > 10) return value;
@@ -288,6 +293,22 @@ function resolveVarToComputed(scopeEl, varName, cssProp) {
   return resolveToComputedColor(raw, cssProp);
 }
 
+function resolveBgFromRootOrScope(scopeEl, varName) {
+  if (!varName) return null;
+
+  const scopedRaw = scopeEl ? getComputedStyle(scopeEl).getPropertyValue(varName).trim() : "";
+
+  if (scopedRaw) {
+    return resolveToComputedColor(scopedRaw, "backgroundColor");
+  }
+
+  const rootRaw = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+
+  if (!rootRaw) return null;
+
+  return resolveToComputedColor(rootRaw, "backgroundColor");
+}
+
 function resolveToComputedColor(value, cssProp = "color") {
   if (!value) return null;
 
@@ -331,6 +352,12 @@ function pickReadablePillText(bgHex) {
   return mode === "light" ? light : dark;
 }
 
+/**
+ * Writes CSS variables with strict scoping rules:
+ * - --dynamic-*   → written ONLY to mockup scope (.post-content)
+ * - all other vars → written to :root (global UI + tokens)
+ * This is intentional to prevent accidental scope bleed.
+ */
 function applyCssVar(scopeEl, cssVarName, value) {
   if (!cssVarName || !value) return;
 
@@ -348,6 +375,8 @@ function applyCssVar(scopeEl, cssVarName, value) {
   root.style.setProperty(cssVarName, value, "important");
 }
 
+// Resolve a CSS value by first checking mockup scope,
+// then falling back to root. Used intentionally for ACCENT_BG.
 function resolveScopedThenRoot(scopeEl, value) {
   const scoped = resolveCssColorFrom(scopeEl, value);
   if (scoped) return scoped;
@@ -383,6 +412,28 @@ function triggerNoFixHint(id, timeout = 1500) {
   }, timeout);
 }
 
+function getFixStrategy(item, colored) {
+  // Rows 1–2
+  if (item.id === "main-title" || item.id === "main-paragraph") {
+    return colored ? { bgFirst: false, fgAllowed: true } : { bgFirst: true, fgAllowed: false };
+  }
+
+  // Rows 3–8 (panel + alt-panel)
+  if (item.id.startsWith("card1-") || item.id.startsWith("card2-")) {
+    if (item.id.endsWith("caption")) {
+      return { bgFirst: true, fgAllowed: true };
+    }
+    return { bgFirst: true, fgAllowed: false };
+  }
+
+  // Rows 9–10 (accent)
+  if (item.id.startsWith("accent-")) {
+    return { bgFirst: true, fgAllowed: true };
+  }
+
+  return { bgFirst: true, fgAllowed: false };
+}
+
 /* --------------------------------------------------
    APPLY RECIPE
 -------------------------------------------------- */
@@ -403,7 +454,7 @@ function applyActiveRecipe() {
 
   // Shadow participation + recipe-driven shadow alpha
   const cs = getComputedStyle(root);
-  const shadowCardRaw = cs.getPropertyValue("--shadow-card").trim();
+  const shadowCardRaw = cs.getPropertyValue("--card-shadow").trim();
   const brandUsesShadows = shadowCardRaw !== "" && shadowCardRaw.toLowerCase() !== "none";
 
   // Recipe role key: "--ui-shadow-alpha" expects ["neutral", idx] where idx is 0..10
@@ -480,27 +531,28 @@ watch(() => props.bgContext, scheduleContrastUpdate, { deep: true });
 
 watch(() => props.colored, scheduleContrastUpdate);
 
-/* --------------------------------------------------
+/* ==================================================
    CONTRAST PAIRS
    Each pair declares:
    - fg: rendered variable used in UI
    - bg: rendered background
    - fix: which SOURCE token family may be adjusted
--------------------------------------------------- */
+================================================== */
+
 const contrastPairs = ref([
   // Mockup main text on the mockup background
   {
     id: "main-title",
     fgVar: "--dynamic-title",
     bg: "CONTEXT",
-    fixFgCandidates: ["--dynamic-title"], // fix what the swatch actually represents (scoped)
+    fixFgCandidates: ["--fix-dynamic-title"],
     largeText: true,
   },
   {
     id: "main-paragraph",
     fgVar: "--dynamic-text",
     bg: "CONTEXT",
-    fixFgCandidates: ["--dynamic-text"], // fix what the swatch actually represents (scoped)
+    fixFgCandidates: ["--fix-dynamic-text"],
     largeText: true,
   },
 
@@ -509,20 +561,19 @@ const contrastPairs = ref([
     id: "card1-caption",
     fgVar: "--caption-on-alt-panel",
     bg: "--ui-alt-panel-bg",
-    fixFgCandidates: ["--caption-on-alt-panel"],
+    fixFgCandidates: ["--fix-caption-on-alt-panel"],
   },
-
   {
     id: "card1-title",
     fgVar: "--title-on-alt-panel",
     bg: "--ui-alt-panel-bg",
-    fixFgCandidates: ["--title-on-alt-panel"],
+    fixFgCandidates: ["--fix-title-on-alt-panel"],
   },
   {
     id: "card1-paragraph",
     fgVar: "--text-on-alt-panel",
     bg: "--ui-alt-panel-bg",
-    fixFgCandidates: ["--text-on-alt-panel"],
+    fixFgCandidates: ["--fix-text-on-alt-panel"],
   },
 
   // Right card (panel)
@@ -530,19 +581,19 @@ const contrastPairs = ref([
     id: "card2-caption",
     fgVar: "--caption-on-panel",
     bg: "--ui-panel-bg",
-    fixFgCandidates: ["--caption-on-panel"],
+    fixFgCandidates: ["--fix-caption-on-panel"],
   },
   {
     id: "card2-title",
     fgVar: "--title-on-panel",
     bg: "--ui-panel-bg",
-    fixFgCandidates: ["--title-on-panel"],
+    fixFgCandidates: ["--fix-title-on-panel"],
   },
   {
     id: "card2-paragraph",
     fgVar: "--text-on-panel",
     bg: "--ui-panel-bg",
-    fixFgCandidates: ["--text-on-panel"],
+    fixFgCandidates: ["--fix-text-on-panel"],
   },
 
   // Accent block
@@ -550,13 +601,13 @@ const contrastPairs = ref([
     id: "accent-caption",
     fgVar: "--caption-on-accent",
     bg: "ACCENT_BG",
-    fixFgCandidates: ["--caption-on-accent"],
+    fixFgCandidates: ["--fix-caption-on-accent"],
   },
   {
     id: "accent-text",
     fgVar: "--text-on-accent",
     bg: "ACCENT_BG",
-    fixFgCandidates: ["--text-on-accent"],
+    fixFgCandidates: ["--fix-text-on-accent"],
   },
 ]);
 
@@ -600,13 +651,14 @@ function updateContrastChecks() {
         ? [
             (() => {
               bgVarSource = props.bgContext?.tone === "secondary" ? "--ui-primary-bg" : "--ui-secondary-bg";
+              // Accent backgrounds may be overridden per-mockup; prefer scope, fallback to root
               return resolveToComputedColor(resolveScopedThenRoot(scopeEl, bgVarSource), "backgroundColor");
             })(),
           ].filter(Boolean)
         : [
             (() => {
               bgVarSource = p.bg;
-              return resolveToComputedColor(resolveScopedThenRoot(scopeEl, p.bg), "backgroundColor");
+              return resolveBgFromRootOrScope(scopeEl, p.bg);
             })(),
           ].filter(Boolean);
 
@@ -775,14 +827,15 @@ async function fixContrast(item) {
     return;
   }
 
-  const sourceVar = item.fixFgCandidates && item.fixFgCandidates[0];
-  if (!sourceVar) {
+  const writeVar = item.fixFgCandidates && item.fixFgCandidates[0];
+  if (!writeVar) {
     triggerNoFixHint(item.id);
     updateContrastChecks();
     return;
   }
 
-  const startFg = resolveVarToComputed(scopeEl, sourceVar, "color");
+  // ALWAYS read from the rendered fg, never from the fix var
+  const startFg = resolveVarToComputed(scopeEl, item.cssVarFg, "color");
   if (!startFg) {
     triggerNoFixHint(item.id);
     updateContrastChecks();
@@ -792,75 +845,59 @@ async function fixContrast(item) {
   // One-step nudge only (visible feedback), do not chase AA in one click
   const STEP_SIZE = 0.02;
 
-  const r0 = getContrastRatio(startFg, bg);
+  const strategy = getFixStrategy(item, props.colored);
 
-  // Decide which direction improves contrast more, but apply only ONE step
-  const darker = toneShift(startFg, -1, STEP_SIZE);
-  const lighter = toneShift(startFg, +1, STEP_SIZE);
-
-  const rDark = getContrastRatio(darker, bg);
-  const rLight = getContrastRatio(lighter, bg);
-
-  let nextFg = null;
-  if (rDark > r0 || rLight > r0) {
-    nextFg = rDark >= rLight ? darker : lighter;
-  }
-
-  if (nextFg) {
-    applyCssVar(scopeEl, sourceVar, nextFg);
-    await nextTick();
-    window.dispatchEvent(new Event("dynamic-text-updated"));
-    scheduleContrastUpdate();
-    return;
-  }
-
-  // Background fallback: ONE tiny nudge (choose direction by contrast improvement)
+  // Background-first, foreground-escalation fix
   if (item.bgVarSource) {
     const bgVar = item.bgVarSource;
-
-    const currentBg = resolveVarToComputed(scopeEl, bgVar, "backgroundColor");
-    if (!currentBg) {
-      triggerNoFixHint(item.id);
-      updateContrastChecks();
-      return;
-    }
-
     const STEP_BG = 0.02;
 
-    const rBase = getContrastRatio(startFg, currentBg);
+    const currentBg = resolveVarToComputed(scopeEl, bgVar, "backgroundColor");
+    if (currentBg) {
+      const rBase = getContrastRatio(startFg, currentBg);
 
-    const darkerBg = toneShift(currentBg, -1, STEP_BG);
-    const lighterBg = toneShift(currentBg, +1, STEP_BG);
+      const darkerBg = toneShift(currentBg, -1, STEP_BG);
+      const lighterBg = toneShift(currentBg, +1, STEP_BG);
 
-    const rDark = getContrastRatio(startFg, darkerBg);
-    const rLight = getContrastRatio(startFg, lighterBg);
+      const rDark = getContrastRatio(startFg, darkerBg);
+      const rLight = getContrastRatio(startFg, lighterBg);
 
-    let nextBg = null;
+      let nextBg = null;
+      if (rDark > rBase || rLight > rBase) {
+        nextBg = rDark >= rLight ? darkerBg : lighterBg;
+      }
 
-    // apply ONLY if it improves contrast; pick best improvement
-    if (rDark > rBase || rLight > rBase) {
-      nextBg = rDark >= rLight ? darkerBg : lighterBg;
+      if (nextBg) {
+        applyCssVar(scopeEl, bgVar, nextBg);
+        await nextTick();
+        window.dispatchEvent(new Event("palette-updated"));
+        scheduleContrastUpdate();
+        return;
+      }
+
+      // Background attempt failed — try foreground if allowed
+      if (strategy.fgAllowed) {
+        const darker = toneShift(startFg, -1, STEP_SIZE);
+        const lighter = toneShift(startFg, +1, STEP_SIZE);
+
+        const rBase = getContrastRatio(startFg, bg);
+        const rDark = getContrastRatio(darker, bg);
+        const rLight = getContrastRatio(lighter, bg);
+
+        let nextFg = null;
+        if (rDark > rBase || rLight > rBase) {
+          nextFg = rDark >= rLight ? darker : lighter;
+        }
+
+        if (nextFg) {
+          applyCssVar(scopeEl, writeVar, nextFg);
+          await nextTick();
+          window.dispatchEvent(new Event("dynamic-text-updated"));
+          scheduleContrastUpdate();
+          return;
+        }
+      }
     }
-
-    // optional safety clamp (prevents extremes)
-    if (!nextBg) {
-      triggerNoFixHint(item.id);
-      updateContrastChecks();
-      return;
-    }
-
-    if (isNearLimit(nextBg)) {
-      triggerNoFixHint(item.id);
-      updateContrastChecks();
-      return;
-    }
-
-    applyCssVar(scopeEl, bgVar, nextBg);
-
-    await nextTick();
-    window.dispatchEvent(new Event("palette-updated"));
-    scheduleContrastUpdate();
-    return;
   }
 
   triggerNoFixHint(item.id);
@@ -872,6 +909,14 @@ async function fixContrast(item) {
 -------------------------------------------------- */
 
 function resolveFgValue(scopeEl, fgVarName) {
+  if (!fgVarName) return null;
+
+  // Prefer fix vars if present
+  const fixVar = fgVarName.replace(/^--/, "--fix-");
+  const fixed = scopeEl ? getComputedStyle(scopeEl).getPropertyValue(fixVar).trim() : "";
+
+  if (fixed) return resolveToComputedColor(fixed, "color");
+
   return resolveVarToComputed(scopeEl, fgVarName, "color");
 }
 
@@ -885,11 +930,6 @@ function toneShift(hex, dir, amount) {
   const newS = Math.min(1, Math.max(0, s - dir * amount * 0.35));
 
   return rgbToHex(hslToRgb([h, newS, newL]));
-}
-
-function isNearLimit(hex) {
-  const [, , l] = rgbToHsl(anyToRgb(hex));
-  return l < 0.04 || l > 0.96;
 }
 
 defineExpose({ nextRecipe, prevRecipe });

@@ -1,6 +1,6 @@
 <template>
   <div class="product-post">
-    <div v-if="zone === 'safe'" class="product-card">
+    <div v-if="zone === 'safe'" class="product-card card">
       <div class="product-card__image">
         <img :src="image" alt="" />
         <span v-if="price" class="product-card__price">
@@ -8,7 +8,7 @@
         </span>
       </div>
 
-      <div class="product-card__content">
+      <div class="card product-card__content">
         <PostTextBlock
           :headlineText="name"
           :bodyText="description"
@@ -47,11 +47,7 @@ defineProps({
   height: 100%;
   display: flex;
   flex-direction: column;
-
   background: var(--ui-panel-bg);
-  border-radius: var(--card-radius);
-  border: var(--border-card);
-  box-shadow: var(--shadow-card);
 }
 
 /* IMAGE CONTAINER */

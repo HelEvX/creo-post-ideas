@@ -51,16 +51,19 @@
       </div>
     </div>
 
-    <!-- <div class="main-preview__styles__other">
+    <div class="main-preview__styles__other">
       <div>
         <h6>Randen & hoeken</h6>
-        <div class="main-preview__styles__corners"></div>
+        <div class="main-preview__styles__borders-corners">
+          <div class="card main-preview__styles__borders"></div>
+          <div class="card main-preview__styles__corners"></div>
+        </div>
       </div>
       <div>
         <h6>Shaduw</h6>
-        <div class="main-preview__styles__shadows"></div>
+        <div class="card main-preview__styles__shadows"></div>
       </div>
-    </div> -->
+    </div>
   </aside>
 </template>
 
@@ -364,6 +367,7 @@ p.styles__hint {
 
 .main-preview__styles__swatch {
   width: 100%;
+  max-width: 25rem;
   height: 4rem;
   border: var(--ui-panel-border-soft);
   border-radius: var(--radius-sm);
@@ -415,14 +419,32 @@ p.styles__hint {
   margin-bottom: var(--space-10);
 }
 
-.main-preview__styles__corners {
+.main-preview__styles__borders-corners {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.main-preview__styles__borders {
+  height: 4rem;
+  background-color: var(--white);
   padding: var(--space-25);
-  border: var(--border-card);
-  border-radius: var(--card-radius);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.main-preview__styles__corners {
+  height: 4rem;
+  background-color: var(--black-75);
+  padding: var(--space-25);
+  border: none;
+  box-shadow: none;
 }
 
 .main-preview__styles__shadows {
+  height: 4rem;
+  background-color: var(--white);
   padding: var(--space-25);
-  box-shadow: var(--shadow-card);
+  border: none;
+  border-radius: 0;
 }
 </style>

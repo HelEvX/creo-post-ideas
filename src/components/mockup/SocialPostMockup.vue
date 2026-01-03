@@ -204,7 +204,7 @@ function recomputeMockupVars() {
 
   /* caption tones */
   const primaryDark = root.getPropertyValue("--color-primary-dark").trim();
-  const secondaryDark = root.getPropertyValue("--color-secondary-dark").trim();
+  const secondaryDark = root.getPropertyValue("--color-tertiary").trim(); // same color as secondary-dark unless specified in the brand
 
   if (!textDark || !textLight) return;
 

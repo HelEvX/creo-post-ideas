@@ -36,7 +36,9 @@ Each brand color (primary, secondary, tertiary) and the neutral palette is expan
 - `5` = original brand anchor
 - `10` = darkest usable tone
 
-Scales are generated to preserve hue while carefully modulating lightness and saturation, preventing washed-out light colors and overly saturated dark tones.
+Scales are generated to preserve hue while asymmetrically modulating lightness and saturation around a fixed anchor, constraining tones to usable bounds and avoiding washed-out lights or oversaturated darks. This is because near-grey lights are useless for brand expression while over-saturated darks are visually unpleasant for most colors.
+
+Scale generation is anchor-centered and index-based; perceptual shaping comes from asymmetric lightness and saturation curves rather than uniform step distances.
 
 ### Semantic Role Mapping
 
@@ -45,17 +47,18 @@ Recipes assign colors exclusively through **semantic CSS roles** such as:
 - structural backgrounds (`--ui-section-bg`, `--ui-panel-bg`)
 - brand surfaces (`--ui-primary-bg`, `--ui-secondary-bg`)
 - typography (`--color-title`, `--color-text`)
-- accents and borders (`--color-tertiary`, border tokens)
-- depth cues (`--ui-shadow-alpha`)
+- accents (`--color-*-dark`, `--color-tertiary`)
+- depth cues (`--ui-shadow-alpha`, mockup-only)
+- borders (`--card-border`, mockup-only)
+
+Brand-defined borders and shadows apply only inside the mockup; UI borders and shadows are never affected by brands or recipes.
 
 This ensures consistency, scalability, and safe extension of the UI.
 
 ### Pinning vs Dynamic Behavior
 
 Most roles are assigned dynamically using `[scale, index]` pairs.  
-Exact brand defaults can be pinned using CSS variables (e.g. `var(--ui-nav-bg)`), typically for navigation, footers, or safety-critical cases such as dark mode.
-
-Pinning is intentionally limited to avoid freezing the system into static layouts.
+Exact brand defaults can be pinned using CSS variables or provided directly by brand tokens. Pinning hard-codes a value and stops it from responding to recipes, tone switches, inverted mode, and contrast logic.
 
 ### Recipe Intent
 
@@ -108,7 +111,7 @@ Handled globally in `App.vue -> updateDynamicTextRoles()`.
 
 For each UI surface:
 
-`nav, footer, section, alt-section, panel, primary, secondary`
+`nav, footer, section, alt-section, panel, primary, secondary, accent`
 
 The system:
 
@@ -154,6 +157,8 @@ These overrides are:
 - designed to expose a complete, stable visual context to the contrast checker
 
 This allows the contrast checker to evaluate and fix **exactly what is rendered**, without affecting the UI or brand tokens.
+
+The local override layer adjusts **text and caption roles** only and never redefines surface backgrounds.
 
 ### Buttons (Why They Always Work)
 
@@ -390,7 +395,7 @@ This structure is safe to extend with new formats, new platforms, or additional 
 
 ---
 
-## 🖼️ SVG Logo Preparation (Important)
+## 🖼️ SVG Logo Preparation
 
 All SVG logos used inside the mockup (large logo, pattern, watermark) must be prepared in a specific way.
 
@@ -429,7 +434,7 @@ This requirement applies to all future brands after handoff.
 | **Figma**                              | UI/UX design and component specification.     |
 | **AI-Assisted Development**            | Dual-AI strategy for accelerated development. |
 | &nbsp;&nbsp;&nbsp;↳ **ChatGPT**        | High-level strategy and code refactoring.     |
-| &nbsp;&nbsp;&nbsp;↳ **GitHub Copilot** | In-editor code completion.                    |
+| &nbsp;&nbsp;&nbsp;↳ **GitHub Copilot** | In-editor code completion (used sparingly).   |
 
 ---
 

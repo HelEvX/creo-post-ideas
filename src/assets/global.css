@@ -159,7 +159,11 @@
   --color-border-light: var(--black-25);
   --color-border-medium: var(--black-50);
   --color-border-dark: var(--black-75);
-  --color-shadow: rgba(0, 0, 0, 0); /* default: invisible */
+  --color-border-card: transparent; /* default: invisible */
+
+  --ui-shadow-rgb: 0 0 0; /* default black */
+  --ui-shadow-alpha: 0; /* default: invisible */
+  --color-shadow: rgba(var(--ui-shadow-rgb) / var(--ui-shadow-alpha));
 
   /* ==== STATUS / FEEDBACK ==== */
   --color-info: var(--blue-500);
@@ -399,9 +403,10 @@
   --pattern-offset-y: 0px;
 
   /* BRAND-SPECIFIC border & shadows */
+
   --card-radius: var(--radius-md);
-  --border-card: none;
-  --shadow-card: none;
+  --card-border: var(--border-width) solid var(--color-border-card);
+  --card-shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--color-shadow);
 
   /* Paddings & gaps */
   --card-padding: 2cqw;
