@@ -203,6 +203,21 @@ The contrast checker validates **rendered reality**, not tokens.
 
 UI tokens, brand identity, and global text roles remain untouched.
 
+### Style Inspector Output
+
+The Style Inspector lists **only resolved, rendered colors**, not raw brand tokens.
+
+- Colors are collected from the consolidated visual context emitted by `SocialPostMockup.vue`
+- Only surfaces and text roles that are **actively rendered** in the current mockup are included
+- Switching recipes, tones, or mockup variants changes the exported color set accordingly
+
+This is intentional.
+The inspector reflects visual reality after all dynamic resolution and overrides have been applied.
+
+In the current MVP, the color list does not shrink when switching designs.
+All resolved colors remain listed, even if some elements are not rendered in the active mockup.
+This is a known limitation and intentionally left unresolved for stability.
+
 ### Non-Negotiable Rules
 
 If any of these are broken, contrast bugs will appear:

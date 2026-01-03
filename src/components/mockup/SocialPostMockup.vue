@@ -181,10 +181,6 @@ const watermarkStyle = computed(() => {
    - surface captions (panel / alt-panel / accent)
 ---------------------------------------------- */
 
-// function readVar(name) {
-//   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-// }
-
 const mockupVars = ref({
   "--dynamic-text": "",
   "--dynamic-title": "",
@@ -268,6 +264,8 @@ function recomputeMockupVars() {
   };
 
   visualTick.value++;
+
+  window.dispatchEvent(new Event("mockup-visuals-updated"));
 }
 
 /* ----------------------------------------------

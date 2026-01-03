@@ -76,8 +76,8 @@ defineProps({
   right: 0;
   width: 3cqw;
   height: 3cqw;
-  border-right: 0.67cqw solid var(--dynamic-text);
-  border-bottom: 0.67cqw solid var(--dynamic-text);
+  border-right: 0.8cqw solid var(--dynamic-text);
+  border-bottom: 0.8cqw solid var(--dynamic-text);
   transform: rotate(-45deg);
 }
 
@@ -86,8 +86,8 @@ defineProps({
 }
 
 .size--landscape .arrow::after {
-  width: 2cqw;
-  height: 2cqw;
+  width: 3cqw;
+  height: 3cqw;
   border-width: 0.5cqw;
 }
 

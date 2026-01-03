@@ -57,7 +57,7 @@
 
             <span v-else-if="item.label && item.label === 'slecht'" class="icon-fail"> ! </span>
 
-            {{ item.label || "—" }}
+            {{ item.label || "-" }}
           </div>
 
           <!-- RIGHT: Fix button -->
@@ -78,14 +78,7 @@
 <script setup>
 import { ref, watch, computed, nextTick, onMounted, onBeforeUnmount } from "vue";
 import { recipes } from "../../data/recipes.js";
-import {
-  anyToRgb,
-  rgbToHsl,
-  hslToRgb,
-  rgbToHex,
-  getContrastRatio,
-  evaluateContrastVisual,
-} from "../../utils/colorBlender.js";
+import { anyToRgb, rgbToHsl, hslToRgb, rgbToHex, getContrastRatio } from "../../utils/colorBlender.js";
 
 import { getTextModeForBackground } from "../../utils/colorLogic.js";
 
@@ -171,20 +164,20 @@ function onPaletteUpdated() {
   scheduleContrastUpdate();
 }
 
-function onDynamicTextUpdated() {
+function onMockupVisualsUpdated() {
   scheduleContrastUpdate();
 }
 
 onMounted(() => {
   window.addEventListener("palette-updated", onPaletteUpdated);
-  window.addEventListener("dynamic-text-updated", onDynamicTextUpdated);
+  window.addEventListener("mockup-visuals-updated", onMockupVisualsUpdated);
 
   scheduleContrastUpdate();
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener("palette-updated", onPaletteUpdated);
-  window.removeEventListener("dynamic-text-updated", onDynamicTextUpdated);
+  window.removeEventListener("mockup-visuals-updated", onMockupVisualsUpdated);
 });
 
 /* --------------------------------------------------
@@ -315,19 +308,17 @@ function pickReadablePillText(bgHex) {
   return mode === "light" ? light : dark;
 }
 
-// BUG-FLAG: writing scoped vars that are not scoped
 function applyCssVar(scopeEl, cssVarName, value) {
   if (!scopeEl || !cssVarName || !value) return;
-
-  // Never write to dynamic-* derived text
-  if (cssVarName.startsWith("--dynamic-") && cssVarName !== "--caption-on-alt-panel") {
-    return;
-  }
 
   // Never write to derived background surfaces
   if (cssVarName === "--ui-alt-panel-bg") return;
 
-  // Write scoped (mockup only)
+  // Allow mockup-scoped overrides, including dynamic-* (only inside .post-content)
+  const isMockupScope = scopeEl && scopeEl.classList && scopeEl.classList.contains("post-content");
+
+  if (cssVarName.startsWith("--dynamic-") && !isMockupScope) return;
+
   scopeEl.style.setProperty(cssVarName, value, "important");
 }
 
@@ -342,9 +333,13 @@ async function scheduleContrastUpdate() {
   scheduleContrastUpdate._pending = true;
 
   await nextTick();
-  updateContrastChecks();
 
-  scheduleContrastUpdate._pending = false;
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      updateContrastChecks();
+      scheduleContrastUpdate._pending = false;
+    });
+  });
 }
 
 function triggerNoFixHint(id, timeout = 1500) {
@@ -472,16 +467,14 @@ const contrastPairs = ref([
     id: "main-title",
     fgVar: "--dynamic-title",
     bg: "CONTEXT",
-    fixBgCandidates: ["CONTEXT_BGVAR"],
-    fixFgCandidates: ["--color-title", "--color-text-inverse"],
+    fixFgCandidates: ["--dynamic-title"], // fix what the swatch actually represents (scoped)
     largeText: true,
   },
   {
     id: "main-paragraph",
     fgVar: "--dynamic-text",
     bg: "CONTEXT",
-    fixBgCandidates: ["CONTEXT_BGVAR"],
-    fixFgCandidates: ["--color-text", "--color-text-inverse"],
+    fixFgCandidates: ["--dynamic-text"], // fix what the swatch actually represents (scoped)
     largeText: true,
   },
 
@@ -548,6 +541,12 @@ const contrastPairs = ref([
 function updateContrastChecks() {
   const scopeEl = getMockupScopeEl();
 
+  // If mockup isn't mounted yet, try again next frame
+  if (!scopeEl || !scopeEl.classList || !scopeEl.classList.contains("post-content")) {
+    requestAnimationFrame(() => updateContrastChecks());
+    return;
+  }
+
   let contextBgs = props.bgContext?.bgVars?.map((v) => resolveCssColorFrom(scopeEl, v)).filter(Boolean) || [];
 
   // HARD FALLBACK — NEVER allow empty CONTEXT
@@ -578,14 +577,7 @@ function updateContrastChecks() {
           ].filter(Boolean)
         : [resolveToComputedColor(resolveScopedThenRoot(scopeEl, p.bg), "backgroundColor")].filter(Boolean);
 
-    // Determine the actual foreground var name for this row (accent is contextual)
-    // BUG-FLAG: ACCENT_TEXT is never used anywhere
-    const fgVarName =
-      p.fgVar === "ACCENT_TEXT"
-        ? props.bgContext?.tone === "secondary"
-          ? "--text-on-primary"
-          : "--text-on-secondary"
-        : p.fgVar;
+    const fgVarName = p.fgVar;
 
     // Read the actual foreground color that is currently applied in the mockup scope
     const fgValue = resolveFgValue(scopeEl, fgVarName);
@@ -645,47 +637,47 @@ function updateContrastChecks() {
       };
     }
 
-    const BASE_CONTRAST_THRESHOLD = 3.0;
-    const result = evaluateContrastVisual(fgValue, worstBg, BASE_CONTRAST_THRESHOLD, !!p.largeText);
-
     const isFirstTwo = p.id === "main-title" || p.id === "main-paragraph";
+
+    // WCAG thresholds
+    const AAA = 7.0;
+    const AA = 4.5;
+    const AA_LARGE = 3.0;
+    const A = 2.0;
+
+    let wcagLevel = "fail";
+    if (worstRatio >= AAA) wcagLevel = "AAA";
+    else if (worstRatio >= AA) wcagLevel = "AA";
+    else if (worstRatio >= AA_LARGE) wcagLevel = "AA Large";
+    else if (worstRatio >= A) wcagLevel = "A";
 
     let statusVar;
     let label;
 
-    const lvl = result.level;
-
+    // Rows 1-2 (mockup headline/paragraph) are treated more leniently for "goed"
     if (isFirstTwo) {
-      // Row 1-2 rules:
-      // AAA -> prima
-      // AA -> prima
-      // AA Large -> goed
-      // A -> beperkt
-      // below A -> slecht
-      if (lvl === "AAA" || lvl === "AA") {
+      if (wcagLevel === "AAA" || wcagLevel === "AA") {
         statusVar = "--color-success-dark";
         label = "prima";
-      } else if (lvl === "AA Large" || lvl === "perceptual-pass") {
+      } else if (wcagLevel === "AA Large") {
         statusVar = "--color-success";
         label = "goed";
+      } else if (wcagLevel === "A") {
+        statusVar = "--color-warning";
+        label = "beperkt";
       } else {
         statusVar = "--color-danger";
         label = "slecht";
       }
     } else {
-      // All other rows:
-      // AAA -> prima
-      // AA -> goed
-      // AA Large -> beperkt
-      // A -> beperkt
-      // below A -> slecht
-      if (lvl === "AAA") {
+      // All other rows
+      if (wcagLevel === "AAA") {
         statusVar = "--color-success-dark";
         label = "prima";
-      } else if (lvl === "AA") {
+      } else if (wcagLevel === "AA") {
         statusVar = "--color-success";
         label = "goed";
-      } else if (lvl === "AA Large" || lvl === "perceptual-pass") {
+      } else if (wcagLevel === "AA Large" || wcagLevel === "A") {
         statusVar = "--color-warning";
         label = "beperkt";
       } else {
@@ -700,8 +692,7 @@ function updateContrastChecks() {
     return {
       id: p.id,
       ratio: worstRatio,
-      level: result.level,
-      perceptual: result.perceptual,
+      level: wcagLevel,
       label,
       bg: pillBg,
       fg: pillFg,
@@ -712,8 +703,6 @@ function updateContrastChecks() {
       swatchText: fgValue,
       swatchBg: worstBg,
       _noFixPossible: !!noFixMap.value[p.id],
-
-      // debug: what the algorithm actually compared
       _dbgFg: fgValue,
       _dbgBg: worstBg,
     };
@@ -753,29 +742,15 @@ async function fixContrast(item) {
     return;
   }
 
-  // [BUG-FLAG backgroundTone is not defined as a prop]
-  // Map the placeholder to the active context bg var from props
-  // const contextBgVar = props.backgroundTone === "secondary" ? "--ui-secondary-bg" : "--ui-primary-bg";
-
-  // [BUG-FIX derive tone from correct context -- remaining issue: the dynamic text doesn't immediately get applied]
-  const contextBgVar = props.bgContext?.tone === "secondary" ? "--ui-secondary-bg" : "--ui-primary-bg";
-
-  const bgCandidates = (item.fixBgCandidates || [])
-    .map((c) => (c === "CONTEXT_BGVAR" ? contextBgVar : c))
-    .filter(Boolean);
-
-  const fixingBg = bgCandidates.length > 0;
-
-  const sourceVar = fixingBg ? bgCandidates[0] : item.fixFgCandidates && item.fixFgCandidates[0];
+  const sourceVar = item.fixFgCandidates && item.fixFgCandidates[0];
 
   if (!sourceVar) {
     triggerNoFixHint(item.id);
     updateContrastChecks();
     return;
   }
-
   const startRaw = resolveCssColorFrom(scopeEl, sourceVar);
-  const startComputed = resolveToComputedColor(startRaw, fixingBg ? "backgroundColor" : "color");
+  const startComputed = resolveToComputedColor(startRaw, "color");
   if (!startComputed) {
     triggerNoFixHint(item.id);
     updateContrastChecks();
@@ -785,30 +760,29 @@ async function fixContrast(item) {
   const isLargeText = item.id === "main-title" || item.id === "main-paragraph";
   const targetAA = isLargeText ? 3.0 : 4.5;
 
-  const MAX_STEPS = fixingBg ? 10 : 14;
-  const STEP_SIZE = fixingBg ? 0.045 : 0.06;
+  const MAX_STEPS = 14;
+  const STEP_SIZE = 0.06;
 
   let bestColor = startComputed;
-  let bestRatio = fixingBg ? getContrastRatio(fg, bestColor) : getContrastRatio(bestColor, bg);
+  let bestRatio = getContrastRatio(bestColor, bg);
 
   for (let i = 0; i < MAX_STEPS; i++) {
     const darker = toneShift(bestColor, -1, STEP_SIZE);
     const lighter = toneShift(bestColor, +1, STEP_SIZE);
 
-    const rDark = fixingBg ? getContrastRatio(fg, darker) : getContrastRatio(darker, bg);
-    const rLight = fixingBg ? getContrastRatio(fg, lighter) : getContrastRatio(lighter, bg);
+    const rDark = getContrastRatio(darker, bg);
+    const rLight = getContrastRatio(lighter, bg);
 
     let next = null;
     let nextRatio = bestRatio;
 
-    // Heuristic: if reference surface is light, push darker; if dark, push lighter
-    const ref = fixingBg ? fg : bg;
-    const refIsLight = getTextModeForBackground(ref, "#000", "#fff") === "dark";
+    // If background is light, push darker text; if background is dark, push lighter text
+    const bgIsLight = getTextModeForBackground(bg, "#000", "#fff") === "dark";
 
-    if (refIsLight && rDark > nextRatio) {
+    if (bgIsLight && rDark > nextRatio) {
       next = darker;
       nextRatio = rDark;
-    } else if (!refIsLight && rLight > nextRatio) {
+    } else if (!bgIsLight && rLight > nextRatio) {
       next = lighter;
       nextRatio = rLight;
     } else if (rDark > nextRatio) {
@@ -828,33 +802,17 @@ async function fixContrast(item) {
     if (bestRatio >= targetAA) break;
   }
 
-  const startRatio = fixingBg ? getContrastRatio(fg, startComputed) : getContrastRatio(startComputed, bg);
+  const startRatio = getContrastRatio(startComputed, bg);
   if (bestRatio <= startRatio) {
     triggerNoFixHint(item.id);
     updateContrastChecks();
     return;
   }
 
-  if (item.cssVarFg === "--caption-on-alt-panel") {
-    // Force a real, always-visible fix for the left caption.
-    // Pick pure black/white based on the actual background this row is scored against.
-    const forced = getTextModeForBackground(bg, "#000", "#fff") === "light" ? "#fff" : "#000";
-
-    window.dispatchEvent(
-      new CustomEvent("alt-panel-caption-override", {
-        detail: forced,
-      })
-    );
-
-    await nextTick();
-    scheduleContrastUpdate();
-    return;
-  }
-
   applyCssVar(scopeEl, sourceVar, bestColor);
 
   await nextTick();
-  window.dispatchEvent(new Event("palette-updated"));
+  window.dispatchEvent(new Event("dynamic-text-updated"));
   scheduleContrastUpdate();
 }
 
@@ -863,18 +821,13 @@ async function fixContrast(item) {
 -------------------------------------------------- */
 
 function resolveFgValue(scopeEl, fgVarName) {
-  if (!fgVarName) return null;
+  if (!scopeEl || !fgVarName) return null;
 
-  // Prefer mockup-scoped dynamic vars if they exist, fallback to :root
-  if (fgVarName.startsWith("--dynamic-")) {
-    const scopedRaw = resolveCssColorFrom(scopeEl, fgVarName);
-    const scoped = resolveToComputedColor(scopedRaw, "color");
-    if (scoped) return scoped;
+  // Source of truth: mockup-scoped CSS variables on .post-content
+  const raw = getComputedStyle(scopeEl).getPropertyValue(fgVarName).trim();
+  if (!raw) return null;
 
-    return resolveToComputedColor(resolveCssColor(fgVarName), "color");
-  }
-
-  return resolveToComputedColor(resolveCssColorFrom(scopeEl, fgVarName), "color");
+  return resolveToComputedColor(raw, "color");
 }
 
 function toneShift(hex, dir, amount) {
