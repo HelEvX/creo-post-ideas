@@ -443,24 +443,47 @@ function applyActiveRecipe() {
   const brandUsesShadows = shadowCardRaw !== "" && shadowCardRaw.toLowerCase() !== "none";
 
   // Recipe role key: "--shadow-alpha" expects ["neutral", idx] where idx is 0..10
-  function idxToAlpha(idx) {
-    const i = Math.max(0, Math.min(10, Number(idx)));
-    const min = 0.06; // lightest usable
-    const max = 0.3; // strongest usable
-    return min + (i / 10) * (max - min);
+  function idxToAlpha(idx, baseAlpha) {
+    const i = Math.max(0, Math.min(11, Number(idx)));
+
+    // index 5 = identity
+    if (i === 5) return baseAlpha;
+
+    // 6 → 11 : ramp up to fully opaque
+    if (i > 5) {
+      const t = (i - 5) / 6; // 0..1
+      return baseAlpha + t * (1 - baseAlpha);
+    }
+
+    // 0 → 4 : ramp down to invisible
+    if (i === 0) return 0;
+
+    const t = i / 5; // 0..1
+    return baseAlpha * t;
   }
 
   for (const [cssVar, spec] of Object.entries(roles)) {
     if (cssVar === "--shadow-alpha") {
-      // Only apply if brand enables shadows
       if (!brandUsesShadows) continue;
 
-      if (Array.isArray(spec) && spec.length === 2) {
-        const idx = spec[1];
-        const alpha = idxToAlpha(idx); // e.g. 0.05 → 0.35
+      const idx = Array.isArray(spec) ? spec[1] : spec;
+      if (idx == null) continue;
 
-        root.style.setProperty("--color-shadow", `rgba(0, 0, 0, ${alpha})`, "important");
-      }
+      const baseAlpha = parseFloat(getComputedStyle(root).getPropertyValue("--shadow-alpha")) || 0;
+
+      const alpha = idxToAlpha(idx, baseAlpha);
+      root.style.setProperty("--shadow-alpha", alpha, "important");
+      continue;
+    }
+
+    if (cssVar === "--border-alpha") {
+      const idx = Array.isArray(spec) ? spec[1] : spec;
+      if (idx == null) continue;
+
+      const baseAlpha = parseFloat(getComputedStyle(root).getPropertyValue("--border-alpha")) || 0;
+
+      const alpha = idxToAlpha(idx, baseAlpha);
+      root.style.setProperty("--border-alpha", alpha, "important");
       continue;
     }
 

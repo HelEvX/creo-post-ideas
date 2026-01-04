@@ -282,11 +282,14 @@ export default {
       const dark = getVar("--color-text");
       const light = getVar("--color-text-inverse");
 
-      const softDark = getVar("--color-text-soft");
-      const softLight = getVar("--color-text-soft-inverse");
+      const softDark = getVar("--color-soft");
+      const softLight = getVar("--color-soft-inverse");
 
       const disabledDark = getVar("--color-disabled");
       const disabledLight = getVar("--color-disabled-inverse");
+
+      const faintDark = getVar("--color-faint");
+      const faintLight = getVar("--color-faint-inverse");
 
       const titleDark = getVar("--color-title");
 
@@ -325,6 +328,7 @@ export default {
           root.style.setProperty(`--title-on-${surfaceKey}`, titleDark);
           root.style.setProperty(`--text-soft-on-${surfaceKey}`, softDark);
           root.style.setProperty(`--disabled-on-${surfaceKey}`, disabledDark);
+          root.style.setProperty(`--faint-on-${surfaceKey}`, faintDark);
           root.style.setProperty(`--caption-on-${surfaceKey}`, captionDark);
           root.style.setProperty(`--overlay-on-${surfaceKey}`, overlayDark);
         } else {
@@ -332,6 +336,7 @@ export default {
           root.style.setProperty(`--title-on-${surfaceKey}`, light);
           root.style.setProperty(`--text-soft-on-${surfaceKey}`, softLight);
           root.style.setProperty(`--disabled-on-${surfaceKey}`, disabledLight);
+          root.style.setProperty(`--faint-on-${surfaceKey}`, faintLight);
           root.style.setProperty(`--caption-on-${surfaceKey}`, captionLight);
           root.style.setProperty(`--overlay-on-${surfaceKey}`, overlayLight);
         }
@@ -357,6 +362,7 @@ export default {
       const titleOnSection = getVar("--title-on-section");
       const softOnSection = getVar("--text-soft-on-section");
       const disabledOnSection = getVar("--disabled-on-section");
+      const faintOnSection = getVar("--faint-on-section");
       const textOnFooter = getVar("--text-soft-on-footer");
       const textOnNav = getVar("--text-on-nav");
 
@@ -364,6 +370,7 @@ export default {
       if (titleOnSection) root.style.setProperty("--dynamic-title", titleOnSection);
       if (softOnSection) root.style.setProperty("--dynamic-soft", softOnSection);
       if (disabledOnSection) root.style.setProperty("--dynamic-disabled", disabledOnSection);
+      if (faintOnSection) root.style.setProperty("--dynamic-faint", faintOnSection);
       if (textOnFooter) root.style.setProperty("--dynamic-footer", textOnFooter);
       if (textOnNav) root.style.setProperty("--dynamic-nav", textOnNav);
 
@@ -484,7 +491,9 @@ export default {
         root.style.setProperty("--card-radius", t(data["card-radius"]));
       }
 
-      // mockup card border ONLY
+      // UI borders ONLY
+
+      // mockup card borders ONLY
       if (borderEnabled) {
         const w = t(data["border-width-card"]) || "0";
         root.style.setProperty("--card-border", `${w} solid var(--color-border-card)`);

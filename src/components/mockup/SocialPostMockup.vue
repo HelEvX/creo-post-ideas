@@ -222,8 +222,8 @@ function recomputeMockupVars() {
   const titleDark = root.getPropertyValue("--color-title").trim();
   const textLight = root.getPropertyValue("--color-text-inverse").trim();
 
-  const softDark = root.getPropertyValue("--color-text-soft").trim();
-  const softLight = root.getPropertyValue("--color-text-soft-inverse").trim();
+  const softDark = root.getPropertyValue("--color-soft").trim();
+  const softLight = root.getPropertyValue("--color-soft-inverse").trim();
 
   /* caption tones */
   const primaryDark = root.getPropertyValue("--color-primary-dark").trim();

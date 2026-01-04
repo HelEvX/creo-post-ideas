@@ -134,7 +134,7 @@ select {
   width: 4rem;
   height: 4rem;
   border-radius: 8px;
-  border: 1px solid var(--color-border-light);
+  border: 1px solid var(--dynamic-faint);
 }
 
 .color-swatch.primary {

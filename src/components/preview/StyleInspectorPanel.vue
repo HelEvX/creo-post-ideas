@@ -420,7 +420,7 @@ p.styles__hint {
   height: 4rem;
   width: 100%;
   max-width: 30rem;
-  background-color: var(--black-75);
+  background-color: var(--ui-section-bg);
   padding: var(--space-25);
   box-shadow: none;
 }
@@ -429,7 +429,7 @@ p.styles__hint {
   height: 4rem;
   width: 100%;
   max-width: 30rem;
-  background-color: var(--white);
+  background-color: var(--ui-section-bg);
   padding: var(--space-25);
   border: none;
   border-radius: 0;
