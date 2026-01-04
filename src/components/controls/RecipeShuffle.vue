@@ -412,26 +412,11 @@ function triggerNoFixHint(id, timeout = 1500) {
   }, timeout);
 }
 
-function getFixStrategy(item, colored) {
-  // Rows 1–2
-  if (item.id === "main-title" || item.id === "main-paragraph") {
-    return colored ? { bgFirst: false, fgAllowed: true } : { bgFirst: true, fgAllowed: false };
-  }
-
-  // Rows 3–8 (panel + alt-panel)
-  if (item.id.startsWith("card1-") || item.id.startsWith("card2-")) {
-    if (item.id.endsWith("caption")) {
-      return { bgFirst: true, fgAllowed: true };
-    }
-    return { bgFirst: true, fgAllowed: false };
-  }
-
-  // Rows 9–10 (accent)
-  if (item.id.startsWith("accent-")) {
-    return { bgFirst: true, fgAllowed: true };
-  }
-
-  return { bgFirst: true, fgAllowed: false };
+function getFixStrategy() {
+  return {
+    bgFirst: true,
+    fgAllowed: true,
+  };
 }
 
 /* --------------------------------------------------
@@ -763,9 +748,12 @@ function updateContrastChecks() {
       } else if (wcagLevel === "AA") {
         statusVar = "--color-success";
         label = "goed";
-      } else if (wcagLevel === "AA Large" || wcagLevel === "A") {
+      } else if (wcagLevel === "AA Large") {
         statusVar = "--color-warning";
         label = "beperkt";
+      } else if (wcagLevel === "A") {
+        statusVar = "--color-danger";
+        label = "slecht";
       } else {
         statusVar = "--color-danger";
         label = "slecht";

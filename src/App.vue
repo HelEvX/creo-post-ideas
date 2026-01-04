@@ -369,7 +369,6 @@ export default {
 
       /* ----------------------------------------------
         DYNAMIC OVERLAY (MOCKUP ONLY)
-        Uses EXACT mockup background, not UI sections
       ---------------------------------------------- */
       const bgVars = this.useColoredBackground ? this.mockupBgContext?.bgVars || [] : ["--ui-alt-section-bg"];
 

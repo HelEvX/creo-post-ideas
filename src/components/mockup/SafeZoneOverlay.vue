@@ -35,7 +35,7 @@ defineProps({
   left: 0;
   right: 0;
   height: var(--safe-top);
-  border-bottom: calc(2px * var(--safe-top-enabled)) dotted var(--white);
+  border-bottom: calc(2px * var(--safe-top-enabled)) dotted var(--dynamic-overlay);
 }
 
 /* bottom */
@@ -44,7 +44,7 @@ defineProps({
   left: 0;
   right: 0;
   height: var(--safe-bottom);
-  border-top: calc(2px * var(--safe-bottom-enabled)) dotted var(--white);
+  border-top: calc(2px * var(--safe-bottom-enabled)) dotted var(--dynamic-overlay);
 }
 
 /* left */
@@ -53,7 +53,7 @@ defineProps({
   bottom: 0;
   left: 0;
   width: var(--safe-left);
-  border-right: calc(2px * var(--safe-left-enabled)) dotted var(--white);
+  border-right: calc(2px * var(--safe-left-enabled)) dotted var(--dynamic-overlay);
 }
 
 /* right */
@@ -62,6 +62,6 @@ defineProps({
   bottom: 0;
   right: 0;
   width: var(--safe-right);
-  border-left: calc(2px * var(--safe-right-enabled)) dotted var(--white);
+  border-left: calc(2px * var(--safe-right-enabled)) dotted var(--dynamic-overlay);
 }
 </style>

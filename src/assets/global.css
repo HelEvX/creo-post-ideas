@@ -350,7 +350,7 @@
   --ui-disabled-on-light: var(--color-disabled); /* neutral-500 */
   --ui-disabled-on-dark: var(--color-disabled-inverse); /* white 65% */
 
-  --ui-overlay-on-light: var(--black-50); /* black 50% */
+  --ui-overlay-on-light: var(--black-25); /* black 25% */
   --ui-overlay-on-dark: var(--white-50); /* white 50% */
 
   /* default: light bg (first-paint guarantee) */

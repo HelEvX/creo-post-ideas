@@ -17,7 +17,7 @@ This tool is a **strategic guidance system**, not a graphic editor. It empowers 
 - **Live Mockup Preview:** Visualize brand styles on different social media formats (Square, Story, etc.) and for various content types (Quote, Announcement, etc.).
 - **Platform Safe Zones:** The preview visualizes Instagram feed and story crop boundaries, clearly indicating which areas of a post risk being cut off or obscured by the platform UI.
 - **Real-Time Contrast Guardrails:** An always-visible WCAG contrast checker provides instant, clear feedback on all color pairings in the current recipe.
-- **Interactive Contrast Repair:** A "Fix" button is integrated directly into the contrast checker. If a color combination fails accessibility standards, the user can click to have the tool automatically calculate and apply a compliant alternative from the brand's palette.
+- **Interactive Contrast Repair:** A "Fix" button is integrated directly into the contrast checker. If a color combination fails accessibility standards, the user can trigger an incremental repair step. The system evaluates whether adjusting the background or the foreground improves contrast most and applies the better option. This behavior is consistent across all surfaces and text roles.
 - **Component-Based & Scalable:** Built on a robust Vue 3 architecture that is easy to maintain and expand with new formats, recipes, or features.
 
 ---
@@ -201,12 +201,13 @@ This guarantees subtle, readable hover states even in inverted recipes.
 The contrast checker validates **rendered reality**, not tokens.
 
 - Reads computed colors from the DOM
-- Includes mockup-scoped surfaces (panel, alt-panel, accent)
-- Scores worst-case contrast per surface
-- Never edits `dynamic-*` directly
-- Applies fixes locally inside the mockup only
+- Scores worst-case contrast per rendered surface
+- Applies incremental fixes locally inside the mockup
+- May adjust either background or foreground roles when doing so improves contrast
+- Never modifies brand tokens or global UI roles
 
-UI tokens, brand identity, and global text roles remain untouched.
+UI structure stays stable by design. Only mockup-only decoration tokens (shadow and border) are isolated from recipes and fixes.
+Core surface tokens (color-surface, color-panel, color-card and derived ui-\* backgrounds) are allowed to change, intentionally.
 
 ### Style Inspector Output
 

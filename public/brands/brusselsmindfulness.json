@@ -1,0 +1,84 @@
+{
+  "name": "Brussels Mindfulness",
+  "meta": { "brand": "Brussels Mindfulness", "version": "1.0" },
+  "font-title": "Poppins, sans-serif",
+  "font-body": "Poppins, sans-serif",
+  "fonts": {
+    "import": ["https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"]
+  },
+
+  "_comment-1": "COLOR PALETTE",
+
+  "color-primary": "#626d87",
+  "color-primary-dark": "#525b70",
+  "color-primary-darker": "#323845",
+  "color-primary-light": "#7D88A1",
+  "color-primary-lighter": "#959DB2",
+
+  "color-secondary": "#e0dbcc",
+  "color-secondary-dark": "#f7e4ca",
+  "color-secondary-darker": "#f1d2a7",
+  "color-secondary-light": "#e8e4d9",
+  "color-secondary-lighter": "#f3f1eb",
+
+  "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-dark",
+
+  "color-tertiary": "#ebc084",
+
+  "_comment-3": "BACKGROUND COLORS: sections, cards, header, footer",
+
+  "color-surface": "#f3f1eb",
+  "color-panel": "#f3f1eb",
+  "color-card": "#e7e4d9",
+  "color-nav-bg": "#ffffff",
+  "color-footer-bg": "#323845",
+
+  "_comment-4": "TEXT COLORS (dark only!)",
+
+  "color-title": "#323845",
+  "color-text": "#2e2d2e",
+
+  "_comment-5": "LABEL COLORS",
+
+  "color-warning": "#e19c3d",
+  "color-danger": "#d64045",
+  "color-success": "#519e8a",
+  "color-success-dark": "#448574",
+
+  "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
+
+  "border-enabled": true,
+  "border-width-card": "0",
+  "card-radius": "1rem",
+
+  "shadow-enabled": false,
+  "shadow-x": "0",
+  "shadow-y": "0",
+  "shadow-blur": "0",
+  "shadow-rgb": "0 0 0",
+  "shadow-alpha": "0.00",
+
+  "ig": {
+    "avatar": "client.webp",
+    "username": "brusselsmindfulness3808",
+    "posts": 800,
+    "followers": 785,
+    "following": "1,452",
+    "title": "Brussels Mindfulness",
+    "threads": "@brusselsmindfulness3808",
+    "businessType": "Mental health service",
+    "description": "Conscious living & working \nResilience & mindfulness \nRetreats, coaching & trainings for well-being, clarity & kindness",
+    "address": "Avenue de Broqueville 40, Brussels, Belgium 1200",
+    "url": "www.brusselsmindfulness.be/agenda",
+    "highlightIcon": "brusselsmindfulness-small.svg",
+    "highlights": [
+      { "label": "Highlights" },
+      { "label": "Teacher Training" },
+      { "label": "Outdoor sessions" },
+      { "label": "Organisations" },
+      { "label": "Courses" },
+      { "label": "Retreats" },
+      { "label": "Team" }
+    ]
+  }
+}

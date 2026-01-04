@@ -29,7 +29,7 @@
 
   "color-surface": "#ffffff",
   "color-panel": "#f1ebdf",
-  "color-card": "#16503a",
+  "color-card": "rgba(255, 255, 255, 0.85)",
   "color-nav-bg": "#faf9f6",
   "color-footer-bg": "#1f6f50",
 
