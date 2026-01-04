@@ -29,8 +29,9 @@
 
   "_comment-3": "BACKGROUND COLORS",
 
-  "color-surface": "#ffffff",
+  "color-surface": "#f3f3f3",
   "color-panel": "#fffbe0",
+  "color-card": "#fff3a5",
   "color-nav-bg": "#ffffff",
   "color-footer-bg": "#f3f3f3",
 
@@ -39,9 +40,8 @@
   "color-title": "#12100e",
   "color-text": "#12100e",
 
-  "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
+  "_comment-5": "LABEL COLORS: blue, orange, red, green, dark green",
 
-  "color-info": "#3c6e71",
   "color-warning": "#ffbb31",
   "color-danger": "#db3a34",
   "color-success": "#5c946e",
@@ -49,14 +49,15 @@
 
   "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
 
-  "border-enabled": "true",
-  "border-width": "0",
+  "border-enabled": false,
+  "border-width-card": "0",
   "card-radius": "0",
 
-  "shadow-enabled": "false",
+  "shadow-enabled": false,
   "shadow-x": "0",
   "shadow-y": "0",
   "shadow-blur": "0",
+  "shadow-alpha": "0.00",
 
   "ig": {
     "avatar": "glaede.webp",
@@ -72,13 +73,13 @@
     "url": "https://www.glaede.be/onze-werkwijze",
     "highlightIcon": "glaede-small.svg",
     "highlights": [
-      { "label": "TEAM", "bg": "#cecece" },
-      { "label": "PROMOS", "bg": "#444" },
-      { "label": "SHOP", "bg": "#cecece" },
-      { "label": "SERVICES", "bg": "#444" },
-      { "label": "BLOG", "bg": "#cecece" },
-      { "label": "FAQ", "bg": "#444" },
-      { "label": "REVIEWS", "bg": "#cecece" }
+      { "label": "TEAM" },
+      { "label": "PROMOS" },
+      { "label": "SHOP" },
+      { "label": "SERVICES" },
+      { "label": "BLOG" },
+      { "label": "FAQ" },
+      { "label": "REVIEWS" }
     ]
   }
 }

@@ -47,7 +47,8 @@ export const recipes = [
       "--color-text": ["neutral", 9],
 
       // SHADOW
-      "--ui-shadow-alpha": ["neutral", 2],
+      "--shadow-rgb": ["neutral", 3],
+      "--shadow-alpha": ["neutral", 1],
 
       // borders
       "--color-border-card": ["neutral", 4],
@@ -77,19 +78,16 @@ export const recipes = [
       "--ui-panel-bg": ["neutral", 3],
       "--ui-alt-panel-bg": ["primaryDark", 7],
 
-      // TERTIARY
-      "--color-tertiary": ["secondary", 6],
-
       // TEXT
       "--color-title": ["neutral", 10],
       "--color-text": ["neutral", 8],
 
       // SHADOW
-      "--ui-shadow-alpha": ["neutral", 4],
+      "--shadow-rgb": ["neutral", 3],
+      "--shadow-alpha": ["neutral", 4],
 
       // borders
-      "--color-border-medium": ["neutral", 6],
-      "--color-border-light": ["neutral", 4],
+      "--color-border-card": ["neutral", 6],
     },
   },
   // ======================================================
@@ -116,19 +114,16 @@ export const recipes = [
       "--ui-panel-bg": ["neutral", 2],
       "--ui-alt-panel-bg": ["neutral", 3],
 
-      // TERTIARY
-      "--color-tertiary": ["primaryLight", 2],
-
       // TEXT
       "--color-title": ["neutral", 9],
       "--color-text": ["neutral", 8],
 
       // SHADOW
-      "--ui-shadow-alpha": ["neutral", 2],
+      "--shadow-rgb": ["neutral", 3],
+      "--shadow-alpha": ["neutral", 2],
 
       // borders
-      "--color-border-medium": ["neutral", 4],
-      "--color-border-light": ["neutral", 3],
+      "--color-border-card": ["neutral", 1],
     },
   },
   // ======================================================
@@ -155,19 +150,16 @@ export const recipes = [
       "--ui-panel-bg": ["primary", 2],
       "--ui-alt-panel-bg": ["primary", 7],
 
-      // TERTIARY
-      "--color-tertiary": ["tertiary", 6],
-
       // TEXT
       "--color-title": ["primary", 7],
       "--color-text": ["neutral", 9],
 
       // SHADOW
-      "--ui-shadow-alpha": ["neutral", 4],
+      "--shadow-rgb": ["primary", 8],
+      "--shadow-alpha": ["neutral", 4],
 
       // borders
-      "--color-border-medium": ["primaryDark", 5],
-      "--color-border-light": ["primaryLight", 6],
+      "--color-border-card": ["primary", 5],
     },
   },
 
@@ -195,19 +187,16 @@ export const recipes = [
       "--ui-panel-bg": ["neutral", 2],
       "--ui-alt-panel-bg": ["neutral", 3],
 
-      // TERTIARY
-      "--color-tertiary": ["neutral", 2],
-
       // TEXT
       "--color-title": ["neutral", 8],
       "--color-text": ["neutral", 7],
 
       // SHADOW
-      "--ui-shadow-alpha": ["neutral", 1],
+      "--shadow-rgb": ["neutral", 1],
+      "--shadow-alpha": ["neutral", 1],
 
       // borders
-      "--color-border-medium": ["neutral", 2],
-      "--color-border-light": ["neutral", 1],
+      "--color-border-card": ["neutral", 0],
     },
   },
 
@@ -235,17 +224,14 @@ export const recipes = [
       "--ui-panel-bg": ["neutral", 8],
       "--ui-alt-panel-bg": ["primaryLight", 4],
 
-      // TERTIARY
-      "--color-tertiary": ["secondaryLight", 4],
-
       // TEXT: AUTOMATIC
 
       // SHADOW
-      "--ui-shadow-alpha": ["neutral", 1],
+      "--shadow-rgb": ["neutral", 8],
+      "--shadow-alpha": ["neutral", 1],
 
       // reverse borders
-      "--color-border-medium": ["neutral", 4],
-      "--color-border-light": ["neutral", 7],
+      "--color-border-card": ["neutral", 7],
     },
   },
 ];

@@ -70,7 +70,7 @@
                 backgroundColor: `var(${highlightPairs[i].bg})`,
               }">
               <!-- same SVG for all, recolored -->
-              <div class="ig-highlight-icon" :style="highlightIconStyle(ig.highlightIcon, i)"></div>
+              <div class="ig-highlight-icon" :style="highlightIconStyle(derivedHighlightIcon, i)"></div>
             </div>
           </div>
           <div class="ig-highlight-label">{{ h.label }}</div>
@@ -127,7 +127,7 @@ const highlightPairs = [
   { bg: "--ui-primary-bg", fg: "--text-on-primary" },
   { bg: "--ui-alt-section-bg", fg: "--text-on-alt-section" },
   { bg: "--ui-secondary-bg", fg: "--text-on-secondary" },
-  { bg: "--ui-section-bg", fg: "--color-tertiary" },
+  { bg: "--ui-alt-panel-bg", fg: "--color-tertiary" },
   { bg: "--ui-panel-bg", fg: "--caption-on-panel" },
   { bg: "--ui-footer-bg", fg: "--text-soft-on-footer" },
   { bg: "--ui-nav-bg", fg: "--text-on-nav" },
@@ -176,7 +176,9 @@ const avatarSrc = computed(() => {
 // mask-style SVG recoloring
 function highlightIconStyle(file, i) {
   if (!file) return {};
-  const url = `/highlights/${file}`;
+
+  const url = String(file).startsWith("/") ? String(file) : `/highlights/${file}`;
+
   return {
     WebkitMaskImage: `url(${url})`,
     maskImage: `url(${url})`,
@@ -189,6 +191,14 @@ function highlightIconStyle(file, i) {
     backgroundColor: `var(${highlightPairs[i].fg})`,
   };
 }
+
+// highlight icon
+
+const derivedHighlightIcon = computed(() => {
+  const slug = props.brandTokens?.slug;
+  if (slug) return `${slug}-small.svg`; // filename only
+  return props.ig?.highlightIcon || null; // fallback to JSON default
+});
 
 // MOCKUP GRID
 // turn useColoredBackground OFF when text is on a neutral colored card

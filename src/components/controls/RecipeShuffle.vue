@@ -457,7 +457,7 @@ function applyActiveRecipe() {
   const shadowCardRaw = cs.getPropertyValue("--card-shadow").trim();
   const brandUsesShadows = shadowCardRaw !== "" && shadowCardRaw.toLowerCase() !== "none";
 
-  // Recipe role key: "--ui-shadow-alpha" expects ["neutral", idx] where idx is 0..10
+  // Recipe role key: "--shadow-alpha" expects ["neutral", idx] where idx is 0..10
   function idxToAlpha(idx) {
     const i = Math.max(0, Math.min(10, Number(idx)));
     const min = 0.06; // lightest usable
@@ -466,7 +466,7 @@ function applyActiveRecipe() {
   }
 
   for (const [cssVar, spec] of Object.entries(roles)) {
-    if (cssVar === "--ui-shadow-alpha") {
+    if (cssVar === "--shadow-alpha") {
       // Only apply if brand enables shadows
       if (!brandUsesShadows) continue;
 

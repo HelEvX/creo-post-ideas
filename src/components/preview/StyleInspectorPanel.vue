@@ -54,10 +54,7 @@
     <div class="main-preview__styles__other">
       <div>
         <h6>Randen & hoeken</h6>
-        <div class="main-preview__styles__borders-corners">
-          <div class="card main-preview__styles__borders"></div>
-          <div class="card main-preview__styles__corners"></div>
-        </div>
+        <div class="card main-preview__styles__borders"></div>
       </div>
       <div>
         <h6>Shaduw</h6>
@@ -355,8 +352,8 @@ p.styles__hint {
 
 .main-preview__styles__swatch-container {
   display: flex;
-  flex-direction: column;
-
+  flex-direction: row;
+  flex-wrap: wrap;
   width: 100%;
   gap: var(--space-10);
 }
@@ -367,7 +364,7 @@ p.styles__hint {
 
 .main-preview__styles__swatch {
   width: 100%;
-  max-width: 25rem;
+  max-width: 30rem;
   height: 4rem;
   border: var(--ui-panel-border-soft);
   border-radius: var(--radius-sm);
@@ -419,29 +416,19 @@ p.styles__hint {
   margin-bottom: var(--space-10);
 }
 
-.main-preview__styles__borders-corners {
-  display: flex;
-  gap: 0.5rem;
-}
-
 .main-preview__styles__borders {
   height: 4rem;
-  background-color: var(--white);
-  padding: var(--space-25);
-  border-radius: 0;
-  box-shadow: none;
-}
-
-.main-preview__styles__corners {
-  height: 4rem;
+  width: 100%;
+  max-width: 30rem;
   background-color: var(--black-75);
   padding: var(--space-25);
-  border: none;
   box-shadow: none;
 }
 
 .main-preview__styles__shadows {
   height: 4rem;
+  width: 100%;
+  max-width: 30rem;
   background-color: var(--white);
   padding: var(--space-25);
   border: none;

@@ -8,7 +8,7 @@
         </span>
       </div>
 
-      <div class="card product-card__content">
+      <div class="product-card__content">
         <PostTextBlock
           :headlineText="name"
           :bodyText="description"
@@ -60,9 +60,9 @@ defineProps({
 
   overflow: hidden;
 
-  margin: 1.8cqw;
+  margin: 1.2cqw;
   border: 1.5cqw solid var(--caption-on-panel);
-  border-radius: var(--card-radius);
+  border-radius: calc(var(--card-radius) * 0.75);
 }
 
 .product-card__image img {
@@ -94,12 +94,21 @@ defineProps({
   border-radius: 999px;
 }
 
-/* adjustments for landscape */
+/* adjustments per format */
 .size--landscape .product-post {
   padding: 1.2cqw;
 }
 .size--landscape .product-card__image {
-  margin: 1.2cqw;
+  margin: 0;
   border-width: 1cqw;
+}
+.size--landscape .product-card__price {
+  top: 0.8cqw;
+  right: 0.8cqw;
+  padding: 0.8cqw 1.1cqw;
+}
+
+.size--square .product-card__image {
+  margin: 0.6cqw;
 }
 </style>

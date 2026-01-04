@@ -47,16 +47,16 @@
 
   "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
 
-  "border-enabled": "false",
-  "color-border-card": "#",
-  "border-width": "0",
+  "border-enabled": false,
+  "border-width-card": "0",
   "card-radius": "0",
 
-  "shadow-enabled": "false",
+  "shadow-enabled": false,
   "shadow-x": "0",
   "shadow-y": "0",
   "shadow-blur": "0",
-  "ui-shadow-alpha": "0.00",
+  "shadow-rgb": "0 0 0",
+  "shadow-alpha": "0.00",
 
   "ig": {
     "avatar": "client.webp",

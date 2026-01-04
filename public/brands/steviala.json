@@ -31,7 +31,8 @@
 
   "color-surface": "#f6f7f7",
   "color-panel": "#edf4e9",
-  "color-nav-bg": "#edf4e9",
+  "color-card": "#d2e4c9",
+  "color-nav-bg": "#ffffff",
   "color-footer-bg": "#4c5b5c",
 
   "_comment-4": "TEXT COLORS (only dark colors, not 'reversed')",
@@ -39,9 +40,8 @@
   "color-title": "#4c5b5c",
   "color-text": "#1c2a2b",
 
-  "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
+  "_comment-5": "LABEL COLORS: blue, orange, red, green, dark green",
 
-  "color-info": "#17a2b8",
   "color-warning": "#ffc107",
   "color-danger": "#c21f36",
   "color-success": "#4a9328",
@@ -49,14 +49,16 @@
 
   "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
 
-  "border-enabled": "true",
-  "border-width": "0",
-  "card-radius": "0",
+  "border-enabled": true,
+  "border-width-card": "0",
+  "card-radius": "2rem",
 
-  "shadow-enabled": "false",
+  "shadow-enabled": true,
   "shadow-x": "0",
-  "shadow-y": "0",
-  "shadow-blur": "0",
+  "shadow-y": "1rem",
+  "shadow-blur": "3rem",
+  "shadow-rgb": "76 91 92",
+  "shadow-alpha": "0.15",
 
   "ig": {
     "avatar": "steviala.webp",

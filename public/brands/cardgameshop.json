@@ -29,6 +29,7 @@
 
   "color-surface": "#ffffff",
   "color-panel": "#e1e9f4",
+  "color-card": "#ffffff",
   "color-nav-bg": "#3b5ea8",
   "color-footer-bg": "#3b5ea8",
 
@@ -37,9 +38,8 @@
   "color-title": "#5b86c4",
   "color-text": "#302b27",
 
-  "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
+  "_comment-5": "LABEL COLORS: orange, red, green, dark green",
 
-  "color-info": "#4271b9",
   "color-warning": "#d8a801",
   "color-danger": "#ec0b43",
   "color-success": "#4baa74",
@@ -47,36 +47,37 @@
 
   "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
 
-  "border-enabled": "true",
-  "border-width": "0",
+  "border-enabled": false,
+  "border-width-card": "0",
   "card-radius": "0",
 
-  "shadow-enabled": "false",
+  "shadow-enabled": false,
   "shadow-x": "0",
   "shadow-y": "0",
   "shadow-blur": "0",
+  "shadow-alpha": "0.00",
 
   "ig": {
     "avatar": "cardgameshop.webp",
-    "username": "client.be",
-    "posts": 0,
-    "followers": 0,
-    "following": 0,
-    "title": "www.client.be",
+    "username": "cardgameshop.be",
+    "posts": 676,
+    "followers": "4.332",
+    "following": 219,
+    "title": "Cardgameshop.be",
     "threads": "@cardgameshop.be",
-    "businessType": "business type",
-    "description": "Description part 1.\nDescription part 2\nDescription part 3\nDescription part 4",
-    "address": "Straat, Stad, Belgium xxxx",
-    "url": "https://www.client.be",
+    "businessType": "Retailer",
+    "description": "🇧🇪Retailer off the best: TCG'S - Funko's - Boardgames & More!\nOfficial PSA Dealer\nWebshop And 4 Fysical Stores\nCGS Hasselt - Wijnegem - Eksel - Leuven",
+    "address": "Demerstraat 39, Hasselt 3500",
+    "url": "www.cardgameshop.be",
     "highlightIcon": "cardgameshop-small.svg",
     "highlights": [
-      { "label": "TEAM", "bg": "#cecece" },
-      { "label": "PROMOS", "bg": "#444" },
-      { "label": "SHOP", "bg": "#cecece" },
-      { "label": "SERVICES", "bg": "#444" },
-      { "label": "BLOG", "bg": "#cecece" },
-      { "label": "FAQ", "bg": "#444" },
-      { "label": "REVIEWS", "bg": "#cecece" }
+      { "label": "TEAM" },
+      { "label": "PROMOS" },
+      { "label": "SHOP" },
+      { "label": "SERVICES" },
+      { "label": "BLOG" },
+      { "label": "FAQ" },
+      { "label": "REVIEWS" }
     ]
   }
 }

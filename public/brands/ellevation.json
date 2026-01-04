@@ -32,6 +32,7 @@
 
   "color-surface": "#FFFFFF",
   "color-panel": "#FAFAF9",
+  "color-card": "#F5F5F4",
   "color-nav-bg": "#FFFFFF",
   "color-footer-bg": "#2E2D2A",
 
@@ -40,9 +41,8 @@
   "color-title": "#1D1D1B",
   "color-text": "#45443F",
 
-  "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
+  "_comment-5": "LABEL COLORS: orange, red, green, dark green",
 
-  "color-info": "#009DE4",
   "color-warning": "#FF9812",
   "color-danger": "#E4002B",
   "color-success": "#00E447",
@@ -50,14 +50,15 @@
 
   "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
 
-  "border-enabled": "true",
-  "border-width": "0",
+  "border-enabled": false,
+  "border-width-card": "0",
   "card-radius": "0",
 
-  "shadow-enabled": "false",
+  "shadow-enabled": false,
   "shadow-x": "0",
   "shadow-y": "0",
   "shadow-blur": "0",
+  "shadow-alpha": "0.00",
 
   "ig": {
     "avatar": "ellevation.webp",
@@ -73,13 +74,13 @@
     "url": "https://www.ellevation.be",
     "highlightIcon": "ellevation-small.svg",
     "highlights": [
-      { "label": "TEAM", "bg": "#cecece" },
-      { "label": "PROMOS", "bg": "#444" },
-      { "label": "SHOP", "bg": "#cecece" },
-      { "label": "SERVICES", "bg": "#444" },
-      { "label": "BLOG", "bg": "#cecece" },
-      { "label": "FAQ", "bg": "#444" },
-      { "label": "REVIEWS", "bg": "#cecece" }
+      { "label": "TEAM" },
+      { "label": "PROMOS" },
+      { "label": "SHOP" },
+      { "label": "SERVICES" },
+      { "label": "BLOG" },
+      { "label": "FAQ" },
+      { "label": "REVIEWS" }
     ]
   }
 }

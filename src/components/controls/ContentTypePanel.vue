@@ -128,6 +128,6 @@ const modes = [
   width: 2.4rem;
   height: 2rem;
   cursor: pointer;
-  accent-color: var(--ui-accent-hover);
+  accent-color: var(--color-primary-dark);
 }
 </style>

@@ -102,6 +102,26 @@ function resolveAccentBg(root) {
   return props.backgroundTone === "secondary" ? primary : secondary;
 }
 
+function resolveWatermarkColor(root) {
+  const bg = resolveFirstBg(props.bgColors);
+  if (!bg) return root.getPropertyValue("--ui-alt-section-bg").trim();
+
+  const dark = root.getPropertyValue("--color-text").trim();
+  const light = root.getPropertyValue("--color-text-inverse").trim();
+
+  const mode = getTextModeForBackground(bg, dark, light);
+
+  // light background → dark watermark
+  if (mode === "dark") {
+    return root.getPropertyValue("--color-primary-dark").trim() || root.getPropertyValue("--color-text").trim();
+  }
+
+  // dark background → light watermark
+  return (
+    root.getPropertyValue("--color-primary-lighter").trim() || root.getPropertyValue("--color-text-inverse").trim()
+  );
+}
+
 function readCssVar(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || null;
 }
@@ -161,6 +181,9 @@ const watermarkStyle = computed(() => {
   if (!props.brandLogoSmall) return null;
 
   const url = new URL(props.brandLogoSmall, import.meta.url).href;
+  const root = getComputedStyle(document.documentElement);
+
+  const color = resolveWatermarkColor(root);
 
   return {
     WebkitMaskImage: `url(${url})`,
@@ -171,7 +194,7 @@ const watermarkStyle = computed(() => {
     maskPosition: "center",
     WebkitMaskSize: "contain",
     maskSize: "contain",
-    backgroundColor: "var(--white)",
+    backgroundColor: color,
   };
 });
 
@@ -514,8 +537,6 @@ watch(resolvedVisualContext, (val) => emit("resolved-visuals", val), { immediate
   height: 10cqw;
 
   opacity: 0.6;
-
-  mix-blend-mode: difference;
 
   pointer-events: none;
 }

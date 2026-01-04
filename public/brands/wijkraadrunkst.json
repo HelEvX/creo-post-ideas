@@ -29,6 +29,7 @@
 
   "color-surface": "#f3f1eb",
   "color-panel": "#e0f5e7",
+  "color-card": "#ffffff",
   "color-nav-bg": "#ffffff",
   "color-footer-bg": "#3a3a3a",
 
@@ -37,9 +38,8 @@
   "color-title": "#1a1a1a",
   "color-text": "#1a1a1a",
 
-  "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
+  "_comment-5": "LABEL COLORS: orange, red, green, dark green",
 
-  "color-info": "#32a4e6",
   "color-warning": "#eeb20c",
   "color-danger": "#ff392e",
   "color-success": "#32b85f",
@@ -47,36 +47,36 @@
 
   "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
 
-  "border-enabled": "true",
-  "border-width": "0",
-  "card-radius": "0.8em",
+  "border-enabled": true,
+  "border-width-card": "0",
+  "card-radius": "2rem",
 
-  "shadow-enabled": "false",
+  "shadow-enabled": false,
   "shadow-x": "0",
   "shadow-y": "0",
   "shadow-blur": "0",
+  "shadow-rgb": "0 0 0",
+  "shadow-alpha": "0.00",
 
   "ig": {
     "avatar": "wijkraadrunkst.webp",
-    "username": "client.be",
+    "username": "Wijkraad Runkst",
     "posts": 0,
     "followers": 0,
     "following": 0,
-    "title": "www.client.be",
+    "title": "Wijkraad Runkst",
     "threads": "@wijkraadrunkst.be",
-    "businessType": "business type",
     "description": "Description part 1.\nDescription part 2\nDescription part 3\nDescription part 4",
-    "address": "Straat, Stad, Belgium xxxx",
-    "url": "https://www.client.be",
+    "url": "https://www.wijkraadrunkst.be/",
     "highlightIcon": "wijkraadrunkst-small.svg",
     "highlights": [
-      { "label": "TEAM", "bg": "#cecece" },
-      { "label": "PROMOS", "bg": "#444" },
-      { "label": "SHOP", "bg": "#cecece" },
-      { "label": "SERVICES", "bg": "#444" },
-      { "label": "BLOG", "bg": "#cecece" },
-      { "label": "FAQ", "bg": "#444" },
-      { "label": "REVIEWS", "bg": "#cecece" }
+      { "label": "TEAM" },
+      { "label": "PROMOS" },
+      { "label": "SHOP" },
+      { "label": "SERVICES" },
+      { "label": "BLOG" },
+      { "label": "FAQ" },
+      { "label": "REVIEWS" }
     ]
   }
 }

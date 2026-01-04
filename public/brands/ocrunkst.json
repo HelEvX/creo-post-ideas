@@ -18,17 +18,18 @@
   "color-secondary": "#e8dcc8",
   "color-secondary-dark": "#d9c5a4",
   "color-secondary-darker": "#CFB58C",
-  "color-secondary-light": "#F3EDE2",
+  "color-secondary-light": "#f1ebdf",
   "color-secondary-lighter": "#faf9f6",
 
   "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-dark",
 
-  "color-tertiary": "#1f6f50",
+  "color-tertiary": "#d9c5a4",
 
   "_comment-3": "BACKGROUND COLORS",
 
   "color-surface": "#ffffff",
   "color-panel": "#f1ebdf",
+  "color-card": "#16503a",
   "color-nav-bg": "#faf9f6",
   "color-footer-bg": "#1f6f50",
 
@@ -37,9 +38,8 @@
   "color-title": "#070e0b",
   "color-text": "#070e0b",
 
-  "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
+  "_comment-5": "LABEL COLORS: orange, red, green, dark green",
 
-  "color-info": "#2892d7",
   "color-warning": "#ffbb31",
   "color-danger": "#c3423f",
   "color-success": "#2d9f73",
@@ -47,14 +47,16 @@
 
   "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
 
-  "border-enabled": "true",
-  "border-width": "0",
-  "card-radius": "0",
+  "border-enabled": true,
+  "border-width-card": "0.2rem",
+  "card-radius": "0.8rem",
 
-  "shadow-enabled": "false",
+  "shadow-enabled": false,
   "shadow-x": "0",
   "shadow-y": "0",
   "shadow-blur": "0",
+  "shadow-rgb": "0 0 0",
+  "shadow-alpha": "0.00",
 
   "ig": {
     "avatar": "ocrunkst.webp",
@@ -68,15 +70,15 @@
     "description": "Description part 1.\nDescription part 2\nDescription part 3\nDescription part 4",
     "address": "Straat, Stad, Belgium xxxx",
     "url": "https://www.client.be",
-    "highlightIcon": "ocr-small.svg",
+    "highlightIcon": "ocrunkst-small.svg",
     "highlights": [
-      { "label": "TEAM", "bg": "#cecece" },
-      { "label": "PROMOS", "bg": "#444" },
-      { "label": "SHOP", "bg": "#cecece" },
-      { "label": "SERVICES", "bg": "#444" },
-      { "label": "BLOG", "bg": "#cecece" },
-      { "label": "FAQ", "bg": "#444" },
-      { "label": "REVIEWS", "bg": "#cecece" }
+      { "label": "TEAM" },
+      { "label": "PROMOS" },
+      { "label": "SHOP" },
+      { "label": "SERVICES" },
+      { "label": "BLOG" },
+      { "label": "FAQ" },
+      { "label": "REVIEWS" }
     ]
   }
 }

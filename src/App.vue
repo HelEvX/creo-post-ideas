@@ -473,8 +473,8 @@ export default {
         ---------------------------------------------- */
 
       // defensive helpers
-      const t = (val) => (typeof val === "string" ? val.trim() : "");
-      const isTrue = (val) => t(val).toLowerCase() === "true";
+      const t = (val) => (typeof val === "string" ? val.trim() : val);
+      const isTrue = (val) => val === true || (typeof val === "string" && val.trim().toLowerCase() === "true");
 
       // flags from JSON
       const borderEnabled = isTrue(data["border-enabled"]);
@@ -487,22 +487,29 @@ export default {
 
       // mockup card border ONLY
       if (borderEnabled) {
-        const w = t(data["border-width"]) || "0";
+        const w = t(data["border-width-card"]) || "0";
         root.style.setProperty("--card-border", `${w} solid var(--color-border-card)`);
       } else {
         root.style.setProperty("--card-border", "none");
       }
 
       // mockup card shadow ONLY
+      // mockup card shadow ONLY
       if (shadowEnabled) {
         const x = t(data["shadow-x"]) || "0";
         const y = t(data["shadow-y"]) || "0";
         const blur = t(data["shadow-blur"]) || "0";
 
-        // BRAND DEFAULT alpha
-        const alpha = t(data["ui-shadow-alpha"]);
+        // brand default shadow color
+        const rgb = t(data["shadow-rgb"]);
+        if (rgb) {
+          root.style.setProperty("--shadow-rgb", rgb);
+        }
+
+        // brand default shadow alpha
+        const alpha = t(data["shadow-alpha"]);
         if (alpha) {
-          root.style.setProperty("--ui-shadow-alpha", alpha);
+          root.style.setProperty("--shadow-alpha", alpha);
         }
 
         root.style.setProperty("--card-shadow", `${x} ${y} ${blur} var(--color-shadow)`);
@@ -597,7 +604,7 @@ Stylings for components specific to the app shell
 }
 
 .site-footer p span {
-  color: var(--color-primary); /* change this! */
+  color: var(--ui-secondary-bg);
 }
 
 /* ----------------------------------------------------
@@ -647,7 +654,7 @@ p.hero-subtitle {
 
 .section-about .starred-text,
 .section-about span {
-  color: var(--ui-primary-bg);
+  color: var(--color-tertiary);
 }
 
 /* ----------------------------------------------------

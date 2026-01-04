@@ -31,17 +31,17 @@
 
   "color-surface": "#f0f0ee",
   "color-panel": "#e0d5cd",
+  "color-card": "#ffffff",
   "color-nav-bg": "#ffffff",
-  "color-footer-bg": "#ffffff",
+  "color-footer-bg": "#6b705c",
 
   "_comment-4": "TEXT COLORS (only dark colors, not 'reversed')",
 
   "color-title": "#3f3f3f",
   "color-text": "#828282",
 
-  "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
+  "_comment-5": "LABEL COLORS: orange, red, green, dark green",
 
-  "color-info": "#78c4e5",
   "color-warning": "#ffbb31",
   "color-danger": "#db504a",
   "color-success": "#b3e27c",
@@ -49,36 +49,34 @@
 
   "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
 
-  "border-enabled": "true",
-  "border-width": "0",
-  "card-radius": "0",
+  "border-enabled": true,
+  "border-width-card": "0",
+  "card-radius": "1rem",
 
-  "shadow-enabled": "false",
+  "shadow-enabled": true,
   "shadow-x": "0",
-  "shadow-y": "0",
-  "shadow-blur": "0",
+  "shadow-y": "0.75rem",
+  "shadow-blur": "1.75rem",
+  "shadow-rgb": "107 112 92",
+  "shadow-alpha": "0.15",
 
   "ig": {
     "avatar": "kenis.webp",
-    "username": "client.be",
-    "posts": 0,
-    "followers": 0,
-    "following": 0,
-    "title": "www.client.be",
-    "threads": "@kenis.be",
-    "businessType": "business type",
-    "description": "Description part 1.\nDescription part 2\nDescription part 3\nDescription part 4",
-    "address": "Straat, Stad, Belgium xxxx",
-    "url": "https://www.client.be",
+    "username": "bakkerijkenis",
+    "posts": 143,
+    "followers": 765,
+    "following": 140,
+    "title": "bakkerijkenis",
+    "description": "Onze bakkers bewijzen hun vakmanschap elke dag opnieuw en dat proef je.\n👨‍🍳 Familiebedrijf sinds 1986\n📍Bocholt, Meeuwen & Peer",
+    "address": "Kanaalkom 40, Bree, Belgium 3960",
+    "url": "www.bakkerijkenis.be",
     "highlightIcon": "kenis-small.svg",
     "highlights": [
-      { "label": "TEAM", "bg": "#cecece" },
-      { "label": "PROMOS", "bg": "#444" },
-      { "label": "SHOP", "bg": "#cecece" },
-      { "label": "SERVICES", "bg": "#444" },
-      { "label": "BLOG", "bg": "#cecece" },
-      { "label": "FAQ", "bg": "#444" },
-      { "label": "REVIEWS", "bg": "#cecece" }
+      { "label": "Seasons" },
+      { "label": "For you!" },
+      { "label": "Atelier Bree" },
+      { "label": "Brood automaat" },
+      { "label": "Bocholt" }
     ]
   }
 }

@@ -27,8 +27,9 @@
 
   "_comment-3": "BACKGROUND COLORS",
 
-  "color-surface": "#f9f2a6",
+  "color-surface": "#fcf8d1",
   "color-panel": "#fae82e",
+  "color-card": "#f9f2a6",
   "color-nav-bg": "#fae82e",
   "color-footer-bg": "#1b1464",
 
@@ -37,9 +38,8 @@
   "color-title": "#1b1464",
   "color-text": "#0d004c",
 
-  "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
+  "_comment-5": "LABEL COLORS: orange, red, green, dark green",
 
-  "color-info": "#1b1464",
   "color-warning": "#efdb06",
   "color-danger": "#c3392a",
   "color-success": "#2ecc71",
@@ -47,36 +47,37 @@
 
   "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
 
-  "border-enabled": "true",
-  "border-width": "0",
+  "border-enabled": false,
+  "border-width-card": "0",
   "card-radius": "0",
 
-  "shadow-enabled": "false",
+  "shadow-enabled": false,
   "shadow-x": "0",
   "shadow-y": "0",
   "shadow-blur": "0",
+  "shadow-rgb": "0 0 0",
+  "shadow-alpha": "0.00",
 
   "ig": {
     "avatar": "runkstervolksfeesten.webp",
-    "username": "client.be",
+    "username": "Runkstervolksfeesten.be",
     "posts": 0,
     "followers": 0,
     "following": 0,
-    "title": "www.client.be",
+    "title": "Runkster Volksfeesten",
     "threads": "@runkstervolksfeesten.be",
-    "businessType": "business type",
     "description": "Description part 1.\nDescription part 2\nDescription part 3\nDescription part 4",
     "address": "Straat, Stad, Belgium xxxx",
-    "url": "https://www.client.be",
+    "url": "www.runkstervolksfeesten.be",
     "highlightIcon": "runkstervolksfeesten-small.svg",
     "highlights": [
-      { "label": "TEAM", "bg": "#cecece" },
-      { "label": "PROMOS", "bg": "#444" },
-      { "label": "SHOP", "bg": "#cecece" },
-      { "label": "SERVICES", "bg": "#444" },
-      { "label": "BLOG", "bg": "#cecece" },
-      { "label": "FAQ", "bg": "#444" },
-      { "label": "REVIEWS", "bg": "#cecece" }
+      { "label": "TEAM" },
+      { "label": "PROMOS" },
+      { "label": "SHOP" },
+      { "label": "SERVICES" },
+      { "label": "BLOG" },
+      { "label": "FAQ" },
+      { "label": "REVIEWS" }
     ]
   }
 }

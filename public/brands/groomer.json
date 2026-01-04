@@ -28,8 +28,9 @@
   "_comment-3": "BACKGROUND COLORS",
 
   "color-surface": "#f7f9ef",
-  "color-panel": "#eff2d6",
-  "color-nav-bg": "#f7f9ef",
+  "color-panel": "#f0f1d6",
+  "color-card": "#d7dfd7",
+  "color-nav-bg": "#ffffff",
   "color-footer-bg": "#5e7e5f",
 
   "_comment-4": "TEXT COLORS (only dark colors, not 'reversed')",
@@ -37,9 +38,8 @@
   "color-title": "#3f3f3f",
   "color-text": "#3f3f3f",
 
-  "_comment-5": "UTILITY COLORS: blue, orange, red, green, dark green",
+  "_comment-5": "LABEL COLORS: orange, red, green, dark green",
 
-  "color-info": "#22aed1",
   "color-warning": "#f3b61f",
   "color-danger": "#e54b4b",
   "color-success": "#9baf9d",
@@ -47,14 +47,15 @@
 
   "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
 
-  "border-enabled": "true",
-  "border-width": "0",
-  "card-radius": "0",
+  "border-enabled": true,
+  "border-width-card": "0",
+  "card-radius": "2rem",
 
-  "shadow-enabled": "false",
+  "shadow-enabled": false,
   "shadow-x": "0",
   "shadow-y": "0",
   "shadow-blur": "0",
+  "shadow-alpha": "0.00",
 
   "ig": {
     "avatar": "groomer.webp",

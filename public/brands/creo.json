@@ -32,7 +32,7 @@
 
   "color-surface": "#f2f4f4",
   "color-panel": "#ececec",
-
+  "color-card": "#ffffff",
   "color-nav-bg": "#00363d",
   "color-footer-bg": "#00363d",
 
@@ -41,9 +41,8 @@
   "color-title": "#001214",
   "color-text": "#314548",
 
-  "_comment-5": "UTILITY COLORS",
+  "_comment-5": "LABEL COLORS",
 
-  "color-info": "#4376af",
   "color-warning": "#eee13e",
   "color-danger": "#d71341",
   "color-success": "#05b384",
@@ -51,36 +50,26 @@
 
   "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
 
-  "border-enabled": "false",
-  "border-width": "0.15rem",
-  "card-radius": "0.6rem",
+  "border-enabled": false,
+  "border-width-card": "0",
+  "card-radius": "0",
 
-  "shadow-enabled": "false",
+  "shadow-enabled": true,
   "shadow-x": "0",
-  "shadow-y": "0.1rem",
-  "shadow-blur": "0.6rem",
+  "shadow-y": "0.5rem",
+  "shadow-blur": "1rem",
+  "shadow-rgb": "0 18 20",
+  "shadow-alpha": "0.15",
 
   "ig": {
     "avatar": "creo.webp",
-    "username": "Creo Websolutions",
-    "posts": 0,
-    "followers": 0,
-    "following": 0,
-    "title": "www.client.be",
-    "threads": "@client.be",
-    "businessType": "business type",
-    "description": "Description part 1.\nDescription part 2\nDescription part 3\nDescription part 4",
-    "address": "Straat, Stad, Belgium xxxx",
-    "url": "https://www.client.be",
-    "highlightIcon": "client.svg",
-    "highlights": [
-      { "label": "TEAM" },
-      { "label": "PROMOS" },
-      { "label": "SHOP" },
-      { "label": "SERVICES" },
-      { "label": "BLOG" },
-      { "label": "FAQ" },
-      { "label": "REVIEWS" }
-    ]
+    "username": "creowebsolutions",
+    "posts": 19,
+    "followers": 30,
+    "following": 1,
+    "title": "Creo Websolutions",
+    "description": "Wij ondersteunen bedrijven met websoftware die werkt.",
+    "url": "www.creowebsolutions.be",
+    "highlightIcon": "creo-small.svg"
   }
 }

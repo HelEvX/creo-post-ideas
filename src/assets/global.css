@@ -159,11 +159,10 @@
   --color-border-light: var(--black-25);
   --color-border-medium: var(--black-50);
   --color-border-dark: var(--black-75);
-  --color-border-card: transparent; /* default: invisible */
 
-  --ui-shadow-rgb: 0 0 0; /* default black */
-  --ui-shadow-alpha: 0; /* default: invisible */
-  --color-shadow: rgba(var(--ui-shadow-rgb) / var(--ui-shadow-alpha));
+  --shadow-rgb: 0 0 0; /* default black */
+  --shadow-alpha: 0; /* default: invisible */
+  --color-shadow: rgba(var(--shadow-rgb) / var(--shadow-alpha));
 
   /* ==== STATUS / FEEDBACK ==== */
   --color-info: var(--blue-500);
@@ -220,6 +219,7 @@
   --radius-lg: 1rem;
   --border-width: 0.15rem;
   --border-width-lg: 0.35rem;
+  --border-width-card: var(--border-width);
 
   /* Shadows */
   --shadow-x: 0;
@@ -387,12 +387,6 @@
    OTHER MOCKUP ASSIGNMENTS
    ------------------------------------------------------ */
 
-  /* PATTERNS */
-  /* OLD
-  --pattern-base: var(--ui-primary-bg);
-  --pattern-alt: color-mix(in srgb, var(--ui-primary-bg), var(--color-primary-dark) 40%); 
-  */
-
   --image-opacity: 0.25;
 
   --pattern-opacity: 0.4;
@@ -405,7 +399,9 @@
   /* BRAND-SPECIFIC border & shadows */
 
   --card-radius: var(--radius-md);
-  --card-border: var(--border-width) solid var(--color-border-card);
+
+  --color-border-card: var(--dynamic-overlay);
+  --card-border: var(--border-width-card) solid var(--color-border-card);
   --card-shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--color-shadow);
 
   /* Paddings & gaps */
@@ -700,7 +696,7 @@ a {
 
 a:hover,
 a:focus {
-  color: var(--color-primary-darker);
+  color: var(--color-tertiary);
 }
 
 /* Forms */
