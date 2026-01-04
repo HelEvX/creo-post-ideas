@@ -19,13 +19,17 @@
         <div class="ig-head-col">
           <div class="ig-username-row">
             <h1 class="ig-username">{{ ig.username }}</h1>
-            <div class="ig-btn secondary">Edit profile</div>
-            <div class="ig-btn secondary">View archive</div>
-            <div class="ig-btn icon-btn">
-              <i class="fa-solid fa-gear"></i>
+            <div class="ig-btn-row">
+              <div class="ig-btn secondary">Edit profile</div>
+              <div class="ig-btn secondary">View archive</div>
+              <div class="ig-btn icon-btn">
+                <i class="fa-solid fa-gear"></i>
+              </div>
             </div>
           </div>
+        </div>
 
+        <div class="ig-bio-wrapper">
           <ul class="ig-stats">
             <li>
               <span class="num">{{ ig.posts }}</span> posts
@@ -37,8 +41,6 @@
               <span class="num">{{ ig.following }}</span> following
             </li>
           </ul>
-        </div>
-        <div class="ig-bio-wrapper">
           <div class="ig-bio">
             <div class="ig-line ig-title">{{ ig.title }}</div>
             <div class="ig-line">
@@ -256,7 +258,7 @@ const mockupTiles = computed(() => [
 #instagram-preview {
   font-family: "segoe-ui", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
-  line-height: 18px;
+  line-height: var(--fs-body-lg);
   color: #000;
   background: var(--color-background);
 }
@@ -274,8 +276,7 @@ const mockupTiles = computed(() => [
   display: flex;
   flex-wrap: wrap;
   justify-content: right;
-  align-items: right;
-  margin-bottom: 40px;
+  margin-bottom: 2rem;
 }
 
 /* LEFT COLUMN — 1/3 */
@@ -308,6 +309,7 @@ const mockupTiles = computed(() => [
   flex: 0 0 calc(66.666% - 28px);
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 16px;
 }
 
@@ -316,23 +318,31 @@ const mockupTiles = computed(() => [
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .ig-username {
   all: unset;
   display: block;
-  font-size: 20px;
+  font-size: var(--fs-h5);
   font-weight: 400;
   line-height: 25px;
 }
 
 /* BUTTONS */
+
+.ig-btn-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12px;
+}
+
 .ig-btn {
   all: unset;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 1em;
   font-weight: 600;
   height: 32px;
   padding: 0 16px;
@@ -354,14 +364,14 @@ const mockupTiles = computed(() => [
   display: flex;
   gap: 30px;
   padding: 0;
-  margin: 0;
+  margin: 2rem 0;
   list-style: none;
 }
 
 .ig-stats li {
   display: flex;
   gap: 4px;
-  font-size: 16px;
+  font-size: var(--fs-body);
   line-height: 20px;
   color: #6a717a;
 }
@@ -403,7 +413,7 @@ const mockupTiles = computed(() => [
 }
 
 .ig-pill i {
-  font-size: 18px;
+  font-size: var(--fs-body-lg);
 }
 
 .ig-pill span {
@@ -476,7 +486,7 @@ const mockupTiles = computed(() => [
 }
 
 .ig-tab-inner i {
-  font-size: 24px;
+  font-size: var(--fs-h4);
   line-height: 1;
 }
 
@@ -580,12 +590,11 @@ const mockupTiles = computed(() => [
 @media (max-width: 767px) {
   .ig-header {
     justify-content: left;
+    margin: 0;
   }
-  .ig-head-col {
-    justify-content: center;
-  }
-  .ig-username-row {
-    flex-wrap: wrap;
+  .ig-btn {
+    font-size: 0.8em;
+    padding: 0 8px;
   }
   .ig-username {
     flex: 1 0 100%;
@@ -599,12 +608,28 @@ const mockupTiles = computed(() => [
     height: 92px;
     width: 92px;
   }
-  /* .ig-stats {
+  .ig-stats {
     display: none;
-  } */
+  }
   .ig-bio-wrapper {
     flex: 1;
-    padding: 40px 20px;
+    padding: 20px;
+  }
+  .ig-highlight {
+    width: 90px;
+    flex: 0 0 90px;
+  }
+  .ig-highlight-img {
+    width: 69px;
+    height: 69px;
+  }
+  .ig-highlight-circle {
+    width: 57.75px;
+    height: 57.75px;
+  }
+  .ig-highlight-icon {
+    width: 60px;
+    height: 60px;
   }
 }
 </style>
