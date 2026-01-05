@@ -323,7 +323,7 @@
   --ui-secondary-bg: var(--color-secondary);
 
   /* mockup decorations */
-  --mockup-decor: var(--color-primary-dark);
+  --mockup-decor: var(--dynamic-overlay);
 
   /* ------------------------------------------------------
    Borders & shadows

@@ -564,29 +564,12 @@ watch(resolvedVisualContext, (val) => emit("resolved-visuals", val), { immediate
 
 .post-bg__logo {
   color: var(--mockup-decor);
+  opacity: var(--pattern-opacity);
 }
 
 .post-bg__logo :deep(svg),
 .post-bg__logo :deep(svg *) {
   fill: currentColor !important;
-  stroke: currentColor !important;
-}
-
-/* ===============================================
-   DERIVED COLOR FOR LARGE LOGO & DECORATION
-   primary-dark | secondary-light | neutral
-   =============================================== */
-
-.bg--plain-primary {
-  --mockup-decor: var(--color-primary-dark);
-}
-
-.bg--plain-secondary {
-  --mockup-decor: var(--color-secondary-light);
-}
-
-.bg--plain-neutral {
-  --mockup-decor: var(--color-background);
 }
 
 /* ===============================================
@@ -771,6 +754,14 @@ watch(resolvedVisualContext, (val) => emit("resolved-visuals", val), { immediate
   --tile-x: 40px;
   --tile-y: 85px;
   --pattern-offset-x: calc(var(--tile-x) * 0.25);
+  --pattern-offset-y: calc(var(--tile-y) / 2);
+}
+
+.brand--astamoris .post-bg__pattern {
+  --pattern-opacity: 0.4;
+  --tile-x: 220px;
+  --tile-y: 60px;
+  --pattern-offset-x: calc(var(--tile-x) / 2);
   --pattern-offset-y: calc(var(--tile-y) / 2);
 }
 
