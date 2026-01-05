@@ -563,6 +563,13 @@ const contrastPairs = ref([
     fixFgCandidates: ["--fix-dynamic-text"],
     largeText: true,
   },
+  {
+    id: "main-caption",
+    fgVar: "--dynamic-soft",
+    bg: "CONTEXT",
+    fixFgCandidates: ["--fix-dynamic-soft"],
+    largeText: false,
+  },
 
   // Left card (alt panel)
   {
@@ -610,6 +617,12 @@ const contrastPairs = ref([
     fgVar: "--caption-on-accent",
     bg: "ACCENT_BG",
     fixFgCandidates: ["--fix-caption-on-accent"],
+  },
+  {
+    id: "accent-title",
+    fgVar: "--title-on-accent",
+    bg: "ACCENT_BG",
+    fixFgCandidates: ["--fix-title-on-accent"],
   },
   {
     id: "accent-text",
@@ -731,7 +744,7 @@ function updateContrastChecks() {
       };
     }
 
-    const isFirstTwo = p.id === "main-title" || p.id === "main-paragraph";
+    const isMainContent = p.id === "main-title" || p.id === "main-paragraph" || p.id === "main-caption";
 
     // WCAG thresholds
     const AAA = 7.0;
@@ -748,8 +761,8 @@ function updateContrastChecks() {
     let statusVar;
     let label;
 
-    // Rows 1-2 (mockup headline/paragraph) are treated more leniently for "goed"
-    if (isFirstTwo) {
+    // Rows 1-2 (mockup headline/paragraph/caption) are treated more leniently for "goed"
+    if (isMainContent) {
       if (wcagLevel === "AAA" || wcagLevel === "AA") {
         statusVar = "--color-success-dark";
         label = "prima";
@@ -775,8 +788,8 @@ function updateContrastChecks() {
         statusVar = "--color-warning";
         label = "beperkt";
       } else if (wcagLevel === "A") {
-        statusVar = "--color-danger";
-        label = "slecht";
+        statusVar = "--color-warning";
+        label = "beperkt";
       } else {
         statusVar = "--color-danger";
         label = "slecht";

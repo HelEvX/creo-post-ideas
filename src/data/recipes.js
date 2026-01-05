@@ -23,7 +23,7 @@ export const recipes = [
   // ======================================================
   {
     id: "balanced",
-    title: "Lichtgewicht",
+    title: "Zachtjes",
     description: "Lichter en minder contrast",
     roles: {
       // NAV / FOOTER
@@ -35,8 +35,8 @@ export const recipes = [
       "--ui-alt-section-bg": ["primaryLight", 0],
 
       // BRAND BACKGROUNDS
-      "--ui-primary-bg": ["primaryLight", 5],
-      "--ui-secondary-bg": ["secondaryLight", 4],
+      "--ui-primary-bg": ["primaryLight", 6],
+      "--ui-secondary-bg": ["secondaryLight", 5],
 
       // PANELS
       "--ui-panel-bg": ["neutral", 0],
@@ -45,6 +45,10 @@ export const recipes = [
       // TEXT
       "--color-title": ["neutral", 8],
       "--color-text": ["neutral", 7],
+
+      // DECOR COLORS
+      "--color-primary-dark": ["primaryLight", 5],
+      "--color-secondary-light": ["secondaryLight", 6],
 
       // SHADOW (strength)
       "--shadow-alpha": [0],
@@ -58,8 +62,8 @@ export const recipes = [
   // ======================================================
   {
     id: "bold",
-    title: "Uitgesproken",
-    description: "Donkere kleuren, meer contrast",
+    title: "Heviger",
+    description: "Felle kleuren, meer contrast",
     roles: {
       // NAV / FOOTER
       "--ui-nav-bg": ["primaryDark", 5],
@@ -74,12 +78,16 @@ export const recipes = [
       "--ui-secondary-bg": ["secondary", 7],
 
       // PANELS
-      "--ui-panel-bg": ["secondaryLight", 2],
-      "--ui-alt-panel-bg": ["primaryDark", 4],
+      "--ui-panel-bg": ["secondary", 4],
+      "--ui-alt-panel-bg": ["primary", 5],
 
       // TEXT
-      "--color-title": ["neutral", 11],
+      "--color-title": ["neutral", 10],
       "--color-text": ["neutral", 9],
+
+      // DECOR COLORS
+      "--color-primary-dark": ["primaryDark", 8],
+      "--color-secondary-light": ["secondaryLight", 6],
 
       // SHADOW
       "--shadow-alpha": [7],
@@ -109,12 +117,16 @@ export const recipes = [
       "--ui-secondary-bg": ["secondaryDark", 2],
 
       // PANELS
-      "--ui-panel-bg": ["neutral", 2],
+      "--ui-panel-bg": ["secondaryLight", 2],
       "--ui-alt-panel-bg": ["primaryDark", 1],
 
       // TEXT
       "--color-title": ["neutral", 9],
       "--color-text": ["neutral", 8],
+
+      // DECOR COLORS
+      "--color-primary-dark": ["primaryDark", 2],
+      "--color-secondary-light": ["secondaryLight", 0],
 
       // SHADOW (strength)
       "--shadow-alpha": [0],
@@ -144,12 +156,16 @@ export const recipes = [
       "--ui-secondary-bg": ["secondary", 4],
 
       // PANELS
-      "--ui-panel-bg": ["primaryDark", 2],
-      "--ui-alt-panel-bg": ["primary", 4],
+      "--ui-panel-bg": ["secondaryLight", 2],
+      "--ui-alt-panel-bg": ["primaryLight", 2],
 
       // TEXT
-      "--color-title": ["primary", 7],
-      "--color-text": ["neutral", 9],
+      "--color-title": ["primaryDark", 7],
+      "--color-text": ["secondaryDark", 8],
+
+      // DECOR COLORS
+      "--color-primary-dark": ["primary", 3],
+      "--color-secondary-light": ["secondary", 6],
 
       // SHADOW (strength)
       "--shadow-alpha": [7],
@@ -177,7 +193,7 @@ export const recipes = [
 
       // BRAND BACKGROUNDS
       "--ui-primary-bg": ["primary", 3],
-      "--ui-secondary-bg": ["secondary", 3],
+      "--ui-secondary-bg": ["neutral", 3],
 
       // PANELS
       "--ui-panel-bg": ["neutral", 0],
@@ -186,6 +202,10 @@ export const recipes = [
       // TEXT
       "--color-title": ["neutral", 8],
       "--color-text": ["neutral", 7],
+
+      // DECOR COLORS
+      "--color-primary-dark": ["primaryDark", 3],
+      "--color-secondary-light": ["secondaryLight", 2],
 
       // SHADOW (strength)
       "--shadow-alpha": [1],
@@ -201,7 +221,7 @@ export const recipes = [
   {
     id: "inverted",
     title: "Licht uit",
-    description: "Donkere achtergrond, lichte kleuren",
+    description: "Donker met felle kleuren",
     roles: {
       // NAV / FOOTER
       "--ui-nav-bg": ["neutral", 10],
@@ -220,8 +240,12 @@ export const recipes = [
       "--ui-alt-panel-bg": ["neutral", 8],
 
       // TEXT
-      "--color-title": ["neutral", 11],
+      "--color-title": ["neutral", 10],
       "--color-text": ["neutral", 9],
+
+      // DECOR COLORS
+      "--color-primary-dark": ["primaryDark", 4],
+      "--color-secondary-light": ["secondaryDark", 3],
 
       // SHADOW (strength)
       "--shadow-alpha": [8],

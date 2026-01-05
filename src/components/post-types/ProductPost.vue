@@ -84,8 +84,8 @@ defineProps({
 
   padding: 1.5cqw 2cqw;
 
-  background: var(--caption-on-panel);
-  color: var(--text-on-accent);
+  background: var(--mockup-decor);
+  color: var(--dynamic-text);
 
   font-size: var(--fs-body-sm);
   line-height: 1;

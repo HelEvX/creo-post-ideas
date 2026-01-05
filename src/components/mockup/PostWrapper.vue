@@ -178,6 +178,9 @@ const aspectMap = {
 .alt-panel .card__title {
   color: var(--title-on-alt-panel);
 }
+.accent .card__title {
+  color: var(--title-on-accent);
+}
 
 /* text */
 .panel .card__text {

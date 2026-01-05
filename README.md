@@ -49,7 +49,7 @@ Recipes assign colors exclusively through **semantic CSS roles** such as:
 - typography (`--color-title`, `--color-text`)
 - accents (`--color-*-dark`, `--color-tertiary`)
 - depth cues (`--shadow-alpha`, mockup-only)
-- borders (`--card-border`, mockup-only)
+- border strength (`--border-alpha`, mockup-only)
 
 Brand-defined borders and shadows apply only inside the mockup; UI borders and shadows are never affected by brands or recipes.
 

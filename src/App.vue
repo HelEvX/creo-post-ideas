@@ -348,6 +348,7 @@ export default {
         ["section", "--ui-section-bg"],
         ["alt-section", "--ui-alt-section-bg"],
         ["panel", "--ui-panel-bg"],
+        ["alt-panel", "--ui-alt-panel-bg"],
         ["primary", "--ui-primary-bg"],
         ["secondary", "--ui-secondary-bg"],
         ["accent", "--ui-accent-bg"],
@@ -491,9 +492,6 @@ export default {
         root.style.setProperty("--card-radius", t(data["card-radius"]));
       }
 
-      // UI borders ONLY
-
-      // mockup card borders ONLY
       if (borderEnabled) {
         const w = t(data["border-width-card"]) || "0";
         root.style.setProperty("--card-border", `${w} solid var(--color-border-card)`);
@@ -501,8 +499,6 @@ export default {
         root.style.setProperty("--card-border", "none");
       }
 
-      // mockup card shadow ONLY
-      // mockup card shadow ONLY
       if (shadowEnabled) {
         const x = t(data["shadow-x"]) || "0";
         const y = t(data["shadow-y"]) || "0";

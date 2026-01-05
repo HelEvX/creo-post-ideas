@@ -66,7 +66,7 @@ defineProps({
   position: absolute;
   width: 100%;
   height: 0.67cqw;
-  background: var(--dynamic-text);
+  background: var(--dynamic-soft);
 }
 
 /* arrowhead */
@@ -76,8 +76,8 @@ defineProps({
   right: 0;
   width: 3cqw;
   height: 3cqw;
-  border-right: 0.8cqw solid var(--dynamic-text);
-  border-bottom: 0.8cqw solid var(--dynamic-text);
+  border-right: 0.8cqw solid var(--dynamic-soft);
+  border-bottom: 0.8cqw solid var(--dynamic-soft);
   transform: rotate(-45deg);
 }
 

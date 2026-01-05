@@ -43,17 +43,8 @@ defineProps({
   justify-content: flex-start;
 }
 
-.paragraph-post .card__caption {
-  color: var(--caption-on-accent);
-}
-
-.paragraph-post .card__title {
-  color: var(--title-on-accent);
-}
-
 .paragraph-post .card__text {
   font-size: var(--fs-body-sm);
-  color: var(--text-on-accent);
   margin: 0;
 }
 
