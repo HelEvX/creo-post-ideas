@@ -629,9 +629,9 @@ const contrastPairs = ref([
   // Left card (alt panel)
   {
     id: "card1-caption",
-    fgVar: "--caption-on-alt-panel",
+    fgVar: "--caption-pri-on-alt-panel",
     bg: "--ui-alt-panel-bg",
-    fixFgCandidates: ["--fix-caption-on-alt-panel"],
+    fixFgCandidates: ["--fix-caption-pri-on-alt-panel"],
   },
   {
     id: "card1-title",
@@ -649,9 +649,9 @@ const contrastPairs = ref([
   // Right card (panel)
   {
     id: "card2-caption",
-    fgVar: "--caption-on-panel",
+    fgVar: "--caption-sec-on-panel",
     bg: "--ui-panel-bg",
-    fixFgCandidates: ["--fix-caption-on-panel"],
+    fixFgCandidates: ["--fix-caption-sec-on-panel"],
   },
   {
     id: "card2-title",

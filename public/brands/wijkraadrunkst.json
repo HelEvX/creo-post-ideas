@@ -21,7 +21,7 @@
   "color-secondary-light": "#32B85F",
   "color-secondary-lighter": "#9ED1F2",
 
-  "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-dark",
+  "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-darker",
 
   "color-tertiary": "#AE6FC3",
 

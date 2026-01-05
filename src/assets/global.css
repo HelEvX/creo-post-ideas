@@ -374,26 +374,6 @@
   --dynamic-nav: var(--ui-text-on-dark);
 
   /* ------------------------------------------------------
-     MOCKUP SURFACE TEXT ROLES (FIXABLE)
-     These are NOT dynamic-*.
-  ------------------------------------------------------ */
-
-  /* Panel surface text */
-  --title-on-panel: var(--color-title);
-  --text-on-panel: var(--color-text);
-  --caption-on-panel: var(--color-soft);
-
-  /* Alt-panel surface text */
-  --title-on-alt-panel: var(--color-title);
-  --text-on-alt-panel: var(--color-text);
-  --caption-on-alt-panel: var(--color-soft);
-
-  /* Accent surface text */
-  --caption-on-accent: var(--color-soft-inverse);
-  --title-on-accent: var(--color-title-inverse);
-  --text-on-accent: var(--color-text-inverse);
-
-  /* ------------------------------------------------------
    OTHER MOCKUP ASSIGNMENTS
    ------------------------------------------------------ */
 

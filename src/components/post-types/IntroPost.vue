@@ -76,7 +76,7 @@ const { caption, headline, subtitle, hours } = defineProps({
   content: "";
   flex: 1;
   height: 0.15cqw;
-  background-color: var(--caption-on-alt-panel);
+  background-color: var(--caption-pri-on-alt-panel);
 }
 
 .opening-hours__value {

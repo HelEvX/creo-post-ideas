@@ -195,10 +195,10 @@ const aspectMap = {
 
 /* captions */
 .panel .card__caption {
-  color: var(--caption-on-panel);
+  color: var(--caption-sec-on-panel);
 }
 .alt-panel .card__caption {
-  color: var(--caption-on-alt-panel);
+  color: var(--caption-pri-on-alt-panel);
 }
 .accent .card__caption {
   color: var(--caption-on-accent);

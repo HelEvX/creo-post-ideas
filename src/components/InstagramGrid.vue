@@ -129,9 +129,9 @@ const highlightPairs = [
   { bg: "--ui-primary-bg", fg: "--text-on-primary" },
   { bg: "--ui-alt-section-bg", fg: "--text-on-alt-section" },
   { bg: "--ui-secondary-bg", fg: "--text-on-secondary" },
-  { bg: "--ui-alt-panel-bg", fg: "--color-tertiary" },
-  { bg: "--ui-panel-bg", fg: "--caption-on-panel" },
-  { bg: "--ui-footer-bg", fg: "--text-soft-on-footer" },
+  { bg: "--ui-alt-panel-bg", fg: "--caption-pri-on-alt-panel" },
+  { bg: "--ui-panel-bg", fg: "--caption-sec-on-panel" },
+  { bg: "--ui-accent-bg", fg: "--caption-on-accent" },
   { bg: "--ui-nav-bg", fg: "--text-on-nav" },
 ];
 

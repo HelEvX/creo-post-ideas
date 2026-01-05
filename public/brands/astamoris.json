@@ -1,0 +1,86 @@
+{
+  "name": "Asta Moris",
+  "meta": { "brand": "Asta Moris", "version": "1.0" },
+  "font-title": "Urbanist, sans-serif",
+  "font-body": "DM Sans, sans-serif",
+  "fonts": {
+    "import": [
+      "https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap"
+    ]
+  },
+
+  "_comment-1": "COLOR PALETTE",
+
+  "color-primary": "#12739b",
+  "color-primary-dark": "#0e5a79",
+  "color-primary-darker": "#0d516d",
+  "color-primary-light": "#178dbf",
+  "color-primary-lighter": "#24abe5",
+
+  "color-secondary": "#ddddde",
+  "color-secondary-dark": "#9a9a9c",
+  "color-secondary-darker": "#56565b",
+  "color-secondary-light": "#f4f4f4",
+  "color-secondary-lighter": "#ffffff",
+
+  "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-darker",
+
+  "color-tertiary": "#56565b",
+
+  "_comment-3": "BACKGROUND COLORS: sections, cards, header, footer",
+
+  "color-surface": "#f4f4f4",
+  "color-panel": "#2981a5",
+  "color-card": "#ffffff",
+  "color-nav-bg": "#ffffff",
+  "color-footer-bg": "#12739b",
+
+  "_comment-4": "TEXT COLORS (dark only!)",
+
+  "color-title": "#1e1e24",
+  "color-text": "#1e1e24",
+
+  "_comment-5": "LABEL COLORS",
+
+  "color-warning": "#ffc857",
+  "color-danger": "#db3a34",
+  "color-success": "#0aac86",
+  "color-success-dark": "#077c60",
+
+  "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
+
+  "border-enabled": false,
+  "border-width-card": "0",
+  "card-radius": "0",
+
+  "shadow-enabled": false,
+  "shadow-x": "0",
+  "shadow-y": "0",
+  "shadow-blur": "0",
+  "shadow-rgb": "0 0 0",
+  "shadow-alpha": "0.00",
+
+  "ig": {
+    "avatar": "astamoris.webp",
+    "username": "AstaMoris",
+    "posts": 0,
+    "followers": 0,
+    "following": 0,
+    "title": "AstaMoris",
+    "threads": "@astamoris",
+    "businessType": "Tax accountants",
+    "description": "Bij Astamoris begeleiden wij ondernemers en particulieren in elke fase van hun verhaal.\nMet onze fiscale en boekhoudkundige expertise zorgen wij voor inzicht, rust en oplossingen die werken.",
+    "address": "Hondsstraat 21/1, 3700 Tongeren-Borgloon",
+    "url": "astamoris.be",
+    "highlightIcon": "astamoris-small.svg",
+    "highlights": [
+      { "label": "TEAM" },
+      { "label": "PROMOS" },
+      { "label": "SHOP" },
+      { "label": "SERVICES" },
+      { "label": "BLOG" },
+      { "label": "FAQ" },
+      { "label": "REVIEWS" }
+    ]
+  }
+}

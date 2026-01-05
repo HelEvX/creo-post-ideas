@@ -9,40 +9,40 @@
 
   "_comment-1": "COLOR PALETTE",
 
-  "color-primary": "#",
-  "color-primary-dark": "#",
-  "color-primary-darker": "#",
-  "color-primary-light": "#",
-  "color-primary-lighter": "#",
+  "color-primary": "#0ba85b",
+  "color-primary-dark": "#048246",
+  "color-primary-darker": "#066034",
+  "color-primary-light": "#6acc8b",
+  "color-primary-lighter": "#caf1bb",
 
-  "color-secondary": "#",
-  "color-secondary-dark": "#",
-  "color-secondary-darker": "#",
-  "color-secondary-light": "#",
-  "color-secondary-lighter": "#",
+  "color-secondary": "#4d92a9",
+  "color-secondary-dark": "#317b93",
+  "color-secondary-darker": "#186882",
+  "color-secondary-light": "#4d908e",
+  "color-secondary-lighter": "#a4d4e5",
 
   "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-darker",
 
-  "color-tertiary": "#",
+  "color-tertiary": "#8e3146",
 
   "_comment-3": "BACKGROUND COLORS: sections, cards, header, footer",
 
-  "color-surface": "#",
-  "color-panel": "#",
-  "color-card": "#",
-  "color-nav-bg": "#",
-  "color-footer-bg": "#",
+  "color-surface": "#f5f5f5",
+  "color-panel": "#d3eef7",
+  "color-card": "#bbe1ee",
+  "color-nav-bg": "#d3eef7",
+  "color-footer-bg": "#ffffff",
 
   "_comment-4": "TEXT COLORS (dark only!)",
 
-  "color-title": "#",
-  "color-text": "#",
+  "color-title": "#4d92a9",
+  "color-text": "#3f3f3f",
 
   "_comment-5": "LABEL COLORS",
 
-  "color-warning": "#",
-  "color-danger": "#",
-  "color-success": "#",
+  "color-warning": "#ffd400",
+  "color-danger": "#f0386b",
+  "color-success": "#0ba85b",
   "color-success-dark": "#",
 
   "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",

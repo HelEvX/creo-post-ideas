@@ -121,7 +121,7 @@ The system:
 
 `--text-on-*`  
 `--title-on-*`  
-`--text-soft-on-*`  
+`--soft-on-*`  
 `--caption-on-*`  
 `--disabled-on-*`  
 `--overlay-on-*`

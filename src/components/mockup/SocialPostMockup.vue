@@ -209,8 +209,8 @@ const mockupVars = ref({
   "--dynamic-title": "",
   "--dynamic-soft": "",
 
-  "--caption-on-panel": "",
-  "--caption-on-alt-panel": "",
+  "--caption-pri-on-alt-panel": "",
+  "--caption-sec-on-panel": "",
   "--caption-on-accent": "",
 });
 
@@ -220,14 +220,17 @@ function recomputeMockupVars() {
   /* base text tokens from App.vue */
   const textDark = root.getPropertyValue("--color-text").trim();
   const titleDark = root.getPropertyValue("--color-title").trim();
-  const textLight = root.getPropertyValue("--color-text-inverse").trim();
-
   const softDark = root.getPropertyValue("--color-soft").trim();
+
+  const textLight = root.getPropertyValue("--color-text-inverse").trim();
   const softLight = root.getPropertyValue("--color-soft-inverse").trim();
 
   /* caption tones */
-  const primaryDark = root.getPropertyValue("--color-primary-dark").trim();
-  const secondaryDark = root.getPropertyValue("--color-tertiary").trim(); // same color as secondary-dark unless specified in the brand
+  const primaryDark = root.getPropertyValue("--color-primary-darker").trim();
+  const secondaryDark = root.getPropertyValue("--color-tertiary").trim(); /* same as secondary-darker unless defined */
+
+  const primaryLight = root.getPropertyValue("--color-primary-lighter").trim();
+  const secondaryLight = root.getPropertyValue("--color-secondary-lighter").trim();
 
   if (!textDark || !textLight) return;
 
@@ -247,16 +250,31 @@ function recomputeMockupVars() {
   const dynamicTitle = mockupNeedsLightText ? textLight || textDark : titleDark || textDark;
   const dynamicSoft = mockupNeedsLightText ? softLight || textLight : softDark || textDark;
 
-  /* surface captions */
+  const panelBg = root.getPropertyValue("--ui-panel-bg").trim();
+  const altPanelBg = root.getPropertyValue("--ui-alt-panel-bg").trim();
+
+  const panelMode = getTextModeForBackground(panelBg, textDark, textLight);
+  const altPanelMode = getTextModeForBackground(altPanelBg, textDark, textLight);
+
+  /* panel */
   const panelCaption =
     props.backgroundTone === "secondary"
-      ? secondaryDark || primaryDark || dynamicSoft
-      : primaryDark || secondaryDark || dynamicSoft;
+      ? panelMode === "light"
+        ? secondaryLight
+        : secondaryDark
+      : panelMode === "light"
+      ? primaryLight
+      : primaryDark;
 
+  /* alt-panel */
   const altPanelCaption =
     props.backgroundTone === "secondary"
-      ? primaryDark || secondaryDark || dynamicSoft
-      : secondaryDark || primaryDark || dynamicSoft;
+      ? altPanelMode === "light"
+        ? primaryLight
+        : primaryDark
+      : altPanelMode === "light"
+      ? secondaryLight
+      : secondaryDark;
 
   /* accent caption: based on resolved accent surface background */
   const accentBg = resolveAccentBg(root);
@@ -288,8 +306,8 @@ function recomputeMockupVars() {
     "--text-on-panel": `var(--fix-text-on-panel, ${readCssVar("--text-on-panel")})`,
     "--text-on-alt-panel": `var(--fix-text-on-alt-panel, ${readCssVar("--text-on-alt-panel")})`,
 
-    "--caption-on-panel": `var(--fix-caption-on-panel, ${panelCaption})`,
-    "--caption-on-alt-panel": `var(--fix-caption-on-alt-panel, ${altPanelCaption})`,
+    "--caption-sec-on-panel": `var(--fix-caption-sec-on-panel, ${panelCaption})`,
+    "--caption-pri-on-alt-panel": `var(--fix-caption-pri-on-alt-panel, ${altPanelCaption})`,
     "--caption-on-accent": `var(--fix-caption-on-accent, ${accentCaption})`,
   };
 
@@ -367,13 +385,13 @@ const resolvedVisualContext = computed(() => {
       panel: {
         title: readCssVar("--title-on-panel"),
         body: readCssVar("--text-on-panel"),
-        caption: readCssVarFromEl(postEl, "--caption-on-panel") || readCssVar("--caption-on-panel"),
+        caption: readCssVarFromEl(postEl, "--caption-sec-on-panel") || readCssVar("--caption-sec-on-panel"),
       },
 
       altPanel: {
         title: readCssVar("--title-on-alt-panel"),
         body: readCssVar("--text-on-alt-panel"),
-        caption: readCssVarFromEl(postEl, "--caption-on-alt-panel") || readCssVar("--caption-on-alt-panel"),
+        caption: readCssVarFromEl(postEl, "--caption-pri-on-alt-panel") || readCssVar("--caption-pri-on-alt-panel"),
       },
 
       accent: {

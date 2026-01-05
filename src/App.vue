@@ -293,8 +293,14 @@ export default {
 
       const titleDark = getVar("--color-title");
 
-      const captionDark = getVar("--color-primary-dark");
-      const captionLight = getVar("--color-primary-lighter");
+      const captionDark = getVar("--color-soft");
+      const captionLight = getVar("--color-soft-inverse");
+
+      const captionPriDark = getVar("--color-primary-dark");
+      const captionPriLight = getVar("--color-primary-lighter");
+
+      const captionSecDark = getVar("--color-tertiary"); // same as secondary-dark unless defined
+      const captionSecLight = getVar("--color-secondary-lighter");
 
       const overlayDark = getVar("--black-50");
       const overlayLight = getVar("--white-50");
@@ -326,18 +332,22 @@ export default {
         if (mode === "dark") {
           root.style.setProperty(`--text-on-${surfaceKey}`, dark);
           root.style.setProperty(`--title-on-${surfaceKey}`, titleDark);
-          root.style.setProperty(`--text-soft-on-${surfaceKey}`, softDark);
+          root.style.setProperty(`--soft-on-${surfaceKey}`, softDark);
           root.style.setProperty(`--disabled-on-${surfaceKey}`, disabledDark);
           root.style.setProperty(`--faint-on-${surfaceKey}`, faintDark);
           root.style.setProperty(`--caption-on-${surfaceKey}`, captionDark);
+          root.style.setProperty(`--caption-pri-on-${surfaceKey}`, captionPriDark);
+          root.style.setProperty(`--caption-sec-on-${surfaceKey}`, captionSecDark);
           root.style.setProperty(`--overlay-on-${surfaceKey}`, overlayDark);
         } else {
           root.style.setProperty(`--text-on-${surfaceKey}`, light);
           root.style.setProperty(`--title-on-${surfaceKey}`, light);
-          root.style.setProperty(`--text-soft-on-${surfaceKey}`, softLight);
+          root.style.setProperty(`--soft-on-${surfaceKey}`, softLight);
           root.style.setProperty(`--disabled-on-${surfaceKey}`, disabledLight);
           root.style.setProperty(`--faint-on-${surfaceKey}`, faintLight);
           root.style.setProperty(`--caption-on-${surfaceKey}`, captionLight);
+          root.style.setProperty(`--caption-pri-on-${surfaceKey}`, captionPriLight);
+          root.style.setProperty(`--caption-sec-on-${surfaceKey}`, captionSecLight);
           root.style.setProperty(`--overlay-on-${surfaceKey}`, overlayLight);
         }
       }
@@ -361,10 +371,10 @@ export default {
       ---------------------------------------------- */
       const textOnSection = getVar("--text-on-section");
       const titleOnSection = getVar("--title-on-section");
-      const softOnSection = getVar("--text-soft-on-section");
+      const softOnSection = getVar("--soft-on-section");
       const disabledOnSection = getVar("--disabled-on-section");
       const faintOnSection = getVar("--faint-on-section");
-      const textOnFooter = getVar("--text-soft-on-footer");
+      const textOnFooter = getVar("--soft-on-footer");
       const textOnNav = getVar("--text-on-nav");
 
       if (textOnSection) root.style.setProperty("--dynamic-text", textOnSection);

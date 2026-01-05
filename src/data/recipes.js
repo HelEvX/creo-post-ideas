@@ -46,9 +46,9 @@ export const recipes = [
       "--color-title": ["neutral", 8],
       "--color-text": ["neutral", 7],
 
-      // DECOR COLORS
-      "--color-primary-dark": ["primaryLight", 5],
-      "--color-secondary-light": ["secondaryLight", 6],
+      // CAPTIONS
+      "--caption-pri-on-alt-panel": ["primaryLight", 5],
+      "--caption-sec-on-panel": ["secondaryLight", 6],
 
       // SHADOW (strength)
       "--shadow-alpha": [0],
@@ -85,9 +85,9 @@ export const recipes = [
       "--color-title": ["neutral", 10],
       "--color-text": ["neutral", 9],
 
-      // DECOR COLORS
-      "--color-primary-dark": ["primaryDark", 8],
-      "--color-secondary-light": ["secondaryLight", 6],
+      // CAPTIONS
+      "--caption-pri-on-alt-panel": ["primaryDark", 8],
+      "--caption-sec-on-panel": ["secondaryLight", 6],
 
       // SHADOW
       "--shadow-alpha": [7],
@@ -124,9 +124,9 @@ export const recipes = [
       "--color-title": ["neutral", 9],
       "--color-text": ["neutral", 8],
 
-      // DECOR COLORS
-      "--color-primary-dark": ["primaryDark", 2],
-      "--color-secondary-light": ["secondaryLight", 0],
+      // CAPTIONS
+      "--caption-pri-on-alt-panel": ["primaryDark", 2],
+      "--caption-sec-on-panel": ["secondaryLight", 0],
 
       // SHADOW (strength)
       "--shadow-alpha": [0],
@@ -163,9 +163,9 @@ export const recipes = [
       "--color-title": ["primaryDark", 7],
       "--color-text": ["secondaryDark", 8],
 
-      // DECOR COLORS
-      "--color-primary-dark": ["primary", 3],
-      "--color-secondary-light": ["secondary", 6],
+      // CAPTIONS
+      "--caption-pri-on-alt-panel": ["primary", 3],
+      "--caption-sec-on-panel": ["secondary", 6],
 
       // SHADOW (strength)
       "--shadow-alpha": [7],
@@ -203,9 +203,9 @@ export const recipes = [
       "--color-title": ["neutral", 8],
       "--color-text": ["neutral", 7],
 
-      // DECOR COLORS
-      "--color-primary-dark": ["primaryDark", 3],
-      "--color-secondary-light": ["secondaryLight", 2],
+      // CAPTIONS
+      "--caption-pri-on-alt-panel": ["primaryDark", 3],
+      "--caption-sec-on-panel": ["secondaryLight", 2],
 
       // SHADOW (strength)
       "--shadow-alpha": [1],
@@ -243,9 +243,9 @@ export const recipes = [
       "--color-title": ["neutral", 10],
       "--color-text": ["neutral", 9],
 
-      // DECOR COLORS
-      "--color-primary-dark": ["primaryDark", 4],
-      "--color-secondary-light": ["secondaryDark", 3],
+      // CAPTIONS
+      "--caption-pri-on-alt-panel": ["primaryDark", 4],
+      "--caption-sec-on-panel": ["secondaryDark", 3],
 
       // SHADOW (strength)
       "--shadow-alpha": [8],

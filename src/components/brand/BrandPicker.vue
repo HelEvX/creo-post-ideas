@@ -15,6 +15,7 @@
       <option value="glaede">Glaede</option>
       <option value="brusselsmindfulness">Brussels Mindfulness</option>
       <option value="ellevation">Ellevation</option>
+      <option value="astamoris">AstaMoris</option>
     </select>
 
     <div class="brand-preview">

@@ -61,14 +61,14 @@ defineProps({
   overflow: hidden;
 
   margin: 1.2cqw;
-  border: 1.5cqw solid var(--caption-on-panel);
+  border: 1.5cqw solid var(--caption-sec-on-panel);
   border-radius: calc(var(--card-radius) * 0.75);
 }
 
 .product-card__image img {
   width: 100%;
   object-fit: cover;
-  background: var(--caption-on-alt-panel);
+  background: var(--caption-pri-on-alt-panel);
 }
 
 /* TEXT */

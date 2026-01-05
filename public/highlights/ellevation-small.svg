@@ -1,1 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><svg id="m" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><defs><style>.p{fill:#e4002b;}</style></defs><path class="p" d="M101.63,13.88l-48.88,108.59h-11.39L4.65,44.34h22.34l20.21,49.95,28.43-65.59,26.01-14.83Z"/></svg>
+<?xml version="1.0" encoding="UTF-8"?><svg id="m" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <style>
+      .p {
+        fill: #e4002b;
+      }
+    </style>
+  </defs>
+  <path class="p" d="M101.63,13.88l-48.88,108.59h-11.39L4.65,44.34h22.34l20.21,49.95,28.43-65.59,26.01-14.83Z" />
+</svg>

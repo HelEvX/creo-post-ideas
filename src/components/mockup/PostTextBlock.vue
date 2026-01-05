@@ -275,6 +275,6 @@ defineProps({
 }
 
 .product-card__content .post-text-block__caption {
-  color: var(--caption-on-panel);
+  color: var(--caption-sec-on-panel);
 }
 </style>

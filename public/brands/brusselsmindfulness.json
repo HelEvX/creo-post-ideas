@@ -21,7 +21,7 @@
   "color-secondary-light": "#e8e4d9",
   "color-secondary-lighter": "#f3f1eb",
 
-  "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-dark",
+  "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-darker",
 
   "color-tertiary": "#ebc084",
 
@@ -59,7 +59,7 @@
   "shadow-alpha": "0.00",
 
   "ig": {
-    "avatar": "client.webp",
+    "avatar": "brusselsmindfulness.webp",
     "username": "brusselsmindfulness3808",
     "posts": 800,
     "followers": 785,

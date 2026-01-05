@@ -166,11 +166,11 @@ function buildResolvedStyles() {
 
   const titleOnPanel = readVarFromEl(postEl, "--title-on-panel");
   const textOnPanel = readVarFromEl(postEl, "--text-on-panel");
-  const captionOnPanel = readVarFromEl(postEl, "--caption-on-panel");
+  const captionOnPanel = readVarFromEl(postEl, "--caption-sec-on-panel");
 
   const titleOnAltPanel = readVarFromEl(postEl, "--title-on-alt-panel");
   const textOnAltPanel = readVarFromEl(postEl, "--text-on-alt-panel");
-  const captionOnAltPanel = readVarFromEl(postEl, "--caption-on-alt-panel");
+  const captionOnAltPanel = readVarFromEl(postEl, "--caption-pri-on-alt-panel");
 
   const titleOnAccent = readVarFromEl(postEl, "--title-on-accent");
   const textOnAccent = readVarFromEl(postEl, "--text-on-accent");

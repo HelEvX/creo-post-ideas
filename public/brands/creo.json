@@ -24,9 +24,9 @@
   "color-secondary-light": "#004852",
   "color-secondary-lighter": "#006c7a",
 
-  "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-dark",
+  "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-darker",
 
-  "color-tertiary": "#00262c",
+  "color-tertiary": "#001b1f",
 
   "_comment-3": "BACKGROUND COLORS: sections, cards, header, footer",
 

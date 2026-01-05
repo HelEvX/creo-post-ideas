@@ -65,6 +65,6 @@ defineProps({
 .paragraph-post__image img {
   object-fit: cover;
   flex: 1;
-  background: var(--caption-on-panel);
+  background: var(--caption-sec-on-panel);
 }
 </style>
