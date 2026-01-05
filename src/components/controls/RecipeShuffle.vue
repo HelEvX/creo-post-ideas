@@ -21,8 +21,8 @@
 
       <!-- Reset button -->
       <div class="reset-wrap">
-        <button type="button" class="reset-btn btn-neutral" @click="resetBrand">
-          <i class="fa-solid fa-rotate-left"></i> Reset
+        <button type="button" class="reset-btn btn-neutral" @click="resetContrastFixes">
+          <i class="fa-solid fa-rotate-left"></i> Reset contrast
         </button>
       </div>
       <h4>Contrast Check</h4>
@@ -142,14 +142,14 @@ const props = defineProps({
 });
 
 /* --------------------------------------------------
-   STATE
+   STATE (default added to the list)
 -------------------------------------------------- */
-const index = ref(-1);
-const total = recipes.length;
+const index = ref(0);
+const total = recipes.length + 1;
 
 const activeRecipe = computed(() => {
-  if (index.value < 0) return null;
-  return { ...recipes[index.value] };
+  if (index.value === 0) return null; // default
+  return { ...recipes[index.value - 1] };
 });
 
 const noFixMap = ref(Object.create(null));
@@ -423,15 +423,73 @@ function getFixStrategy() {
    APPLY RECIPE
 -------------------------------------------------- */
 
-function applyActiveRecipe() {
-  if (!props.scales || !activeRecipe.value) return;
+// RESET
 
+function resetContrastFixes() {
   const root = document.documentElement;
+  const scopeEl = getMockupScopeEl();
+
+  // clear root-level fix vars
+  for (const prop of root.style) {
+    if (prop.startsWith("--fix-")) {
+      root.style.removeProperty(prop);
+    }
+  }
+
+  // clear mockup-scoped fix vars
+  if (scopeEl) {
+    for (const prop of scopeEl.style) {
+      if (prop.startsWith("--fix-")) {
+        scopeEl.style.removeProperty(prop);
+      }
+    }
+  }
+
+  // rebuild the current visual state
+  applyActiveRecipe();
+  scheduleContrastUpdate();
+
+  window.dispatchEvent(new Event("dynamic-text-updated"));
+  window.dispatchEvent(new Event("palette-updated"));
+}
+
+/* --------------------------------------------------
+   RECIPE OVERRIDE CLEANUP (DEFAULT SLOT)
+-------------------------------------------------- */
+
+const RECIPE_ROLE_VARS = Array.from(
+  new Set((recipes || []).flatMap((r) => Object.keys(r?.roles || {})).filter(Boolean))
+);
+
+function clearRecipeOverrides() {
+  const root = document.documentElement;
+
+  // remove all vars that recipes can override
+  for (const v of RECIPE_ROLE_VARS) {
+    root.style.removeProperty(v);
+  }
+
+  // remove recipe mode class
+  root.classList.remove("recipe-inverted");
+}
+
+function applyActiveRecipe() {
+  const root = document.documentElement;
+
+  // DEFAULT (index === 0): revert to base brand tokens (no recipe overrides)
+  if (!activeRecipe.value) {
+    clearRecipeOverrides();
+    window.dispatchEvent(new CustomEvent("palette-updated"));
+    return;
+  }
+
+  if (!props.scales) return;
+
   const roles = activeRecipe.value.roles;
   const scalesCopy = JSON.parse(JSON.stringify(props.scales));
 
   // Dark mode = inverted recipe
-  if (activeRecipe.value?.id === "inverted") {
+  if (activeRecipe.value.id === "inverted") {
     root.classList.add("recipe-inverted");
   } else {
     root.classList.remove("recipe-inverted");
@@ -451,14 +509,14 @@ function applyActiveRecipe() {
 
     // 6 → 11 : ramp up to fully opaque
     if (i > 5) {
-      const t = (i - 5) / 6; // 0..1
+      const t = (i - 5) / 6;
       return baseAlpha + t * (1 - baseAlpha);
     }
 
     // 0 → 4 : ramp down to invisible
     if (i === 0) return 0;
 
-    const t = i / 5; // 0..1
+    const t = i / 5;
     return baseAlpha * t;
   }
 
@@ -470,8 +528,8 @@ function applyActiveRecipe() {
       if (idx == null) continue;
 
       const baseAlpha = parseFloat(getComputedStyle(root).getPropertyValue("--shadow-alpha")) || 0;
-
       const alpha = idxToAlpha(idx, baseAlpha);
+
       root.style.setProperty("--shadow-alpha", alpha, "important");
       continue;
     }
@@ -481,8 +539,8 @@ function applyActiveRecipe() {
       if (idx == null) continue;
 
       const baseAlpha = parseFloat(getComputedStyle(root).getPropertyValue("--border-alpha")) || 0;
-
       const alpha = idxToAlpha(idx, baseAlpha);
+
       root.style.setProperty("--border-alpha", alpha, "important");
       continue;
     }
@@ -493,7 +551,9 @@ function applyActiveRecipe() {
       ? resolveCssColor(spec)
       : spec;
 
-    if (hex) root.style.setProperty(cssVar, hex, "important");
+    if (hex) {
+      root.style.setProperty(cssVar, hex, "important");
+    }
   }
 
   window.dispatchEvent(new CustomEvent("palette-updated"));
@@ -503,10 +563,10 @@ function applyActiveRecipe() {
    NAVIGATION
 -------------------------------------------------- */
 function advance(step) {
-  const max = total;
-  index.value = index.value < 0 ? 0 : (index.value + step + max) % max;
+  index.value = (index.value + step + total) % total;
   applyActiveRecipe();
 }
+
 function nextRecipe() {
   if (!props.scales) return;
   advance(+1);
@@ -515,11 +575,6 @@ function prevRecipe() {
   if (!props.scales) return;
   advance(-1);
 }
-function resetBrand() {
-  const slug = props.brandTokens?.slug;
-  if (!slug) return;
-  window.dispatchEvent(new CustomEvent("brand-reset", { detail: { slug } }));
-}
 
 /* --------------------------------------------------
    WATCHERS
@@ -527,7 +582,7 @@ function resetBrand() {
 watch(
   () => props.scales,
   () => {
-    index.value = -1;
+    index.value = 0; // start on default
     scheduleContrastUpdate();
   },
   { immediate: true }

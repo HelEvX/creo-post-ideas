@@ -39,12 +39,12 @@
 
       <!-- ACCENT -->
       <div class="card info-card accent">
-        <div class="accent card__caption">
+        <div class="card__caption">
           <i class="fa-solid fa-link post-icon"></i>
           <span>Kies een kleurcombinatie</span>
         </div>
 
-        <div class="accent card__text">
+        <div class="card__text">
           <div>
             Verbeter het contrast indien nodig, zodat alles leesbaar is. Kopieer de kleuren uit de selectie met één
             klik!
