@@ -1,19 +1,11 @@
 <template>
   <PostWrapper :size="size">
     <div class="social-post" :class="[`size--${size}`, backgroundClass]">
-      <div class="post-bg" :class="backgroundClass">
-        <!-- plain color layer -->
-        <div class="post-bg__color"></div>
-
-        <!-- logo pattern layer -->
-        <div v-if="backgroundClass?.includes('bg--pattern')" class="post-bg__pattern" :style="logoPatternStyle"></div>
-
-        <!-- large logo layer -->
-        <div v-if="brandLogo && backgroundClass?.includes('bg--logo')" class="post-bg__logo" v-html="rawSvg"></div>
-
-        <!-- image layer -->
-        <div v-if="usePhoto" class="post-bg__image" :style="{ backgroundImage: `url(${photoSrc})` }"></div>
-      </div>
+      <PostBackground
+        :backgroundClass="backgroundClass"
+        :brandLogo="brandLogo"
+        :usePhoto="usePhoto"
+        :photoSrc="photoSrc" />
 
       <SafeZoneOverlay v-if="showSafeZone" />
 
@@ -28,17 +20,19 @@
         <div class="post-safe">
           <slot name="safe" />
         </div>
-        <div class="post-watermark" v-if="brandLogoSmall" :style="watermarkStyle"></div>
+        <PostWatermark :brandLogoSmall="brandLogoSmall" :bgColors="bgColors" />
       </div>
     </div>
   </PostWrapper>
 </template>
 
 <script setup>
-import PostWrapper from "@/components/mockup/PostWrapper.vue";
 import { ref, watch, computed, onMounted, onBeforeUnmount } from "vue";
 import { getTextModeForBackground } from "@/utils/colorLogic.js";
+import PostWrapper from "@/components/mockup/PostWrapper.vue";
+import PostBackground from "@/components/mockup/PostBackground.vue";
 import SafeZoneOverlay from "@/components/mockup/SafeZoneOverlay.vue";
+import PostWatermark from "@/components/mockup/PostWatermark.vue";
 
 /* ----------------------------------------------
    PROPS
@@ -102,26 +96,6 @@ function resolveAccentBg(root) {
   return props.backgroundTone === "secondary" ? primary : secondary;
 }
 
-function resolveWatermarkColor(root) {
-  const bg = resolveFirstBg(props.bgColors);
-  if (!bg) return root.getPropertyValue("--ui-alt-section-bg").trim();
-
-  const dark = root.getPropertyValue("--color-text").trim();
-  const light = root.getPropertyValue("--color-text-inverse").trim();
-
-  const mode = getTextModeForBackground(bg, dark, light);
-
-  // light background → dark watermark
-  if (mode === "dark") {
-    return root.getPropertyValue("--color-primary-dark").trim() || root.getPropertyValue("--color-text").trim();
-  }
-
-  // dark background → light watermark
-  return (
-    root.getPropertyValue("--color-primary-lighter").trim() || root.getPropertyValue("--color-text-inverse").trim()
-  );
-}
-
 function readCssVar(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || null;
 }
@@ -136,67 +110,6 @@ function getPostContentEl() {
 }
 
 const visualTick = ref(0);
-
-/* ----------------------------------------------
-   LOGO COLOR + LOGO PATTERN (SVG -> CSS mask)
----------------------------------------------- */
-const rawSvg = ref(null);
-
-watch(
-  () => props.brandLogo,
-  async (url) => {
-    if (!url) {
-      rawSvg.value = null;
-      return;
-    }
-
-    const resolved = new URL(url, window.location.origin).href;
-    const res = await fetch(resolved);
-
-    if (!res.ok) {
-      rawSvg.value = null;
-      return;
-    }
-
-    rawSvg.value = await res.text();
-  },
-  { immediate: true }
-);
-
-const logoPatternStyle = computed(() => {
-  if (!rawSvg.value) return null;
-
-  const encoded = encodeURIComponent(rawSvg.value).replace(/'/g, "%27").replace(/"/g, "%22");
-
-  return {
-    "--logo-pattern-svg": `url("data:image/svg+xml,${encoded}")`,
-  };
-});
-
-/* ----------------------------------------------
-   WATERMARK
----------------------------------------------- */
-
-const watermarkStyle = computed(() => {
-  if (!props.brandLogoSmall) return null;
-
-  const url = new URL(props.brandLogoSmall, import.meta.url).href;
-  const root = getComputedStyle(document.documentElement);
-
-  const color = resolveWatermarkColor(root);
-
-  return {
-    WebkitMaskImage: `url(${url})`,
-    maskImage: `url(${url})`,
-    WebkitMaskRepeat: "no-repeat",
-    maskRepeat: "no-repeat",
-    WebkitMaskPosition: "center",
-    maskPosition: "center",
-    WebkitMaskSize: "contain",
-    maskSize: "contain",
-    backgroundColor: color,
-  };
-});
 
 /* ----------------------------------------------
    MOCKUP-SCOPED ROLES
@@ -320,7 +233,7 @@ function recomputeMockupVars() {
    RECOMPUTE TRIGGERS
 ---------------------------------------------- */
 watch(
-  () => [props.backgroundClass, props.backgroundTone, props.useColoredBackground, props.bgColors],
+  () => [props.backgroundClass, props.backgroundTone, props.bgColors],
   () => scheduleRecompute(),
   { immediate: true, deep: true }
 );
@@ -413,9 +326,9 @@ watch(resolvedVisualContext, (val) => emit("resolved-visuals", val), { immediate
 </script>
 
 <style scoped>
-/* =========================================
+/* ========
    SIZING
-   ========================================= */
+   ======== */
 
 .social-post.size--square {
   --safe-left: var(--safe-square-left);
@@ -478,11 +391,9 @@ watch(resolvedVisualContext, (val) => emit("resolved-visuals", val), { immediate
   --safe-bottom: 2.5rem;
 }
 
-/* =========================================
-   =========================================
-   CONTENT STACK
-   =========================================
-   ========================================= */
+/* ============
+   POST CONTENT
+   ============ */
 
 .post-content {
   color: inherit;
@@ -515,7 +426,9 @@ watch(resolvedVisualContext, (val) => emit("resolved-visuals", val), { immediate
   transform: translate(-50%, -50%) scale(var(--scale));
 }
 
-/* %%%%%%%%%%%%%%%%%%%%% */
+/* =================
+   SAFE ZONE CONTENT
+   ================= */
 
 .post-safe {
   position: absolute;
@@ -544,263 +457,5 @@ watch(resolvedVisualContext, (val) => emit("resolved-visuals", val), { immediate
   left: 50%;
   transform: translate(-50%, -50%);
   color: var(--mockup-decor);
-}
-
-.post-watermark {
-  position: absolute;
-  right: 4cqw;
-  bottom: 4cqw;
-
-  width: 10cqw;
-  height: 10cqw;
-
-  opacity: 0.6;
-
-  pointer-events: none;
-}
-
-/* =========================================
-   =========================================
-   BACKGROUND STACK
-   =========================================
-   ========================================= */
-
-.post-bg {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.post-bg__color,
-.post-bg__pattern,
-.post-bg__image,
-.post-bg__logo {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.post-bg__logo {
-  color: var(--mockup-decor);
-  opacity: var(--pattern-opacity);
-}
-
-.post-bg__logo :deep(svg),
-.post-bg__logo :deep(svg *) {
-  fill: currentColor !important;
-}
-
-/* ===============================================
-   PLAIN BACKGROUND: primary | secondary | neutral
-   =============================================== */
-
-.bg--plain-primary .post-bg__color {
-  background: var(--ui-primary-bg);
-}
-
-.bg--plain-secondary .post-bg__color {
-  background: var(--ui-secondary-bg);
-}
-
-.bg--plain-neutral .post-bg__color {
-  background: var(--ui-alt-section-bg);
-}
-
-/* =========================================
-   LARGE LOGO BACKGROUND
-   ========================================= */
-
-.post-bg__logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.post-bg__logo :deep(svg) {
-  position: absolute;
-  opacity: var(--pattern-opacity);
-  transform: translate(0, 0) scale(1);
-  overflow: hidden;
-}
-
-/* logo positioning per format */
-
-.size--square .post-bg__logo :deep(svg) {
-  transform: translate(0, 0) scale(0.85);
-}
-
-.size--landscape .post-bg__logo :deep(svg) {
-  transform: translate(-5%, 8%) scale(0.65);
-}
-
-.size--portrait .post-bg__logo :deep(svg) {
-  transform: translate(-25%, 5%) scale(1.2);
-}
-
-.size--story .post-bg__logo :deep(svg) {
-  transform: translate(-20%, 0) scale(1.1);
-}
-
-/* =========================================
-   TILED SMALL LOGO BACKGROUND
-   ========================================= */
-
-/* tile size  >  logo visual bounds */
-.post-bg__pattern {
-  position: absolute;
-  inset: 0;
-  overflow: visible;
-
-  opacity: var(--pattern-opacity);
-}
-
-.post-bg__pattern::before,
-.post-bg__pattern::after {
-  content: "";
-  position: absolute;
-
-  width: 200%;
-  height: 200%;
-  top: -50%;
-  left: -50%;
-
-  background-color: var(--mockup-decor);
-  color: var(--mockup-decor);
-
-  mask-image: var(--logo-pattern-svg);
-  -webkit-mask-image: var(--logo-pattern-svg);
-
-  mask-repeat: repeat;
-  -webkit-mask-repeat: repeat;
-
-  mask-size: var(--tile-x) var(--tile-y);
-  -webkit-mask-size: var(--tile-x) var(--tile-y);
-
-  /* transform: rotate(var(--pattern-rotate));
-  transform-origin: center; */
-}
-
-/* default: no offset */
-.post-bg__pattern::after {
-  mask-position: var(--pattern-offset-x) var(--pattern-offset-y);
-  -webkit-mask-position: var(--pattern-offset-x) var(--pattern-offset-y);
-}
-
-/* brand spacing adjustments::after
-*/
-
-.brand--groomer .post-bg__pattern {
-  --pattern-opacity: 0.65;
-  --tile-x: 70px;
-  --tile-y: 150px;
-  --pattern-offset-x: calc(var(--tile-x) / 2);
-  --pattern-offset-y: calc(var(--tile-y) / 2);
-}
-
-.brand--runkstervolksfeesten .post-bg__pattern {
-  --pattern-opacity: 0.55;
-  --tile-x: 70px;
-  --tile-y: 170px;
-  --pattern-offset-x: calc(var(--tile-x) / 2);
-  --pattern-offset-y: calc(var(--tile-y) / 2);
-}
-
-.brand--ocrunkst .post-bg__pattern {
-  --pattern-opacity: 0.35;
-  --tile-x: 155px;
-  --tile-y: 125px;
-  --pattern-offset-x: calc(var(--tile-x) / 2);
-  --pattern-offset-y: calc(var(--tile-y) / 2);
-}
-
-.brand--wijkraadrunkst .post-bg__pattern {
-  --pattern-opacity: 0.35;
-  --tile-x: 230px;
-  --tile-y: 130px;
-  --pattern-offset-x: calc(var(--tile-x) / 2);
-  --pattern-offset-y: calc(var(--tile-y) / 2);
-}
-
-.brand--steviala .post-bg__pattern {
-  --pattern-opacity: 0.25;
-  --tile-x: 190px;
-  --tile-y: 90px;
-  --pattern-offset-x: calc(var(--tile-x) / 2);
-  --pattern-offset-y: calc(var(--tile-y) / 2);
-}
-
-.brand--kenis .post-bg__pattern {
-  --pattern-opacity: 0.25;
-  --tile-x: 170px;
-  --tile-y: 95px;
-  --pattern-offset-x: calc(var(--tile-x) / 2);
-  --pattern-offset-y: calc(var(--tile-y) / 2);
-}
-
-.brand--tropical .post-bg__pattern {
-  --pattern-opacity: 1;
-  --tile-x: 150px;
-  --tile-y: 65px;
-  --pattern-offset-x: calc(var(--tile-x) / 2);
-  --pattern-offset-y: calc(var(--tile-y) / 2);
-}
-
-.brand--cardgameshop .post-bg__pattern {
-  --pattern-opacity: 0.2;
-  --tile-x: 190px;
-  --tile-y: 75px;
-  --pattern-offset-x: calc(var(--tile-x) / 2);
-  --pattern-offset-y: calc(var(--tile-y) / 2);
-}
-
-.brand--blooloc .post-bg__pattern {
-  --pattern-opacity: 0.05;
-  --tile-x: 80px;
-  --tile-y: 85px;
-}
-
-.brand--glaede .post-bg__pattern {
-  --pattern-opacity: 0.3;
-  --tile-x: 40px;
-  --tile-y: 85px;
-  --pattern-offset-x: calc(var(--tile-x) / 2);
-  --pattern-offset-y: calc(var(--tile-y) / 2);
-}
-
-.brand--ellevation .post-bg__pattern {
-  --pattern-opacity: 0.5;
-  --tile-x: 40px;
-  --tile-y: 85px;
-  --pattern-offset-x: calc(var(--tile-x) * 0.25);
-  --pattern-offset-y: calc(var(--tile-y) / 2);
-}
-
-.brand--astamoris .post-bg__pattern {
-  --pattern-opacity: 0.4;
-  --tile-x: 220px;
-  --tile-y: 60px;
-  --pattern-offset-x: calc(var(--tile-x) / 2);
-  --pattern-offset-y: calc(var(--tile-y) / 2);
-}
-
-/* =========================================
-   IMAGE BACKGROUND
-   ========================================= */
-
-.post-bg__image {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  filter: blur(5px);
-  -webkit-filter: blur(5px);
-  -moz-filter: blur(5px);
-  -o-filter: blur(5px);
-  -ms-filter: blur(5px);
-  margin: -10px;
-}
-
-/* image mode: show image */
-.bg--image .post-bg__image {
-  opacity: var(--image-opacity);
 }
 </style>

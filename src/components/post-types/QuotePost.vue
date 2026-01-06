@@ -29,7 +29,7 @@ defineProps({
 });
 </script>
 
-<style scoped>
+<style>
 .quote-post {
   height: 100%;
   display: flex;
@@ -55,15 +55,14 @@ defineProps({
 
   border-radius: var(--card-radius);
   border: 2cqw solid;
-  opacity: var(--pattern-opacity);
   pointer-events: none;
 }
 
 /* QUOTE MARKS */
 .quote-post__mark {
   position: absolute;
-  opacity: var(--pattern-opacity);
 }
+
 .quote-post__mark i {
   font-size: 25cqw;
   transform: translateY(-5cqw);
