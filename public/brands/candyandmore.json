@@ -1,6 +1,6 @@
 {
-  "name": "Client",
-  "meta": { "brand": "Client", "version": "1.0" },
+  "name": "Candy & More",
+  "meta": { "brand": "Candy & More", "version": "1.0" },
   "font-title": "sans-serif",
   "font-body": "sans-serif",
   "fonts": {
@@ -59,18 +59,18 @@
   "shadow-alpha": "0.00",
 
   "ig": {
-    "avatar": "client.webp",
-    "username": "Client",
+    "avatar": "candyandmore.webp",
+    "username": "Candy & More",
     "posts": 0,
     "followers": 0,
     "following": 0,
-    "title": "Client",
-    "threads": "@client",
+    "title": "Candy & More",
+    "threads": "@candyandmore",
     "businessType": "business type",
     "description": "Description part 1 \nDescription part 2",
     "address": "Straat, Stad, Belgium xxxx",
-    "url": "https://www.client.be",
-    "highlightIcon": "client-small.svg",
+    "url": "https://www.candyandmore.be",
+    "highlightIcon": "candyandmore-small.svg",
     "highlights": [
       { "label": "TEAM" },
       { "label": "PROMOS" },

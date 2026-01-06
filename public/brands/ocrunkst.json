@@ -60,16 +60,16 @@
 
   "ig": {
     "avatar": "ocrunkst.webp",
-    "username": "client.be",
+    "username": "ocrunkst.be",
     "posts": 0,
     "followers": 0,
     "following": 0,
-    "title": "www.client.be",
+    "title": "www.ocrunkst.be",
     "threads": "@ocrunkst.be",
     "businessType": "business type",
     "description": "Description part 1.\nDescription part 2\nDescription part 3\nDescription part 4",
     "address": "Straat, Stad, Belgium xxxx",
-    "url": "https://www.client.be",
+    "url": "https://www.ocrunkst.be",
     "highlightIcon": "ocrunkst-small.svg",
     "highlights": [
       { "label": "TEAM" },

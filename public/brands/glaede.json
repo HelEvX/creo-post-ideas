@@ -1,6 +1,6 @@
 {
-  "name": "Client",
-  "meta": { "brand": "Client", "version": "1.0" },
+  "name": "Glaede Interieurarchitecten",
+  "meta": { "brand": "Glaede", "version": "1.0" },
   "font-title": "Montserrat, sans-serif",
   "font-body": "Nunito Sans, sans-serif",
   "fonts": {

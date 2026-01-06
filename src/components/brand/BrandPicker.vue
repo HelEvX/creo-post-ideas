@@ -26,6 +26,19 @@
       <!-- tertiary or secondary-dark -->
       <div class="color-swatch title"></div>
     </div>
+    <div class="brand-preview-logolink">
+      <a
+        v-if="brandMeta && brandMeta.url && brandMeta.logo"
+        class="brand-preview-logolink"
+        :href="brandMeta.url"
+        target="_blank"
+        rel="noopener noreferrer">
+        <img class="brand-preview-logo" :src="brandMeta.logo" :alt="brandMeta.name" />
+        <span class="brand-preview-name">
+          {{ brandMeta.name }}
+        </span>
+      </a>
+    </div>
   </div>
 </template>
 
@@ -35,7 +48,10 @@ export default {
   emits: ["picked"],
 
   data() {
-    return { selectedBrand: "" };
+    return {
+      selectedBrand: "",
+      brandMeta: null,
+    };
   },
 
   methods: {
@@ -58,6 +74,13 @@ export default {
       const res = await fetch(`/brands/${this.selectedBrand}.json`);
       const brand = await res.json();
 
+      // 2b. Store logo + link metadata
+      this.brandMeta = {
+        name: brand.name || this.selectedBrand,
+        url: brand.ig?.url || null,
+        logo: brand.ig?.highlightIcon ? `/highlights/${brand.ig.highlightIcon}` : null,
+      };
+
       // 3. Apply colors and semantic tokens
       Object.entries(brand).forEach(([key, value]) => {
         if (typeof value !== "string") return;
@@ -76,9 +99,7 @@ export default {
         root.style.setProperty("--font-body", brand["font-body"]);
       }
 
-      // 5. add corners and shadows!
-
-      // 6. Inject @import if specified
+      // 5. Inject @import if specified
       if (brand.fonts && Array.isArray(brand.fonts.import)) {
         brand.fonts.import.forEach((url) => {
           if (!document.querySelector(`link[href="${url}"]`)) {
@@ -156,5 +177,35 @@ select {
 
 .color-swatch.accent {
   background-color: var(--color-tertiary);
+}
+
+/* Brand logo + link */
+
+.brand-preview-logolink {
+  .brand-preview-logolink {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    color: var(--dynamic-text);
+    font-family: var(--font-body);
+    cursor: pointer;
+  }
+
+  .brand-preview-logolink:hover {
+    text-decoration: underline;
+  }
+
+  .brand-preview-logo {
+    height: 5rem;
+    width: auto;
+    display: block;
+  }
+
+  .brand-preview-name {
+    font-weight: 500;
+    font-size: var(--fs-body-sm);
+  }
 }
 </style>

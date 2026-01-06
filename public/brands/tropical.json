@@ -62,7 +62,7 @@
 
   "ig": {
     "avatar": "tropical.webp",
-    "username": "client.be",
+    "username": "ijssalon-tropical.be",
     "posts": 0,
     "followers": 0,
     "following": 0,
@@ -71,7 +71,7 @@
     "businessType": "business type",
     "description": "Description part 1.\nDescription part 2\nDescription part 3\nDescription part 4",
     "address": "Straat, Stad, Belgium xxxx",
-    "url": "https://www.client.be",
+    "url": "https://www.ijssalon-tropical.be",
     "highlightIcon": "tropical-small.svg",
     "highlights": [
       { "label": "TEAM" },

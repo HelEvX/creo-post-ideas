@@ -1,6 +1,6 @@
 {
-  "name": "Asta Moris",
-  "meta": { "brand": "Asta Moris", "version": "1.0" },
+  "name": "Astamoris",
+  "meta": { "brand": "Astamoris", "version": "1.0" },
   "font-title": "Urbanist, sans-serif",
   "font-body": "DM Sans, sans-serif",
   "fonts": {
@@ -62,11 +62,11 @@
 
   "ig": {
     "avatar": "astamoris.webp",
-    "username": "AstaMoris",
+    "username": "Astamoris",
     "posts": 0,
     "followers": 0,
     "following": 0,
-    "title": "AstaMoris",
+    "title": "Astamoris",
     "threads": "@astamoris",
     "businessType": "Tax accountants",
     "description": "Bij Astamoris begeleiden wij ondernemers en particulieren in elke fase van hun verhaal.\nMet onze fiscale en boekhoudkundige expertise zorgen wij voor inzicht, rust en oplossingen die werken.",

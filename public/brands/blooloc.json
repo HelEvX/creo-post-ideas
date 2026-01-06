@@ -1,6 +1,6 @@
 {
-  "name": "Client",
-  "meta": { "brand": "Client", "version": "1.0" },
+  "name": "BlooLoc",
+  "meta": { "brand": "Blooloc", "version": "1.0" },
   "font-title": "Open Sans, sans-serif",
   "font-body": "Open Sans, sans-serif",
   "fonts": {
