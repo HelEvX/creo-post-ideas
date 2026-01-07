@@ -203,4 +203,9 @@ const aspectMap = {
 .accent .card__caption {
   color: var(--caption-on-accent);
 }
+
+.post-wrapper,
+.post-wrapper * {
+  transition: none !important;
+}
 </style>

@@ -5,6 +5,8 @@
     <style>
       .st0 {
         fill: #f2f4f4;
+        stroke: #f2f4f4;
+        stroke-width: 1px;
       }
 
       .st1 {
@@ -16,19 +18,19 @@
       }
 
       .st3 {
-        fill: rgba(5, 179, 132, 0.75);
-      }
-
-      .st4 {
         fill: #00363d;
       }
 
-      .st5 {
+      .st4 {
         fill: #006c7a;
       }
 
+      .st5 {
+        fill: #05b384;
+      }
+
       .st6 {
-        fill: #004852;
+        fill: #06efb1;
       }
     </style>
   </defs>
@@ -36,12 +38,12 @@
   <g id="squares">
     <rect class="st1" x="8.4" y="35.1" width="22.7" height="22.8" transform="translate(-18.1 13.1) rotate(-25.6)" />
     <rect class="st2" x="35.3" y="22.3" width="22.8" height="22.8" transform="translate(-10 23.5) rotate(-25.6)" />
-    <rect class="st6" x="21.3" y="62" width="22.7" height="22.8" transform="translate(-28.5 21.3) rotate(-25.6)" />
+    <rect class="st3" x="21.3" y="62" width="22.7" height="22.8" transform="translate(-28.5 21.3) rotate(-25.6)" />
     <rect class="st4" x="48.1" y="49.2" width="22.8" height="22.8" transform="translate(-20.3 31.7) rotate(-25.6)" />
     <rect class="st5" x="75" y="36.3" width="22.8" height="22.8" transform="translate(-12.1 42) rotate(-25.6)" />
-    <rect class="st5" x="34.2" y="88.8" width="22.8" height="22.8" transform="translate(-38.8 29.5) rotate(-25.6)" />
+    <rect class="st4" x="34.2" y="88.8" width="22.8" height="22.8" transform="translate(-38.8 29.5) rotate(-25.6)" />
     <rect class="st2" x="61" y="75.9" width="22.8" height="22.8" transform="translate(-30.6 39.9) rotate(-25.6)" />
-    <rect class="st1" x="87.9" y="63.1" width="22.8" height="22.8" transform="translate(-22.5 50.2) rotate(-25.6)" />
+    <rect class="st6" x="87.9" y="63.1" width="22.8" height="22.8" transform="translate(-22.5 50.2) rotate(-25.6)" />
   </g>
   <path
     class="st0"

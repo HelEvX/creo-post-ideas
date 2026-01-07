@@ -54,25 +54,35 @@
       <!-- PREVIEW -->
       <div class="col-12 col-lg-10 col-xl-10 col-xxl-8 main-preview__content">
         <MockupWrapper :size="selectedSize">
-          <MockupRenderer
-            :key="brandTokens?.slug || 'default'"
-            :size="selectedSize"
-            :postType="selectedPostType"
-            :postData="activePostData"
-            :backgroundClass="backgroundClass"
-            :backgroundTone="backgroundTone"
-            :useColoredBackground="useColoredBackground"
-            :brandLogo="brandLogo"
-            :usePhoto="backgroundMode === 'image'"
-            :photoSrc="photoSrc"
-            :brandLogoSmall="brandLogoSmall"
-            :showSafeZone="showSafeZones"
-            @bg-resolved="resolvedBgColors = $event"
-            @resolved-styles="resolvedStyles = $event" />
+          <div class="mockup-stage">
+            <!-- EMPTY STATE -->
+            <div v-if="!mockupReady" class="mockup-empty-state">
+              <img src="@/assets/img/logo-disabled.svg" alt="disabled logo" />
+              <p>Instagram post mockups verschijnen hier.</p>
+            </div>
+
+            <!-- MOCKUP -->
+            <MockupRenderer
+              v-if="mockupReady"
+              :key="mockupKey"
+              :size="selectedSize"
+              :postType="selectedPostType"
+              :postData="activePostData"
+              :backgroundClass="backgroundClass"
+              :backgroundTone="backgroundTone"
+              :useColoredBackground="useColoredBackground"
+              :brandLogo="brandLogo"
+              :usePhoto="backgroundMode === 'image'"
+              :photoSrc="photoSrc"
+              :brandLogoSmall="brandLogoSmall"
+              :showSafeZone="showSafeZones"
+              @bg-resolved="resolvedBgColors = $event"
+              @resolved-styles="resolvedStyles = $event" />
+          </div>
         </MockupWrapper>
       </div>
 
-      <div class="col-12 col-lg-2 main-preview__styles">
+      <div class="col-12 col-lg-2 main-preview__styles" v-if="mockupReady && resolvedStyles">
         <StyleInspectorPanel
           :key="
             [
@@ -93,7 +103,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, nextTick } from "vue";
 
 import ContentTypePanel from "../controls/ContentTypePanel.vue";
 import MobileSettingsAccordion from "../controls/MobileSettingsAccordion.vue";
@@ -101,13 +111,16 @@ import MobileSettingsAccordion from "../controls/MobileSettingsAccordion.vue";
 import FormatSelector from "../controls/FormatSelector.vue";
 import MockupWrapper from "../preview/MockupWrapper.vue";
 import MockupRenderer from "../preview/MockupRenderer.vue";
-
-import stockImage from "@/assets/img/stockphoto.webp";
-
 import StyleInspectorPanel from "../preview/StyleInspectorPanel.vue";
 
+import stockImage from "@/assets/img/stockphoto.webp";
+import { postContent } from "@/data/postContent";
+
+/* --------------------------------------------
+   EMITS + PROPS
+--------------------------------------------- */
+
 const emit = defineEmits(["update-tone", "update-mode", "update-colored"]);
-const resolvedBgColors = ref([]);
 
 const props = defineProps({
   brandTokens: Object,
@@ -115,18 +128,39 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  brandSelected: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-const useColoredBackground = ref(props.colored);
+/* --------------------------------------------
+   LOCAL STATE
+--------------------------------------------- */
 
-watch(
-  () => props.colored,
-  (v) => {
-    useColoredBackground.value = v;
-  }
-);
-
+const resolvedBgColors = ref([]);
 const resolvedStyles = ref(null);
+
+const selectedPostType = ref("info");
+const activePostData = ref({});
+
+/* --------------------------------------------
+   INIT
+--------------------------------------------- */
+activePostData.value = postContent.info;
+
+const backgroundTone = ref("primary"); // "primary" | "secondary"
+const backgroundMode = ref("none"); // "none" | "logo" | "pattern" | "image"
+
+const selectedSize = ref("portrait");
+const showSafeZones = ref(false);
+
+const useColoredBackground = ref(props.colored);
+const photoSrc = ref(stockImage);
+
+/* --------------------------------------------
+   RESPONSIVE STATE
+--------------------------------------------- */
 
 const isMobile = ref(false);
 
@@ -138,57 +172,43 @@ updateViewport();
 window.addEventListener("resize", updateViewport);
 
 /* --------------------------------------------
-   POST TYPE STATE
+   WATCHERS
 --------------------------------------------- */
-const selectedPostType = ref("info");
-const activePostData = ref({});
-
-/* --------------------------------------------
-   BACKGROUND STATE (tone + mode)
---------------------------------------------- */
-const backgroundTone = ref("primary"); // "primary" | "secondary"
-const backgroundMode = ref("none"); // "none" | "logo" | "pattern" | "image"
 
 watch(
-  backgroundTone,
-  (tone) => {
-    const root = document.documentElement;
-
-    if (tone === "secondary") {
-      root.style.setProperty("--dynamic-accent", "var(--ui-accent-on-secondary)", "important");
-    } else {
-      root.style.setProperty("--dynamic-accent", "var(--ui-accent-on-primary)", "important");
-    }
-
-    window.dispatchEvent(new Event("accent-updated"));
-  },
-  { immediate: true }
+  () => props.colored,
+  (v) => {
+    useColoredBackground.value = v;
+  }
 );
 
-const selectedSize = ref("portrait");
-const showSafeZones = ref(false);
-
-// IMAGE
-
-const photoSrc = ref(stockImage);
+watch(
+  () => props.brandTokens,
+  async () => {
+    await nextTick();
+  }
+);
 
 /* --------------------------------------------
-   WATERMARK
+   DERIVED / COMPUTED STATE
 --------------------------------------------- */
+
+const mockupReady = computed(() => props.brandSelected === true);
+
+const mockupKey = computed(() =>
+  [props.brandTokens?.slug || "default", backgroundClass.value, selectedPostType.value, selectedSize.value].join("|")
+);
 
 const brandLogoSmall = computed(() => {
   if (!props.brandTokens?.slug) return null;
   return `/highlights/${props.brandTokens.slug}-small.svg`;
 });
 
-/* --------------------------------------------
-   POST CONTENT IMPORT
---------------------------------------------- */
-import { postContent } from "@/data/postContent";
+const brandLogo = computed(() => {
+  if (!props.brandTokens?.slug) return null;
+  return `/logo-bg/${props.brandTokens.slug}.svg`;
+});
 
-/* --------------------------------------------
-   CSS background class
---------------------------------------------- */
 const backgroundClass = computed(() => {
   const classes = [];
 
@@ -198,20 +218,13 @@ const backgroundClass = computed(() => {
     classes.push(backgroundTone.value === "secondary" ? "bg--plain-secondary" : "bg--plain-primary");
   }
 
-  // if (backgroundMode.value === "pattern") return "bg--pattern pattern-distorted-mesh";
-  if (backgroundMode.value === "pattern") {
-    classes.push("bg--pattern");
-  }
-
+  if (backgroundMode.value === "pattern") classes.push("bg--pattern");
   if (backgroundMode.value === "logo") classes.push("bg--logo");
   if (backgroundMode.value === "image") classes.push("bg--image");
 
   return classes.join(" ");
 });
 
-/* --------------------------------------------
-   MOCKUP BACKGROUND CONTEXT
---------------------------------------------- */
 const mockupBgContext = computed(() => ({
   bgVars: !useColoredBackground.value
     ? ["--ui-alt-section-bg"]
@@ -219,19 +232,6 @@ const mockupBgContext = computed(() => ({
     ? resolvedBgColors.value
     : ["--ui-section-bg"],
 }));
-
-/* --------------------------------------------
-   LARGE LOGO BG
---------------------------------------------- */
-const brandLogo = computed(() => {
-  if (!props.brandTokens?.slug) return null;
-  return `/logo-bg/${props.brandTokens.slug}.svg`;
-});
-
-/* --------------------------------------------
-   INIT
---------------------------------------------- */
-activePostData.value = postContent.info;
 
 /* --------------------------------------------
    EVENT HANDLERS
@@ -243,6 +243,24 @@ function onContentTypeSelect(type) {
 </script>
 
 <style scoped>
+.mockup-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.mockup-stage:not(:has(*)) {
+  min-height: 600px;
+}
+
+.mockup-stage {
+  transition: opacity 0.15s ease;
+}
+
+.mockup-stage > * {
+  transition: opacity 0.15s ease;
+}
+
 .app-main-shell {
   display: flex;
   flex-direction: column;
@@ -265,5 +283,29 @@ function onContentTypeSelect(type) {
   .main-preview__sidebar {
     margin-bottom: var(--space-25);
   }
+}
+
+.mockup-stage {
+  margin: 0 auto;
+}
+
+.mockup-empty-state {
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  text-align: center;
+}
+
+.mockup-empty-state p {
+  font-size: var(--fs-body-sm);
+  color: var(--color-disabled);
+  margin: 0;
+}
+
+.mockup-empty-state img {
+  width: 60%;
 }
 </style>

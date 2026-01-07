@@ -97,7 +97,6 @@ defineProps({
   position: relative;
   height: 100%;
   width: 100%;
-  opacity: var(--pattern-opacity);
 }
 
 /* CREO corner triangles */
@@ -106,6 +105,7 @@ defineProps({
   position: absolute;
   background: currentColor;
   clip-path: polygon(0 0, 100% 100%, 0 100%, 0 0);
+  opacity: var(--pattern-opacity);
 }
 
 .corner-shape--tl {

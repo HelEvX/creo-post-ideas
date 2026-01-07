@@ -56,11 +56,13 @@ defineProps({
   border-radius: var(--card-radius);
   border: 2cqw solid;
   pointer-events: none;
+  opacity: var(--pattern-opacity);
 }
 
 /* QUOTE MARKS */
 .quote-post__mark {
   position: absolute;
+  opacity: var(--pattern-opacity);
 }
 
 .quote-post__mark i {

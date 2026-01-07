@@ -85,12 +85,14 @@ function scheduleRecompute() {
   });
 }
 
-function resolveAccentBg(root) {
-  const explicit = root.getPropertyValue("--ui-accent-bg").trim();
+function resolveAccentBg(cs) {
+  if (!cs) return null;
+
+  const explicit = cs.getPropertyValue("--ui-accent-bg").trim();
   if (explicit) return explicit;
 
-  const primary = root.getPropertyValue("--ui-primary-bg").trim();
-  const secondary = root.getPropertyValue("--ui-secondary-bg").trim();
+  const primary = cs.getPropertyValue("--ui-primary-bg").trim();
+  const secondary = cs.getPropertyValue("--ui-secondary-bg").trim();
   if (!primary || !secondary) return null;
 
   return props.backgroundTone === "secondary" ? primary : secondary;
@@ -234,7 +236,10 @@ function recomputeMockupVars() {
 ---------------------------------------------- */
 watch(
   () => [props.backgroundClass, props.backgroundTone, props.bgColors],
-  () => scheduleRecompute(),
+  () => {
+    cancelAnimationFrame(rafId);
+    scheduleRecompute();
+  },
   { immediate: true, deep: true }
 );
 

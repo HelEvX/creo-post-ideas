@@ -1,8 +1,9 @@
 <template>
   <div class="brand-switcher-container">
-    <label for="brand-select">Kies een merk:</label>
+    <label for="brand-select">Klantenlijst:</label>
     <select id="brand-select" @change="onChange">
-      <option value="">(default)</option>
+      <option value="">(kies een klant)</option>
+      <option value="creo">Creo Websolutions</option>
       <option value="groomer">Groomer</option>
       <option value="runkstervolksfeesten">Runkster Volksfeesten</option>
       <option value="ocrunkst">OCRunkst</option>
@@ -15,7 +16,7 @@
       <option value="glaede">Glaede</option>
       <option value="brusselsmindfulness">Brussels Mindfulness</option>
       <option value="ellevation">Ellevation</option>
-      <option value="astamoris">AstaMoris</option>
+      <option value="astamoris">Astamoris</option>
     </select>
 
     <div class="brand-preview">

@@ -48,6 +48,7 @@
             <div class="app__canvas">
               <MainPreview
                 :brandTokens="brandTokens"
+                :brandSelected="brandSelected"
                 :scales="scales"
                 @update-tone="backgroundTone = $event"
                 @update-mode="backgroundMode = $event"
@@ -113,9 +114,9 @@
               :images="galleryImages" />
           </div>
         </div>
-        <div class="row text-block-900 center">
+        <!-- <div class="row text-block-900 center">
           <p>— einde van de mockup —</p>
-        </div>
+        </div> -->
       </div>
     </section>
 
@@ -187,6 +188,8 @@ export default {
       brandTokens: null,
       scales: null,
 
+      brandSelected: false,
+
       // shared background state
       backgroundTone: "primary", // "primary" | "secondary"
       backgroundMode: "color", // "color" | "pattern" | "image"
@@ -240,7 +243,7 @@ export default {
   },
 
   watch: {
-    // react to mockup controls immediately
+    // react to background modes immediately
     backgroundTone() {
       this.scheduleDynamicTextUpdate();
     },
@@ -262,7 +265,9 @@ export default {
     ---------------------------------------------- */
     scheduleDynamicTextUpdate() {
       this.$nextTick(() => {
-        this.updateDynamicTextRoles();
+        requestAnimationFrame(() => {
+          this.updateDynamicTextRoles();
+        });
       });
     },
 
@@ -270,7 +275,6 @@ export default {
        DYNAMIC TEXT + OVERLAY RESOLUTION
     ---------------------------------------------- */
     updateDynamicTextRoles() {
-      // GUARD
       if (this.suspendDynamicText) return;
 
       const root = document.documentElement;
@@ -386,8 +390,11 @@ export default {
       if (textOnNav) root.style.setProperty("--dynamic-nav", textOnNav);
 
       /* ----------------------------------------------
-        DYNAMIC OVERLAY (MOCKUP ONLY)
+        DYNAMIC DECORATION (MOCKUP ONLY)
       ---------------------------------------------- */
+
+      // reacting to light vs dark (polarity-adjusted)
+
       const bgVars = this.useColoredBackground ? this.mockupBgContext?.bgVars || [] : ["--ui-alt-section-bg"];
 
       let resolvedBg = null;
@@ -404,6 +411,19 @@ export default {
         const mode = getTextModeForBackground(resolvedBg, dark, light);
         root.style.setProperty("--dynamic-overlay", mode === "dark" ? overlayDark : overlayLight);
       }
+
+      // reacting to primary vs secondary (tone-based)
+
+      const decorPrimaryDark = cs.getPropertyValue("--color-primary-dark").trim();
+      const decorSecondaryDark = cs.getPropertyValue("--color-secondary-dark").trim();
+
+      let resolvedDecor = decorPrimaryDark || decorSecondaryDark || dark;
+
+      if (this.mockupBgContext?.tone === "secondary") {
+        resolvedDecor = decorSecondaryDark || decorPrimaryDark || dark;
+      }
+
+      root.style.setProperty("--dynamic-decor", resolvedDecor);
 
       // ----------------------------------------------
       // BUTTON HOVER / ACTIVE MIX
@@ -435,14 +455,19 @@ export default {
       if (!payload) {
         root.removeAttribute("style");
 
-        this.brandTokens = { slug: "creo" };
+        this.brandTokens = null;
         this.scales = null;
+        this.brandSelected = false;
 
         this.scheduleDynamicTextUpdate();
         window.dispatchEvent(new Event("brand-updated"));
 
         return;
       }
+
+      // HARD HIDE MOCKUP BEFORE MUTATING ROOT STYLES
+      this.brandSelected = false;
+      await this.$nextTick();
 
       let slug;
       if (typeof payload === "object" && payload.tokens) {
@@ -535,7 +560,12 @@ export default {
       this.brandTokens = { ...data, slug };
       this.scales = buildBrandScales(this.brandTokens);
 
+      // allow MainPreview to receive new props before remounting mockup internals
+      await this.$nextTick();
+
+      this.brandSelected = true;
       this.scheduleDynamicTextUpdate();
+
       window.dispatchEvent(new Event("brand-updated"));
     },
   },
@@ -557,10 +587,9 @@ export default {
       if (slug) this.onBrandPicked(slug);
     });
 
-    window.addEventListener("palette-updated", this.scheduleDynamicTextUpdate);
-    window.addEventListener("accent-updated", this.scheduleDynamicTextUpdate);
-
-    this.scheduleDynamicTextUpdate();
+    window.addEventListener("palette-updated", () => {
+      this.scheduleDynamicTextUpdate();
+    });
   },
 };
 </script>
@@ -584,12 +613,6 @@ Stylings for components specific to the app shell
 
 .app__layout {
   transform: translateY(0);
-}
-
-.app__layout,
-.app__layout * {
-  transition: background-color var(--transition-default), color var(--transition-default),
-    border-color var(--transition-default), fill var(--transition-default);
 }
 
 @media (max-width: 767px) {
@@ -712,6 +735,7 @@ p.hero-subtitle {
   border-radius: var(--radius-lg);
   padding: var(--space-25);
   height: 100%;
+  min-height: 600px; /* prevent collapse while loading */
 }
 
 .app__main,

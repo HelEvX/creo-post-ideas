@@ -114,7 +114,7 @@
         </div>
       </section>
 
-      <div class="loader"></div>
+      <!-- <div class="loader"></div> -->
     </div>
   </div>
 </template>

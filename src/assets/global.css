@@ -125,12 +125,12 @@
   --color-secondary-lighter: var(--secondary-300);
 
   /* if not present, repeat a primary or secondary color */
-  --color-tertiary: var(--secondary-400);
+  --color-tertiary: var(--secondary-300);
 
   /* ==== BACKGROUNDS & SURFACES ==== */
   --color-background: var(--white);
   --color-surface: var(--neutral-50);
-  --color-panel: var(--neutral-100);
+  --color-panel: var(--white);
   --color-card: var(--neutral-200);
 
   /* ==== TRANSPARENT OVERLAYS ==== */
@@ -323,7 +323,7 @@
   --ui-secondary-bg: var(--color-secondary);
 
   /* mockup decorations */
-  --mockup-decor: var(--dynamic-overlay);
+  --mockup-decor: var(--dynamic-decor);
 
   /* ------------------------------------------------------
    Borders & shadows
@@ -379,7 +379,7 @@
 
   --image-opacity: 0.25;
 
-  --pattern-opacity: 0.1;
+  --pattern-opacity: 0.4;
   --pattern-rotate: 0deg;
   --tile-x: 65px; /* horizontal spacing */
   --tile-y: 55px; /* vertical spacing */

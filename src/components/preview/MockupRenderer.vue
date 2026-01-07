@@ -1,5 +1,6 @@
 <template>
   <SocialPostMockup
+    :key="renderKey"
     ref="mockupRef"
     :bgColors="resolvedBgColors"
     :size="size"
@@ -46,6 +47,10 @@ const props = defineProps({
   photoSrc: String,
   showSafeZone: Boolean,
 });
+
+const renderKey = computed(() =>
+  [props.brandLogo || "no-brand", props.backgroundClass, props.backgroundTone, props.size, props.postType].join("|")
+);
 
 const postMap = {
   info: InfoPost,

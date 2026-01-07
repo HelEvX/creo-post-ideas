@@ -1,5 +1,5 @@
 <template>
-  <div class="post-bg" :class="backgroundClass" :style="{ opacity: isSwitching ? 0 : 1 }">
+  <div class="post-bg" :class="backgroundClass" :key="`${backgroundClass}-${rawSvg ? 'svg' : 'none'}`">
     <!-- plain color layer -->
     <div class="post-bg__color"></div>
 
@@ -32,22 +32,12 @@ const props = defineProps({
 ---------------------------------------------- */
 
 const rawSvg = ref(null);
-
-const isSwitching = ref(false);
-
-watch(
-  () => props.backgroundClass,
-  () => {
-    isSwitching.value = true;
-    requestAnimationFrame(() => {
-      isSwitching.value = false;
-    });
-  }
-);
+let fetchToken = 0;
 
 watch(
   () => props.brandLogo,
   async (url) => {
+    const token = ++fetchToken;
     rawSvg.value = null;
 
     if (!url) return;
@@ -56,7 +46,10 @@ watch(
     const res = await fetch(resolved);
     if (!res.ok) return;
 
-    rawSvg.value = await res.text();
+    const svg = await res.text();
+    if (token !== fetchToken) return;
+
+    rawSvg.value = svg;
   },
   { immediate: true }
 );
@@ -73,6 +66,11 @@ const logoPatternStyle = computed(() => {
 </script>
 
 <style scoped>
+.post-bg,
+.post-bg * {
+  transition: none !important;
+}
+
 .post-bg {
   position: absolute;
   inset: 0;

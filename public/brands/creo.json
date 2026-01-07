@@ -1,6 +1,6 @@
 {
-  "name": "Creo",
-  "meta": { "brand": "Creo", "version": "1.0" },
+  "name": "Creo Websolutions",
+  "meta": { "brand": "Creo Websolutions", "version": "1.0" },
   "font-title": "europa, sans-serif",
   "font-body": "Work Sans, sans-serif",
   "fonts": {
@@ -26,12 +26,12 @@
 
   "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-darker",
 
-  "color-tertiary": "#001b1f",
+  "color-tertiary": "#006c7a",
 
   "_comment-3": "BACKGROUND COLORS: sections, cards, header, footer",
 
   "color-surface": "#f2f4f4",
-  "color-panel": "#ececec",
+  "color-panel": "#004852",
   "color-card": "#d9dedf",
   "color-nav-bg": "#00363d",
   "color-footer-bg": "#00363d",

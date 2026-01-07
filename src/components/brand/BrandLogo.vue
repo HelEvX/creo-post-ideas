@@ -8,7 +8,14 @@
       version="1.1"
       viewBox="0 0 400 120"
       class="brandlogo-svg">
-      <rect x="14.9" y="15.9" width="89.2" height="89.2" fill="var(--dynamic-nav)" />
+      <rect
+        x="14.9"
+        y="15.9"
+        width="89.2"
+        height="89.2"
+        fill="var(--dynamic-nav)"
+        stroke="var(--dynamic-nav)"
+        stroke-width="1px" />
 
       <g id="squares">
         <!-- <rect
@@ -104,7 +111,14 @@
       version="1.1"
       viewBox="0 0 400 120"
       class="brandlogo-svg">
-      <rect x="14.9" y="15.9" width="89.2" height="89.2" fill="var(--dynamic-nav)" />
+      <rect
+        x="14.9"
+        y="15.9"
+        width="89.2"
+        height="89.2"
+        fill="var(--dynamic-nav)"
+        stroke="var(--dynamic-nav)"
+        stroke-width="1px" />
 
       <g id="squares">
         <!-- <rect
