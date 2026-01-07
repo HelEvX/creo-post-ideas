@@ -279,7 +279,7 @@ function onContentTypeSelect(type) {
   }
 }
 
-@media (max-width: 1399px) {
+@media (max-width: 1399.98px) {
   .main-preview__sidebar {
     margin-bottom: var(--space-25);
   }

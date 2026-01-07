@@ -795,18 +795,6 @@ defineExpose({
 }
 
 /* ---------------------------------------------
-   RESET BTN
---------------------------------------------- */
-.reset-wrap {
-  flex: 0 1 auto;
-  text-align: center;
-}
-
-.reset-btn {
-  width: 3rem;
-  padding: 0.5rem 0;
-}
-/* ---------------------------------------------
    CONTRAST TABLE
 --------------------------------------------- */
 
@@ -856,7 +844,6 @@ defineExpose({
 .swatch-text-label {
   font-size: var(--fs-body-xs);
   font-weight: var(--fw-title);
-  line-height: 1;
   text-wrap: nowrap;
 }
 
@@ -918,7 +905,7 @@ defineExpose({
   margin: var(--space-20) 0;
 }
 
-@media (max-width: 1399px) {
+@media (max-width: 1399.98px) {
   .controls {
     width: 33.33%;
   }

@@ -351,9 +351,13 @@ defineExpose({ nextRecipe, prevRecipe });
 
 .contrast-check__header {
   display: flex;
-  margin: var(--space-10) auto var(--space-20);
+  margin: var(--space-10) 0 var(--space-20);
   align-items: center;
   justify-content: space-between;
+}
+
+.contrast-check__header h4 {
+  text-align: center;
 }
 
 @media (max-width: 1399.98px) {
@@ -374,7 +378,7 @@ defineExpose({ nextRecipe, prevRecipe });
 }
 @media (max-width: 991.98px) {
   .contrast-check__header h4 {
-    flex: 0 1 30%;
+    flex: 0 1 35%;
   }
 }
 @media (max-width: 575.98px) {
@@ -385,5 +389,18 @@ defineExpose({ nextRecipe, prevRecipe });
 
 .contrast-check__header .empty-div {
   width: 3rem;
+}
+
+/* ---------------------------------------------
+   RESET BTN
+--------------------------------------------- */
+.reset-wrap {
+  flex: 0 1 auto;
+  text-align: center;
+}
+
+.reset-btn {
+  width: 3rem;
+  padding: 0.5rem 0;
 }
 </style>

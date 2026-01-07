@@ -51,12 +51,13 @@
       </div>
     </div>
 
-    <div class="main-preview__styles__other">
-      <div>
+    <div v-if="hasBordersOrShadows" class="main-preview__styles__other">
+      <div v-if="hasBorders">
         <h6>Randen & hoeken</h6>
         <div class="card main-preview__styles__borders"></div>
       </div>
-      <div>
+
+      <div v-if="hasShadows">
         <h6>Shaduw</h6>
         <div class="card main-preview__styles__shadows"></div>
       </div>
@@ -121,6 +122,20 @@ function fontData(fontFamilyString) {
 
 const titleFontData = computed(() => fontData(props.titleFont));
 const bodyFontData = computed(() => fontData(props.bodyFont));
+
+const hasBorders = computed(() => {
+  const cs = getComputedStyle(document.documentElement);
+  const border = cs.getPropertyValue("--card-border").trim();
+  return border && border !== "none";
+});
+
+const hasShadows = computed(() => {
+  const cs = getComputedStyle(document.documentElement);
+  const shadow = cs.getPropertyValue("--card-shadow").trim();
+  return shadow && shadow !== "none";
+});
+
+const hasBordersOrShadows = computed(() => hasBorders.value || hasShadows.value);
 
 /* ------------------------------------------------------------
    SWATCHES (normalized, unique, visible colors only)
@@ -420,8 +435,9 @@ p.styles__hint {
   height: 4rem;
   width: 100%;
   max-width: 30rem;
-  background-color: var(--ui-section-bg);
   padding: var(--space-25);
+
+  background: var(--ui-panel-bg);
   box-shadow: none;
 }
 
@@ -429,9 +445,9 @@ p.styles__hint {
   height: 4rem;
   width: 100%;
   max-width: 30rem;
-  background-color: var(--ui-section-bg);
   padding: var(--space-25);
+
+  background: var(--ui-section-bg);
   border: none;
-  border-radius: 0;
 }
 </style>

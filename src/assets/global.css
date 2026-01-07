@@ -164,11 +164,11 @@
 
   --border-rgb: 0 0 0; /* default black */
   --border-alpha: 0.15; /* default: invisible */
-  --color-border-card: rgba(var(--border-rgb) / var(--border-alpha));
+  --color-border-card: rgb(var(--border-rgb) / var(--border-alpha));
 
   --shadow-rgb: 0 0 0; /* default black */
   --shadow-alpha: 0; /* default: invisible */
-  --color-shadow: rgba(var(--shadow-rgb) / var(--shadow-alpha));
+  --color-shadow: rgb(var(--shadow-rgb) / var(--shadow-alpha));
 
   /* ==== STATUS / FEEDBACK ==== */
   --color-info: var(--blue-500);

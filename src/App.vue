@@ -67,22 +67,20 @@
           <div class="col-12">
             <h5>DOELSTELLING</h5>
             <h2>Een Instagram<span>*</span> design spieker</h2>
-            <p>Je klanten moeten je merk direct herkennen wanneer ze door hun 'feed' scrollen.</p>
+            <p>Je wil dat klanten je merk direct herkennen wanneer ze door hun social media 'feed' scrollen.</p>
             <p>
-              Je hebt een logo en je website is klaar. Toch is ontwerpen voor Instagram niet zo eenvoudig. Hoe komt dat?
+              Ook al heb je een logo, een vast kleurenpalet en een website, toch is ontwerpen voor Instagram niet zo
+              eenvoudig. Deze tool helpt je om sneller keuzes te maken die passen bij je huisstijl.
             </p>
             <p>
-              Je twijfelt misschien over het lettertype, of je vindt geen geschikte combinatie voor achtergrond- en
-              tekstkleuren.
+              In de preview-ruimte geven we eenvoudige voorbeelden van Instagram posts. Zo kan je zien hoe jouw
+              merkkleuren kunnen worden gecombineerd. Je kan verschillende soorten inhouden en formaten bekijken als
+              startpunt voor je eigen creaties.
             </p>
             <p>
-              Met <strong>Voorbeeld-ig</strong> geven we eenvoudige voorbeelden van Instagram posts in jouw huisstijl.
-              Je kan verschillende soorten inhouden en formaten bekijken, als startpunt voor je eigen creaties.
-            </p>
-            <p>
-              Maar er is meer! De ingebouwde kleurcombinaties van deze tool geven jouw huisstijl een unieke toets. Maak
-              je palet eens extra levendig of net sober. Probeer eens een 'donkere' versie uit of hou het minimaal. Bij
-              elke nieuwe mix kan je bovendien het contrast tussen tekst en achtergrond controleren en verbeteren. Een
+              De ingebouwde kleurcombinaties van deze tool geven jouw huisstijl een unieke toets. Maak je palet extra
+              levendig en kleurrijk, probeer eens een 'donkere' versie uit, of hou het sober en neutraal. Bij elke
+              nieuwe 'mix' kan je bovendien het contrast tussen tekst en achtergrond controleren en verbeteren. Een
               leesbare boodschap is gegarandeerd!
             </p>
             <p>
@@ -539,19 +537,13 @@ export default {
         const y = t(data["shadow-y"]) || "0";
         const blur = t(data["shadow-blur"]) || "0";
 
-        // brand default shadow color
         const rgb = t(data["shadow-rgb"]);
-        if (rgb) {
-          root.style.setProperty("--shadow-rgb", rgb);
-        }
+        if (rgb) root.style.setProperty("--shadow-rgb", rgb);
 
-        // brand default shadow alpha
         const alpha = t(data["shadow-alpha"]);
-        if (alpha) {
-          root.style.setProperty("--shadow-alpha", alpha);
-        }
+        if (alpha !== undefined && alpha !== null) root.style.setProperty("--shadow-alpha", alpha);
 
-        root.style.setProperty("--card-shadow", `${x} ${y} ${blur} var(--color-shadow)`);
+        root.style.setProperty("--card-shadow", `${x} ${y} ${blur} rgb(${rgb} / ${alpha})`);
       } else {
         root.style.setProperty("--card-shadow", "none");
       }
