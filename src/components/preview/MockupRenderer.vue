@@ -13,11 +13,11 @@
     :postType="postType"
     @resolved-visuals="onResolvedVisuals">
     <template #safe>
-      <component :is="currentPostComponent" v-bind="postData" zone="safe" />
+      <component :is="currentPostComponent" v-bind="postData" :brandSlug="brandSlug" zone="safe" />
     </template>
 
     <template #free>
-      <component :is="currentPostComponent" v-bind="postData" zone="free" />
+      <component :is="currentPostComponent" v-bind="postData" :brandSlug="brandSlug" zone="free" />
     </template>
   </SocialPostMockup>
 </template>
@@ -43,6 +43,7 @@ const props = defineProps({
   backgroundTone: String,
   useColoredBackground: Boolean,
   brandLogo: String,
+  brandSlug: String,
   usePhoto: Boolean,
   photoSrc: String,
   showSafeZone: Boolean,

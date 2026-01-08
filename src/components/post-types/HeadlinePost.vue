@@ -10,7 +10,7 @@
     <div v-if="zone === 'safe'" class="arrow-wrapper">
       <div class="arrow"></div>
     </div>
-    <div v-else class="post__decor">
+    <div v-else-if="brandSlug === 'creo'" class="post__decor">
       <div class="corner-shape corner-shape--bl"></div>
       <div class="corner-shape corner-shape--br"></div>
       <div class="corner-shape corner-shape--tl"></div>
@@ -20,14 +20,20 @@
 </template>
 
 <script setup>
+import { onMounted } from "vue";
 import PostTextBlock from "../mockup/PostTextBlock.vue";
 
-defineProps({
+const props = defineProps({
   caption: String,
   headline: String,
   subtitle: String,
   icon: String,
   zone: { type: String, required: true },
+  brandSlug: { type: String, required: true },
+});
+
+onMounted(() => {
+  console.log("HeadlinePost", props.zone, props.brandSlug);
 });
 </script>
 

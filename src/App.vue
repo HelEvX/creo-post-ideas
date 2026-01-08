@@ -48,6 +48,7 @@
             <div class="app__canvas">
               <MainPreview
                 :brandTokens="brandTokens"
+                :brandSlug="brandTokens?.slug"
                 :brandSelected="brandSelected"
                 :scales="scales"
                 @update-tone="backgroundTone = $event"

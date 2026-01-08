@@ -75,6 +75,7 @@
               :usePhoto="backgroundMode === 'image'"
               :photoSrc="photoSrc"
               :brandLogoSmall="brandLogoSmall"
+              :brandSlug="brandSlug"
               :showSafeZone="showSafeZones"
               @bg-resolved="resolvedBgColors = $event"
               @resolved-styles="resolvedStyles = $event" />
@@ -124,6 +125,7 @@ const emit = defineEmits(["update-tone", "update-mode", "update-colored"]);
 
 const props = defineProps({
   brandTokens: Object,
+  brandSlug: String,
   colored: {
     type: Boolean,
     default: true,
