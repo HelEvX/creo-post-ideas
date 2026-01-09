@@ -587,7 +587,7 @@ const mockupTiles = computed(() => [
    RESPONSIVE
 ------------------------------------------------------------ */
 
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   .ig-header {
     justify-content: left;
     margin: 0;

@@ -323,7 +323,7 @@ async function copyColor(color) {
   align-items: flex-start;
   gap: var(--space-20);
 }
-@media (max-width: 991px) {
+@media (max-width: 991.98px) {
   .main-preview__styles {
     padding: var(--space-50) var(--space-20) var(--space-20);
   }
@@ -410,7 +410,7 @@ p.styles__hint {
   padding: var(--space-5) var(--space-10);
   border-radius: var(--radius-sm);
 }
-@media (max-width: 1199px) {
+@media (max-width: 1199.98px) {
   .swatch__toast {
     left: 50%;
     transform: translateX(-50%);

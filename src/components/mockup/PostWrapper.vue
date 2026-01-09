@@ -24,7 +24,7 @@ const aspectMap = {
   width: 100%;
   max-width: 100%;
   border-radius: 0.2em; /* hard-coded */
-  /* overflow: hidden; */
+  overflow: hidden;
   box-shadow: var(--ui-shadow-sm);
   container-type: inline-size;
 }
@@ -91,6 +91,9 @@ const aspectMap = {
   border-radius: var(--card-radius); /* client input */
   border: var(--card-border); /* client input: border width only */
   box-shadow: var(--card-shadow); /* client input: XY distance,  blur, black alpha value */
+}
+html.brand--keukentje .card {
+  border-radius: var(--card-radius) 0;
 }
 
 /* --------------

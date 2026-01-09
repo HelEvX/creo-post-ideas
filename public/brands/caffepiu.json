@@ -1,0 +1,77 @@
+{
+  "name": "Caffe Piu",
+  "meta": { "brand": "Caffe Piu", "version": "1.0" },
+  "font-title": "Nunito, sans-serif",
+  "font-body": "Instrument Sans, sans-serif",
+  "fonts": {
+    "import": [
+      "https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+    ]
+  },
+
+  "_comment-1": "COLOR PALETTE",
+
+  "color-primary": "#ee1940",
+  "color-primary-dark": "#d10f33",
+  "color-primary-darker": "#ba0e2d",
+  "color-primary-light": "#f14968",
+  "color-primary-lighter": "#f57a91",
+
+  "color-secondary": "#3d7f4e",
+  "color-secondary-dark": "#31653e",
+  "color-secondary-darker": "#244b2e",
+  "color-secondary-light": "#9ec991",
+  "color-secondary-lighter": "#dbe8d3",
+
+  "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-darker",
+
+  "color-tertiary": "#244b2e",
+
+  "_comment-3": "BACKGROUND COLORS: sections, cards, header, footer",
+
+  "color-surface": "#ffffff",
+  "color-panel": "#f4f4f4",
+  "color-card": "#f0f0f0",
+  "color-nav-bg": "#ffffff",
+  "color-footer-bg": "#1e1e1e",
+
+  "_comment-4": "TEXT COLORS (dark only!)",
+
+  "color-title": "#1e1e1e",
+  "color-text": "#565656",
+
+  "_comment-5": "LABEL COLORS",
+
+  "color-warning": "#fdd835",
+  "color-danger": "#d10f33",
+  "color-success": "#3d7f4e",
+  "color-success-dark": "#2c5d39",
+
+  "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
+
+  "border-enabled": true,
+  "border-width-card": "0.15rem",
+  "card-radius": "1cqw",
+
+  "shadow-enabled": true,
+  "shadow-x": "0",
+  "shadow-y": "0.5rem",
+  "shadow-blur": "1rem",
+  "shadow-rgb": "30 30 30",
+  "shadow-alpha": "0.15",
+
+  "ig": {
+    "avatar": "caffepiu.webp",
+    "username": "caffepiu_official",
+    "posts": 246,
+    "followers": 436,
+    "following": 56,
+    "title": "𝐂𝐚𝐟𝐟è 𝐏𝐈𝐔’",
+    "businessType": "Product/service",
+    "description": "Everything begins and ends with coffee. \n ▪️ Your modern Italian Espresso \n ▪️ Made with passion since 1998 \n ▪️ Based in Belgium",
+    "address": "De lange beemden 29, Zolder 3550",
+    "url": "https://caffepiu.test.creowebsolutions.be/nl",
+    "highlightIcon": "caffepiu-small.svg",
+    "highlights": [{ "label": "☕📍" }, { "label": "Workshops" }, { "label": "Events" }, { "label": "Coffee Break" }]
+  }
+}

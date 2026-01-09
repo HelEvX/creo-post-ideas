@@ -1,10 +1,13 @@
 {
   "name": "Candy & More",
   "meta": { "brand": "Candy & More", "version": "1.0" },
-  "font-title": "sans-serif",
-  "font-body": "sans-serif",
+  "font-title": "arya-triple, sans-serif",
+  "font-body": "Poppins, sans-serif",
   "fonts": {
-    "import": [""]
+    "import": [
+      "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap",
+      "https://use.typekit.net/xls1ldz.css"
+    ]
   },
 
   "_comment-1": "COLOR PALETTE",
@@ -43,33 +46,33 @@
   "color-warning": "#ffd400",
   "color-danger": "#f0386b",
   "color-success": "#0ba85b",
-  "color-success-dark": "#",
+  "color-success-dark": "#048246",
 
   "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
 
-  "border-enabled": false,
+  "border-enabled": true,
   "border-width-card": "0",
-  "card-radius": "0",
+  "card-radius": "3cqw",
 
-  "shadow-enabled": false,
+  "shadow-enabled": true,
   "shadow-x": "0",
-  "shadow-y": "0",
-  "shadow-blur": "0",
-  "shadow-rgb": "0 0 0",
-  "shadow-alpha": "0.00",
+  "shadow-y": "1rem",
+  "shadow-blur": "2rem",
+  "shadow-rgb": "77 146 169",
+  "shadow-alpha": "0.5",
 
   "ig": {
     "avatar": "candyandmore.webp",
-    "username": "Candy & More",
-    "posts": 0,
-    "followers": 0,
-    "following": 0,
-    "title": "Candy & More",
-    "threads": "@candyandmore",
-    "businessType": "business type",
-    "description": "Description part 1 \nDescription part 2",
-    "address": "Straat, Stad, Belgium xxxx",
-    "url": "https://www.candyandmore.be",
+    "username": "candyandmorebelgium",
+    "posts": 87,
+    "followers": 82,
+    "following": 72,
+    "title": "Candy & More Belgium",
+    "businessType": "Sweet shop",
+    "description": "🍭 | Candy & More / Dagbladhandel Papyrus \n📍 | Bouwelsesteenweg 177, 2560 Nijlen \n ✉️ | DM for more info🍬",
+    "tags": "#snoeptaarten #snoep #candy #sweets",
+    "address": "Bouwelsesteenweg 177, Nijlen 2560",
+    "url": "www.candyandmore.be",
     "highlightIcon": "candyandmore-small.svg",
     "highlights": [
       { "label": "TEAM" },

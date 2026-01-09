@@ -872,7 +872,7 @@ defineExpose({
   color: var(--white);
   text-align: left;
 }
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   .no-fix-hint {
     top: 100%;
     right: 25%;
@@ -906,9 +906,6 @@ defineExpose({
 }
 
 @media (max-width: 1399.98px) {
-  .controls {
-    width: 33.33%;
-  }
   .contrast-toggle {
     display: inline-block;
   }
@@ -924,26 +921,13 @@ defineExpose({
   }
 }
 
-@media (max-width: 991px) {
-  .controls {
-    width: 50%;
-    justify-content: space-between;
-  }
+@media (max-width: 991.98px) {
   .contrast-row {
     width: calc((100% - var(--space-50)) / 2);
   }
 }
 
-@media (max-width: 767px) {
-  .controls {
-    width: 80%;
-  }
-}
-
-@media (max-width: 575px) {
-  .controls {
-    width: 100%;
-  }
+@media (max-width: 575.98px) {
   .contrast-row {
     width: 100%;
   }

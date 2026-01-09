@@ -1,0 +1,83 @@
+{
+  "name": "Peak Move",
+  "meta": { "brand": "Peak Move", "version": "1.0" },
+  "font-title": "Raleway, sans-serif",
+  "font-body": "Raleway, sans-serif",
+  "fonts": {
+    "import": ["https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"]
+  },
+
+  "_comment-1": "COLOR PALETTE",
+
+  "color-primary": "#",
+  "color-primary-dark": "#",
+  "color-primary-darker": "#",
+  "color-primary-light": "#",
+  "color-primary-lighter": "#",
+
+  "color-secondary": "#",
+  "color-secondary-dark": "#",
+  "color-secondary-darker": "#",
+  "color-secondary-light": "#",
+  "color-secondary-lighter": "#",
+
+  "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-darker",
+
+  "color-tertiary": "#",
+
+  "_comment-3": "BACKGROUND COLORS: sections, cards, header, footer",
+
+  "color-surface": "#ffffff",
+  "color-panel": "#f3f3f3",
+  "color-card": "#241414",
+  "color-nav-bg": "#241414",
+  "color-footer-bg": "#241414",
+
+  "_comment-4": "TEXT COLORS (dark only!)",
+
+  "color-title": "#141414",
+  "color-text": "#141414",
+
+  "_comment-5": "LABEL COLORS",
+
+  "color-warning": "#",
+  "color-danger": "#",
+  "color-success": "#",
+  "color-success-dark": "#",
+
+  "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
+
+  "border-enabled": false,
+  "border-width-card": "0",
+  "card-radius": "0",
+
+  "shadow-enabled": true,
+  "shadow-x": "0",
+  "shadow-y": "1rem",
+  "shadow-blur": "2rem",
+  "shadow-rgb": "20 20 20",
+  "shadow-alpha": "0.15",
+
+  "ig": {
+    "avatar": "peakmove.webp",
+    "username": "peakmove",
+    "posts": 0,
+    "followers": 0,
+    "following": 0,
+    "title": "PeakMove",
+    "businessType": "Sports",
+    "description": "Description part 1 \nDescription part 2",
+    "address": "Straat, Stad, Belgium xxxx",
+    "url": "www.peakmove.be",
+    "highlightIcon": "peakmove-small.svg",
+    "highlights": [
+      { "label": "TEAM" },
+      { "label": "PROMOS" },
+      { "label": "SHOP" },
+      { "label": "SERVICES" },
+      { "label": "BLOG" },
+      { "label": "FAQ" },
+      { "label": "REVIEWS" }
+    ]
+  }
+}

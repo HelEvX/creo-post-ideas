@@ -9,53 +9,54 @@
 
   "_comment-1": "COLOR PALETTE",
 
-  "color-primary": "#cb9e01",
-  "color-primary-dark": "#a17f00",
-  "color-primary-darker": "#7f6301",
-  "color-primary-light": "#d8a801",
-  "color-primary-lighter": "#fec601",
+  "color-primary": "#ffca3a",
+  "color-primary-dark": "#ffc31f",
+  "color-primary-darker": "#ffbc07",
+  "color-primary-light": "#ffd970",
+  "color-primary-lighter": "#ffe9ad",
 
-  "color-secondary": "#375fa8",
-  "color-secondary-dark": "#2e4f8b",
-  "color-secondary-darker": "#2b4978",
-  "color-secondary-light": "#7798cb",
-  "color-secondary-lighter": "#9cb4d9",
+  "color-secondary": "#5b86c4",
+  "color-secondary-dark": "#3e6cae",
+  "color-secondary-darker": "#2a4975",
+  "color-secondary-light": "#7197cb",
+  "color-secondary-lighter": "#e1e9f4",
 
   "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-darker",
 
-  "color-tertiary": "#9cb4d9",
+  "color-tertiary": "#109648",
 
   "_comment-3": "BACKGROUND COLORS",
 
-  "color-surface": "#fefefe",
-  "color-panel": "#e1e9f4",
-  "color-card": "#fafafa",
-  "color-nav-bg": "#3b5ea8",
-  "color-footer-bg": "#3b5ea8",
+  "color-surface": "#f0f3fa",
+  "color-panel": "#96b2d9",
+  "color-card": "#d9e2f1",
+  "color-nav-bg": "#e1e9f4",
+  "color-footer-bg": "#3a5ea8",
 
   "_comment-4": "TEXT COLORS (only dark colors, not 'reversed')",
 
-  "color-title": "#5b86c4",
-  "color-text": "#302b27",
+  "color-title": "#1d1d1d",
+  "color-text": "#1d1d1d",
 
   "_comment-5": "LABEL COLORS: orange, red, green, dark green",
 
-  "color-warning": "#d8a801",
+  "color-warning": "#ffbc07",
   "color-danger": "#ec0b43",
-  "color-success": "#4baa74",
-  "color-success-dark": "#3f8f62",
+  "color-success": "#109648",
+  "color-success-dark": "#0b6832",
 
   "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
 
-  "border-enabled": false,
+  "border-enabled": true,
   "border-width-card": "0",
-  "card-radius": "0",
+  "card-radius": "1.5cqw",
 
-  "shadow-enabled": false,
+  "shadow-enabled": true,
   "shadow-x": "0",
-  "shadow-y": "0",
-  "shadow-blur": "0",
-  "shadow-alpha": "0.00",
+  "shadow-y": "0.75rem",
+  "shadow-blur": "1.25rem",
+  "shadow-rgb": "29 29 29",
+  "shadow-alpha": "0.1",
 
   "ig": {
     "avatar": "cardgameshop.webp",
@@ -68,7 +69,7 @@
     "businessType": "Retailer",
     "description": "🇧🇪Retailer off the best: TCG'S - Funko's - Boardgames & More!\nOfficial PSA Dealer\nWebshop And 4 Fysical Stores\nCGS Hasselt - Wijnegem - Eksel - Leuven",
     "address": "Demerstraat 39, Hasselt 3500",
-    "url": "www.cardgameshop.be",
+    "url": "https://cardgameshop.test.creowebsolutions.be/nl",
     "highlightIcon": "cardgameshop-small.svg",
     "highlights": [
       { "label": "TEAM" },

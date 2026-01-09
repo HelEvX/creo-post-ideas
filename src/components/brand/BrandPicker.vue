@@ -4,19 +4,37 @@
     <select id="brand-select" @change="onChange">
       <option value="">(kies een klant)</option>
       <option value="creo">Creo Websolutions</option>
-      <option value="groomer">Groomer</option>
-      <option value="runkstervolksfeesten">Runkster Volksfeesten</option>
-      <option value="ocrunkst">OCRunkst</option>
-      <option value="wijkraadrunkst">Wijkraad Runkst</option>
-      <option value="steviala">Steviala</option>
-      <option value="kenis">Bakkerij Kenis</option>
-      <option value="tropical">Ijssalon Tropical</option>
-      <option value="cardgameshop">Card Game Shop</option>
-      <option value="blooloc">Blooloc</option>
-      <option value="glaede">Glaede</option>
-      <option value="brusselsmindfulness">Brussels Mindfulness</option>
-      <option value="ellevation">Ellevation</option>
+      <!--  -->
       <option value="astamoris">Astamoris</option>
+      <option value="blooloc">Blooloc</option>
+      <option value="brusselsmindfulness">Brussels Mindfulness</option>
+      <option value="caffepiu">Caffe Piu</option>
+      <!-- testsite -->
+      <option value="candyandmore">Candy & More</option>
+      <option value="cardgameshop">Card Game Shop</option>
+      <!-- testsite -->
+      <option value="cashandco">Cash & co</option>
+      <option value="comul">Comul</option>
+      <option value="divafashion">Diva Fashion</option>
+      <!-- testsite -->
+      <option value="elegance">Elegance Lingerie</option>
+      <!-- <option value="ellevation">Ellevation</option> -->
+      <option value="glaede">Glaede</option>
+      <option value="godare">Go Dare</option>
+      <option value="groomer">Groomer</option>
+      <option value="hopsakee">Hop-Sa-Kee</option>
+      <option value="kenis">Kenis</option>
+      <option value="keukentje">Keukentje</option>
+      <option value="kookplaneet">Kookplaneet</option>
+      <option value="lilistea">Lili's Tea</option>
+      <!-- testsite -->
+      <option value="ocrunkst">OCRunkst</option>
+      <option value="peakmove">Peak Move</option>
+      <option value="runkstervolksfeesten">Runkster Volksfeesten</option>
+      <!-- <option value="sandrawouters">Sandra Wouters</option> -->
+      <option value="steviala">Steviala</option>
+      <option value="tropical">Tropical</option>
+      <option value="wijkraadrunkst">Wijkraad Runkst</option>
     </select>
 
     <div class="brand-preview">
@@ -24,7 +42,7 @@
       <div class="color-swatch primary-light"></div>
       <div class="color-swatch secondary"></div>
       <div class="color-swatch accent"></div>
-      <!-- tertiary or secondary-dark -->
+      <!-- tertiary or secondary-darker -->
       <div class="color-swatch title"></div>
     </div>
     <div class="brand-preview-logolink">

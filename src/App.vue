@@ -16,8 +16,10 @@
       <div class="container">
         <div class="row align-center">
           <div class="col-12">
-            <h1 class="hero-title">Jouw huisstijl, jouw socials</h1>
-            <p class="hero-subtitle">Visualiseer posts die perfect bij je website passen.</p>
+            <h1 class="hero-title">Jouw huisstijl kan meer op sociale media</h1>
+            <p class="hero-subtitle">
+              Inspiratie voor posts met een kleurenpalet dat perfect bij je website past, op maat van Instagram.
+            </p>
             <!-- Preview your posts using your site's look & feel. -->
           </div>
         </div>
@@ -67,7 +69,7 @@
         <div class="row text-block-900 center">
           <div class="col-12">
             <h5>DOELSTELLING</h5>
-            <h2>Een Instagram<span>*</span> design spieker</h2>
+            <h2>Een Instagram<span>*</span>-inspiratiebron</h2>
             <p>Je wil dat klanten je merk direct herkennen wanneer ze door hun social media 'feed' scrollen.</p>
             <p>
               Ook al heb je een logo, een vast kleurenpalet en een website, toch is ontwerpen voor Instagram niet zo
@@ -608,7 +610,7 @@ Stylings for components specific to the app shell
   transform: translateY(0);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   .app__layout {
     padding: 0;
     background: transparent;
@@ -634,7 +636,7 @@ Stylings for components specific to the app shell
 }
 
 .site-footer p span {
-  color: var(--ui-secondary-bg);
+  color: var(--ui-primary-bg);
 }
 
 /* ----------------------------------------------------
@@ -650,6 +652,11 @@ h1.hero-title {
   font-weight: var(--fw-title);
   letter-spacing: -0.01em;
 }
+html.brand--candyandmore,
+html.brand--hopsakee {
+  --fw-title: 400;
+}
+
 p.hero-subtitle {
   font-size: var(--fs-body-lg);
   font-weight: var(--fw-title);
@@ -755,7 +762,7 @@ p.hero-subtitle {
   padding: var(--space-10);
 }
 
-@media (max-width: 991px) {
+@media (max-width: 991.98px) {
   .section-gallery__grid {
     padding: 0 !important;
   }
@@ -794,7 +801,7 @@ p.hero-subtitle {
 /* =======================================================
    TABLET VER ≥ 576px (sm breakpoint)
    ======================================================= */
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   .app__sidebar {
     margin-left: 0;
     margin-right: 0;

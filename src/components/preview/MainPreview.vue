@@ -58,7 +58,7 @@
             <!-- EMPTY STATE -->
             <div v-if="!mockupReady" class="mockup-empty-state">
               <img src="@/assets/img/logo-disabled.svg" alt="disabled logo" />
-              <p>Instagram post mockups verschijnen hier.</p>
+              <p>Instagram-inspiratieposts verschijnen hier.</p>
             </div>
 
             <!-- MOCKUP -->

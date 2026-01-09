@@ -1,0 +1,82 @@
+{
+  "name": "Hop-Sa-Kee",
+  "meta": { "brand": "Hop-Sa-Kee", "version": "1.0" },
+  "font-title": "Chewy, system-ui",
+  "font-body": "Fredoka, sans-serif",
+  "fonts": {
+    "import": ["https://fonts.googleapis.com/css2?family=Chewy&family=Fredoka:wght@300..700&display=swap"]
+  },
+
+  "_comment-1": "COLOR PALETTE",
+
+  "color-primary": "#e74c26",
+  "color-primary-dark": "#d03b17",
+  "color-primary-darker": "#c43816",
+  "color-primary-light": "#ef866c",
+  "color-primary-lighter": "#f4ac9a",
+
+  "color-secondary": "#49c177",
+  "color-secondary-dark": "#37a05f",
+  "color-secondary-darker": "#308d54",
+  "color-secondary-light": "#85d5a4",
+  "color-secondary-lighter": "#b4e5c6",
+
+  "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-darker",
+
+  "color-tertiary": "#308d54",
+
+  "_comment-3": "BACKGROUND COLORS: sections, cards, header, footer",
+
+  "color-surface": "#ffffff",
+  "color-panel": "#daf2e3",
+  "color-card": "#f3f1ea",
+  "color-nav-bg": "#ffffff",
+  "color-footer-bg": "#f3f1ea",
+
+  "_comment-4": "TEXT COLORS (dark only!)",
+
+  "color-title": "#1d1d1b",
+  "color-text": "#1d1d1b",
+
+  "_comment-5": "LABEL COLORS",
+
+  "color-warning": "#f4d03f",
+  "color-danger": "#e74c26",
+  "color-success": "#49C177",
+  "color-success-dark": "#37a05f",
+
+  "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
+
+  "border-enabled": true,
+  "border-width-card": "0",
+  "card-radius": "4cqw",
+
+  "shadow-enabled": true,
+  "shadow-x": "0",
+  "shadow-y": "0.75rem",
+  "shadow-blur": "1.25rem",
+  "shadow-rgb": "29 29 27",
+  "shadow-alpha": "0.1",
+
+  "ig": {
+    "avatar": "hopsakee.webp",
+    "username": "hop.sa.kee",
+    "posts": 92,
+    "followers": 168,
+    "following": 164,
+    "title": "HOP-SA-KEE nature fits you",
+    "businessType": "Children and parenting",
+    "description": "🐞 Ateliers & stages nature & Nl \n 💌 Cartes de vœux 🌻🌿🎨🖌️📸 \n 🗾 Cadres 🌿🌺 \n 🌺 Workshops & kampjes natuur & Fr 📬 wenskaarten 🪴🪻📸🎨🖌️ \n 🌿 kaders 🌾🌼",
+    "url": "www.hop-sa-kee.be/nl",
+    "highlightIcon": "hopsakee-small.svg",
+    "highlights": [
+      { "label": "cARTes /kaARTen" },
+      { "label": "Agenda" },
+      { "label": "cadres/kaders" },
+      { "label": "cAdRes - kAdeRs" },
+      { "label": "Qui? Wie?" },
+      { "label": "Quoi? Wat?" },
+      { "label": "Où? Waar?" }
+    ]
+  }
+}

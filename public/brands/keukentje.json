@@ -1,0 +1,84 @@
+{
+  "name": "Keukentje",
+  "meta": { "brand": "Keukentje", "version": "1.0" },
+  "font-title": "Nunito, sans-serif",
+  "font-body": "Nunito, sans-serif",
+  "fonts": {
+    "import": ["https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap"]
+  },
+
+  "_comment-1": "COLOR PALETTE",
+
+  "color-primary": "#86af1d",
+  "color-primary-dark": "#6b9009",
+  "color-primary-darker": "#658316",
+  "color-primary-light": "#c4e867",
+  "color-primary-lighter": "#edf3dd",
+
+  "color-secondary": "#44633f",
+  "color-secondary-dark": "#344c30",
+  "color-secondary-darker": "#243421",
+  "color-secondary-light": "#62865c",
+  "color-secondary-lighter": "#749C6D",
+
+  "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-darker",
+
+  "color-tertiary": "#f4714b",
+
+  "_comment-3": "BACKGROUND COLORS: sections, cards, header, footer",
+
+  "color-surface": "#f6f4f1",
+  "color-panel": "#ffffff",
+  "color-card": "#e5ead1",
+  "color-nav-bg": "#f2eee7",
+  "color-footer-bg": "#ffffff",
+
+  "_comment-4": "TEXT COLORS (dark only!)",
+
+  "color-title": "#252422",
+  "color-text": "#252422",
+
+  "_comment-5": "LABEL COLORS",
+
+  "color-warning": "#ffb238",
+  "color-danger": "#e44d21",
+  "color-success": "#62865c",
+  "color-success-dark": "#44633f",
+
+  "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
+
+  "border-enabled": true,
+  "border-width-card": "0",
+  "card-radius": "3.5cqw",
+
+  "shadow-enabled": false,
+  "shadow-x": "0",
+  "shadow-y": "0",
+  "shadow-blur": "0",
+  "shadow-rgb": "0 0 0",
+  "shadow-alpha": "0.00",
+
+  "ig": {
+    "avatar": "keukentje.webp",
+    "username": "traiteurkeukentje",
+    "posts": 300,
+    "followers": 410,
+    "following": 360,
+    "title": "ClieDeclerck Frankynt",
+    "businessType": "Shopping & retail",
+    "description": "Webshop#kok aan huis \n op maat van de klant#...en zoveel meer",
+    "tags": "#traiteurdienst#verhuur #glutenvrij#partymateriaal#ballondecoraties#feesten",
+    "address": "Raffisstraat 33, Meeuwen 3670",
+    "url": "www.traiteurkeukentje.be",
+    "highlightIcon": "keukentje-small.svg",
+    "highlights": [
+      { "label": "TEAM" },
+      { "label": "PROMOS" },
+      { "label": "SHOP" },
+      { "label": "SERVICES" },
+      { "label": "BLOG" },
+      { "label": "FAQ" },
+      { "label": "REVIEWS" }
+    ]
+  }
+}

@@ -51,7 +51,7 @@
 
   "border-enabled": true,
   "border-width-card": "0",
-  "card-radius": "1rem",
+  "card-radius": "1cqw",
 
   "shadow-enabled": true,
   "shadow-x": "0",

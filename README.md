@@ -1,7 +1,7 @@
 # Voorbeeld-ig: Your Brand's Social Style Visualizer
 
 <p>
-  <img src="src/assets/img/logo-inverse-full.svg" width="400" />
+  <img src="src/assets/img/logo-default-full.svg" width="400" />
 </p>
 
 A dynamic brand visualization tool developed as a value-add for [Creo Websolutions](https://www.creowebsolutions.be/) clients. This application helps solopreneurs and small businesses maintain brand consistency by providing a "pre-editing guidance" experience. It allows users to visualize how their website's design tokens can be applied to various social media post formats in a safe, interactive environment.
@@ -425,17 +425,22 @@ This requirement applies to all future brands after handoff.
 
 ---
 
+## ℹ️ Protected URLs
+
+Some brand configurations include reference URLs to password-protected staging sites. These links are used by the author during design and development to compare visual decisions. They are not part of the tool’s functional scope and are not expected to be accessible to reviewers.
+
+---
+
 ## 🧱 Tech Stack
 
-| Tool/Technology                        | Purpose                                       |
-| :------------------------------------- | :-------------------------------------------- |
-| **Vue 3 (Vite)**                       | Core frontend framework.                      |
-| **JavaScript (ES6+)**                  | Application logic and interactivity.          |
-| **CSS Custom Properties**              | Engine for the dynamic theming system.        |
-| **Figma**                              | UI/UX design and component specification.     |
-| **AI-Assisted Development**            | Dual-AI strategy for accelerated development. |
-| &nbsp;&nbsp;&nbsp;↳ **ChatGPT**        | High-level strategy and code refactoring.     |
-| &nbsp;&nbsp;&nbsp;↳ **GitHub Copilot** | In-editor code completion (used sparingly).   |
+| Tool/Technology                      | Purpose                                   |
+| :----------------------------------- | :---------------------------------------- |
+| **Vue 3 (Vite)**                     | Core frontend framework.                  |
+| **JavaScript (ES6+)**                | Application logic and interactivity.      |
+| **CSS Custom Properties**            | Engine for the dynamic theming system.    |
+| **Figma**                            | UI/UX design and component specification. |
+| **AI-Assisted Development**          | AI strategy for accelerated development.  |
+| &nbsp;&nbsp;↳ **ChatGPT-5.1 (chat)** | Code setup, refactoring & bug fixes       |
 
 ---
 

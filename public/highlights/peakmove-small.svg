@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><svg id="u" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <style>
+      .x {
+        fill: #f29c9a;
+      }
+      .x,
+      .y {
+        isolation: isolate;
+      }
+      .y {
+        fill: #e53935;
+      }
+    </style>
+  </defs>
+  <path
+    class="y"
+    d="M108.95,21.82l-32.53,24.82-18.24-16.51L5.9,84.9l17.48-.22,35.41-38.44,18.06,16.59,20.57-15.62,8.05,37.68h16.62l-13.14-63.08Z" />
+  <path class="x" d="M58.83,46.53L5.9,84.9l17.06.03,35.86-38.4Z" />
+  <path class="x" d="M97.36,47.46l-26.46,10.06,5.6,5.28,20.87-15.33Z" />
+</svg>

@@ -32,9 +32,9 @@ defineProps({
 const emit = defineEmits(["update:size", "update:safeZones"]);
 
 const formats = [
+  { id: "portrait", label: "Portrait", icon: "fa-solid fa-image-portrait" },
   { id: "square", label: "Square", icon: "fa-solid fa-square" },
   { id: "landscape", label: "Landscape", icon: "fa-regular fa-image" },
-  { id: "portrait", label: "Portrait", icon: "fa-solid fa-image-portrait" },
   { id: "story", label: "Story", icon: "fa-regular fa-id-badge" },
 ];
 
@@ -65,7 +65,7 @@ function select(id) {
   flex: 1 0 10%;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 430px) {
   .empty-div {
     display: none;
   }
@@ -79,7 +79,7 @@ function select(id) {
   max-width: 12rem;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   .format-selector-bar__btn {
     max-width: 6rem;
     padding: 0;

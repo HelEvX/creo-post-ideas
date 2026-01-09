@@ -33,6 +33,7 @@ CREO-POST-IDEAS/
 │   │   ├── controls/
 │   │   │   ├── BackgroundToggle.vue
 │   │   │   ├── ContentTypePanel.vue
+│   │   │   ├── ContrastChecker.vue
 │   │   │   ├── ControlsPanel.vue
 │   │   │   ├── FormatSelector.vue
 │   │   │   ├── MobileSettingsAccordion.vue
@@ -46,6 +47,8 @@ CREO-POST-IDEAS/
 │   │   │
 │   │   ├── mockup/
 │   │   │   ├── PostTextBlock.vue
+│   │   │   ├── PostBackground.vue
+│   │   │   ├── PostWatermark.vue
 │   │   │   ├── PostWrapper.vue
 │   │   │   ├── SafeZoneOverlay.vue
 │   │   │   └── SocialPostMockup.vue

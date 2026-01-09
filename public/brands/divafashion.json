@@ -1,0 +1,83 @@
+{
+  "name": "Diva Fashion",
+  "meta": { "brand": "Diva Fashion", "version": "1.0" },
+  "font-title": "Work Sans, sans-serif",
+  "font-body": "Work Sans, sans-serif",
+  "fonts": {
+    "import": ["https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap"]
+  },
+
+  "_comment-1": "COLOR PALETTE",
+
+  "color-primary": "#af9a62",
+  "color-primary-dark": "#9f8c59",
+  "color-primary-darker": "#937f4b",
+  "color-primary-light": "#bcaa78",
+  "color-primary-lighter": "#eae3d6",
+
+  "color-secondary": "#f75590",
+  "color-secondary-dark": "#f53078",
+  "color-secondary-darker": "#f52470",
+  "color-secondary-light": "#F98AB3",
+  "color-secondary-lighter": "#FBB1CC",
+
+  "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-darker",
+
+  "color-tertiary": "#5d585b",
+
+  "_comment-3": "BACKGROUND COLORS: sections, cards, header, footer",
+
+  "color-surface": "#ffffff",
+  "color-panel": "#eae3d6",
+  "color-card": "#af9a62",
+  "color-nav-bg": "#ffffff",
+  "color-footer-bg": "#ffffff",
+
+  "_comment-4": "TEXT COLORS (dark only!)",
+
+  "color-title": "#030304",
+  "color-text": "#030304",
+
+  "_comment-5": "LABEL COLORS",
+
+  "color-warning": "#ffc107",
+  "color-danger": "#f44336",
+  "color-success": "#4caf50",
+  "color-success-dark": "#3d8b40",
+
+  "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
+
+  "border-enabled": false,
+  "border-width-card": "0",
+  "card-radius": "0",
+
+  "shadow-enabled": true,
+  "shadow-x": "0",
+  "shadow-y": "0.5rem",
+  "shadow-blur": "1rem",
+  "shadow-rgb": "3 3 4",
+  "shadow-alpha": "0.05",
+
+  "ig": {
+    "avatar": "divafashion.webp",
+    "username": "divafashionpaal",
+    "posts": "3,645",
+    "followers": "2,155",
+    "following": 351,
+    "title": "Diva Fashion Paal",
+    "threads": "@client",
+    "description": "Trendy Fashion for Women \n📍 Visit Us: Diestersesteenweg 55, 3583 Paal",
+    "address": "Straat, Stad, Belgium xxxx",
+    "url": "https://divafashion.test.creowebsolutions.be/",
+    "highlightIcon": "divafashion-small.svg",
+    "highlights": [
+      { "label": "TEAM" },
+      { "label": "PROMOS" },
+      { "label": "SHOP" },
+      { "label": "SERVICES" },
+      { "label": "BLOG" },
+      { "label": "FAQ" },
+      { "label": "REVIEWS" }
+    ]
+  }
+}

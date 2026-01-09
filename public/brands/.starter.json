@@ -9,41 +9,41 @@
 
   "_comment-1": "COLOR PALETTE",
 
-  "color-primary": "#",
-  "color-primary-dark": "#",
-  "color-primary-darker": "#",
-  "color-primary-light": "#",
-  "color-primary-lighter": "#",
+  "color-primary": "",
+  "color-primary-dark": "",
+  "color-primary-darker": "",
+  "color-primary-light": "",
+  "color-primary-lighter": "",
 
-  "color-secondary": "#",
-  "color-secondary-dark": "#",
-  "color-secondary-darker": "#",
-  "color-secondary-light": "#",
-  "color-secondary-lighter": "#",
+  "color-secondary": "",
+  "color-secondary-dark": "",
+  "color-secondary-darker": "",
+  "color-secondary-light": "",
+  "color-secondary-lighter": "",
 
   "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-darker",
 
-  "color-tertiary": "#",
+  "color-tertiary": "",
 
   "_comment-3": "BACKGROUND COLORS: sections, cards, header, footer",
 
-  "color-surface": "#",
-  "color-panel": "#",
-  "color-card": "#",
-  "color-nav-bg": "#",
-  "color-footer-bg": "#",
+  "color-surface": "",
+  "color-panel": "",
+  "color-card": "",
+  "color-nav-bg": "",
+  "color-footer-bg": "",
 
   "_comment-4": "TEXT COLORS (dark only!)",
 
-  "color-title": "#",
-  "color-text": "#",
+  "color-title": "",
+  "color-text": "",
 
   "_comment-5": "LABEL COLORS",
 
-  "color-warning": "#",
-  "color-danger": "#",
-  "color-success": "#",
-  "color-success-dark": "#",
+  "color-warning": "",
+  "color-danger": "",
+  "color-success": "",
+  "color-success-dark": "",
 
   "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
 
@@ -68,6 +68,7 @@
     "threads": "@client",
     "businessType": "business type",
     "description": "Description part 1 \nDescription part 2",
+    "tags": "#hashtag",
     "address": "Straat, Stad, Belgium xxxx",
     "url": "https://www.client.be",
     "highlightIcon": "client-small.svg",

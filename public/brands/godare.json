@@ -1,0 +1,86 @@
+{
+  "name": "Go Dare",
+  "meta": { "brand": "Go Dare", "version": "1.0" },
+  "font-title": "Rubik, sans-serif",
+  "font-body": "Poppins, sans-serif",
+  "fonts": {
+    "import": [
+      "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+    ]
+  },
+
+  "_comment-1": "COLOR PALETTE",
+
+  "color-primary": "#dd2122",
+  "color-primary-dark": "#bc1c1d",
+  "color-primary-darker": "#9a1718",
+  "color-primary-light": "#eb4c4c",
+  "color-primary-lighter": "#f5a6a6",
+
+  "color-secondary": "#25204d",
+  "color-secondary-dark": "#36325a",
+  "color-secondary-darker": "#181532",
+  "color-secondary-light": "#514c7b",
+  "color-secondary-lighter": "#9290a6",
+
+  "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-darker",
+
+  "color-tertiary": "#181532",
+
+  "_comment-3": "BACKGROUND COLORS: sections, cards, header, footer",
+
+  "color-surface": "#dbdbdb",
+  "color-panel": "#eb4d4c",
+  "color-card": "#ffffff",
+  "color-nav-bg": "#25204d",
+  "color-footer-bg": "#ffffff",
+
+  "_comment-4": "TEXT COLORS (dark only!)",
+
+  "color-title": "#101010",
+  "color-text": "#7c7c7c",
+
+  "_comment-5": "LABEL COLORS",
+
+  "color-warning": "#ffdc5e",
+  "color-danger": "#dd2122",
+  "color-success": "#04a777",
+  "color-success-dark": "#03825c",
+
+  "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
+
+  "border-enabled": false,
+  "border-width-card": "0",
+  "card-radius": "0",
+
+  "shadow-enabled": false,
+  "shadow-x": "0",
+  "shadow-y": "0",
+  "shadow-blur": "0",
+  "shadow-rgb": "0 0 0",
+  "shadow-alpha": "0.00",
+
+  "ig": {
+    "avatar": "godare.webp",
+    "username": "godare_sportcommunity",
+    "posts": 804,
+    "followers": "5,305",
+    "following": 263,
+    "title": "GoDare - Sport Community",
+    "threads": "@godare_sportcommunity",
+    "businessType": "Sport and recreation",
+    "description": "Trailrun & Walk events in de prachtige natuur 🌳⛰️",
+    "address": "3500",
+    "url": "www.godare.be",
+    "highlightIcon": "godare-small.svg",
+    "highlights": [
+      { "label": "Atleten" },
+      { "label": "Events" },
+      { "label": "Blogs" },
+      { "label": "New Year VR" },
+      { "label": "Halloween VR" },
+      { "label": "Easter VR" },
+      { "label": "Midsummer VR" }
+    ]
+  }
+}
