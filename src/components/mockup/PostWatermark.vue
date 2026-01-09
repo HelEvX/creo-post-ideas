@@ -1,5 +1,12 @@
 <template>
-  <div v-if="brandLogoSmall" class="post-watermark" :style="watermarkStyle"></div>
+  <img
+    v-if="src"
+    class="post-watermark"
+    :class="{ 'is-inverted': forceWhite }"
+    :src="src"
+    alt=""
+    aria-hidden="true"
+    draggable="false" />
 </template>
 
 <script setup>
@@ -14,10 +21,6 @@ const props = defineProps({
   },
 });
 
-/* ----------------------------------------------
-   HELPERS
----------------------------------------------- */
-
 function getRootStyle() {
   return getComputedStyle(document.documentElement);
 }
@@ -31,48 +34,23 @@ function resolveFirstBg(vars) {
   return null;
 }
 
-function resolveWatermarkColor(root) {
+const forceWhite = computed(() => {
+  const root = getRootStyle();
   const bg = resolveFirstBg(props.bgColors);
-  if (!bg) return root.getPropertyValue("--ui-alt-section-bg").trim();
+  if (!bg) return false;
 
   const dark = root.getPropertyValue("--color-text").trim();
   const light = root.getPropertyValue("--color-text-inverse").trim();
 
-  const mode = getTextModeForBackground(bg, dark, light);
+  // dark background → white logo
+  return getTextModeForBackground(bg, dark, light) === "light";
+});
 
-  // light background → dark watermark
-  if (mode === "dark") {
-    return root.getPropertyValue("--color-primary-dark").trim() || root.getPropertyValue("--color-text").trim();
-  }
-
-  // dark background → light watermark
-  return (
-    root.getPropertyValue("--color-primary-lighter").trim() || root.getPropertyValue("--color-text-inverse").trim()
-  );
-}
-
-/* ----------------------------------------------
-   STYLE COMPUTATION
----------------------------------------------- */
-
-const watermarkStyle = computed(() => {
+const src = computed(() => {
   if (!props.brandLogoSmall) return null;
-
-  const url = new URL(props.brandLogoSmall, import.meta.url).href;
-  const root = getRootStyle();
-  const color = resolveWatermarkColor(root);
-
-  return {
-    WebkitMaskImage: `url(${url})`,
-    maskImage: `url(${url})`,
-    WebkitMaskRepeat: "no-repeat",
-    maskRepeat: "no-repeat",
-    WebkitMaskPosition: "center",
-    maskPosition: "center",
-    WebkitMaskSize: "contain",
-    maskSize: "contain",
-    backgroundColor: color,
-  };
+  return props.brandLogoSmall.startsWith("/")
+    ? props.brandLogoSmall
+    : new URL(props.brandLogoSmall, import.meta.url).href;
 });
 </script>
 
@@ -81,11 +59,15 @@ const watermarkStyle = computed(() => {
   position: absolute;
   right: 4cqw;
   bottom: 4cqw;
-
   width: 10cqw;
   height: 10cqw;
-
   opacity: 0.6;
   pointer-events: none;
+  user-select: none;
+}
+
+/* binary fallback */
+.post-watermark.is-inverted {
+  filter: brightness(0) invert(1);
 }
 </style>
