@@ -683,6 +683,26 @@ Stylings for components specific to the app shell
 }
 
 /* ----------------------------------------------------
+   FW CORRECTIONS FOR SINGLE-AXIS FONTS
+   ---------------------------------------------------- */
+
+html.brand--candyandmore,
+html.brand--hopsakee {
+  --fw-title: 400; /* all titles */
+}
+
+html.brand--steviala .hero-title,
+html.brand--steviala .card__caption {
+  font-family: var(--font-title-alt);
+  font-weight: 400; /* hero title only! */
+  --dynamic-title: var(--color-tertiary);
+}
+
+html.brand--steviala .card__caption {
+  font-size: var(--fs-h5);
+}
+
+/* ----------------------------------------------------
    NAV & FOOTER
    ---------------------------------------------------- */
 .site-nav {
@@ -716,10 +736,6 @@ h1.hero-title {
   font-size: var(--fs-hero);
   font-weight: var(--fw-title);
   letter-spacing: -0.01em;
-}
-html.brand--candyandmore,
-html.brand--hopsakee {
-  --fw-title: 400;
 }
 
 p.hero-subtitle {

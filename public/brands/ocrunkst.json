@@ -9,10 +9,10 @@
 
   "_comment-1": "COLOR PALETTE",
 
-  "color-primary": "#2d9f73",
-  "color-primary-dark": "#1f6f50",
-  "color-primary-darker": "#16503a",
-  "color-primary-light": "#60D2A6",
+  "color-primary": "#1f6f50",
+  "color-primary-dark": "#16503a",
+  "color-primary-darker": "#12402e",
+  "color-primary-light": "#2d9f73",
   "color-primary-lighter": "#afe9d3",
 
   "color-secondary": "#e8dcc8",

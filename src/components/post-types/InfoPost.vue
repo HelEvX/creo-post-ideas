@@ -23,7 +23,7 @@
         <!-- RIGHT CARD (panel surface) -->
         <div class="card info-card panel">
           <div class="card__caption">
-            <i class="fa-solid fa-link post-icon"></i>
+            <i class="fa-solid fa-star post-icon"></i>
             <span>achtergrond</span>
           </div>
 
@@ -40,7 +40,7 @@
       <!-- ACCENT -->
       <div class="card info-card accent">
         <div class="card__caption">
-          <i class="fa-solid fa-link post-icon"></i>
+          <i class="fa-regular fa-face-smile post-icon"></i>
           <span>Kies een kleurcombinatie</span>
         </div>
 
