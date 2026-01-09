@@ -70,7 +70,7 @@
     "businessType": "Product/service",
     "description": "Everything begins and ends with coffee. \n ▪️ Your modern Italian Espresso \n ▪️ Made with passion since 1998 \n ▪️ Based in Belgium",
     "address": "De lange beemden 29, Zolder 3550",
-    "url": "https://caffepiu.test.creowebsolutions.be/nl",
+    "url": "caffepiu.test.creowebsolutions.be/nl",
     "highlightIcon": "caffepiu-small.svg",
     "highlights": [{ "label": "☕📍" }, { "label": "Workshops" }, { "label": "Events" }, { "label": "Coffee Break" }]
   }

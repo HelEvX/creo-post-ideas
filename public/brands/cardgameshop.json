@@ -69,7 +69,7 @@
     "businessType": "Retailer",
     "description": "🇧🇪Retailer off the best: TCG'S - Funko's - Boardgames & More!\nOfficial PSA Dealer\nWebshop And 4 Fysical Stores\nCGS Hasselt - Wijnegem - Eksel - Leuven",
     "address": "Demerstraat 39, Hasselt 3500",
-    "url": "https://cardgameshop.test.creowebsolutions.be/nl",
+    "url": "cardgameshop.test.creowebsolutions.be/nl",
     "highlightIcon": "cardgameshop-small.svg",
     "highlights": [
       { "label": "TEAM" },

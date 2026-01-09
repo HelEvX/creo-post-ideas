@@ -68,7 +68,7 @@
     "businessType": "Sports",
     "description": "Description part 1 \nDescription part 2",
     "address": "Straat, Stad, Belgium xxxx",
-    "url": "www.peakmove.be",
+    "url": "https://www.peakmove.be",
     "highlightIcon": "peakmove-small.svg",
     "highlights": [
       { "label": "TEAM" },

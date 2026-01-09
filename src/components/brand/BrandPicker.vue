@@ -14,10 +14,10 @@
       <option value="cardgameshop">Card Game Shop</option>
       <!-- testsite -->
       <option value="cashandco">Cash & co</option>
-      <option value="comul">Comul</option>
+      <!-- <option value="comul">Comul</option> -->
       <option value="divafashion">Diva Fashion</option>
       <!-- testsite -->
-      <option value="elegance">Elegance Lingerie</option>
+      <!-- <option value="elegance">Elegance Lingerie</option> -->
       <!-- <option value="ellevation">Ellevation</option> -->
       <option value="glaede">Glaede</option>
       <option value="godare">Go Dare</option>
@@ -25,11 +25,11 @@
       <option value="hopsakee">Hop-Sa-Kee</option>
       <option value="kenis">Kenis</option>
       <option value="keukentje">Keukentje</option>
-      <option value="kookplaneet">Kookplaneet</option>
+      <!-- <option value="kookplaneet">Kookplaneet</option> -->
       <option value="lilistea">Lili's Tea</option>
       <!-- testsite -->
       <option value="ocrunkst">OCRunkst</option>
-      <option value="peakmove">Peak Move</option>
+      <!-- <option value="peakmove">Peak Move</option> -->
       <option value="runkstervolksfeesten">Runkster Volksfeesten</option>
       <!-- <option value="sandrawouters">Sandra Wouters</option> -->
       <option value="steviala">Steviala</option>

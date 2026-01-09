@@ -11,21 +11,21 @@
 
   "_comment-1": "COLOR PALETTE",
 
-  "color-primary": "#",
-  "color-primary-dark": "#",
-  "color-primary-darker": "#",
-  "color-primary-light": "#",
-  "color-primary-lighter": "#",
+  "color-primary": "#c97c5d",
+  "color-primary-dark": "#b6603d",
+  "color-primary-darker": "#5d4037",
+  "color-primary-light": "#f4e3cf",
+  "color-primary-lighter": "#fbf5ee",
 
-  "color-secondary": "#",
-  "color-secondary-dark": "#",
-  "color-secondary-darker": "#",
-  "color-secondary-light": "#",
-  "color-secondary-lighter": "#",
+  "color-secondary": "#c97c5d",
+  "color-secondary-dark": "#b6603d",
+  "color-secondary-darker": "#5d4037",
+  "color-secondary-light": "#f4e3cf",
+  "color-secondary-lighter": "#fbf5ee",
 
   "_comment-2": "TERTIARY/accent color - if not present, repeat secondary-darker",
 
-  "color-tertiary": "#",
+  "color-tertiary": "#5d4037",
 
   "_comment-3": "BACKGROUND COLORS: sections, cards, header, footer",
 
@@ -42,10 +42,10 @@
 
   "_comment-5": "LABEL COLORS",
 
-  "color-warning": "#",
-  "color-danger": "#",
-  "color-success": "#",
-  "color-success-dark": "#",
+  "color-warning": "#fdd835",
+  "color-danger": "#f44336",
+  "color-success": "#4caf50",
+  "color-success-dark": "#3d8b40",
 
   "_comment-6": "BORDERS & SHADOWS: turn off [false] if not part of the brand",
 
@@ -62,17 +62,16 @@
 
   "ig": {
     "avatar": "cashandco.webp",
-    "username": "Client",
+    "username": "Cash & co",
     "posts": 0,
     "followers": 0,
     "following": 0,
-    "title": "Client",
-    "threads": "@client",
-    "businessType": "business type",
-    "description": "Description part 1 \nDescription part 2",
-    "address": "Straat, Stad, Belgium xxxx",
-    "url": "https://www.client.be",
-    "highlightIcon": "client-small.svg",
+    "title": "Cash & co",
+    "businessType": "Bakery",
+    "description": "Zin in een vers brood, heerlijk gerecht of een lekkere Italiaanse koffie? Kom langs!",
+    "address": "Lindelsebaan 254 3900 Overpelt",
+    "url": "https://www.cashenco.be",
+    "highlightIcon": "cashandco-small.svg",
     "highlights": [
       { "label": "TEAM" },
       { "label": "PROMOS" },

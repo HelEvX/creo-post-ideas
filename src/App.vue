@@ -837,8 +837,6 @@ p.hero-subtitle {
    REVIEW FORM FEEDBACK
    ====================================================== */
 
-/* test */
-
 .review-form [data-form-feedback] {
   margin-top: var(--space-10);
   font-size: var(--fs-body-sm);

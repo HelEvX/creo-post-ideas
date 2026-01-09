@@ -4,7 +4,7 @@
   "font-title": "aw-conqueror-didot, serif",
   "font-body": "Aaux Next, sans-serif",
   "fonts": {
-    "import": ["", "https://use.typekit.net/xls1ldz.css"]
+    "import": ["https://use.typekit.net/xls1ldz.css"]
   },
 
   "_comment-1": "COLOR PALETTE",
@@ -68,7 +68,7 @@
     "businessType": "Horeca",
     "description": "Description part 1 \nDescription part 2",
     "address": "Straat, Stad, Belgium xxxx",
-    "url": "https://lilistea.test.creowebsolutions.be/nl",
+    "url": "lilistea.test.creowebsolutions.be/nl",
     "highlightIcon": "lilistea-small.svg",
     "highlights": [
       { "label": "TEAM" },
