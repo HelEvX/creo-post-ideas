@@ -130,16 +130,32 @@
           </div>
           <!-- blog text width (900px max) -->
           <div class="col-12">
-            <form class="review-form" @submit.prevent="submitReview">
+            <form
+              class="review-form"
+              name="review"
+              method="POST"
+              data-netlify="true"
+              netlify-honeypot="bot-field"
+              @submit.prevent="submitReview">
+              <input type="hidden" name="form-name" value="review" />
+
+              <input type="hidden" name="bot-field" />
+
               <div class="form-row">
                 <label for="name">Jouw (bedrijfs-) naam</label>
-                <input id="name" type="text" required />
+                <input id="name" name="name" type="text" required v-model="name" />
               </div>
+
               <div class="form-row">
                 <label for="review">Jouw feedback</label>
-                <textarea id="review" rows="5" required></textarea>
+                <textarea id="review" name="review" rows="5" required v-model="review"></textarea>
               </div>
-              <button class="btn-primary" type="submit">Verzend</button>
+
+              <button class="btn-primary" type="submit" :disabled="formSubmitting">Verzend</button>
+
+              <p v-if="formSubmitted" data-form-feedback="success">Bedankt voor je feedback.</p>
+
+              <p v-if="formError" data-form-feedback="error">Er ging iets mis. Probeer opnieuw.</p>
             </form>
           </div>
         </div>
@@ -203,6 +219,14 @@ export default {
 
       // MASTER version
       showBrandPicker: true,
+
+      /* REVIEW FORM */
+      name: "",
+      review: "",
+      formSubmitted: false,
+      formError: false,
+      formSubmitting: false,
+      formTimeoutId: null,
     };
   },
 
@@ -260,6 +284,47 @@ export default {
   },
 
   methods: {
+    // FORM
+    encodeForm(data) {
+      return Object.keys(data)
+        .map((k) => encodeURIComponent(k) + "=" + encodeURIComponent(data[k]))
+        .join("&");
+    },
+
+    async submitReview() {
+      if (this.formSubmitting) return;
+
+      this.formSubmitting = true;
+      this.formSubmitted = false;
+      this.formError = false;
+
+      try {
+        await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: this.encodeForm({
+            "form-name": "review",
+            name: this.name,
+            review: this.review,
+          }),
+        });
+
+        this.formSubmitted = true;
+        this.name = "";
+        this.review = "";
+      } catch (e) {
+        this.formError = true;
+      } finally {
+        this.formSubmitting = false;
+
+        clearTimeout(this.formTimeoutId);
+        this.formTimeoutId = setTimeout(() => {
+          this.formSubmitted = false;
+          this.formError = false;
+        }, 4000);
+      }
+    },
+
     /* ----------------------------------------------
        SCHEDULE UPDATE
        Avoid timing issues on brand load / toggle
@@ -768,9 +833,32 @@ p.hero-subtitle {
   }
 }
 
-/* =======================================================
-   VERY LARGE SCREENS ≥ 1600px (3xl breakpoint)
-   ======================================================= */
+/* ======================================================
+   REVIEW FORM FEEDBACK
+   ====================================================== */
+
+.review-form [data-form-feedback] {
+  margin-top: var(--space-10);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body);
+  transition: var(--transition-default);
+}
+
+/* success */
+.review-form [data-form-feedback="success"] {
+  color: var(--dynamic-text);
+}
+
+/* error */
+.review-form [data-form-feedback="error"] {
+  color: var(--dynamic-disabled);
+}
+
+/* disabled submit state */
+.review-form button[disabled] {
+  opacity: 0.6;
+  pointer-events: none;
+}
 
 /* =======================================================
    LARGE SCREENS ≥ 1400px (xxl breakpoint)
@@ -785,18 +873,6 @@ p.hero-subtitle {
     border-bottom-left-radius: 0;
   }
 }
-
-/* =======================================================
-   DESKTOP ≥ 1200px (xl breakpoint)
-   ======================================================= */
-
-/* =======================================================
-   DESKTOP ≥ 992px (lg breakpoint)
-   ======================================================= */
-
-/* =======================================================
-   TABLET HOR ≥ 768px (md breakpoint)
-   ======================================================= */
 
 /* =======================================================
    TABLET VER ≥ 576px (sm breakpoint)
@@ -816,8 +892,4 @@ p.hero-subtitle {
     border-radius: 0;
   }
 }
-
-/* =======================================================
-   MOBILE < 576px (xs breakpoint)
-   ======================================================= */
 </style>
