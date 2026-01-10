@@ -10,44 +10,49 @@ Voorbeeld-ig is a brand visualization tool developed as a value-add for [Creo We
 
 This is my final Associate's degree project as a Digital Design student at PXL Hogeschool, Hasselt. The one-page app includes a feedback form at the bottom, feel free to shoot me a message.
 
----
-
-### What's the intent of this document?
+<!-- ### What's the intent of this document?
 
 - a high-level explanations of the tool's component structure and core features
 - a deep-dive into its information architecture and UX-flow
 - a summary of the creator's mission statement and design process
 - a developer quick-start guide for onboarding new brands quickly and correctly
 
----
+--- -->
 
 ## At a glance
 
-The master version of this tool (https://voorbeeld-ig.netlify.app/) includes a dropdown list of clients. Client-specific links have their own query string but for this POC no privacy measures have been implemented.
+The [Master version](https://voorbeeld-ig.netlify.app/) of this tool includes a dropdown list of clients. Per default, no brand is selected and the mockup preview canvas shows an empty state (greyed-out logo), while the left-hand sidebar simply remains empty. Selecting a client causes the user interface to 'repaint' as shown below.
 
 Demonstration of brand-specific visual updates and interface repaint behaviour.
 
-https://github.com/HelEvX/creo-post-ideas/blob/main/docs/media/brand-repaint.webm
+https://github.com/HelEvX/creo-post-ideas/blob/main/docs/media/brand-repaint.mp4
+
+Client-specific links have a query string (/?brand=client-name) and these pages do not show the dropdown or the empty state. However, UI-repaints still happen when the user browses the various themes within their own brand color palette and corrects text/background pairs with low contrast scores. This is intentional, but alternatively the repaint could be confined to just the mockup by adjusting which CSS variables get triggered.
+
+Demonstration of features for one single brand including canvas navigation, theme repaints and contrast corrections.
+https://github.com/HelEvX/creo-post-ideas/blob/main/docs/media/walkthrough.mp4
 
 ## Core Philosophy & Features
 
-This tool is a **strategic guidance system**, not a graphic editor. It empowers non-technical users to make confident, on-brand design decisions _before_ they open an editor like Canva.
+This tool is a **strategic guidance system**, not a graphic editor. It empowers non-technical users to make confident, on-brand design decisions _before_ they open an editor like Canva. Themes - also called 'recipes' - are predefined in a simple script file and can be easily tweaked. Users can cycle through them with chevron-buttons and there is no technical limit to the number of 'recipes' that can be added, although aesthetically only a number of themes make any practical sense.
 
-- **Dynamic Brand Theming:** The entire UI instantly adapts to the selected client's brand palette, loaded from a simple JSON configuration file.
-- **"Smart Shuffle" Recipe Engine:** The core feature. Users cycle through pre-defined, curated "Recipes" that apply brand-aligned styles to the post mockup. The engine guarantees all generated combinations are accessible and on-brand.
-- **Live Mockup Preview:** Visualize brand styles on different social media formats (Square, Story, etc.) and for various content types (Quote, Announcement, etc.).
-- **Platform Safe Zones:** The preview visualizes Instagram feed and story crop boundaries, clearly indicating which areas of a post risk being cut off or obscured by the platform UI.
-- **Real-Time Contrast Guardrails:** An always-visible WCAG contrast checker provides instant, clear feedback on all color pairings in the current recipe.
-- **Interactive Contrast Repair:** A "Fix" button is integrated directly into the contrast checker. If a color combination fails accessibility standards, the user can trigger an incremental repair step. The system evaluates whether adjusting the background or the foreground improves contrast most and applies the better option. This behavior is consistent across all surfaces and text roles.
-- **Component-Based & Scalable:** Built on a robust Vue 3 architecture that is easy to maintain and expand with new formats, recipes, or features.
+In this fist proof-of-concept, 7 themes (the brand default that mimics the website + 6 adaptations or 'moods') have been implemented. Each shows 12 text/background pairs, presented in the mockup in the main canvas. There, a second side-panel allows toggling tones (primary & secondary) and switching to neutral. Together with the option to fix sub-par contrasts per pair, the tool essentially offers hundreds of guaranteed brand-aligned style choices. Even if only a small percentage of combinations appeal to the client, they still have dozens to choose from. Crucially, they can be confident about good readability and effective brand recognition.
+
+To address common cropping issues from post design to grid display, the canvas offers four established Instagram post formats with a safe-zone overlay that can be turned on or off. These 'live' mockups, that immediately adapt to background choices as well as content options, have been constructed in such a way that important text never exceeds the safe margins. Decorative elements however can freely fill up the background, and remind the user that their brand assets can be applied in all sorts of interesting ways. The user can even check this in the section below the canvas. There, the 6 post designs that showcase the text/background combinations and various background treatments (such as patterns and images) are displayed side-by-side in a 'realistic' grid-mockup, 'painted' of course in the active theme.
+
+The color contrast evaluations are mathematical and based on WCAG ratios, but translated into approachable language for a non-technical audience. To prevent too many fails at default, the system already supports automatic text inversion for dark background colors, turning dark into white on load. Interestingly, carefully judged adaptations had to be made to account for perceived mistakes, since WCAG math has a tendency to force dark text on mid-tone reds and greens.
 
 ---
 
-## Color Recipes System
+- **Interactive Contrast Repair:** A "Fix" button is integrated directly into the contrast checker. If a color combination fails accessibility standards, the user can trigger an incremental repair step. The system evaluates whether adjusting the background or the foreground improves contrast most and applies the better option. This behavior is consistent across all surfaces and text roles.
+- **Component-Based & Scalable:** Built on a robust Vue 3 architecture that is easy to maintain and expand with new formats, recipes, or features.
+- **Easy manual onboarding:** Default brand palettes are loaded from a simple JSON configuration file. Logo SVGs need some manual checks or preparations, which are detailed below.
 
-The application uses a **recipe-based color composition system** to reinterpret a client’s brand palette into different visual moods without redefining or duplicating brand tokens.
+---
 
-Recipes do not introduce new colors. Instead, they remap existing brand and neutral color scales onto semantic UI roles.
+## The Color Recipes (Dynamic Theme Engine)
+
+Recipes do not introduce new colors. Instead, they remap existing brand-specific and neutral color scales onto semantic UI roles. A set of scripts prescribe and apply tone and tint blends to reinterpret each default brand palette into different visual moods, without redefining or duplicating brand tokens.
 
 ### Perceptual Color Scales
 
@@ -57,24 +62,22 @@ Each brand color (primary, secondary, tertiary) and the neutral palette is expan
 - `5` = original brand anchor
 - `10` = darkest usable tone
 
-Scales are generated to preserve hue while asymmetrically modulating lightness and saturation around a fixed anchor, constraining tones to usable bounds and avoiding washed-out lights or oversaturated darks. This is because near-grey lights are useless for brand expression while over-saturated darks are visually unpleasant for most colors.
+Scales are generated to preserve hue while asymmetrically modulating lightness and saturation around a fixed anchor, constraining tones to usable bounds. The perceptual shaping comes from asymmetric lightness and saturation curves, rather than uniform step distances. This is a stylistic choice motivated by the observation that washed-out lights, while a decent choice for website section backgrounds, aren't as relevant for brand expression. Likewise, darks are often visually more pleasant when muted. On a HSV color picker 'square', the dot will move towards bottom left or top right in this system.
 
-Scale generation is anchor-centered and index-based; perceptual shaping comes from asymmetric lightness and saturation curves rather than uniform step distances.
+Brand colors, which are already defined by the agency on a 5-step scale in the client's website CSS up by default (although not always explicitly used), can be either primary or secondary. In all except edge-cases that means each has a more or less fixed hue. String values that correspond with the existing system (primaryDark for $primary-dark, and so on) prescribe from which color set the new 'blend' will be picked. That way, the script may determine that a neutral light surface in recipe 1 can turn into a mid-tone primary in recipe 2.
 
 ### Semantic Role Mapping
 
-Recipes assign colors exclusively through **semantic CSS roles** such as:
+Recipes assign colors exclusively through semantic CSS roles, such as:
 
-- structural backgrounds (`--ui-section-bg`, `--ui-panel-bg`)
-- brand surfaces (`--ui-primary-bg`, `--ui-secondary-bg`)
-- typography (`--color-title`, `--color-text`)
-- accents (`--color-*-dark`, `--color-tertiary`)
-- depth cues (`--shadow-alpha`, mockup-only)
-- border strength (`--border-alpha`, mockup-only)
+- structural backgrounds (`--ui-section-bg`)
+- brand surfaces (`--ui-primary-bg`)
+- typography (`--color-title`)
+- accents (`--color-secondary-dark`)
+- depth cues (`--shadow-alpha`)
+- border strength (`--border-alpha`)
 
-Brand-defined borders and shadows apply only inside the mockup; UI borders and shadows are never affected by brands or recipes.
-
-This ensures consistency, scalability, and safe extension of the UI.
+Brand-defined borders and shadows apply only inside the mockup; UI borders and shadows are never affected by brands or recipes. This is to prevent distortion of dashboard elements and ensures consistency, scalability, and safe extension of the UI.
 
 ### Pinning vs Dynamic Behavior
 
