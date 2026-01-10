@@ -4,11 +4,31 @@
   <img src="src/assets/img/logo-default-full.svg" width="400" />
 </p>
 
-A dynamic brand visualization tool developed as a value-add for [Creo Websolutions](https://www.creowebsolutions.be/) clients. This application helps solopreneurs and small businesses maintain brand consistency by providing a "pre-editing guidance" experience. It allows users to visualize how their website's design tokens can be applied to various social media post formats in a safe, interactive environment.
+Thank you for checking out Voorbeeld-ig!
+
+Voorbeeld-ig is a brand visualization tool developed as a value-add for [Creo Websolutions](https://www.creowebsolutions.be/) clients, in particular the solopreneur or small business owner subset. This application addresses knowledge gaps about available brand assets when DIY-designing for social media, through a "pre-editing guidance" experience. It allows them to visualize how the color scheme, fonts, corners, borders and shadows from their landing page can be applied in an Instagram post, by showing various combinations in a dynamic canvas.
+
+This is my final Associate's degree project as a Digital Design student at PXL Hogeschool, Hasselt. The one-page app includes a feedback form at the bottom, feel free to shoot me a message.
 
 ---
 
-## 🚀 Core Philosophy & Features
+### What's the intent of this document?
+
+- a high-level explanations of the tool's component structure and core features
+- a deep-dive into its information architecture and UX-flow
+- a summary of the creator's mission statement and design process
+- a developer quick-start guide for onboarding new brands quickly and correctly
+
+---
+
+## At a glance
+
+The master version of this tool (https://voorbeeld-ig.netlify.app/) includes a dropdown list of clients. Client-specific links have their own query string but for this POC no privacy measures have been implemented.
+
+Demonstration of brand-specific visual updates and interface repaint behaviour.
+https://github.com/<HelEvX>/<creo-post-ideas>/blob/main/docs/media/brand-repaint.webm
+
+## Core Philosophy & Features
 
 This tool is a **strategic guidance system**, not a graphic editor. It empowers non-technical users to make confident, on-brand design decisions _before_ they open an editor like Canva.
 
@@ -22,7 +42,7 @@ This tool is a **strategic guidance system**, not a graphic editor. It empowers 
 
 ---
 
-## 🎨 Color Recipes System
+## Color Recipes System
 
 The application uses a **recipe-based color composition system** to reinterpret a client’s brand palette into different visual moods without redefining or duplicating brand tokens.
 
@@ -75,7 +95,7 @@ Accessibility is enforced at runtime through contrast evaluation and repair logi
 
 ---
 
-## 🌓 Dynamic Text, Surface Resolution, and Contrast Safety
+## Dynamic Text, Surface Resolution, and Contrast Safety
 
 This project does **not** use static light or dark themes and does **not** assume anything about brand colors.
 All readable text colors are resolved **at runtime**, based on the actual background they appear on.
@@ -240,7 +260,7 @@ If any of these are broken, contrast bugs will appear:
 
 ---
 
-## ⚠️ Event-Driven Recalculation (Important Implementation Note)
+## Event-Driven Recalculation (Important Implementation Note)
 
 The application relies on **global custom events** to trigger recomputation of derived visual state.  
 This is intentional and safe in the current scope, but it is important to understand the trade-offs.
@@ -321,7 +341,7 @@ Do not refactor this without a clear replacement model.
 
 ---
 
-## 🧩 Architecture Overview (How the Preview System Fits Together)
+## Architecture Overview (How the Preview System Fits Together)
 
 The preview pipeline is deliberately layered. Each component has a single responsibility, which keeps layout logic, rendering logic, and visual composition cleanly separated.
 
@@ -396,7 +416,7 @@ This structure is safe to extend with new formats, new platforms, or additional 
 
 ---
 
-## 🖼️ SVG Logo Preparation
+## SVG Logo Preparation
 
 All SVG logos used inside the mockup (large logo, pattern, watermark) must be prepared in a specific way.
 
@@ -425,13 +445,13 @@ This requirement applies to all future brands after handoff.
 
 ---
 
-## ℹ️ Protected URLs
+## Protected URLs
 
 Some brand configurations include reference URLs to password-protected staging sites. These links are used by the author during design and development to compare visual decisions. They are not part of the tool’s functional scope and are not expected to be accessible to reviewers.
 
 ---
 
-## 🧱 Tech Stack
+## Tech Stack
 
 | Tool/Technology                      | Purpose                                   |
 | :----------------------------------- | :---------------------------------------- |

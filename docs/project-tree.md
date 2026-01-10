@@ -83,31 +83,35 @@ CREO-POST-IDEAS/
 ├── jsconfig.json          # JavaScript language service configuration
 ├── package-lock.json      # Exact dependency versions
 ├── package.json           # Project metadata and dependencies
-├── project-tree.md
 ├── README.md
 └── vite.config.js         # Vite build tool configuration
 
 -----------------------------------------------------------------------------------
 
-MainPreview.vue structure (flattened)
+MainPreview.vue structure
 
-.app-main-shell                  # the preview zone for the mockup
-└─ <MockupWrapper>               # displays the mockup in the selected format
-   └─ <MockupRenderer>           # renders the mockup contents on selected background
-      └─ <SocialPostMockup>      # contains mockup contents
-         └─ <PostWrapper>        # protects mockup aspect ratios and safe margins
-            ├─ background layers # conditional backgrounds
-            │  ├─ plain color
-            │  ├─ pattern
-            │  ├─ large logo
-            │  └─ blurry photo   # opacity
-            ├─ SafeZoneOverlay   # keeps important content in grid crop-safe areas
-            ├─ post content
-            │  └─ post canvas
-            │     ├─ safe        # contents that goes inside the safe area
-            │     │  └─ <slot /> # different post content designs
-            │     └─ free        # decorative elements that can spill out
-            │        └─ <slot /> # copy of post content designs
-            └─ watermark
+Main shell                                # the preview zone for the mockup
+└─ <MockupWrapper>                        # displays mockup in the selected format
+   └─ <MockupRenderer>                    # renders contents on selected background
+      └─ <SocialPostMockup>               # contains mockup contents
+         └─ <PostWrapper>                 # protects aspect ratios and safe margins
+            ├─ <PostBackground>           # conditional background layers
+            │  ├─ plain color             # always visible underneath
+            │  ├─ pattern                 # logo in pattern grid (adaptable)
+            │  ├─ large logo              # semi-transparent, offset position
+            │  └─ blurry photo            # semi-transparent + blurred
+            │
+            ├─ <SafeZoneOverlay>          # grid crop-safe areas
+            │
+            ├─ "post-content"             # the mockup post canvas
+            │  ├─ safe                    # content safe from cropping
+            │  │  └─ <slot />             # different post content designs
+            │  │      └─ <PostTextBlock>  # text content editable in JS file
+            │  │
+            │  └─ free                    # decorative elements that can spill out
+            │     └─ <slot />             # copy of post content designs
+            │         └─ "post__decor"    # icons, brand graphics, shapes,...
+            │
+            └─ <PostWatermark>            # logo watermark in color or white
 
 ```
