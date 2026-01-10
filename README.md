@@ -25,13 +25,13 @@ The [Master version](https://voorbeeld-ig.netlify.app/) of this tool includes a 
 
 Demonstration of brand-specific visual updates and interface repaint behaviour.
 
-https://github.com/HelEvX/creo-post-ideas/blob/main/docs/media/brand-repaint.mp4
+![Brand-specific visual updates and interface repaint](docs/media/brand-repaint.gif)
 
 Client-specific links have a query string (/?brand=client-name) and these pages do not show the dropdown or the empty state. However, UI-repaints still happen when the user browses the various themes within their own brand color palette and corrects text/background pairs with low contrast scores. This is intentional, but alternatively the repaint could be confined to just the mockup by adjusting which CSS variables get triggered.
 
 Demonstration of features for one single brand including canvas navigation, theme repaints and contrast corrections.
 
-https://github.com/HelEvX/creo-post-ideas/blob/main/docs/media/walkthrough.mp4
+![Dashboard demo with control panel actions and dynamic mockup interactions](docs/media/walkthrough.gif)
 
 ## Core Philosophy & Features
 
