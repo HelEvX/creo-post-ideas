@@ -26,7 +26,8 @@ This is my final Associate's degree project as a Digital Design student at PXL H
 The master version of this tool (https://voorbeeld-ig.netlify.app/) includes a dropdown list of clients. Client-specific links have their own query string but for this POC no privacy measures have been implemented.
 
 Demonstration of brand-specific visual updates and interface repaint behaviour.
-https://github.com/<HelEvX>/<creo-post-ideas>/blob/main/docs/media/brand-repaint.webm
+
+https://github.com/HelEvX/creo-post-ideas/blob/main/docs/media/brand-repaint.webm
 
 ## Core Philosophy & Features
 
