@@ -21,7 +21,7 @@ This is my final Associate's degree project as a Digital Design student at PXL H
 
 ## At a glance
 
-The [Master version](https://voorbeeld-ig.netlify.app/) of this tool includes a dropdown list of clients. Per default, no brand is selected and the mockup preview canvas shows an empty state (grayed-out logo), while the left-hand sidebar simply remains empty. Selecting a client causes the user interface to 'repaint' as shown below.
+The [Master version](https://voorbeeld-ig.netlify.app/) of this tool includes a dropdown list of clients. By default, no brand is selected and the mockup preview canvas shows an empty state (grayed-out logo), while the left-hand sidebar simply remains empty. Selecting a client causes the user interface to 'repaint' as shown below.
 
 Demonstration of brand-specific visual updates and interface repaint behavior.
 
@@ -39,7 +39,7 @@ Demonstration of features for one single brand including canvas navigation, them
 
 This tool is a **strategic guidance system**, not a graphic editor. It empowers non-technical users to make confident, on-brand design decisions _before_ they open an editor like Canva. Themes - also called 'recipes' - are predefined in a simple script file and can be easily tweaked. Users can cycle through them with chevron-buttons and there is no technical limit to the number of 'recipes' that can be added, although aesthetically only a number of themes make any practical sense.
 
-In this fist proof-of-concept, 7 themes (the brand default that mimics the website + 6 adaptations or 'moods') have been implemented. Each shows 12 text/background pairs, presented in the mockup in the main canvas. There, a second side-panel allows toggling tones (primary & secondary) and switching to neutral. Together with the option to fix sub-par contrasts per pair, the tool essentially offers hundreds of guaranteed brand-aligned style choices. Even if only a small percentage of combinations appeal to the client, they still have dozens to choose from. Crucially, they can be confident about good readability and effective brand recognition.
+In this first proof-of-concept, 7 themes (the brand default that mimics the website + 6 adaptations or 'moods') have been implemented. Each shows 12 text/background pairs, presented in the mockup in the main canvas. There, a second side-panel allows toggling tones (primary & secondary) and switching to neutral. Together with the option to fix sub-par contrasts per pair, the tool essentially offers hundreds of guaranteed brand-aligned style choices. Even if only a small percentage of combinations appeal to the client, they still have dozens to choose from. Crucially, they can be confident about good readability and effective brand recognition.
 
 To address common cropping issues from post design to grid display, the canvas offers four established Instagram post formats with a safe-zone overlay that can be turned on or off. These 'live' mockups, that immediately adapt to background choices as well as content options, have been constructed in such a way that important text never exceeds the safe margins. Decorative elements however can freely fill up the background, and remind the user that their brand assets can be applied in all sorts of interesting ways. The user can even check this in the section below the canvas. There, the 6 post designs that showcase the text/background combinations and various background treatments (such as patterns and images) are displayed side-by-side in a 'realistic' grid-mockup, 'painted' of course in the active theme.
 
@@ -80,17 +80,17 @@ Most roles are assigned dynamically using `[scale, index]` pairs, where index is
 
 Brand colors, i.e. a main (primary) and a supporting (secondary) tone, are always defined in the agency's own framework on a 5-step scale although the outer values (`*-lighter`, `*-darker`) are not always used. Each scale centers around the same hue, defining the 'color' as commonly understood (blue, orange). String values that correspond with the source variables (e.g. primaryDark for $primary-dark) prescribe from which scale a color will be picked to paint a text or background in a recipe. That way, we can decide that a neutral light surface in one recipe can turn into a mid-tone primary in another.
 
-Exact brand defaults can be pinned using CSS variables or provided directly by brand tokens. Pinning keeps a value at its base default and prevents it begin remapped (mixed with gray) when a recipe is active.
+Exact brand defaults can be pinned using CSS variables or provided directly by brand tokens. Pinning keeps a value at its base default and prevents remapping through the scale system when a recipe is active.
 
 For example, a recipe might change a semantic color role into a color one step lighter than the defined `primary-dark` default:
 
 `"--ui-primary-bg": ["primaryDark", 4],`
 
-We can pin this variable to the --`primary-dark` default like this:
+We can pin this variable to a brand default like this:
 
 `"--ui-primary-bg": "var(--color-primary-dark)" `
 
-In the current version pinning is not used because the index 5 already makes sure the brand color stays at default.
+Pinning isn’t used in current recipes; index 5 already returns the scale anchor for most roles.
 
 ### Recipe Intent
 
@@ -103,7 +103,7 @@ Each recipe expresses a different design intent:
 - **Minimalist** – neutral-first, minimal color presence (translated: Minimaal)
 - **Inverted** – dark canvas with soft, light surfaces (translated: Licht uit)
 
-Because any color can be the default primary color for a brand, it's unavoidable that each brand has at least one ill-fitting recipe. Because of a broadly applicable setup, the system is in fact trying to generalise something that's impossible to generalise. However, because so many options are available, this doesn't have to devaluate the concept. Paying attention to design best-practices (or simply common sense and good judgement) will always remain important.
+Because any color can be the default primary color for a brand, it's unavoidable that each brand has at least one ill-fitting recipe. Because of a broadly applicable setup, the system is in fact trying to generalise something that's impossible to generalize. However, because so many options are available, this doesn't have to devalue the concept. Paying attention to design best-practices (or simply common sense and good judgement) will always remain important.
 
 ---
 
@@ -608,7 +608,6 @@ const brandLogo = computed(() => {
   if (!props.brandTokens?.slug) return null;
   return `/logo-bg/${props.brandTokens.slug}.svg`;
 });
-
 ```
 
 Inconsistent naming will result in broken file links.

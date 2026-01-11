@@ -3,6 +3,9 @@ CREO-POST-IDEAS/
 ├── .vscode/                  # VS Code editor settings
 ├── dist/                     # Production build output directory
 ├── docs/                     # Project documentation and notes
+│   ├── media/
+│   └── project-tree.md
+│
 ├── node_modules/             # Project dependencies
 │
 ├── public/
