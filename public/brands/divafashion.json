@@ -68,7 +68,7 @@
     "threads": "@client",
     "description": "Trendy Fashion for Women \n📍 Visit Us: Diestersesteenweg 55, 3583 Paal",
     "address": "Straat, Stad, Belgium xxxx",
-    "url": "divafashion.test.creowebsolutions.be/",
+    "url": "divafashion.test.creowebsolutions.be",
     "highlightIcon": "divafashion-small.svg",
     "highlights": [
       { "label": "TEAM" },
