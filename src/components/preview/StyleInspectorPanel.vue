@@ -58,7 +58,7 @@
       </div>
 
       <div v-if="hasShadows">
-        <h6>Shaduw</h6>
+        <h6>Schaduw</h6>
         <div class="card main-preview__styles__shadows"></div>
       </div>
     </div>
