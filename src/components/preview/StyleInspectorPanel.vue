@@ -34,7 +34,7 @@
 
     <div class="main-preview__styles__swatches">
       <h6>Kleuren</h6>
-      <p class="styles__hint">Klik om te kopieren</p>
+      <p class="styles__hint">Klik om te kopiëren</p>
       <div class="main-preview__styles__swatch-container">
         <button
           v-for="color in swatches"
