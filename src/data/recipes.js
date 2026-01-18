@@ -221,7 +221,7 @@ export const recipes = [
   {
     id: "inverted",
     title: "Licht uit",
-    description: "Donker met felle kleuren",
+    description: "Donkere vlakken, lichte accenten",
     roles: {
       // NAV / FOOTER
       "--ui-nav-bg": ["neutral", 10],
