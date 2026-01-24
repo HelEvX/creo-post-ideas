@@ -162,7 +162,7 @@ function resolveCssColor(value, depth = 0) {
 -------------------------------------------------- */
 
 const RECIPE_ROLE_VARS = Array.from(
-  new Set((recipes || []).flatMap((r) => Object.keys(r?.roles || {})).filter(Boolean))
+  new Set((recipes || []).flatMap((r) => Object.keys(r?.roles || {})).filter(Boolean)),
 );
 
 function clearRecipeOverrides() {
@@ -252,8 +252,8 @@ function applyActiveRecipe() {
     const hex = Array.isArray(spec)
       ? scalesCopy?.[spec[0]]?.[spec[1]]
       : spec?.startsWith("var(")
-      ? resolveCssColor(spec)
-      : spec;
+        ? resolveCssColor(spec)
+        : spec;
 
     if (hex) {
       root.style.setProperty(cssVar, hex, "important");
@@ -289,7 +289,7 @@ watch(
     index.value = 0; // start on default
     applyActiveRecipe();
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 defineExpose({ nextRecipe, prevRecipe });
@@ -325,6 +325,10 @@ defineExpose({ nextRecipe, prevRecipe });
   border-radius: var(--radius-sm);
   margin-bottom: var(--space-20);
   width: 100%;
+}
+
+.controls .btn-primary {
+  font-size: 1em;
 }
 
 @media (max-width: 1399.98px) {
